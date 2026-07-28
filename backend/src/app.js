@@ -7,20 +7,25 @@ const express = require('express');
 const cors = require('cors');
 const helmet = require('helmet');
 const compression = require('compression');
+const cookieParser = require('cookie-parser');
 const rateLimit = require('express-rate-limit');
 const routes = require('./routes');
 const { errorHandler, notFound } = require('./middleware/error');
 
 const app = express();
 
+// Trust proxy (for Render)
+app.set('trust proxy', 1);
+
 // Security middleware
 app.use(helmet());
-app.use(cors({ origin: process.env.FRONTEND_URL || 'http://localhost:3000', credentials: true }));
+app.use(cors({ origin: process.env.FRONTEND_URL || 'http://localhost:5500', credentials: true }));
 app.use(compression());
 
 // Body parsing
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true, limit: '10mb' }));
+app.use(cookieParser());
 
 // Rate limiting
 app.use('/api', rateLimit({
@@ -29,7 +34,7 @@ app.use('/api', rateLimit({
   message: { success: false, message: 'Too many requests, please try again later.' }
 }));
 
-// Root route - handles / and returns API info
+// Root route
 app.get('/', (req, res) => {
   res.json({
     success: true,

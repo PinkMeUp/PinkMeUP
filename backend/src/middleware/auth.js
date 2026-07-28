@@ -8,7 +8,8 @@ const logger = require('../config/logger');
 
 const authenticate = async (req, res, next) => {
   try {
-    const token = req.headers.authorization?.split(' ')[1];
+    // Get token from cookie instead of header
+    const token = req.cookies.token;
     
     if (!token) {
       return res.status(401).json({ success: false, message: 'Authentication required.' });

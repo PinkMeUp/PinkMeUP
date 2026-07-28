@@ -63,6 +63,7 @@ form.addEventListener('submit', async (e) => {
     const response = await fetch(`${API_URL}/auth/register`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
+      credentials: 'include',
       body: JSON.stringify({ firstName, lastName, email, password, phone })
     });
 
@@ -76,8 +77,8 @@ form.addEventListener('submit', async (e) => {
       return;
     }
 
-    setAuthData(data.data.user, data.data.token);
-    window.location.href = '/dashboard.html';
+    setAuthData(data.data.user);
+    window.location.href = '/login.html';
 
   } catch (error) {
     errorDisplay.textContent = 'Network error. Please check your connection.';

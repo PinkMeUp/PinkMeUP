@@ -27,6 +27,14 @@ const register = async (req, res) => {
     const user = await User.create({ firstName, lastName, email, password, phone, role: 'customer' });
     const token = generateToken(user._id);
 
+    // Set cookie
+    res.cookie('token', token, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'strict',
+      maxAge: 7 * 24 * 60 * 60 * 1000
+    });
+
     const userData = {
       id: user._id,
       firstName: user.firstName,
@@ -36,10 +44,10 @@ const register = async (req, res) => {
       role: user.role
     };
 
-    return successResponse(res, 'Registration successful.', { user: userData, token }, 201);
+    return successResponse(res, 'Registration successful.', { user: userData }, 201);
   } catch (error) {
     logger.error('Registration error:', error);
-    return errorResponse(res, 'Registration failed.', 500);
+    return errorResponse(res, error.message || 'Registration failed.', 500);
   }
 };
 
@@ -57,6 +65,15 @@ const login = async (req, res) => {
     }
 
     const token = generateToken(user._id);
+
+    // Set cookie
+    res.cookie('token', token, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'strict',
+      maxAge: 7 * 24 * 60 * 60 * 1000
+    });
+
     const userData = {
       id: user._id,
       firstName: user.firstName,
@@ -66,11 +83,16 @@ const login = async (req, res) => {
       role: user.role
     };
 
-    return successResponse(res, 'Login successful.', { user: userData, token });
+    return successResponse(res, 'Login successful.', { user: userData });
   } catch (error) {
     logger.error('Login error:', error);
-    return errorResponse(res, 'Login failed.', 500);
+    return errorResponse(res, error.message || 'Login failed.', 500);
   }
+};
+
+const logout = (req, res) => {
+  res.clearCookie('token');
+  return successResponse(res, 'Logged out successfully.');
 };
 
 const getProfile = async (req, res) => {
@@ -174,6 +196,7 @@ const resetPassword = async (req, res) => {
 module.exports = {
   register,
   login,
+  logout,
   getProfile,
   updateProfile,
   changePassword,

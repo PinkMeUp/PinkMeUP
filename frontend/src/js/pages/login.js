@@ -35,6 +35,7 @@ form.addEventListener('submit', async (e) => {
     const response = await fetch(`${API_URL}/auth/login`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
+      credentials: 'include',
       body: JSON.stringify({ email, password })
     });
 
@@ -48,7 +49,7 @@ form.addEventListener('submit', async (e) => {
       return;
     }
 
-    setAuthData(data.data.user, data.data.token);
+    setAuthData(data.data.user);
     window.location.href = '/dashboard.html';
 
   } catch (error) {

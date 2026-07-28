@@ -17,25 +17,17 @@ const getCurrentUser = () => {
 };
 
 /**
- * Get token from localStorage
- */
-const getToken = () => {
-  return localStorage.getItem('token');
-};
-
-/**
  * Check if user is authenticated
  */
 const isAuthenticated = () => {
-  return !!getToken();
+  return !!getCurrentUser();
 };
 
 /**
- * Save auth data to localStorage
+ * Save user data to localStorage
  */
-const setAuthData = (user, token) => {
+const setAuthData = (user) => {
   localStorage.setItem('user', JSON.stringify(user));
-  localStorage.setItem('token', token);
 };
 
 /**
@@ -43,7 +35,6 @@ const setAuthData = (user, token) => {
  */
 const clearAuthData = () => {
   localStorage.removeItem('user');
-  localStorage.removeItem('token');
   window.location.href = '/login.html';
 };
 
@@ -70,19 +61,18 @@ const requireGuest = () => {
 };
 
 /**
- * API request helper with auth header
+ * API request helper with credentials
  */
 const authFetch = async (endpoint, options = {}) => {
-  const token = getToken();
   const headers = {
     'Content-Type': 'application/json',
-    ...(token && { 'Authorization': `Bearer ${token}` }),
     ...options.headers
   };
 
   const response = await fetch(`${API_URL}${endpoint}`, {
     ...options,
-    headers
+    headers,
+    credentials: 'include' // Important for cookies!
   });
 
   return response;
@@ -91,7 +81,6 @@ const authFetch = async (endpoint, options = {}) => {
 export {
   API_URL,
   getCurrentUser,
-  getToken,
   isAuthenticated,
   setAuthData,
   clearAuthData,
