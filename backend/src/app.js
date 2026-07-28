@@ -19,7 +19,15 @@ app.set('trust proxy', 1);
 
 // Security middleware
 app.use(helmet());
-app.use(cors({ origin: process.env.FRONTEND_URL || 'http://localhost:5500', credentials: true }));
+app.use(cors({ 
+  origin: [
+    'http://localhost:5500',
+    'http://localhost:3000',
+    'https://pink-me-up.vercel.app',
+    process.env.FRONTEND_URL
+  ].filter(Boolean), 
+  credentials: true 
+}));
 app.use(compression());
 
 // Body parsing
