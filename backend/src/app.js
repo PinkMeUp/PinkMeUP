@@ -20,13 +20,21 @@ app.set('trust proxy', 1);
 // Security middleware
 app.use(helmet());
 app.use(cors({ 
-  origin: [
-    'http://localhost:5500',
-    'http://localhost:3000',
-    'https://pink-me-up.vercel.app',
-    'https://pink-me-up-sage.vercel.app',   // ← ADD THIS
-    process.env.FRONTEND_URL
-  ].filter(Boolean), 
+  origin: function (origin, callback) {
+    const allowedOrigins = [
+      'http://localhost:5500',
+      'http://localhost:3000',
+      'https://pink-me-up.vercel.app',
+      'https://pink-me-up-sage.vercel.app',
+      process.env.FRONTEND_URL
+    ].filter(Boolean);
+    
+    if (!origin || allowedOrigins.indexOf(origin) !== -1) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
   credentials: true 
 }));
 app.use(compression());
