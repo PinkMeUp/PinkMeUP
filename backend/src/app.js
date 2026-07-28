@@ -24,6 +24,7 @@ app.use(cors({
     'http://localhost:5500',
     'http://localhost:3000',
     'https://pink-me-up.vercel.app',
+    'https://pink-me-up-sage.vercel.app',   // ← ADD THIS
     process.env.FRONTEND_URL
   ].filter(Boolean), 
   credentials: true 
