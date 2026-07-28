@@ -4,6 +4,7 @@
 
 const jwt = require('jsonwebtoken');
 const crypto = require('crypto');
+const passport = require('passport'); // ← ADD THIS
 const User = require('../models/User.model');
 const { successResponse, errorResponse } = require('../utils/response');
 const logger = require('../config/logger');
@@ -27,7 +28,6 @@ const register = async (req, res) => {
     const user = await User.create({ firstName, lastName, email, password, phone, role: 'customer' });
     const token = generateToken(user._id);
 
-    // Set cookie
     res.cookie('token', token, {
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production',
@@ -66,7 +66,6 @@ const login = async (req, res) => {
 
     const token = generateToken(user._id);
 
-    // Set cookie
     res.cookie('token', token, {
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production',
@@ -193,16 +192,6 @@ const resetPassword = async (req, res) => {
   }
 };
 
-module.exports = {
-  register,
-  login,
-  logout,
-  getProfile,
-  updateProfile,
-  changePassword,
-  forgotPassword,
-  resetPassword
-};
 /**
  * Google OAuth - Redirect to Google
  */
@@ -219,10 +208,8 @@ const googleCallback = (req, res, next) => {
       return res.redirect(`${process.env.FRONTEND_URL}/login.html?error=google_auth_failed`);
     }
 
-    // Generate JWT token
     const token = generateToken(user._id);
 
-    // Set cookie
     res.cookie('token', token, {
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production',
@@ -230,7 +217,19 @@ const googleCallback = (req, res, next) => {
       maxAge: 7 * 24 * 60 * 60 * 1000
     });
 
-    // Redirect to frontend dashboard
     return res.redirect(`${process.env.FRONTEND_URL}/dashboard.html`);
   })(req, res, next);
+};
+
+module.exports = {
+  register,
+  login,
+  logout,
+  getProfile,
+  updateProfile,
+  changePassword,
+  forgotPassword,
+  resetPassword,
+  googleAuth,
+  googleCallback
 };
