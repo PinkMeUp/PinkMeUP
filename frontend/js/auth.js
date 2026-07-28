@@ -17,7 +17,7 @@ function getCurrentUser() {
 }
 
 /**
- * Check if user is authenticated
+ * Check if user is authenticated locally
  */
 function isAuthenticated() {
     return !!getCurrentUser();
@@ -28,6 +28,39 @@ function isAuthenticated() {
  */
 function setAuthData(user) {
     localStorage.setItem('user', JSON.stringify(user));
+}
+
+/**
+ * Fetch logged-in user from backend cookie session
+ * Used for Google OAuth login
+ */
+async function syncAuthFromServer() {
+    try {
+        const response = await fetch(`${API_URL}/auth/profile`, {
+            method: 'GET',
+            credentials: 'include',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        });
+
+        if (!response.ok) {
+            return false;
+        }
+
+        const data = await response.json();
+
+        if (data.user) {
+            setAuthData(data.user);
+            return true;
+        }
+
+        return false;
+
+    } catch (error) {
+        console.error('Auth sync failed:', error);
+        return false;
+    }
 }
 
 /**
@@ -46,6 +79,7 @@ function requireAuth() {
         window.location.href = '/login.html';
         return false;
     }
+
     return true;
 }
 
@@ -57,12 +91,22 @@ function requireGuest() {
         window.location.href = '/dashboard.html';
         return false;
     }
+
     return true;
 }
 
 /**
  * Logout function
  */
-function logout() {
+async function logout() {
+    try {
+        await fetch(`${API_URL}/auth/logout`, {
+            method: 'POST',
+            credentials: 'include'
+        });
+    } catch (error) {
+        console.error('Logout failed:', error);
+    }
+
     clearAuthData();
 }

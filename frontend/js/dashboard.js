@@ -1,8 +1,13 @@
-if (!requireAuth()) {
-    // Redirect happens inside requireAuth()
-}
+(async () => {
+    await syncAuthFromServer();
 
-const user = getCurrentUser();
-if (user) {
-    console.log('Welcome, ' + user.firstName + ' ' + user.lastName);
-}
+    if (!requireAuth()) {
+        return;
+    }
+
+    const user = getCurrentUser();
+
+    if (user) {
+        console.log('Welcome, ' + user.firstName + ' ' + user.lastName);
+    }
+})();
