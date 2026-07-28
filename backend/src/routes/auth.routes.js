@@ -32,7 +32,7 @@ router.post('/logout', authenticate, authController.logout);
 
 // Google OAuth routes
 router.get('/google',
-  passport.authenticate('google', { 
+  passport.authenticate('google', {
     scope: ['profile', 'email'],
     accessType: 'offline',
     prompt: 'consent'
@@ -40,7 +40,7 @@ router.get('/google',
 );
 
 router.get('/google/callback',
-  passport.authenticate('google', { 
+  passport.authenticate('google', {
     failureRedirect: `${process.env.FRONTEND_URL}/login.html?error=google_auth_failed`
   }),
   (req, res) => {
@@ -48,8 +48,8 @@ router.get('/google/callback',
 
     res.cookie('token', token, {
       httpOnly: true,
-      secure: process.env.NODE_ENV === 'production',
-      sameSite: 'lax',
+      secure: true,
+      sameSite: 'none',
       maxAge: 7 * 24 * 60 * 60 * 1000
     });
 
