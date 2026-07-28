@@ -35,7 +35,7 @@ function setAuthData(user) {
  */
 function clearAuthData() {
     localStorage.removeItem('user');
-    window.location.href = 'login.html';
+    window.location.href = '/login.html';
 }
 
 /**
@@ -43,7 +43,7 @@ function clearAuthData() {
  */
 function requireAuth() {
     if (!isAuthenticated()) {
-        window.location.href = 'login.html';
+        window.location.href = '/login.html';
         return false;
     }
     return true;
@@ -54,7 +54,7 @@ function requireAuth() {
  */
 function requireGuest() {
     if (isAuthenticated()) {
-        window.location.href = 'dashboard.html';
+        window.location.href = '/dashboard.html';
         return false;
     }
     return true;

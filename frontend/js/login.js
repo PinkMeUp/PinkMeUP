@@ -70,7 +70,7 @@ form.addEventListener('submit', async (e) => {
         }
 
         setAuthData(data.data.user);
-        window.location.href = 'dashboard.html';
+        window.location.href = '/dashboard.html';
 
     } catch (error) {
         errorEl.textContent = 'Network error. Please try again.';
