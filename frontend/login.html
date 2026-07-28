@@ -12,6 +12,7 @@
         <h2>Welcome Back</h2>
 
         <div id="error" class="error"></div>
+        <div id="success" class="success"></div>
 
         <form id="login-form">
             <div class="form-group">
@@ -21,7 +22,17 @@
 
             <div class="form-group">
                 <label for="password">Password</label>
-                <input type="password" id="password" placeholder="Enter your password" required>
+                <div style="position: relative;">
+                    <input type="password" id="password" placeholder="Enter your password" required>
+                    <span id="toggle-password" style="position: absolute; right: 12px; top: 50%; transform: translateY(-50%); cursor: pointer; color: #888; font-size: 14px; user-select: none;">Show</span>
+                </div>
+            </div>
+
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+                <label style="font-size: 14px; color: #666; cursor: pointer;">
+                    <input type="checkbox" id="remember"> Remember Me
+                </label>
+                <a href="reset.html" style="color: #ff6b9d; font-size: 14px; text-decoration: none;">Forgot Password?</a>
             </div>
 
             <button type="submit" class="btn" id="login-btn">Sign In</button>

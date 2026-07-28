@@ -1,29 +1,52 @@
-/**
- * Login page logic
- */
-
 const form = document.getElementById('login-form');
 const errorEl = document.getElementById('error');
+const successEl = document.getElementById('success');
 
-/**
- * Handle form submission
- */
+// Password toggle
+const toggleBtn = document.getElementById('toggle-password');
+const passwordInput = document.getElementById('password');
+
+toggleBtn.addEventListener('click', function() {
+    if (passwordInput.type === 'password') {
+        passwordInput.type = 'text';
+        this.textContent = 'Hide';
+    } else {
+        passwordInput.type = 'password';
+        this.textContent = 'Show';
+    }
+});
+
+// Remember Me - load saved email
+document.addEventListener('DOMContentLoaded', function() {
+    const savedEmail = localStorage.getItem('rememberedEmail');
+    if (savedEmail) {
+        document.getElementById('email').value = savedEmail;
+        document.getElementById('remember').checked = true;
+    }
+});
+
 form.addEventListener('submit', async (e) => {
     e.preventDefault();
     errorEl.classList.remove('show');
+    successEl.classList.remove('show');
 
-    // Get form values
     const email = document.getElementById('email').value.trim();
     const password = document.getElementById('password').value;
+    const remember = document.getElementById('remember').checked;
 
-    // Validate fields
     if (!email || !password) {
         errorEl.textContent = 'All fields are required';
         errorEl.classList.add('show');
         return;
     }
 
-    // Disable button while submitting
+    // Save email if Remember Me is checked
+    if (remember) {
+        localStorage.setItem('rememberedEmail', email);
+    } else {
+        localStorage.removeItem('rememberedEmail');
+    }
+
     const btn = document.getElementById('login-btn');
     btn.disabled = true;
     btn.textContent = 'Signing In...';
@@ -46,7 +69,6 @@ form.addEventListener('submit', async (e) => {
             return;
         }
 
-        // Save user data and redirect
         setAuthData(data.data.user);
         window.location.href = 'dashboard.html';
 
