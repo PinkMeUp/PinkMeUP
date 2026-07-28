@@ -4,7 +4,7 @@
 
 const jwt = require('jsonwebtoken');
 const crypto = require('crypto');
-const passport = require('passport'); // ← ADD THIS
+const passport = require('passport');
 const User = require('../models/User.model');
 const { successResponse, errorResponse } = require('../utils/response');
 const logger = require('../config/logger');
