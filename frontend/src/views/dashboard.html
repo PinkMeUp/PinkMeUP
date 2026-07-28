@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - PinkMeUP</title>
+    <link rel="stylesheet" href="../css/auth.css">
+</head>
+<body>
+    <div class="auth-container">
+        <div class="auth-card" style="text-align: center;">
+            <div class="auth-logo">
+                <h1>PinkMeUP</h1>
+                <p>Dashboard</p>
+            </div>
+
+            <div style="margin: 30px 0; padding: 30px; background: #f9f9f9; border-radius: 8px; border: 1px solid #eee;">
+                <p style="font-size: 18px; color: #333; font-weight: 600;">Login Successful</p>
+                <p style="color: #888; margin-top: 8px;">Your dashboard will be here soon.</p>
+            </div>
+
+            <button onclick="logout()" class="btn-primary">Logout</button>
+        </div>
+    </div>
+
+    <script>
+        function logout() {
+            localStorage.clear();
+            window.location.href = '/frontend/src/views/login.html';
+        }
+    </script>
+</body>
+</html>

@@ -78,7 +78,7 @@ form.addEventListener('submit', async (e) => {
     }
 
     setAuthData(data.data.user);
-    window.location.href = '/login.html';
+    window.location.href = 'login.html';
 
   } catch (error) {
     errorDisplay.textContent = 'Network error. Please check your connection.';

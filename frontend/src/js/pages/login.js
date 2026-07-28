@@ -50,8 +50,7 @@ form.addEventListener('submit', async (e) => {
     }
 
     setAuthData(data.data.user);
-    window.location.href = '/dashboard.html';
-
+window.location.href = '/frontend/src/views/dashboard.html';
   } catch (error) {
     errorDisplay.textContent = 'Network error. Please check your connection.';
     errorDisplay.classList.add('show');
