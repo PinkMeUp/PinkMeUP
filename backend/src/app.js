@@ -2,7 +2,8 @@
  * Express app configuration
  * Sets up middleware, routes, and error handling
  */
-
+const session = require('express-session');
+const passport = require('./config/passport');
 const express = require('express');
 const cors = require('cors');
 const helmet = require('helmet');
@@ -79,6 +80,21 @@ app.get('/health', (req, res) => {
     environment: process.env.NODE_ENV || 'development'
   });
 });
+
+// Session middleware (required for Passport)
+app.use(session({
+  secret: process.env.JWT_SECRET || 'secret',
+  resave: false,
+  saveUninitialized: false,
+  cookie: {
+    secure: process.env.NODE_ENV === 'production',
+    maxAge: 24 * 60 * 60 * 1000 // 24 hours
+  }
+}));
+
+// Initialize Passport
+app.use(passport.initialize());
+app.use(passport.session());
 
 // API routes
 app.use('/api/v1', routes);

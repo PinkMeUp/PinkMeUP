@@ -8,6 +8,8 @@ const { authenticate } = require('../middleware/auth');
 const { validate } = require('../middleware/validation');
 const { registerValidation, loginValidation, forgotPasswordValidation, resetPasswordValidation } = require('../validators');
 const authController = require('../controllers/auth.controller');
+const passport = require('passport');
+
 
 // Public routes
 router.post('/register', validate(registerValidation), authController.register);
@@ -20,5 +22,30 @@ router.get('/profile', authenticate, authController.getProfile);
 router.put('/profile', authenticate, authController.updateProfile);
 router.put('/change-password', authenticate, authController.changePassword);
 router.post('/logout', authenticate, authController.logout);
+
+
+// Google OAuth routes
+router.get('/google',
+  passport.authenticate('google', { scope: ['profile', 'email'] })
+);
+
+router.get('/google/callback',
+  passport.authenticate('google', { failureRedirect: '/login.html' }),
+  (req, res) => {
+    // Generate JWT token
+    const token = generateToken(req.user._id);
+
+    // Set cookie
+    res.cookie('token', token, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'lax',
+      maxAge: 7 * 24 * 60 * 60 * 1000
+    });
+
+    // Redirect to dashboard
+    res.redirect(`${process.env.FRONTEND_URL}/dashboard.html`);
+  }
+);
 
 module.exports = router;

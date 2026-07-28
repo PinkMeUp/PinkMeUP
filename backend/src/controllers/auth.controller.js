@@ -203,3 +203,34 @@ module.exports = {
   forgotPassword,
   resetPassword
 };
+/**
+ * Google OAuth - Redirect to Google
+ */
+const googleAuth = passport.authenticate('google', {
+  scope: ['profile', 'email']
+});
+
+/**
+ * Google OAuth - Callback
+ */
+const googleCallback = (req, res, next) => {
+  passport.authenticate('google', (err, user) => {
+    if (err || !user) {
+      return res.redirect(`${process.env.FRONTEND_URL}/login.html?error=google_auth_failed`);
+    }
+
+    // Generate JWT token
+    const token = generateToken(user._id);
+
+    // Set cookie
+    res.cookie('token', token, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'lax',
+      maxAge: 7 * 24 * 60 * 60 * 1000
+    });
+
+    // Redirect to frontend dashboard
+    return res.redirect(`${process.env.FRONTEND_URL}/dashboard.html`);
+  })(req, res, next);
+};
