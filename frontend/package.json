@@ -1,14 +1,11 @@
 {
-  "name": "frontend",
+  "name": "pinkmeup-frontend",
   "version": "1.0.0",
+  "description": "PinkMeUP Beauty Spa Booking System Frontend",
   "scripts": {
-    "dev": "vite",
-    "build": "npx vite build",
-    "preview": "vite preview"
+    "start": "serve ."
   },
   "dependencies": {
-    "axios": "^1.18.1",
-    "vite": "^8.1.4"
-  },
-  "devDependencies": {}
+    "serve": "^14.2.0"
+  }
 }

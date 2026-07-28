@@ -1,14 +1,20 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>PinkMeUP</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PinkMeUP</title>
+    <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-  <script>
-    // Redirect to login page
-    window.location.href = '/src/views/login.html';
-  </script>
+    <div class="auth-container" style="text-align: center;">
+        <h1>PinkMeUP</h1>
+        <p style="color: #666; margin-bottom: 30px;">Beauty Spa &amp; Academy</p>
+
+        <div style="display: flex; flex-direction: column; gap: 12px;">
+            <a href="login.html" class="btn" style="text-decoration: none; display: block;">Sign In</a>
+            <a href="register.html" class="btn btn-secondary" style="text-decoration: none; display: block;">Create Account</a>
+        </div>
+    </div>
 </body>
 </html>
