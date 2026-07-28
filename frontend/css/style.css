@@ -12,6 +12,7 @@ body {
     justify-content: center;
     align-items: center;
     min-height: 100vh;
+    padding: 20px;
 }
 
 /* ===== AUTH CONTAINER ===== */
@@ -153,4 +154,25 @@ body {
     text-decoration: none;
     text-align: center;
     display: block;
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 480px) {
+    .auth-container {
+        padding: 24px;
+        border-radius: 4px;
+    }
+    
+    .auth-container h1 {
+        font-size: 24px;
+    }
+    
+    .auth-container h2 {
+        font-size: 18px;
+    }
+    
+    .form-group input {
+        font-size: 16px;  /* Prevents zoom on iPhone */
+        padding: 12px;
+    }
 }
