@@ -1,4 +1,4 @@
-/**
+﻿/**
  * User model - stores customers, stylists, and admins
  * Passwords are hashed using bcrypt
  */
@@ -42,7 +42,11 @@ const UserSchema = new mongoose.Schema(
       type: Boolean,
       default: true,
     },
-
+    // Google OAuth field
+    googleId: {
+      type: String,
+      index: true,
+    },
     // Password reset fields
     resetPasswordToken: {
       type: String,
@@ -58,11 +62,9 @@ const UserSchema = new mongoose.Schema(
 
 // Hash password before saving
 UserSchema.pre('save', async function () {
-  // Only hash if the password has been modified
   if (!this.isModified('password')) {
     return;
   }
-
   this.password = await bcrypt.hash(this.password, 10);
 });
 
