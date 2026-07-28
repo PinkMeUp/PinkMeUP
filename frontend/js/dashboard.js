@@ -1,13 +1,30 @@
+/**
+ * Dashboard page authentication handler
+ * Syncs Google OAuth users and protects dashboard access
+ */
+
 (async () => {
-    await syncAuthFromServer();
+    try {
+        // Sync authentication from backend cookie (Google OAuth)
+        const synced = await syncAuthFromServer();
 
-    if (!requireAuth()) {
-        return;
-    }
+        // If backend sync failed, check local authentication
+        if (!synced && !isAuthenticated()) {
+            window.location.href = '/login.html';
+            return;
+        }
 
-    const user = getCurrentUser();
+        // Get current logged-in user
+        const user = getCurrentUser();
 
-    if (user) {
-        console.log('Welcome, ' + user.firstName + ' ' + user.lastName);
+        if (user) {
+            console.log(
+                'Welcome, ' + user.firstName + ' ' + user.lastName
+            );
+        }
+
+    } catch (error) {
+        console.error('Dashboard authentication error:', error);
+        window.location.href = '/login.html';
     }
 })();
