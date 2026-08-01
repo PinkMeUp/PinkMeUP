@@ -1,5 +1,6 @@
 /**
- * Report controller - generates analytics and dashboard data (admin only)
+ * Report controller - generates analytics and dashboard data (admin only).
+ * Frontend note: these endpoints are intended for admin dashboard charts and summaries.
  */
 
 const Appointment = require('../models/Appointment.model');
@@ -10,6 +11,15 @@ const { successResponse, errorResponse } = require('../utils/response');
 const { APPOINTMENT_STATUS } = require('../utils/constants');
 const logger = require('../config/logger');
 
+/**
+ * Get booking trends by status and day.
+ * Query: { startDate?, endDate? }
+ */
+
+/**
+ * Get booking trends by status and day.
+ * Query: { startDate?, endDate? }
+ */
 const getBookingTrends = async (req, res) => {
   try {
     const { startDate, endDate } = req.query;
@@ -51,6 +61,10 @@ const getBookingTrends = async (req, res) => {
   }
 };
 
+/**
+ * Get the most popular services based on completed bookings.
+ * Query: { startDate?, endDate? }
+ */
 const getServicePopularity = async (req, res) => {
   try {
     const { startDate, endDate } = req.query;
@@ -86,6 +100,10 @@ const getServicePopularity = async (req, res) => {
   }
 };
 
+/**
+ * Get stylist performance metrics.
+ * Query: { startDate?, endDate? }
+ */
 const getStylistPerformance = async (req, res) => {
   try {
     const { startDate, endDate } = req.query;
@@ -128,6 +146,10 @@ const getStylistPerformance = async (req, res) => {
   }
 };
 
+/**
+ * Get revenue report grouped by date.
+ * Query: { startDate?, endDate? }
+ */
 const getRevenueReport = async (req, res) => {
   try {
     const { startDate, endDate } = req.query;
@@ -162,6 +184,9 @@ const getRevenueReport = async (req, res) => {
   }
 };
 
+/**
+ * Get summary dashboard stats for admin overview.
+ */
 const getDashboardStats = async (req, res) => {
   try {
     const today = new Date().setHours(0, 0, 0, 0);

@@ -1,5 +1,7 @@
 ﻿/**
- * Authentication controller - handles registration, login, and profile management
+ * Authentication controller
+ * Public routes: register, login, forgot/reset password, Google OAuth
+ * Protected routes: profile, update profile, change password
  */
 
 const jwt = require('jsonwebtoken');
@@ -16,6 +18,19 @@ const generateToken = (userId) => {
   });
 };
 
+const buildUserPayload = (user) => ({
+  id: user._id,
+  firstName: user.firstName,
+  lastName: user.lastName,
+  email: user.email,
+  phone: user.phone,
+  role: user.role
+});
+
+/**
+ * Register a new customer account.
+ * Body: { firstName, lastName, email, password, phone }
+ */
 const register = async (req, res) => {
   try {
     const { firstName, lastName, email, password, phone } = req.body;
@@ -35,27 +50,22 @@ const register = async (req, res) => {
       maxAge: 7 * 24 * 60 * 60 * 1000
     });
 
-    const userData = {
-      id: user._id,
-      firstName: user.firstName,
-      lastName: user.lastName,
-      email: user.email,
-      phone: user.phone,
-      role: user.role
-    };
-
-    return successResponse(res, 'Registration successful.', { user: userData }, 201);
+    return successResponse(res, 'Registration successful.', { user: buildUserPayload(user) }, 201);
   } catch (error) {
     logger.error('Registration error:', error);
     return errorResponse(res, error.message || 'Registration failed.', 500);
   }
 };
 
+/**
+ * Authenticate an existing user.
+ * Body: { email, password }
+ */
 const login = async (req, res) => {
   try {
     const { email, password } = req.body;
 
-    const user = await User.findOne({ email });
+    const user = await User.findOne({ email }).select('+password');
     if (!user || !(await user.comparePassword(password))) {
       return errorResponse(res, 'Invalid email or password.', 401);
     }
@@ -65,7 +75,6 @@ const login = async (req, res) => {
     }
 
     const token = generateToken(user._id);
-
     res.cookie('token', token, {
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production',
@@ -73,38 +82,43 @@ const login = async (req, res) => {
       maxAge: 7 * 24 * 60 * 60 * 1000
     });
 
-    const userData = {
-      id: user._id,
-      firstName: user.firstName,
-      lastName: user.lastName,
-      email: user.email,
-      phone: user.phone,
-      role: user.role
-    };
-
-    return successResponse(res, 'Login successful.', { user: userData });
+    return successResponse(res, 'Login successful.', { user: buildUserPayload(user) });
   } catch (error) {
     logger.error('Login error:', error);
     return errorResponse(res, error.message || 'Login failed.', 500);
   }
 };
 
+/**
+ * Clear the auth cookie and sign out.
+ */
 const logout = (req, res) => {
-  res.clearCookie('token');
+  res.clearCookie('token', {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === 'production',
+    sameSite: 'strict'
+  });
   return successResponse(res, 'Logged out successfully.');
 };
 
+/**
+ * Retrieve the currently authenticated user profile.
+ */
 const getProfile = async (req, res) => {
   try {
     const user = await User.findById(req.user.id).select('-password');
     if (!user) return errorResponse(res, 'User not found.', 404);
-    return successResponse(res, 'Profile retrieved.', user);
+    return successResponse(res, 'Profile retrieved.', { user });
   } catch (error) {
     logger.error('Get profile error:', error);
     return errorResponse(res, 'Failed to retrieve profile.', 500);
   }
 };
 
+/**
+ * Update the authenticated user's profile.
+ * Body: { firstName?, lastName?, phone? }
+ */
 const updateProfile = async (req, res) => {
   try {
     const { firstName, lastName, phone } = req.body;
@@ -116,26 +130,21 @@ const updateProfile = async (req, res) => {
     if (phone) user.phone = phone;
     await user.save();
 
-    const userData = {
-      id: user._id,
-      firstName: user.firstName,
-      lastName: user.lastName,
-      email: user.email,
-      phone: user.phone,
-      role: user.role
-    };
-
-    return successResponse(res, 'Profile updated.', userData);
+    return successResponse(res, 'Profile updated.', buildUserPayload(user));
   } catch (error) {
     logger.error('Update profile error:', error);
     return errorResponse(res, 'Failed to update profile.', 500);
   }
 };
 
+/**
+ * Change the authenticated user's password.
+ * Body: { currentPassword, newPassword }
+ */
 const changePassword = async (req, res) => {
   try {
     const { currentPassword, newPassword } = req.body;
-    const user = await User.findById(req.user.id);
+    const user = await User.findById(req.user.id).select('+password');
     if (!user) return errorResponse(res, 'User not found.', 404);
 
     if (!(await user.comparePassword(currentPassword))) {
@@ -152,6 +161,10 @@ const changePassword = async (req, res) => {
   }
 };
 
+/**
+ * Send a password reset email to the user.
+ * Body: { email }
+ */
 const forgotPassword = async (req, res) => {
   try {
     const { email } = req.body;
@@ -171,6 +184,10 @@ const forgotPassword = async (req, res) => {
   }
 };
 
+/**
+ * Reset user password using a valid reset token.
+ * Body: { token, newPassword }
+ */
 const resetPassword = async (req, res) => {
   try {
     const { token, newPassword } = req.body;
@@ -193,14 +210,15 @@ const resetPassword = async (req, res) => {
 };
 
 /**
- * Google OAuth - Redirect to Google
+ * Google OAuth - redirect user to Google consent screen.
  */
 const googleAuth = passport.authenticate('google', {
   scope: ['profile', 'email']
 });
 
 /**
- * Google OAuth - Callback
+ * Google OAuth callback route.
+ * Returns a session cookie and redirects to the frontend dashboard.
  */
 const googleCallback = (req, res, next) => {
   passport.authenticate('google', (err, user) => {
@@ -209,11 +227,10 @@ const googleCallback = (req, res, next) => {
     }
 
     const token = generateToken(user._id);
-
     res.cookie('token', token, {
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production',
-      sameSite: 'lax',
+      sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
       maxAge: 7 * 24 * 60 * 60 * 1000
     });
 

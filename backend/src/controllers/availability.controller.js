@@ -1,6 +1,8 @@
 /**
- * Availability controller - checks stylist availability and time slots
- * Uses global BusinessSettings for working hours
+ * Availability controller - calculates available stylists and time slots.
+ * Frontend note: query params should include stylistId, date, and optional serviceIds.
+ *
+ * Responses include structured availability, business hours, and service duration context.
  */
 
 const Appointment = require('../models/Appointment.model');
@@ -13,6 +15,10 @@ const logger = require('../config/logger');
 
 const getSettings = async () => await BusinessSetting.getSettings();
 
+/**
+ * Check availability for a specific stylist and date.
+ * Query: { stylistId, date, serviceIds? }
+ */
 const checkAvailability = async (req, res) => {
   try {
     const { stylistId, date, serviceIds } = req.query;

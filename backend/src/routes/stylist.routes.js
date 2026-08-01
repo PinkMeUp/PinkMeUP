@@ -12,7 +12,7 @@ const stylistController = require('../controllers/stylist.controller');
 // Public routes
 router.get('/', validate(paginationValidation), stylistController.getStylists);
 router.get('/:id', validate(idParamValidation), stylistController.getStylistById);
-router.get('/:id/availability', stylistController.getStylistAvailability);
+router.get('/:id/availability', validate(idParamValidation), stylistController.getStylistAvailability);
 
 // Admin routes
 router.post('/', authenticate, authorize('admin'), validate(stylistValidation), stylistController.createStylist);

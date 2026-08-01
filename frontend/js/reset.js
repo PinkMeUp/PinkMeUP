@@ -2,6 +2,10 @@ const form = document.getElementById('reset-form');
 const errorEl = document.getElementById('error');
 const successEl = document.getElementById('success');
 
+requireGuest();
+
+requireGuest();
+
 form.addEventListener('submit', async (e) => {
     e.preventDefault();
     errorEl.classList.remove('show');

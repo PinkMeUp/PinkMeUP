@@ -14,6 +14,9 @@ if (missing.length) {
   process.exit(1);
 }
 
+const googleRequired = ['GOOGLE_CLIENT_ID', 'GOOGLE_CLIENT_SECRET', 'GOOGLE_CALLBACK_URL'];
+const isGoogleConfigured = googleRequired.every(key => process.env[key] && process.env[key].trim() !== '');
+
 module.exports = {
   NODE_ENV: process.env.NODE_ENV,
   PORT: parseInt(process.env.PORT, 10) || 5000,
@@ -27,6 +30,12 @@ module.exports = {
     PORT: parseInt(process.env.EMAIL_PORT, 10) || 587,
     USER: process.env.EMAIL_USER,
     PASS: process.env.EMAIL_PASS
+  },
+  GOOGLE: {
+    ENABLED: isGoogleConfigured,
+    CLIENT_ID: process.env.GOOGLE_CLIENT_ID,
+    CLIENT_SECRET: process.env.GOOGLE_CLIENT_SECRET,
+    CALLBACK_URL: process.env.GOOGLE_CALLBACK_URL
   },
   BUSINESS: {
     NAME: 'PinkMeUp Beauty Spa & Academy',

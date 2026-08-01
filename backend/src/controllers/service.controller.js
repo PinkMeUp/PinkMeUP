@@ -1,11 +1,22 @@
 /**
- * Service management controller - public read, admin write
+ * Service controller - handles service catalog operations.
+ * Public endpoints allow browsing services, admin endpoints manage service CRUD.
  */
 
 const Service = require('../models/Service.model');
 const { successResponse, errorResponse } = require('../utils/response');
 const logger = require('../config/logger');
 
+const parsePageLimit = (page, limit) => ({
+  page: Math.max(parseInt(page, 10) || 1, 1),
+  limit: Math.max(parseInt(limit, 10) || 10, 1)
+});
+
+/**
+ * Create a new service.
+ * Admin only.
+ * Body: { name, description, price, duration, category }
+ */
 const createService = async (req, res) => {
   try {
     const { name, description, price, duration, category } = req.body;
@@ -20,6 +31,10 @@ const createService = async (req, res) => {
   }
 };
 
+/**
+ * Retrieve services with optional filtering and pagination.
+ * Query: { category?, isActive?, page?, limit? }
+ */
 const getServices = async (req, res) => {
   try {
     const { category, isActive, page = 1, limit = 10 } = req.query;
@@ -27,13 +42,14 @@ const getServices = async (req, res) => {
     if (category) filter.category = category;
     if (isActive !== undefined) filter.isActive = isActive === 'true';
 
-    const skip = (parseInt(page) - 1) * parseInt(limit);
-    const services = await Service.find(filter).skip(skip).limit(parseInt(limit)).sort({ name: 1 });
+    const { page: pageNum, limit: limitNum } = parsePageLimit(page, limit);
+    const skip = (pageNum - 1) * limitNum;
+    const services = await Service.find(filter).skip(skip).limit(limitNum).sort({ name: 1 });
     const total = await Service.countDocuments(filter);
 
     return successResponse(res, 'Services retrieved.', {
       services,
-      pagination: { page: parseInt(page), limit: parseInt(limit), total, pages: Math.ceil(total / limit) }
+      pagination: { page: pageNum, limit: limitNum, total, pages: Math.ceil(total / limitNum) }
     });
   } catch (error) {
     logger.error('Get services error:', error);
@@ -41,6 +57,9 @@ const getServices = async (req, res) => {
   }
 };
 
+/**
+ * Retrieve a single service by ID.
+ */
 const getServiceById = async (req, res) => {
   try {
     const service = await Service.findById(req.params.id);
@@ -52,6 +71,10 @@ const getServiceById = async (req, res) => {
   }
 };
 
+/**
+ * Update a service by ID.
+ * Admin only.
+ */
 const updateService = async (req, res) => {
   try {
     const { id } = req.params;
@@ -79,6 +102,10 @@ const updateService = async (req, res) => {
   }
 };
 
+/**
+ * Delete a service by ID.
+ * Admin only.
+ */
 const deleteService = async (req, res) => {
   try {
     const service = await Service.findById(req.params.id);

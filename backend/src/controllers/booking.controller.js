@@ -1,6 +1,8 @@
 /**
- * Booking controller - handles all appointment operations
- * Supports multiple services per booking
+ * Booking controller - handles all appointment operations.
+ * Includes booking creation, retrieval, cancellation, rescheduling, and list views.
+ *
+ * Frontend note: list endpoints return { data, pagination } where pagination includes page, limit, total, pages.
  */
 
 const Appointment = require('../models/Appointment.model');
@@ -9,12 +11,21 @@ const Stylist = require('../models/Stylist.model');
 const BusinessSetting = require('../models/BusinessSetting.model');
 const { successResponse, errorResponse } = require('../utils/response');
 const { APPOINTMENT_STATUS } = require('../utils/constants');
-const { calculateEndTime, isValidTimeFormat, getDayOfWeek } = require('../utils/helpers');
+const { calculateEndTime, isValidTimeFormat, getDayOfWeek, parseTimeToMinutes } = require('../utils/helpers');
 const logger = require('../config/logger');
 const emailService = require('../services/email.service');
 
 const getSettings = async () => await BusinessSetting.getSettings();
 
+const parsePageLimit = (page, limit) => ({
+  page: Math.max(parseInt(page, 10) || 1, 1),
+  limit: Math.max(parseInt(limit, 10) || 10, 1)
+});
+
+/**
+ * Create a new booking for a customer.
+ * Body: { serviceIds, stylistId, date, startTime, notes }
+ */
 const createBooking = async (req, res) => {
   try {
     const { serviceIds, stylistId, date, startTime, notes } = req.body;
@@ -50,11 +61,11 @@ const createBooking = async (req, res) => {
       return errorResponse(res, 'Business is closed on this day.', 400);
     }
 
-    const startMin = parseInt(startTime.split(':')[0]) * 60 + parseInt(startTime.split(':')[1]);
-    const endMin = parseInt(daySchedule.end.split(':')[0]) * 60 + parseInt(daySchedule.end.split(':')[1]);
+    const startMin = parseTimeToMinutes(startTime);
+    const endMin = parseTimeToMinutes(daySchedule.end);
     const bookingEndMin = startMin + totalDuration;
 
-    if (startMin < parseInt(daySchedule.start.split(':')[0]) * 60 + parseInt(daySchedule.start.split(':')[1])) {
+    if (startMin < parseTimeToMinutes(daySchedule.start)) {
       return errorResponse(res, 'Booking starts before opening time.', 400);
     }
     if (bookingEndMin > endMin) return errorResponse(res, 'Booking ends after closing time.', 400);
@@ -91,7 +102,7 @@ const createBooking = async (req, res) => {
         populatedAppointment.serviceIds
       );
     } catch (error) {
-      console.error('Email sending failed:', error.message);
+      logger.warn('Booking confirmation email failed:', error.message);
     }
 
     return successResponse(res, 'Booking created.', populatedAppointment, 201);
@@ -101,23 +112,28 @@ const createBooking = async (req, res) => {
   }
 };
 
+/**
+ * Retrieve bookings for the currently authenticated customer.
+ * Query: { status?, page?, limit? }
+ */
 const getMyBookings = async (req, res) => {
   try {
     const { status, page = 1, limit = 10 } = req.query;
     const filter = { customerId: req.user.id };
     if (status) filter.status = status;
 
-    const skip = (parseInt(page) - 1) * parseInt(limit);
+    const { page: pageNum, limit: limitNum } = parsePageLimit(page, limit);
+    const skip = (pageNum - 1) * limitNum;
     const bookings = await Appointment.find(filter)
       .populate('customerId', 'firstName lastName email phone')
       .populate('stylistId', 'userId')
       .populate('serviceIds', 'name price duration description')
-      .skip(skip).limit(parseInt(limit)).sort({ date: -1, startTime: -1 });
+      .skip(skip).limit(limitNum).sort({ date: -1, startTime: -1 });
     const total = await Appointment.countDocuments(filter);
 
     return successResponse(res, 'Bookings retrieved.', {
       bookings,
-      pagination: { page: parseInt(page), limit: parseInt(limit), total, pages: Math.ceil(total / limit) }
+      pagination: { page: pageNum, limit: limitNum, total, pages: Math.ceil(total / limitNum) }
     });
   } catch (error) {
     logger.error('Get my bookings error:', error);
@@ -125,6 +141,9 @@ const getMyBookings = async (req, res) => {
   }
 };
 
+/**
+ * Retrieve a booking by ID for the current user, stylist, or admin.
+ */
 const getBookingById = async (req, res) => {
   try {
     const appointment = await Appointment.findById(req.params.id)
@@ -148,6 +167,10 @@ const getBookingById = async (req, res) => {
   }
 };
 
+/**
+ * Cancel a booking. Customers can cancel their own booking; admins can cancel any booking.
+ * Body: { reason? }
+ */
 const cancelBooking = async (req, res) => {
   try {
     const { id } = req.params;
@@ -190,7 +213,7 @@ const cancelBooking = async (req, res) => {
         cancelledAppointment.customerId
       );
     } catch (error) {
-      console.error('Cancellation email failed:', error.message);
+      logger.warn('Cancellation email failed:', error.message);
     }
 
     return successResponse(res, 'Booking cancelled.', appointment);
@@ -231,11 +254,11 @@ const rescheduleBooking = async (req, res) => {
       return errorResponse(res, 'Business is closed on this day.', 400);
     }
 
-    const startMin = parseInt(startTime.split(':')[0]) * 60 + parseInt(startTime.split(':')[1]);
-    const endMin = parseInt(daySchedule.end.split(':')[0]) * 60 + parseInt(daySchedule.end.split(':')[1]);
+    const startMin = parseTimeToMinutes(startTime);
+    const endMin = parseTimeToMinutes(daySchedule.end);
     const bookingEndMin = startMin + appointment.totalDuration;
 
-    if (startMin < parseInt(daySchedule.start.split(':')[0]) * 60 + parseInt(daySchedule.start.split(':')[1])) {
+    if (startMin < parseTimeToMinutes(daySchedule.start)) {
       return errorResponse(res, 'Booking starts before opening time.', 400);
     }
     if (bookingEndMin > endMin) return errorResponse(res, 'Booking ends after closing time.', 400);
@@ -272,17 +295,18 @@ const getAllBookings = async (req, res) => {
     if (startDate) filter.date = { $gte: new Date(startDate) };
     if (endDate) filter.date = { $lte: new Date(endDate) };
 
-    const skip = (parseInt(page) - 1) * parseInt(limit);
+    const { page: pageNum, limit: limitNum } = parsePageLimit(page, limit);
+    const skip = (pageNum - 1) * limitNum;
     const bookings = await Appointment.find(filter)
       .populate('customerId', 'firstName lastName email phone')
       .populate('stylistId', 'userId')
       .populate('serviceIds', 'name price duration description')
-      .skip(skip).limit(parseInt(limit)).sort({ date: -1, startTime: -1 });
+      .skip(skip).limit(limitNum).sort({ date: -1, startTime: -1 });
     const total = await Appointment.countDocuments(filter);
 
     return successResponse(res, 'All bookings retrieved.', {
       bookings,
-      pagination: { page: parseInt(page), limit: parseInt(limit), total, pages: Math.ceil(total / limit) }
+      pagination: { page: pageNum, limit: limitNum, total, pages: Math.ceil(total / limitNum) }
     });
   } catch (error) {
     logger.error('Get all bookings error:', error);

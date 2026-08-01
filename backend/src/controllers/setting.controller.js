@@ -1,11 +1,15 @@
 /**
- * Settings controller - manage business settings (admin only)
+ * Settings controller - manage business configuration and operating hours.
+ * Admin-only endpoints for settings, business hours, and resets.
  */
 
 const BusinessSetting = require('../models/BusinessSetting.model');
 const { successResponse, errorResponse } = require('../utils/response');
 const logger = require('../config/logger');
 
+/**
+ * Retrieve business settings.
+ */
 const getSettings = async (req, res) => {
   try {
     const settings = await BusinessSetting.getSettings();
@@ -16,6 +20,10 @@ const getSettings = async (req, res) => {
   }
 };
 
+/**
+ * Update business settings.
+ * Body: { businessHours?, slotInterval?, maxBookingsPerSlot?, bookingLeadTime?, cancellationWindow?, timezone?, businessName? }
+ */
 const updateSettings = async (req, res) => {
   try {
     const { businessHours, slotInterval, maxBookingsPerSlot, bookingLeadTime, cancellationWindow, timezone, businessName } = req.body;
@@ -68,6 +76,9 @@ const updateSettings = async (req, res) => {
   }
 };
 
+/**
+ * Reset settings to default values.
+ */
 const resetSettings = async (req, res) => {
   try {
     await BusinessSetting.deleteMany({});
@@ -79,6 +90,9 @@ const resetSettings = async (req, res) => {
   }
 };
 
+/**
+ * Retrieve only business hours and slot interval configuration.
+ */
 const getBusinessHours = async (req, res) => {
   try {
     const settings = await BusinessSetting.getSettings();
@@ -92,6 +106,10 @@ const getBusinessHours = async (req, res) => {
   }
 };
 
+/**
+ * Update business hours schedule.
+ * Body: { businessHours }
+ */
 const updateBusinessHours = async (req, res) => {
   try {
     const { businessHours } = req.body;

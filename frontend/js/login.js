@@ -2,6 +2,10 @@ const form = document.getElementById('login-form');
 const errorEl = document.getElementById('error');
 const successEl = document.getElementById('success');
 
+requireGuest();
+
+requireGuest();
+
 // Password toggle
 const toggleBtn = document.getElementById('toggle-password');
 const passwordInput = document.getElementById('password');

@@ -2,7 +2,9 @@
  * Auth utilities - shared functions for authentication
  */
 
-const API_URL = 'https://pinkmeup-api.onrender.com/api/v1';
+const API_ORIGIN = window.API_ORIGIN || window.location.origin;
+const API_URL = window.API_URL || `${API_ORIGIN}/api/v1`;
+const GOOGLE_AUTH_URL = window.GOOGLE_AUTH_URL || `${API_ORIGIN}/api/v1/auth/google`;
 
 /**
  * Get current user from localStorage
@@ -110,3 +112,15 @@ async function logout() {
 
     clearAuthData();
 }
+
+/**
+ * Set runtime auth links for pages that use Google sign-in.
+ */
+function configureAuthLinks() {
+    const googleLink = document.getElementById('google-auth');
+    if (googleLink) {
+        googleLink.href = GOOGLE_AUTH_URL;
+    }
+}
+
+configureAuthLinks();

@@ -3,7 +3,14 @@
  * Logs to console and files with rotation
  */
 
+const fs = require('fs');
+const path = require('path');
 const winston = require('winston');
+
+const logsDir = path.resolve(__dirname, '../../logs');
+if (!fs.existsSync(logsDir)) {
+  fs.mkdirSync(logsDir, { recursive: true });
+}
 
 const logFormat = winston.format.combine(
   winston.format.timestamp({ format: 'YYYY-MM-DD HH:mm:ss' }),

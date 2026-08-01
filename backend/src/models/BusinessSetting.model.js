@@ -11,15 +11,17 @@ const DaySchema = new mongoose.Schema({
   isOpen: { type: Boolean, default: true }
 });
 
+const businessDay = (start, end, isOpen) => ({ start, end, isOpen });
+
 const BusinessSettingSchema = new mongoose.Schema({
   businessHours: {
-    monday: { type: DaySchema, default: () => ({ start: '08:00', end: '17:00', isOpen: true }) },
-    tuesday: { type: DaySchema, default: () => ({ start: '08:00', end: '17:00', isOpen: true }) },
-    wednesday: { type: DaySchema, default: () => ({ start: '08:00', end: '17:00', isOpen: true }) },
-    thursday: { type: DaySchema, default: () => ({ start: '08:00', end: '17:00', isOpen: true }) },
-    friday: { type: DaySchema, default: () => ({ start: '08:00', end: '17:00', isOpen: true }) },
-    saturday: { type: DaySchema, default: () => ({ start: '09:00', end: '14:00', isOpen: true }) },
-    sunday: { type: DaySchema, default: () => ({ start: '', end: '', isOpen: false }) }
+    monday: { type: DaySchema, default: () => businessDay('08:00', '17:00', true) },
+    tuesday: { type: DaySchema, default: () => businessDay('08:00', '17:00', true) },
+    wednesday: { type: DaySchema, default: () => businessDay('08:00', '17:00', true) },
+    thursday: { type: DaySchema, default: () => businessDay('08:00', '17:00', true) },
+    friday: { type: DaySchema, default: () => businessDay('08:00', '17:00', true) },
+    saturday: { type: DaySchema, default: () => businessDay('09:00', '14:00', true) },
+    sunday: { type: DaySchema, default: () => businessDay('', '', false) }
   },
   slotInterval: { type: Number, default: 30, enum: [15, 30, 45, 60] },
   maxBookingsPerSlot: { type: Number, default: 1, min: 1 },

@@ -1,5 +1,6 @@
 ﻿/**
- * Stylist management controller - public read, admin write
+ * Stylist controller - manages stylist profiles, availability, and lookup.
+ * Use this for both frontend stylist browsing and admin stylist management.
  */
 
 const Stylist = require('../models/Stylist.model');
@@ -8,6 +9,16 @@ const { successResponse, errorResponse } = require('../utils/response');
 const { USER_ROLES } = require('../utils/constants');
 const logger = require('../config/logger');
 
+const parsePageLimit = (page, limit) => ({
+  page: Math.max(parseInt(page, 10) || 1, 1),
+  limit: Math.max(parseInt(limit, 10) || 10, 1)
+});
+
+/**
+ * Create a stylist profile for an existing user.
+ * Admin only.
+ * Body: { userId, specialties }
+ */
 const createStylist = async (req, res) => {
   try {
     const { userId, specialties, workingHours } = req.body;
@@ -33,23 +44,28 @@ const createStylist = async (req, res) => {
   }
 };
 
+/**
+ * Retrieve stylists with optional availability filter.
+ * Query: { isAvailable?, page?, limit? }
+ */
 const getStylists = async (req, res) => {
   try {
     const { isAvailable, page = 1, limit = 10 } = req.query;
     const filter = {};
     if (isAvailable !== undefined) filter.isAvailable = isAvailable === 'true';
 
-    const skip = (parseInt(page) - 1) * parseInt(limit);
+    const { page: pageNum, limit: limitNum } = parsePageLimit(page, limit);
+    const skip = (pageNum - 1) * limitNum;
     const stylists = await Stylist.find(filter)
       .populate('userId', 'firstName lastName email phone')
       .skip(skip)
-      .limit(parseInt(limit))
+      .limit(limitNum)
       .sort({ rating: -1 });
     const total = await Stylist.countDocuments(filter);
 
     return successResponse(res, 'Stylists retrieved.', {
       stylists,
-      pagination: { page: parseInt(page), limit: parseInt(limit), total, pages: Math.ceil(total / limit) }
+      pagination: { page: pageNum, limit: limitNum, total, pages: Math.ceil(total / limitNum) }
     });
   } catch (error) {
     logger.error('Get stylists error:', error);

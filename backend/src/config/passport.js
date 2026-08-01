@@ -1,13 +1,21 @@
 const passport = require('passport');
 const GoogleStrategy = require('passport-google-oauth20').Strategy;
+const env = require('./env');
 const User = require('../models/User.model');
+
+if (!env.GOOGLE.ENABLED) {
+  console.error(
+    'Google OAuth is not configured. Set GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET, and GOOGLE_CALLBACK_URL in your environment.'
+  );
+  process.exit(1);
+}
 
 passport.use(
   new GoogleStrategy(
     {
-      clientID: process.env.GOOGLE_CLIENT_ID,
-      clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-      callbackURL: process.env.GOOGLE_CALLBACK_URL || 'https://pinkmeup-api.onrender.com/api/v1/auth/google/callback',
+      clientID: env.GOOGLE.CLIENT_ID,
+      clientSecret: env.GOOGLE.CLIENT_SECRET,
+      callbackURL: env.GOOGLE.CALLBACK_URL,
       proxy: true
     },
     async (accessToken, refreshToken, profile, done) => {

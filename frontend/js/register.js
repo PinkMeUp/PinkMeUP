@@ -5,6 +5,10 @@
 const form = document.getElementById('register-form');
 const errorEl = document.getElementById('error');
 
+requireGuest();
+
+requireGuest();
+
 /**
  * Handle form submission
  */
@@ -55,9 +59,9 @@ form.addEventListener('submit', async (e) => {
             return;
         }
 
-        // Save user data and redirect to login
+        // Save user data and redirect to dashboard now that the session cookie is set
         setAuthData(data.data.user);
-        window.location.href = 'login.html';
+        window.location.href = '/dashboard.html';
 
     } catch (error) {
         errorEl.textContent = 'Network error. Please try again.';

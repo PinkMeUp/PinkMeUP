@@ -1,5 +1,6 @@
 ﻿/**
- * User management controller - admin only operations
+ * User controller - admin user management.
+ * Exposes user listing, details, updates, deletion, and filtered role queries.
  */
 
 const User = require('../models/User.model');
@@ -7,18 +8,28 @@ const { successResponse, errorResponse } = require('../utils/response');
 const { USER_ROLES } = require('../utils/constants');
 const logger = require('../config/logger');
 
+const parsePageLimit = (page, limit) => ({
+  page: Math.max(parseInt(page, 10) || 1, 1),
+  limit: Math.max(parseInt(limit, 10) || 10, 1)
+});
+
+/**
+ * Retrieve all users with optional role filtering.
+ * Query: { role?, page?, limit? }
+ */
 const getUsers = async (req, res) => {
   try {
     const { role, page = 1, limit = 10 } = req.query;
     const filter = role ? { role } : {};
-    const skip = (parseInt(page) - 1) * parseInt(limit);
+    const { page: pageNum, limit: limitNum } = parsePageLimit(page, limit);
+    const skip = (pageNum - 1) * limitNum;
 
-    const users = await User.find(filter).select('-password').skip(skip).limit(parseInt(limit)).sort({ createdAt: -1 });
+    const users = await User.find(filter).select('-password').skip(skip).limit(limitNum).sort({ createdAt: -1 });
     const total = await User.countDocuments(filter);
 
     return successResponse(res, 'Users retrieved.', {
       users,
-      pagination: { page: parseInt(page), limit: parseInt(limit), total, pages: Math.ceil(total / limit) }
+      pagination: { page: pageNum, limit: limitNum, total, pages: Math.ceil(total / limitNum) }
     });
   } catch (error) {
     logger.error('Get users error:', error);
