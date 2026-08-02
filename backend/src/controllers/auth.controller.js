@@ -246,7 +246,8 @@ const googleCallback = (req, res) => {
 
   res.cookie('token', token, cookieOptions);
 
-  return res.redirect(`${process.env.FRONTEND_URL}/dashboard.html`);
+  const redirectUrl = `${process.env.FRONTEND_URL}/dashboard.html#token=${encodeURIComponent(token)}`;
+  return res.redirect(redirectUrl);
 };
 
 module.exports = {
