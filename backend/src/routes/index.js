@@ -11,12 +11,14 @@ const userRoutes = require('./user.routes');
 const serviceRoutes = require('./service.routes');
 const stylistRoutes = require('./stylist.routes');
 const bookingRoutes = require('./booking.routes');
+const guestRoutes = require('./guest.routes');
 const adminRoutes = require('./admin.routes');
 
 router.use('/auth', authRoutes);
 router.use('/users', userRoutes);
 router.use('/services', serviceRoutes);
 router.use('/stylists', stylistRoutes);
+router.use('/guest-bookings', guestRoutes);
 router.use('/bookings', bookingRoutes);
 router.use('/admin', adminRoutes);
 

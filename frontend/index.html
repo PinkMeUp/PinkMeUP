@@ -14,7 +14,16 @@
         <div style="display: flex; flex-direction: column; gap: 12px;">
             <a href="login.html" class="btn" style="text-decoration: none; display: block;">Sign In</a>
             <a href="register.html" class="btn btn-secondary" style="text-decoration: none; display: block;">Create Account</a>
+            <button id="quick-book-btn" class="btn btn-secondary" type="button">Quick Book</button>
         </div>
     </div>
+    <script>
+        const quickBookBtn = document.getElementById('quick-book-btn');
+        if (quickBookBtn) {
+            quickBookBtn.addEventListener('click', () => {
+                alert('Quick booking is coming soon.');
+            });
+        }
+    </script>
 </body>
 </html>

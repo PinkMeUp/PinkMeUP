@@ -47,6 +47,18 @@ const serviceValidation = [
   body('category').trim().notEmpty().withMessage('Category is required')
 ];
 
+const guestBookingValidation = [
+  body('firstName').optional().trim().isLength({ min: 2, max: 50 }).withMessage('First name must be 2-50 characters'),
+  body('lastName').optional().trim().isLength({ min: 2, max: 50 }).withMessage('Last name must be 2-50 characters'),
+  body('email').optional().trim().isEmail().withMessage('Valid email required').normalizeEmail(),
+  body('phone').optional().trim().isLength({ min: 7, max: 25 }).withMessage('Phone number must be 7-25 characters'),
+  body('serviceIds').isArray({ min: 1 }).withMessage('At least one service is required'),
+  body('stylistId').notEmpty().withMessage('Stylist ID is required').isMongoId().withMessage('Invalid stylist ID'),
+  body('date').notEmpty().withMessage('Date is required').isISO8601().withMessage('Invalid date format'),
+  body('startTime').notEmpty().withMessage('Start time is required').matches(/^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$/).withMessage('Use HH:MM'),
+  body('notes').optional().isLength({ max: 500 }).withMessage('Max 500 characters')
+];
+
 // Stylist validations
 const stylistValidation = [
   body('userId').isMongoId().withMessage('Invalid user ID'),
@@ -77,6 +89,7 @@ module.exports = {
   registerValidation,
   loginValidation,
   bookingValidation,
+  guestBookingValidation,
   rescheduleValidation,
   cancelValidation,
   serviceValidation,

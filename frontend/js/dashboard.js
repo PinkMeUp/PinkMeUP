@@ -23,14 +23,6 @@
             );
         }
 
-        const quickBookBtn = document.getElementById('quick-book-btn');
-        if (quickBookBtn) {
-            quickBookBtn.addEventListener('click', () => {
-                console.log('Quick Book button clicked');
-                alert('Quick booking is coming soon.');
-            });
-        }
-
     } catch (error) {
         console.error('Dashboard authentication error:', error);
         window.location.href = '/login.html';
