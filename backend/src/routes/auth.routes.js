@@ -31,30 +31,7 @@ router.put('/change-password', authenticate, authController.changePassword);
 router.post('/logout', authenticate, authController.logout);
 
 // Google OAuth routes
-router.get('/google',
-  passport.authenticate('google', {
-    scope: ['profile', 'email'],
-    accessType: 'offline',
-    prompt: 'consent'
-  })
-);
-
-router.get('/google/callback',
-  passport.authenticate('google', {
-    failureRedirect: `${process.env.FRONTEND_URL}/login.html?error=google_auth_failed`
-  }),
-  (req, res) => {
-    const token = generateToken(req.user._id);
-
-    res.cookie('token', token, {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === 'production',
-      sameSite: 'none',
-      maxAge: 7 * 24 * 60 * 60 * 1000
-    });
-
-    res.redirect(`${process.env.FRONTEND_URL}/dashboard.html`);
-  }
-);
+router.get('/google', authController.googleAuth);
+router.get('/google/callback', authController.googleCallback);
 
 module.exports = router;
