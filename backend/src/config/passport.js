@@ -20,10 +20,14 @@ passport.use(
     },
     async (accessToken, refreshToken, profile, done) => {
       try {
+        if (!profile || !profile.emails || !profile.emails.length) {
+          const error = new Error('Google profile did not include an email address');
+          return done(error, null);
+        }
+
         let user = await User.findOne({ email: profile.emails[0].value });
 
         if (user) {
-          // Update existing user with Google ID if not set
           if (!user.googleId) {
             user.googleId = profile.id;
             await user.save();
@@ -31,12 +35,11 @@ passport.use(
           return done(null, user);
         }
 
-        // Create new user
         user = await User.create({
-          firstName: profile.name.givenName || 'Google',
-          lastName: profile.name.familyName || 'User',
+          firstName: profile.name?.givenName || 'Google',
+          lastName: profile.name?.familyName || 'User',
           email: profile.emails[0].value,
-          password: Math.random().toString(36).slice(-16), // Random password (not used)
+          password: Math.random().toString(36).slice(-16),
           phone: '000-000-0000',
           role: 'customer',
           isActive: true,
@@ -45,6 +48,7 @@ passport.use(
 
         return done(null, user);
       } catch (error) {
+        logger.error('GoogleStrategy verify callback failed:', error);
         return done(error, null);
       }
     }

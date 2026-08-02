@@ -24,6 +24,12 @@ router.post('/logout', authenticate, authController.logout);
 
 // Google OAuth routes
 router.get('/google', authController.googleAuth);
-router.get('/google/callback', authController.googleCallback);
+router.get('/google/callback',
+  passport.authenticate('google', {
+    failureRedirect: `${process.env.FRONTEND_URL}/login.html?error=google_auth_failed`,
+    session: false
+  }),
+  authController.googleCallback
+);
 
 module.exports = router;
