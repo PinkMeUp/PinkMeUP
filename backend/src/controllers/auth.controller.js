@@ -27,6 +27,18 @@ const buildUserPayload = (user) => ({
   role: user.role
 });
 
+const buildCookieOptions = (req) => {
+  const isSecure = req.secure || req.headers['x-forwarded-proto'] === 'https' || process.env.NODE_ENV === 'production';
+
+  return {
+    httpOnly: true,
+    secure: isSecure,
+    sameSite: 'none',
+    path: '/',
+    maxAge: 7 * 24 * 60 * 60 * 1000
+  };
+};
+
 /**
  * Register a new customer account.
  * Body: { firstName, lastName, email, password, phone }
@@ -43,12 +55,7 @@ const register = async (req, res) => {
     const user = await User.create({ firstName, lastName, email, password, phone, role: 'customer' });
     const token = generateToken(user._id);
 
-    res.cookie('token', token, {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === 'production',
-      sameSite: 'strict',
-      maxAge: 7 * 24 * 60 * 60 * 1000
-    });
+    res.cookie('token', token, buildCookieOptions(req));
 
     return successResponse(res, 'Registration successful.', { user: buildUserPayload(user) }, 201);
   } catch (error) {
@@ -75,12 +82,7 @@ const login = async (req, res) => {
     }
 
     const token = generateToken(user._id);
-    res.cookie('token', token, {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === 'production',
-      sameSite: 'strict',
-      maxAge: 7 * 24 * 60 * 60 * 1000
-    });
+    res.cookie('token', token, buildCookieOptions(req));
 
     return successResponse(res, 'Login successful.', { user: buildUserPayload(user) });
   } catch (error) {
@@ -93,10 +95,10 @@ const login = async (req, res) => {
  * Clear the auth cookie and sign out.
  */
 const logout = (req, res) => {
+  const cookieOptions = buildCookieOptions(req);
   res.clearCookie('token', {
-    httpOnly: true,
-    secure: process.env.NODE_ENV === 'production',
-    sameSite: 'strict'
+    ...cookieOptions,
+    maxAge: undefined
   });
   return successResponse(res, 'Logged out successfully.');
 };
@@ -227,12 +229,7 @@ const googleCallback = (req, res, next) => {
     }
 
     const token = generateToken(user._id);
-    res.cookie('token', token, {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === 'production',
-      sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
-      maxAge: 7 * 24 * 60 * 60 * 1000
-    });
+    res.cookie('token', token, buildCookieOptions(req));
 
     return res.redirect(`${process.env.FRONTEND_URL}/dashboard.html`);
   })(req, res, next);
