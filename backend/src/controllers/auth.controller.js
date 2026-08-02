@@ -28,12 +28,12 @@ const buildUserPayload = (user) => ({
 });
 
 const buildCookieOptions = (req) => {
-  const isSecure = req.secure || req.headers['x-forwarded-proto'] === 'https' || process.env.NODE_ENV === 'production';
+  const isProduction = process.env.NODE_ENV === 'production';
 
   return {
     httpOnly: true,
-    secure: isSecure,
-    sameSite: 'none',
+    secure: isProduction,
+    sameSite: isProduction ? 'none' : 'lax',
     path: '/',
     maxAge: 7 * 24 * 60 * 60 * 1000
   };
@@ -215,24 +215,38 @@ const resetPassword = async (req, res) => {
  * Google OAuth - redirect user to Google consent screen.
  */
 const googleAuth = passport.authenticate('google', {
-  scope: ['profile', 'email']
+  scope: ['profile', 'email'],
+  accessType: 'offline',
+  prompt: 'consent',
+  session: false
 });
 
 /**
  * Google OAuth callback route.
  * Returns a session cookie and redirects to the frontend dashboard.
  */
-const googleCallback = (req, res, next) => {
-  passport.authenticate('google', (err, user) => {
-    if (err || !user) {
-      return res.redirect(`${process.env.FRONTEND_URL}/login.html?error=google_auth_failed`);
+const googleCallback = (req, res) => {
+  logger.info('Google callback reached', {
+    user: req.user ? { id: req.user._id, email: req.user.email } : null,
+    headers: {
+      host: req.headers.host,
+      origin: req.headers.origin,
+      referer: req.headers.referer
     }
+  });
 
-    const token = generateToken(user._id);
-    res.cookie('token', token, buildCookieOptions(req));
+  if (!req.user) {
+    logger.warn('Google callback failed - no user in request');
+    return res.redirect(`${process.env.FRONTEND_URL}/login.html?error=google_auth_failed`);
+  }
 
-    return res.redirect(`${process.env.FRONTEND_URL}/dashboard.html`);
-  })(req, res, next);
+  const token = generateToken(req.user._id);
+  const cookieOptions = buildCookieOptions(req);
+  logger.info('Setting auth cookie for Google callback', { cookieOptions });
+
+  res.cookie('token', token, cookieOptions);
+
+  return res.redirect(`${process.env.FRONTEND_URL}/dashboard.html`);
 };
 
 module.exports = {

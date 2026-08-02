@@ -5,18 +5,10 @@
 const express = require('express');
 const router = express.Router();
 const passport = require('passport');
-const jwt = require('jsonwebtoken');
 const { authenticate } = require('../middleware/auth');
 const { validate } = require('../middleware/validation');
 const { registerValidation, loginValidation, forgotPasswordValidation, resetPasswordValidation } = require('../validators');
 const authController = require('../controllers/auth.controller');
-
-// Generate JWT token
-const generateToken = (userId) => {
-  return jwt.sign({ id: userId }, process.env.JWT_SECRET, {
-    expiresIn: process.env.JWT_EXPIRES_IN || '7d'
-  });
-};
 
 // Public routes
 router.post('/register', validate(registerValidation), authController.register);
