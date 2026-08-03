@@ -1047,10 +1047,9 @@
 let CATEGORIES = [];
 
 async function loadServices() {
-  const res = await fetch(`${API_URL}/services`, { credentials: 'include' });
+  const res = await fetch(`${API_URL}/services?limit=100`, { credentials: 'include' });
   const data = await res.json();
-  // map backend shape { _id, name, price, duration, category } -> what this UI expects (id, name, price, duration, category)
-  SERVICES = data.data.map(s => ({ id: s._id, category: s.category, name: s.name, price: s.price, duration: s.duration }));
+  SERVICES = data.data.services.map(s => ({ id: s._id, category: s.category, name: s.name, price: s.price, duration: s.duration }));
   CATEGORIES = [...new Set(SERVICES.map(s => s.category))];
   activeCat = CATEGORIES[0];
 }
@@ -1058,9 +1057,9 @@ async function loadServices() {
   let STYLISTS = []; // will hold { id, name } objects instead of plain strings
 
 async function loadStylists() {
-  const res = await fetch(`${API_URL}/stylists`, { credentials: 'include' });
+  const res = await fetch(`${API_URL}/stylists?limit=100`, { credentials: 'include' });
   const data = await res.json();
-  STYLISTS = data.data.map(s => ({ id: s._id, name: s.user?.firstName || s.name }));
+  STYLISTS = data.data.stylists.map(s => ({ id: s._id, name: s.userId?.firstName || 'Stylist' }));
 }
   const TIME_SLOTS = ["9:00","9:30","10:00","10:30","11:00","11:30","12:00","12:30","13:00","13:30","14:00","14:30","15:00","15:30","16:00","16:30"];
 
@@ -1070,16 +1069,16 @@ async function loadStylists() {
   let appointments = [];
 
 async function loadAppointments() {
-  const res = await fetch(`${API_URL}/bookings/my`, { credentials: 'include' });
+  const res = await fetch(`${API_URL}/bookings/my?limit=100`, { credentials: 'include' });
   const data = await res.json();
-  appointments = data.data.map(b => ({
+  appointments = data.data.bookings.map(b => ({
     id: b._id,
-    services: b.services.map(s => ({ id: s._id, name: s.name, price: s.price, duration: s.duration })),
+    services: b.serviceIds.map(s => ({ id: s._id, name: s.name, price: s.price, duration: s.duration })),
     date: b.date,
     time: b.startTime,
-    stylist: b.stylist?.user?.firstName || 'Stylist',
+    stylist: b.stylistId?.userId?.firstName || 'Stylist',
     notes: b.notes,
-    status: b.status // make sure this matches 'upcoming'/'past'/'cancelled'/'pending' or adjust statusMap
+    status: b.status
   }));
 }
 
