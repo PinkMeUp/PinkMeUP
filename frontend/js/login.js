@@ -4,7 +4,6 @@ const successEl = document.getElementById('success');
 
 requireGuest();
 
-requireGuest();
 
 // Password toggle
 const toggleBtn = document.getElementById('toggle-password');
@@ -74,7 +73,15 @@ form.addEventListener('submit', async (e) => {
         }
 
         setAuthData(data.data.user);
-        window.location.href = '/dashboard.html';
+
+const ROLE_REDIRECT = {
+    admin:    'admindashboard.html',   
+    stylist:  'admindashboard.html',   
+    customer: 'customerdashboard.html'
+};
+
+const destination = ROLE_REDIRECT[data.data.user.role] || 'customerdashboard.html';
+window.location.href = destination;
 
     } catch (error) {
         errorEl.textContent = 'Network error. Please try again.';

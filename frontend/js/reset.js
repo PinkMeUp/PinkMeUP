@@ -4,7 +4,7 @@ const successEl = document.getElementById('success');
 
 requireGuest();
 
-requireGuest();
+
 
 form.addEventListener('submit', async (e) => {
     e.preventDefault();
