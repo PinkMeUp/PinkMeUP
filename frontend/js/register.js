@@ -7,7 +7,6 @@ const errorEl = document.getElementById('error');
 
 requireGuest();
 
-requireGuest();
 
 /**
  * Handle form submission

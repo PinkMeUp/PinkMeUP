@@ -10,14 +10,12 @@ const AUTH_TOKEN_KEY = 'authToken';
 /**
  * Get current user from localStorage
  */
-function getCurrentUser() {
-    try {
-        const user = localStorage.getItem('user');
-        return user ? JSON.parse(user) : null;
-    } catch {
-        return null;
-    }
+const currentUser = getCurrentUser(); // from auth.js
+if (!currentUser) {
+  window.location.href = 'login.html';
 }
+document.getElementById('headerName').textContent = currentUser.firstName + ' ' + currentUser.lastName[0] + '.';
+document.getElementById('headerAvatar').textContent = (currentUser.firstName[0] + currentUser.lastName[0]).toUpperCase();
 
 /**
  * Check if user is authenticated locally
@@ -97,8 +95,8 @@ async function syncAuthFromServer() {
 
         const data = await response.json();
 
-        if (data.user) {
-            setAuthData(data.user);
+        if (data?.data?.user) {
+            setAuthData(data.data.user);
             return true;
         }
 
