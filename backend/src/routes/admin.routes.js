@@ -11,6 +11,7 @@ const bookingController = require('../controllers/booking.controller');
 const availabilityController = require('../controllers/availability.controller');
 const reportController = require('../controllers/report.controller');
 const settingController = require('../controllers/setting.controller');
+const stylistController = require('../controllers/stylist.controller');
 
 router.use(authenticate);
 router.use(authorize('admin'));
@@ -37,5 +38,8 @@ router.get('/reports/service-popularity', reportController.getServicePopularity)
 router.get('/reports/stylist-performance', reportController.getStylistPerformance);
 router.get('/reports/revenue', reportController.getRevenueReport);
 router.get('/reports/dashboard', reportController.getDashboardStats);
+
+// Stylist Management (Admin)
+router.post('/stylists', stylistController.createStylistByAdmin);
 
 module.exports = router;

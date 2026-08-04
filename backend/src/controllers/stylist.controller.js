@@ -132,11 +132,47 @@ const getStylistAvailability = async (req, res) => {
   }
 };
 
+/**
+ * Admin creates stylist (user + stylist profile in one go)
+ * POST /api/v1/admin/stylists
+ */
+const createStylistByAdmin = async (req, res) => {
+  try {
+    const { firstName, lastName, email, password, phone, specialties, workingHours } = req.body;
+
+    const user = await User.create({
+      firstName,
+      lastName,
+      email,
+      password,
+      phone,
+      role: 'stylist',
+      isActive: true
+    });
+
+    const stylist = await Stylist.create({
+      userId: user._id,
+      specialties: specialties || [],
+      workingHours: workingHours || {},
+      isAvailable: true
+    });
+
+    const populated = await Stylist.findById(stylist._id)
+      .populate('userId', 'firstName lastName email phone');
+
+    return successResponse(res, 'Stylist created successfully.', populated, 201);
+  } catch (error) {
+    logger.error('Create stylist error:', error);
+    return errorResponse(res, 'Failed to create stylist.', 500);
+  }
+};
+
 module.exports = {
   createStylist,
   getStylists,
   getStylistById,
   updateStylist,
   deleteStylist,
-  getStylistAvailability
+  getStylistAvailability,
+  createStylistByAdmin
 };
