@@ -923,15 +923,15 @@
           <div class="details-form">
             <div class="form-group">
               <label class="form-label">Full Name</label>
-              <input class="form-input" id="detName" type="text" placeholder="Your name" value="Sarah Mokoena">
+              <input class="form-input" id="detName" type="text" placeholder="Your name" >
             </div>
             <div class="form-group">
               <label class="form-label">Phone Number</label>
-              <input class="form-input" id="detPhone" type="tel" placeholder="e.g. 071 234 5678" value="071 234 5678">
+              <input class="form-input" id="detPhone" type="tel" placeholder="e.g. 071 234 5678" >
             </div>
             <div class="form-group">
               <label class="form-label">Email Address</label>
-              <input class="form-input" id="detEmail" type="email" placeholder="you@example.com" value="sarah@example.com">
+              <input class="form-input" id="detEmail" type="email" placeholder="you@example.com">
             </div>
             <div class="form-group">
               <label class="form-label">Special Requests / Notes <span style="font-size:0.7rem;color:var(--muted);text-transform:none;letter-spacing:0;">(optional)</span></label>
@@ -1524,6 +1524,18 @@ function selectStylist(id, name) {
 
   /* ── INIT ── */
   (async function init() {
+  if (!requireAuth()) return;
+
+  const user = getCurrentUser();
+  if (user) {
+    document.getElementById('profileFullName').textContent = user.name;
+    document.getElementById('profileEmail').textContent = user.email;
+    document.getElementById('profileName').value = user.name;
+    document.getElementById('profileEmailInput').value = user.email;
+    document.getElementById('detName').value = user.name;
+    document.getElementById('detEmail').value = user.email;
+  }
+
   await Promise.all([loadServices(), loadStylists()]);
   await loadAppointments();
   renderOverview();
