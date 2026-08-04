@@ -132,7 +132,7 @@ const updateProfile = async (req, res) => {
     if (phone) user.phone = phone;
     await user.save();
 
-    return successResponse(res, 'Profile updated.', buildUserPayload(user));
+   return successResponse(res, 'Profile updated.', { user: buildUserPayload(user) });
   } catch (error) {
     logger.error('Update profile error:', error);
     return errorResponse(res, 'Failed to update profile.', 500);

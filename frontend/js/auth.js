@@ -97,8 +97,8 @@ async function syncAuthFromServer() {
 
         const data = await response.json();
 
-        if (data.user) {
-            setAuthData(data.user);
+        if (data?.data?.user) {
+            setAuthData(data.data.user);
             return true;
         }
 
