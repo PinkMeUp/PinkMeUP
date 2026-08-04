@@ -506,6 +506,7 @@
       font-style: italic;
       text-align: center;
       padding: 0.8rem 0;
+      width: 100%;
     }
     .cart-summary {
       display: flex;
@@ -757,7 +758,6 @@
   <div class="header-right">
     <div class="user-pill">
       <div class="avatar" id="headerAvatar">SM</div>
-      
     </div>
     <button class="signout-btn" onclick="window.location.href='login.html'"><i class="fas fa-sign-out-alt"></i> Sign out</button>
   </div>
@@ -1004,7 +1004,7 @@
             <div style="font-size:0.75rem;font-weight:700;text-transform:uppercase;letter-spacing:0.4px;color:var(--muted);margin-bottom:0.8rem;">Contact Details</div>
             <div class="form-group">
               <label class="form-label">Full Name</label>
-              <input class="form-input" id="profileFullName" type="text" >
+              <input class="form-input" id="profileName" type="text" >
             </div>
             <div class="form-group">
               <label class="form-label">Phone</label>
@@ -1044,53 +1044,52 @@
      DATA
   ─────────────────────────────────────────────── */
   let SERVICES = [];
-let CATEGORIES = [];
+  let CATEGORIES = [];
 
-async function loadServices() {
-  const res = await fetch(`${API_URL}/services?limit=100`, { credentials: 'include' });
-  const data = await res.json();
-  SERVICES = data.data.services.map(s => ({ id: s._id, category: s.category, name: s.name, price: s.price, duration: s.duration }));
-  CATEGORIES = [...new Set(SERVICES.map(s => s.category))];
-  activeCat = CATEGORIES[0];
-}
+  async function loadServices() {
+    const res = await fetch(`${API_URL}/services?limit=100`, { credentials: 'include' });
+    const data = await res.json();
+    SERVICES = data.data.services.map(s => ({ id: s._id, category: s.category, name: s.name, price: s.price, duration: s.duration }));
+    CATEGORIES = [...new Set(SERVICES.map(s => s.category))];
+    activeCat = CATEGORIES[0];
+  }
 
-  let STYLISTS = []; // will hold { id, name } objects instead of plain strings
+  let STYLISTS = [];
 
-async function loadStylists() {
-  const res = await fetch(`${API_URL}/stylists?limit=100`, { credentials: 'include' });
-  const data = await res.json();
-  STYLISTS = data.data.stylists.map(s => ({ id: s._id, name: s.userId?.firstName || 'Stylist' }));
-}
+  async function loadStylists() {
+    const res = await fetch(`${API_URL}/stylists?limit=100`, { credentials: 'include' });
+    const data = await res.json();
+    STYLISTS = data.data.stylists.map(s => ({ id: s._id, name: s.userId?.firstName || 'Stylist' }));
+  }
+
   const TIME_SLOTS = ["9:00","9:30","10:00","10:30","11:00","11:30","12:00","12:30","13:00","13:30","14:00","14:30","15:00","15:30","16:00","16:30"];
-
- 
 
   /* ── APPOINTMENTS store ── */
   let appointments = [];
 
-async function loadAppointments() {
-  const res = await fetch(`${API_URL}/bookings/my?limit=100`, { credentials: 'include' });
-  const data = await res.json();
-  appointments = data.data.bookings.map(b => ({
-    id: b._id,
-    services: b.serviceIds.map(s => ({ id: s._id, name: s.name, price: s.price, duration: s.duration })),
-    date: b.date,
-    time: b.startTime,
-    stylist: b.stylistId?.userId?.firstName || 'Stylist',
-    notes: b.notes,
-    status: b.status
-  }));
-}
+  async function loadAppointments() {
+    const res = await fetch(`${API_URL}/bookings/my?limit=100`, { credentials: 'include' });
+    const data = await res.json();
+    appointments = data.data.bookings.map(b => ({
+      id: b._id,
+      services: b.serviceIds.map(s => ({ id: s._id, name: s.name, price: s.price, duration: s.duration })),
+      date: b.date,
+      time: b.startTime,
+      stylist: b.stylistId?.userId?.firstName || 'Stylist',
+      notes: b.notes,
+      status: b.status
+    }));
+  }
 
   /* ──────────────────────────────────────────────
      WIZARD STATE
   ─────────────────────────────────────────────── */
   let wizardStep = 1;
-  let cartIds    = [];  // service ids in cart
+  let cartIds    = [];
   let activeCat  = CATEGORIES[0];
 
   let bookState = {
-    date: "", time: "", stylist: ""
+    date: "", time: "", stylistId: "", stylist: ""
   };
 
   /* ──────────────────────────────────────────────
@@ -1186,24 +1185,24 @@ async function loadAppointments() {
     );
   }
 
- async function cancelAppointment(id) {
-  const appt = appointments.find(a => a.id === id);
-  if (!appt) return;
-  if (!confirm(`Cancel your appointment on ${formatDate(appt.date)} at ${appt.time}?`)) return;
+  async function cancelAppointment(id) {
+    const appt = appointments.find(a => a.id === id);
+    if (!appt) return;
+    if (!confirm(`Cancel your appointment on ${formatDate(appt.date)} at ${appt.time}?`)) return;
 
-  const res = await fetch(`${API_URL}/bookings/${id}/cancel`, {
-    method: 'PUT',
-    headers: { 'Content-Type': 'application/json' },
-    credentials: 'include',
-    body: JSON.stringify({})
-  });
-  if (!res.ok) { showToast('Could not cancel appointment.'); return; }
+    const res = await fetch(`${API_URL}/bookings/${id}/cancel`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      credentials: 'include',
+      body: JSON.stringify({})
+    });
+    if (!res.ok) { showToast('Could not cancel appointment.'); return; }
 
-  await loadAppointments();
-  renderAppointments();
-  renderOverview();
-  showToast('Appointment cancelled.');
-}
+    await loadAppointments();
+    renderAppointments();
+    renderOverview();
+    showToast('Appointment cancelled.');
+  }
 
   /* ──────────────────────────────────────────────
      DETAIL MODAL
@@ -1255,20 +1254,18 @@ async function loadAppointments() {
   function resetWizard() {
     wizardStep = 1;
     cartIds    = [];
-    activeCat  = CATEGORIES[0];
-    bookState  = { date: '', time: '', stylist: '' };
+    activeCat  = CATEGORIES[0] || '';
+    bookState  = { date: '', time: '', stylistId: '', stylist: '' };
     renderCatNav();
     renderSvcGrid();
     renderCart();
     gotoStep(1);
 
-    // set min date
     const today = new Date().toISOString().slice(0,10);
     document.getElementById('apptDate').min = today;
     document.getElementById('apptDate').value = '';
     document.getElementById('apptDate').addEventListener('change', renderTimeSlots);
 
-    // stylists
     renderStylistGrid();
     renderTimeSlots();
   }
@@ -1315,41 +1312,62 @@ async function loadAppointments() {
     renderCart();
   }
 
+  /* ─── FIXED renderCart ─── */
   function renderCart() {
-    const items   = SERVICES.filter(s => cartIds.includes(s.id));
-    const total   = items.reduce((s,sv)=>s+sv.price,0);
-    const dur     = items.reduce((s,sv)=>s+sv.duration,0);
-    const count   = items.length;
+    const items = SERVICES.filter(s => cartIds.includes(s.id));
+    const total = items.reduce((s, sv) => s + sv.price, 0);
+    const dur   = items.reduce((s, sv) => s + sv.duration, 0);
+    const count = items.length;
 
     document.getElementById('cartCount').textContent = count;
-    document.getElementById('cartEmpty').style.display = count ? 'none' : 'block';
-    document.getElementById('cartSummary').style.display = count ? 'flex' : 'none';
-    document.getElementById('cartItems').innerHTML = (count ? '' : '<div class="cart-empty-msg" id="cartEmpty">Tap a service above to add it here</div>') +
-      items.map(sv => `
-        <div class="cart-chip">
-          ${sv.name}
-          <button class="cart-chip-remove" onclick="removeFromCart('${sv.id}')"><i class="fas fa-times"></i></button>
-        </div>`).join('');
-    if (count) {
-      document.getElementById('cartTotal').textContent  = `R${total.toLocaleString()}`;
+
+    const container = document.getElementById('cartItems');
+
+    // Remove all existing cart chips (keep the empty message)
+    container.querySelectorAll('.cart-chip').forEach(el => el.remove());
+
+    // Ensure the empty message exists
+    let emptyMsg = document.getElementById('cartEmpty');
+    if (!emptyMsg) {
+      emptyMsg = document.createElement('div');
+      emptyMsg.className = 'cart-empty-msg';
+      emptyMsg.id = 'cartEmpty';
+      emptyMsg.textContent = 'Tap a service above to add it here';
+      container.appendChild(emptyMsg);
+    }
+
+    if (count === 0) {
+      emptyMsg.style.display = 'block';
+      document.getElementById('cartSummary').style.display = 'none';
+    } else {
+      emptyMsg.style.display = 'none';
+      items.forEach(sv => {
+        const chip = document.createElement('div');
+        chip.className = 'cart-chip';
+        chip.innerHTML = `${sv.name} <button class="cart-chip-remove" onclick="removeFromCart('${sv.id}')"><i class="fas fa-times"></i></button>`;
+        container.appendChild(chip);
+      });
+      document.getElementById('cartSummary').style.display = 'flex';
+      document.getElementById('cartTotal').textContent = `R${total.toLocaleString()}`;
       document.getElementById('cartDuration').textContent = `~${formatDur(dur)} total`;
       document.getElementById('totalDurLabel').textContent = formatDur(dur);
     }
   }
 
   function renderStylistGrid() {
-  document.getElementById('stylistGrid').innerHTML = STYLISTS.map(s => `
-    <button class="stylist-btn ${bookState.stylistId === s.id ? 'selected' : ''}" onclick="selectStylist('${s.id}','${s.name}')">
-      <div class="stylist-av">${s.name[0]}</div>
-      <div class="stylist-name">${s.name}</div>
-    </button>`).join('');
-}
+    document.getElementById('stylistGrid').innerHTML = STYLISTS.map(s => `
+      <button class="stylist-btn ${bookState.stylistId === s.id ? 'selected' : ''}" onclick="selectStylist('${s.id}','${s.name}')">
+        <div class="stylist-av">${s.name[0]}</div>
+        <div class="stylist-name">${s.name}</div>
+      </button>
+    `).join('');
+  }
 
-function selectStylist(id, name) {
-  bookState.stylistId = id;
-  bookState.stylist = name; // keep for display in review
-  renderStylistGrid();
-}
+  function selectStylist(id, name) {
+    bookState.stylistId = id;
+    bookState.stylist = name;
+    renderStylistGrid();
+  }
 
   function renderTimeSlots() {
     const el = document.getElementById('timeSlots');
@@ -1364,7 +1382,6 @@ function selectStylist(id, name) {
         const slotDate = new Date(); slotDate.setHours(h,m,0,0);
         if (slotDate <= now) unavail = true;
       }
-      // randomly mark some as booked (demo)
       const hash = (dateVal + slot).split('').reduce((a,c)=>a+c.charCodeAt(0),0);
       if (hash % 7 === 0) unavail = true;
 
@@ -1401,7 +1418,7 @@ function selectStylist(id, name) {
     if (wizardStep === 2) {
       if (!document.getElementById('apptDate').value) { showToast('Please pick a date.'); return; }
       if (!bookState.time)    { showToast('Please pick a time slot.'); return; }
-      if (!bookState.stylist) { showToast('Please choose a stylist.'); return; }
+      if (!bookState.stylistId) { showToast('Please choose a stylist.'); return; }
       bookState.date = document.getElementById('apptDate').value;
     }
     if (wizardStep === 3) {
@@ -1453,51 +1470,51 @@ function selectStylist(id, name) {
   }
 
   async function confirmBooking() {
-  const res = await fetch(`${API_URL}/bookings`, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    credentials: 'include',
-    body: JSON.stringify({
-      serviceIds: cartIds,
-      stylistId: bookState.stylistId,
-      date: bookState.date,
-      startTime: bookState.time,
-      notes: document.getElementById('detNotes').value
-    })
-  });
-  const data = await res.json();
-  if (!res.ok) { showToast(data.message || 'Booking failed.'); return; }
+    const res = await fetch(`${API_URL}/bookings`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      credentials: 'include',
+      body: JSON.stringify({
+        serviceIds: cartIds,
+        stylistId: bookState.stylistId,
+        date: bookState.date,
+        startTime: bookState.time,
+        notes: document.getElementById('detNotes').value
+      })
+    });
+    const data = await res.json();
+    if (!res.ok) { showToast(data.message || 'Booking failed.'); return; }
 
-  showToast('Booking confirmed! See you soon ✨');
-  await loadAppointments();
-  setTimeout(() => { switchView('appointments'); }, 800);
-}
+    showToast('Booking confirmed! See you soon ✨');
+    await loadAppointments();
+    setTimeout(() => { switchView('appointments'); }, 800);
+  }
 
   /* ──────────────────────────────────────────────
      PROFILE
   ─────────────────────────────────────────────── */
   async function saveProfile() {
-  const name = document.getElementById('profileName').value.trim();
-  if (!name) { showToast('Name cannot be empty.'); return; }
-  const [firstName, ...rest] = name.split(' ');
-  const lastName = rest.join(' ') || firstName;
+    const name = document.getElementById('profileName').value.trim();
+    if (!name) { showToast('Name cannot be empty.'); return; }
+    const [firstName, ...rest] = name.split(' ');
+    const lastName = rest.join(' ') || firstName;
 
-  const res = await fetch(`${API_URL}/auth/profile`, {
-    method: 'PUT',
-    headers: { 'Content-Type': 'application/json' },
-    credentials: 'include',
-    body: JSON.stringify({
-      firstName, lastName,
-      phone: document.getElementById('profilePhone').value.trim()
-    })
-  });
-  const data = await res.json();
-  if (!res.ok) { showToast(data.message || 'Update failed.'); return; }
+    const res = await fetch(`${API_URL}/auth/profile`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      credentials: 'include',
+      body: JSON.stringify({
+        firstName, lastName,
+        phone: document.getElementById('profilePhone').value.trim()
+      })
+    });
+    const data = await res.json();
+    if (!res.ok) { showToast(data.message || 'Update failed.'); return; }
 
-  setAuthData(data.data.user); // refresh localStorage copy
-  document.getElementById('profileFullName').textContent = name;
-  showToast('Profile updated.');
-}
+    // Update UI
+    document.getElementById('profileFullName').textContent = name;
+    showToast('Profile updated.');
+  }
 
   /* ──────────────────────────────────────────────
      UTILS
@@ -1524,23 +1541,30 @@ function selectStylist(id, name) {
 
   /* ── INIT ── */
   (async function init() {
-  if (!requireAuth()) return;
+    // If you have an auth helper, uncomment:
+    // if (!requireAuth()) return;
 
-  const user = getCurrentUser();
-  if (user) {
-    document.getElementById('profileFullName').textContent = user.name;
-    document.getElementById('profileEmail').textContent = user.email;
-    document.getElementById('detName').textContent = user.name;
-    document.getElementById('detEmail').textContent = user.email
-    document.getElementById('profilePhone').textContent = user.phone;
-  
-}
+    const user = getCurrentUser && getCurrentUser();
+    if (user) {
+      document.getElementById('profileFullName').textContent = user.name || user.firstName + ' ' + user.lastName || 'User';
+      document.getElementById('profileEmail').textContent = user.email || '';
+      document.getElementById('detName').value = user.name || user.firstName + ' ' + user.lastName || '';
+      document.getElementById('detEmail').value = user.email || '';
+      document.getElementById('profileName').value = user.name || user.firstName + ' ' + user.lastName || '';
+      document.getElementById('profilePhone').value = user.phone || '';
+      document.getElementById('profileEmailInput').value = user.email || '';
+      const initals = (user.firstName ? user.firstName[0] : '') + (user.lastName ? user.lastName[0] : '');
+      if (initals) {
+        document.getElementById('headerAvatar').textContent = initals;
+        document.getElementById('profileAvatar').textContent = initals;
+      }
+    }
 
-  await Promise.all([loadServices(), loadStylists()]);
-  await loadAppointments();
-  renderOverview();
-  resetWizard();
-})();
+    await Promise.all([loadServices(), loadStylists()]);
+    await loadAppointments();
+    renderOverview();
+    resetWizard();
+  })();
 </script>
 </body>
 </html>
