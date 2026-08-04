@@ -1008,11 +1008,11 @@
             </div>
             <div class="form-group">
               <label class="form-label">Phone</label>
-              <input class="form-input" id="profilePhone" type="tel" value="071 234 5678">
+              <input class="form-input" id="profilePhone" type="tel">
             </div>
             <div class="form-group" style="margin-bottom:0;">
               <label class="form-label">Email</label>
-              <input class="form-input" id="profileEmailInput" type="email" value="sarah@example.com">
+              <input class="form-input" id="profileEmailInput" type="email">
             </div>
           </div>
           <button class="btn-primary" onclick="saveProfile()"><i class="fas fa-save"></i> Save Changes</button>
@@ -1530,11 +1530,9 @@ function selectStylist(id, name) {
   if (user) {
     document.getElementById('profileFullName').textContent = user.name;
     document.getElementById('profileEmail').textContent = user.email;
-    document.getElementById('profileName').value = user.name;
-    document.getElementById('profileEmailInput').value = user.email;
-    document.getElementById('detName').value = user.name;
-    document.getElementById('detEmail').value = user.email
-    document.getElementById('profilePhone').value = user.phone;
+    document.getElementById('detName').textContent = user.name;
+    document.getElementById('detEmail').textContent = user.email
+    document.getElementById('profilePhone').textContent = user.phone;
   
 }
 
