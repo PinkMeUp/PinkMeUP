@@ -4,26 +4,158 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>PinkMeUP</title>
-    <link rel="stylesheet" href="css/style.css">
-</head>
-<body>
-    <div class="auth-container" style="text-align: center;">
-        <h1>PinkMeUP</h1>
-        <p style="color: #666; margin-bottom: 30px;">Beauty Spa &amp; Academy</p>
 
-        <div style="display: flex; flex-direction: column; gap: 12px;">
-            <a href="login.html" class="btn" style="text-decoration: none; display: block;">Sign In</a>
-            <a href="register.html" class="btn btn-secondary" style="text-decoration: none; display: block;">Create Account</a>
-            <button id="quick-book-btn" class="btn btn-secondary" type="button">Quick Book</button>
+    <link rel="stylesheet" href="css/style.css">
+
+    <!-- Font Awesome (for the icons) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+    <!-- Google Font used by the prototype -->
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+
+<body>
+
+<div class="auth-container">
+
+    <!-- Header -->
+    <div class="top-row">
+        <div class="brand">
+            <h1>PinkMeUp Beauty Spa</h1>
+        </div>
+
+        <div class="auth-group">
+            <a href="login.html" class="auth-btn">Log in</a>
+            <a href="register.html" class="auth-btn">Sign up</a>
         </div>
     </div>
-    <script>
-        const quickBookBtn = document.getElementById('quick-book-btn');
-        if (quickBookBtn) {
-            quickBookBtn.addEventListener('click', () => {
-                window.location.href = 'dashboard.html';
-            });
-        }
-    </script>
+
+    <!-- About Us Button -->
+    <div class="about-wrapper">
+        <button class="about-btn" id="aboutUsBtn">
+            About us
+        </button>
+    </div>
+
+    <!-- Cards -->
+    <div class="cards-row">
+
+        <!-- Signature Services -->
+        <div class="glass-card">
+
+            <div class="card-title">
+                Signature Services
+            </div>
+
+            <div class="service-item">
+                <i class="fas fa-gem"></i>
+                Luxury Facial
+            </div>
+
+            <div class="service-item">
+                <i class="fas fa-hand-sparkles"></i>
+                Nail Treatment
+            </div>
+
+            <div class="service-item">
+                <i class="fas fa-eye"></i>
+                Lash Treatment
+            </div>
+
+            <div class="service-item">
+                <i class="fas fa-hands"></i>
+                Massage Therapy
+            </div>
+
+            <div class="service-item">
+                <i class="fas fa-feather-alt"></i>
+                Thread & Wax
+            </div>
+
+            <div class="step-note">
+                <i class="fas fa-tag"></i>
+                Custom packages available
+            </div>
+
+        </div>
+
+        <!-- Connect With Us -->
+        <div class="glass-card">
+
+            <div class="card-title">
+                Connect with us
+            </div>
+
+            <div class="contact-item">
+                <i class="fas fa-envelope"></i>
+                pinkmeup01@gmail.com
+            </div>
+
+            <div class="contact-item">
+                <i class="fas fa-phone-alt"></i>
+                076 769 0102
+            </div>
+
+            <div class="contact-item">
+                <i class="fas fa-map-marker-alt"></i>
+                1 Jan Smuts Avenue, Braamfontein, Johannesburg
+            </div>
+
+            <div class="hours-text">
+                <i class="far fa-clock"></i>
+                Mon-Fri: 9am – 5pm
+            </div>
+
+            <div class="hours-text">
+                <i class="far fa-clock"></i>
+                Sat &amp; Sun: 9am – 2pm
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<!-- Footer -->
+
+<div class="footer-band">
+
+    <div class="footer-container">
+
+        <div class="footer-copyright">
+            © 2026 PinkMeUp Beauty Spa — Book online, walk in glowing. Every treatment is a celebration of you.
+        </div>
+
+        <div class="footer-social">
+
+            <span class="follow-text">
+                Follow us:
+            </span>
+
+            <a href="https://www.instagram.com/pinkmeup.beauty?igsh=MW9vM3hpYjZuc3E2bw%3D%3D"
+               target="_blank"
+               rel="noopener noreferrer">
+                <i class="fab fa-instagram"></i>
+            </a>
+
+            <a href="https://web.facebook.com/PinkxMeUp"
+               target="_blank"
+               rel="noopener noreferrer">
+                <i class="fab fa-facebook-f"></i>
+            </a>
+
+            <a href="https://www.tiktok.com/@pinkmeup.beauty?is_from_webapp=1&sender_device=pc"
+               target="_blank"
+               rel="noopener noreferrer">
+                <i class="fab fa-tiktok"></i>
+            </a>
+
+        </div>
+
+    </div>
+
+</div>
+
 </body>
 </html>
