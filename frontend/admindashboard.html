@@ -1107,12 +1107,18 @@
     document.cookie.split(';').forEach(c => {
       document.cookie = c.replace(/^ +/, '').replace(/=.*/, '=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/');
     });
+    history.replaceState(null, '', 'login.html');
     showToast('Signed out successfully');
-    setTimeout(() => { window.location.href = 'login.html'; }, 300);
+    setTimeout(() => { window.location.replace('login.html'); }, 300);
   }
 
   // INIT
   document.addEventListener('DOMContentLoaded', async function() {
+    if (!localStorage.getItem('user')) {
+      window.location.replace('login.html');
+      return;
+    }
+
     document.querySelectorAll('.nav-item').forEach(nav =>
       nav.addEventListener('click', () => switchView(nav.getAttribute('data-view')))
     );
