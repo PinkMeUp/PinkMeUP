@@ -119,6 +119,18 @@ function clearAuthData() {
     window.location.href = '/login.html';
 }
 
+function getDashboardPath(user = getCurrentUser()) {
+    const role = user?.role;
+    if (role === 'admin' || role === 'stylist') {
+        return 'admindashboard.html';
+    }
+    return 'customerdashboard.html';
+}
+
+function redirectToDashboard(user = getCurrentUser()) {
+    window.location.href = getDashboardPath(user);
+}
+
 /**
  * Redirect to login if not authenticated
  */
@@ -136,7 +148,7 @@ function requireAuth() {
  */
 function requireGuest() {
     if (isAuthenticated()) {
-        window.location.href = '/dashboard.html';
+        redirectToDashboard();
         return false;
     }
 

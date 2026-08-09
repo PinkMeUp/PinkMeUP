@@ -74,14 +74,7 @@ form.addEventListener('submit', async (e) => {
 
         setAuthData(data.data.user);
 
-const ROLE_REDIRECT = {
-    admin:    'admindashboard.html',   
-    stylist:  'admindashboard.html',   
-    customer: 'customerdashboard.html'
-};
-
-const destination = ROLE_REDIRECT[data.data.user.role] || 'customerdashboard.html';
-window.location.href = destination;
+window.location.href = getDashboardPath(data.data.user);
 
     } catch (error) {
         errorEl.textContent = 'Network error. Please try again.';

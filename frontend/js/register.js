@@ -58,9 +58,9 @@ form.addEventListener('submit', async (e) => {
             return;
         }
 
-        // Save user data and redirect to dashboard now that the session cookie is set
+        // Save user data and redirect to the correct dashboard now that the session cookie is set
         setAuthData(data.data.user);
-        window.location.href = '/dashboard.html';
+        redirectToDashboard(data.data.user);
 
     } catch (error) {
         errorEl.textContent = 'Network error. Please try again.';
