@@ -1090,7 +1090,16 @@
   }
 
   // SIGN OUT
-  function signOut() {
+  async function signOut() {
+    try {
+      await fetch(`${API_BASE}/auth/logout`, {
+        method: 'POST',
+        credentials: 'include'
+      });
+    } catch (error) {
+      console.warn('Admin logout request failed:', error);
+    }
+
     localStorage.removeItem('auth_token');
     localStorage.removeItem('user');
     sessionStorage.removeItem('auth_token');

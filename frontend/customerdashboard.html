@@ -890,7 +890,7 @@
     <div class="user-pill">
       <div class="avatar" id="headerAvatar">SM</div>
     </div>
-    <button class="signout-btn" onclick="window.location.href='login.html'"><i class="fas fa-sign-out-alt"></i> Sign out</button>
+    <button class="signout-btn" id="signOutBtn"><i class="fas fa-sign-out-alt"></i> Sign out</button>
   </div>
 </header>
 
@@ -1182,6 +1182,7 @@
     const overlay = document.getElementById('sidebarOverlay');
     const menuToggle = document.getElementById('menuToggle');
     const sidebarClose = document.getElementById('sidebarClose');
+    const signOutBtn = document.getElementById('signOutBtn');
 
     function openSidebar() {
       sidebar.classList.add('open');
@@ -1196,6 +1197,7 @@
     if (menuToggle) menuToggle.addEventListener('click', openSidebar);
     if (sidebarClose) sidebarClose.addEventListener('click', closeSidebar);
     if (overlay) overlay.addEventListener('click', closeSidebar);
+    if (signOutBtn) signOutBtn.addEventListener('click', signOut);
 
     // Close sidebar on nav item click (mobile)
     document.querySelectorAll('.nav-item').forEach(item => {
@@ -1670,6 +1672,32 @@
     if (mins < 60) return `${mins} min`;
     const h = Math.floor(mins/60), m = mins%60;
     return m ? `${h}h ${m}min` : `${h}h`;
+  }
+
+  async function signOut() {
+    try {
+      await fetch(`${API_URL}/auth/logout`, {
+        method: 'POST',
+        credentials: 'include'
+      });
+    } catch (error) {
+      console.warn('Logout request failed:', error);
+    }
+
+    localStorage.removeItem('user');
+    localStorage.removeItem('authToken');
+    sessionStorage.removeItem('user');
+    sessionStorage.removeItem('authToken');
+
+    document.cookie.split(';').forEach(cookie => {
+      const name = cookie.split('=')[0].trim();
+      if (name) {
+        document.cookie = `${name}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/`;
+      }
+    });
+
+    showToast('Signed out successfully');
+    setTimeout(() => { window.location.href = 'login.html'; }, 300);
   }
 
   function showToast(msg) {
