@@ -9,131 +9,441 @@
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
   <style>
     * { margin:0; padding:0; box-sizing:border-box; }
-    body { background:#f6f2f4; font-family:'Inter',sans-serif; min-height:100vh; overflow-x:hidden; overflow-y:auto; }
-    .app { display:flex; flex-direction:column; min-height:100vh; width:100%; }
-    .main-header { background:white; border-bottom:1px solid #e4d7de; padding:0.8rem 2rem; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:1rem; }
-    .header-brand h1 { font-family:'Playfair Display',serif; font-size:1.5rem; font-weight:700; background:linear-gradient(135deg,#D43F6B,#FF7CA6); -webkit-background-clip:text; background-clip:text; color:transparent; }
-    .header-brand p { font-size:0.7rem; color:#b48aa0; }
-    .signout-btn { background:white; border:1.5px solid #D43F6B; padding:0.45rem 1.2rem; border-radius:2rem; font-weight:600; color:#D43F6B; cursor:pointer; transition:0.2s; font-size:0.85rem; }
+    body { background:#f6f2f4; font-family:'Inter',sans-serif; height:100vh; overflow:hidden; }
+    .app { display:flex; flex-direction:column; height:100vh; width:100%; }
+    
+    /* ===== HEADER ===== */
+    .main-header { 
+      background:white; 
+      border-bottom:1px solid #e4d7de; 
+      padding:0.8rem 1rem; 
+      display:flex; 
+      justify-content:space-between; 
+      align-items:center; 
+      flex-wrap:wrap; 
+      gap:0.5rem; 
+      flex-shrink:0;
+    }
+    .header-brand h1 { 
+      font-family:'Playfair Display',serif; 
+      font-size:1.2rem; 
+      font-weight:700; 
+      background:linear-gradient(135deg,#D43F6B,#FF7CA6); 
+      -webkit-background-clip:text; 
+      background-clip:text; 
+      color:transparent; 
+    }
+    .header-brand p { font-size:0.6rem; color:#b48aa0; }
+    .signout-btn { 
+      background:white; 
+      border:1.5px solid #D43F6B; 
+      padding:0.35rem 1rem; 
+      border-radius:2rem; 
+      font-weight:600; 
+      color:#D43F6B; 
+      cursor:pointer; 
+      transition:0.2s; 
+      font-size:0.75rem; 
+      white-space:nowrap;
+    }
     .signout-btn:hover { background:#fef0f5; }
-    .dashboard-layout { display:flex; flex:1; overflow:hidden; }
-    .sidebar { width:280px; background:#fff; border-right:1px solid #e4d7de; display:flex; flex-direction:column; flex-shrink:0; overflow-y:auto; }
-    .nav { padding:1.8rem 1.2rem; display:flex; flex-direction:column; gap:0.5rem; flex:1; }
-    .nav-item { display:flex; align-items:center; gap:1rem; padding:0.7rem 1rem; border-radius:0.6rem; color:#6e4e5e; font-weight:500; cursor:pointer; transition:0.2s; }
-    .nav-item i { width:24px; font-size:1rem; color:#c47b99; }
+
+    /* ===== LAYOUT ===== */
+    .dashboard-layout { 
+      display:flex; 
+      flex:1; 
+      overflow:hidden; 
+    }
+
+    /* ===== SIDEBAR ===== */
+    .sidebar { 
+      width:240px; 
+      background:#fff; 
+      border-right:1px solid #e4d7de; 
+      display:flex; 
+      flex-direction:column; 
+      flex-shrink:0; 
+      overflow-y:auto; 
+      transition:transform 0.3s ease;
+    }
+    .nav { padding:1.2rem 0.8rem; display:flex; flex-direction:column; gap:0.3rem; flex:1; }
+    .nav-item { 
+      display:flex; 
+      align-items:center; 
+      gap:0.8rem; 
+      padding:0.6rem 0.8rem; 
+      border-radius:0.6rem; 
+      color:#6e4e5e; 
+      font-weight:500; 
+      cursor:pointer; 
+      transition:0.2s; 
+      font-size:0.85rem;
+    }
+    .nav-item i { width:20px; font-size:0.9rem; color:#c47b99; }
     .nav-item.active { background:#fef0f5; color:#C43A6B; }
     .nav-item.active i { color:#D43F6B; }
     .nav-item:hover:not(.active) { background:#faf5f8; }
-    .sidebar-footer { padding:1rem 1.2rem 1.5rem; border-top:1px solid #e4d7de; font-size:0.75rem; }
-    .support-line { margin-bottom:0.4rem; display:flex; align-items:center; gap:0.6rem; }
-    .support-line i { width:22px; color:#D43F6B; }
+    .sidebar-footer { 
+      padding:0.8rem 0.8rem 1rem; 
+      border-top:1px solid #e4d7de; 
+      font-size:0.7rem; 
+    }
+    .support-line { margin-bottom:0.3rem; display:flex; align-items:center; gap:0.5rem; }
+    .support-line i { width:18px; color:#D43F6B; font-size:0.8rem; }
     .support-label { font-weight:700; }
     .support-line a { color:#6e4e5e; text-decoration:none; }
     .support-line a:hover { text-decoration:underline; }
-    .main { flex:1; overflow-y:auto; padding:2rem; background:#fefbfd; }
+
+    /* ===== MAIN CONTENT ===== */
+    .main { 
+      flex:1; 
+      overflow-y:auto; 
+      padding:1.2rem; 
+      background:#fefbfd; 
+      min-width:0;
+    }
     .view { display:none; animation:fadeIn 0.2s ease; }
     .view.active { display:block; }
     @keyframes fadeIn { from{opacity:0;transform:translateY(5px);} to{opacity:1;transform:translateY(0);} }
-    .section-title { font-size:1.5rem; font-weight:700; color:#2c1a23; margin-bottom:0.8rem; display:inline-block; position:relative; }
-    .section-title::after { content:''; position:absolute; bottom:-6px; left:0; width:48px; height:2px; background:#D43F6B; border-radius:2px; }
-    .btn-primary { background:#D43F6B; border:none; color:white; padding:0.6rem 1.5rem; border-radius:2rem; font-weight:600; cursor:pointer; transition:0.2s; display:inline-flex; align-items:center; gap:0.5rem; }
+    
+    .section-title { 
+      font-size:1.3rem; 
+      font-weight:700; 
+      color:#2c1a23; 
+      margin-bottom:0.6rem; 
+      display:inline-block; 
+      position:relative; 
+    }
+    .section-title::after { 
+      content:''; 
+      position:absolute; 
+      bottom:-4px; 
+      left:0; 
+      width:40px; 
+      height:2px; 
+      background:#D43F6B; 
+      border-radius:2px; 
+    }
+    .info-prompt { 
+      font-size:0.7rem; 
+      color:#b48aa0; 
+      display:flex; 
+      align-items:center; 
+      gap:0.3rem; 
+      margin:0.2rem 0 0.8rem; 
+      flex-wrap:wrap;
+    }
+    .btn-primary { 
+      background:#D43F6B; 
+      border:none; 
+      color:white; 
+      padding:0.5rem 1.2rem; 
+      border-radius:2rem; 
+      font-weight:600; 
+      cursor:pointer; 
+      transition:0.2s; 
+      display:inline-flex; 
+      align-items:center; 
+      gap:0.5rem; 
+      font-size:0.85rem;
+    }
     .btn-primary:hover { background:#b73b5e; }
-    .btn-outline { background:transparent; border:1px solid #D43F6B; color:#D43F6B; padding:0.4rem 0.8rem; border-radius:2rem; cursor:pointer; }
-    .btn-danger { background:#dc3545; border:none; color:white; padding:0.4rem 0.8rem; border-radius:2rem; cursor:pointer; }
+    .btn-outline { 
+      background:transparent; 
+      border:1px solid #D43F6B; 
+      color:#D43F6B; 
+      padding:0.35rem 0.7rem; 
+      border-radius:2rem; 
+      cursor:pointer; 
+      font-size:0.8rem;
+    }
+    .btn-danger { 
+      background:#dc3545; 
+      border:none; 
+      color:white; 
+      padding:0.35rem 0.7rem; 
+      border-radius:2rem; 
+      cursor:pointer; 
+      font-size:0.8rem;
+    }
     .btn-danger:hover { background:#b02a37; }
-    .card { background:white; border-radius:1rem; border:1px solid #e4d7de; padding:1rem; margin-top:1.2rem; }
-    .category-group { margin-bottom:1.5rem; }
-    .category-header { font-weight:700; font-size:1rem; color:#C43A6B; padding:0.2rem 0; margin-bottom:0.6rem; border-left:3px solid #FF9FBB; padding-left:0.6rem; }
-    .service-row { display:flex; justify-content:space-between; align-items:baseline; padding:0.5rem 0; border-bottom:1px solid #ede3e8; flex-wrap:wrap; gap:0.5rem; }
-    .service-info { display:flex; flex-wrap:wrap; gap:0.8rem; align-items:baseline; flex:2; }
-    .service-name { font-weight:500; }
-    .service-duration { font-size:0.7rem; color:#8e6b7c; }
-    .service-price { font-weight:600; color:#6e4e5e; min-width:80px; text-align:right; flex-shrink:0; }
-    .service-actions button { background:none; border:none; cursor:pointer; margin-left:0.5rem; color:#b48aa0; }
+    .btn-sm { padding:0.25rem 0.6rem; font-size:0.7rem; }
+
+    /* ===== CARDS ===== */
+    .card { 
+      background:white; 
+      border-radius:1rem; 
+      border:1px solid #e4d7de; 
+      padding:0.8rem; 
+      margin-top:0.8rem; 
+      overflow-x:auto;
+    }
+    .category-group { margin-bottom:1rem; }
+    .category-header { 
+      font-weight:700; 
+      font-size:0.9rem; 
+      color:#C43A6B; 
+      padding:0.2rem 0; 
+      margin-bottom:0.4rem; 
+      border-left:3px solid #FF9FBB; 
+      padding-left:0.5rem; 
+    }
+    .service-row { 
+      display:flex; 
+      justify-content:space-between; 
+      align-items:center; 
+      padding:0.4rem 0; 
+      border-bottom:1px solid #ede3e8; 
+      flex-wrap:wrap; 
+      gap:0.3rem;
+    }
+    .service-info { display:flex; flex-wrap:wrap; gap:0.4rem; align-items:center; flex:1; }
+    .service-name { font-weight:500; font-size:0.85rem; }
+    .service-duration { font-size:0.65rem; color:#8e6b7c; }
+    .service-price { font-weight:600; color:#6e4e5e; min-width:60px; text-align:right; font-size:0.85rem; }
+    .service-actions { display:flex; gap:0.3rem; }
+    .service-actions button { background:none; border:none; cursor:pointer; color:#b48aa0; padding:0.2rem; }
     .service-actions button:hover { color:#D43F6B; }
 
-    .stylist-grid { display:grid; grid-template-columns:repeat(auto-fill, minmax(320px,1fr)); gap:1.2rem; margin-top:1rem; }
-    .stylist-card { background:white; border:1px solid #e4d7de; border-radius:1rem; padding:1.2rem; transition:0.2s; }
+    /* ===== STYLIST GRID ===== */
+    .stylist-grid { 
+      display:grid; 
+      grid-template-columns:repeat(auto-fill, minmax(280px,1fr)); 
+      gap:0.8rem; 
+      margin-top:0.8rem; 
+    }
+    .stylist-card { 
+      background:white; 
+      border:1px solid #e4d7de; 
+      border-radius:1rem; 
+      padding:1rem; 
+      transition:0.2s; 
+    }
     .stylist-card:hover { box-shadow:0 4px 12px rgba(0,0,0,0.05); }
-    .stylist-card h4 { margin-bottom:0.3rem; color:#2c1a23; }
-    .stylist-card .contact { font-size:0.8rem; color:#6e4e5e; margin-bottom:0.6rem; }
-    .stylist-card .service-chips { display:flex; flex-wrap:wrap; gap:0.3rem; margin-top:0.3rem; }
-    .stylist-card .chip { background:#fef0f5; color:#D43F6B; padding:0.15rem 0.6rem; border-radius:1rem; font-size:0.7rem; font-weight:500; }
-    .stylist-card .actions { margin-top:0.8rem; display:flex; gap:0.5rem; }
+    .stylist-card h4 { margin-bottom:0.2rem; color:#2c1a23; font-size:0.95rem; }
+    .stylist-card .contact { font-size:0.7rem; color:#6e4e5e; margin-bottom:0.4rem; word-break:break-all; }
+    .stylist-card .service-chips { display:flex; flex-wrap:wrap; gap:0.2rem; margin-top:0.3rem; }
+    .stylist-card .chip { 
+      background:#fef0f5; 
+      color:#D43F6B; 
+      padding:0.1rem 0.5rem; 
+      border-radius:1rem; 
+      font-size:0.6rem; 
+      font-weight:500; 
+    }
+    .stylist-card .actions { margin-top:0.6rem; display:flex; gap:0.4rem; flex-wrap:wrap; }
 
-    .filter-bar { display:flex; gap:1rem; flex-wrap:wrap; align-items:center; margin-bottom:1.5rem; background:white; padding:0.8rem 1.2rem; border-radius:1rem; border:1px solid #e4d7de; }
-    select, .date-input { padding:0.4rem 0.8rem; border-radius:2rem; border:1px solid #e4d7de; background:white; }
-    .stats-row { display:grid; grid-template-columns:repeat(auto-fit, minmax(320px,1fr)); gap:1.5rem; margin-bottom:1.8rem; }
-    .analytics-card { background:white; border-radius:1rem; padding:1.2rem; border:1px solid #e4d7de; overflow-x:auto; }
-    .chart-container { max-height:260px; margin-top:1rem; }
-    .custom-legend { margin-top:1rem; display:flex; flex-direction:column; gap:0.4rem; }
-    .legend-item { display:flex; align-items:center; gap:0.5rem; font-size:0.75rem; }
-    .legend-color { width:14px; height:14px; border-radius:2px; }
-    .metric-list-single { display:flex; flex-direction:column; gap:0.5rem; margin-top:0.5rem; }
-    .metric-item { display:flex; justify-content:space-between; align-items:baseline; padding:0.4rem 0; font-size:0.85rem; border-bottom:1px solid #ede3e8; flex-wrap:wrap; }
+    /* ===== FILTERS & REPORTS ===== */
+    .filter-bar { 
+      display:flex; 
+      gap:0.6rem; 
+      flex-wrap:wrap; 
+      align-items:center; 
+      background:white; 
+      padding:0.6rem 1rem; 
+      border-radius:1rem; 
+      border:1px solid #e4d7de; 
+      margin-bottom:1rem;
+    }
+    .filter-bar select, 
+    .filter-bar input { 
+      padding:0.35rem 0.7rem; 
+      border-radius:2rem; 
+      border:1px solid #e4d7de; 
+      background:white; 
+      font-size:0.8rem; 
+    }
+    .filter-bar .btn-outline { padding:0.35rem 1rem; }
+
+    .stats-row { 
+      display:grid; 
+      grid-template-columns:repeat(auto-fit, minmax(300px,1fr)); 
+      gap:1rem; 
+      margin-bottom:1.2rem; 
+    }
+    .analytics-card { 
+      background:white; 
+      border-radius:1rem; 
+      padding:1rem; 
+      border:1px solid #e4d7de; 
+      overflow-x:auto; 
+    }
+    .analytics-card h3 { font-size:0.95rem; margin-bottom:0.2rem; }
+    .analytics-card p { font-size:0.75rem; color:#8e6b7c; }
+    .chart-container { max-height:200px; margin-top:0.8rem; }
+    .custom-legend { margin-top:0.8rem; display:flex; flex-direction:column; gap:0.3rem; }
+    .legend-item { display:flex; align-items:center; gap:0.4rem; font-size:0.7rem; }
+    .legend-color { width:12px; height:12px; border-radius:2px; flex-shrink:0; }
+
+    .metric-list-single { display:flex; flex-direction:column; gap:0.3rem; margin-top:0.3rem; }
+    .metric-item { 
+      display:flex; 
+      justify-content:space-between; 
+      align-items:center; 
+      padding:0.3rem 0; 
+      font-size:0.8rem; 
+      border-bottom:1px solid #ede3e8; 
+      flex-wrap:wrap; 
+      gap:0.3rem;
+    }
     .metric-item span:first-child { color:#5e3e4c; font-weight:500; }
     .metric-item strong { color:#2c1a23; font-weight:700; }
-    .rec-card { margin-top:0.5rem; }
-    .rec-heading { font-weight:700; color:#C43A6B; margin:0.8rem 0 0.2rem; font-size:0.9rem; }
-    .rec-text { font-size:0.85rem; color:#2c1a23; padding-left:0.3rem; border-left:2px solid #FF9FBB; margin-bottom:0.5rem; }
-    hr.divider { margin:0.8rem 0; border:none; height:1px; background:#ede3e8; }
-    .stylist-table { width:100%; border-collapse:collapse; margin-top:0.8rem; min-width:280px; }
-    .stylist-table th, .stylist-table td { padding:0.5rem; text-align:left; border-bottom:1px solid #ede3e8; }
+
+    .stylist-table { width:100%; border-collapse:collapse; margin-top:0.5rem; min-width:200px; font-size:0.8rem; }
+    .stylist-table th, .stylist-table td { padding:0.3rem 0.4rem; text-align:left; border-bottom:1px solid #ede3e8; }
     .stylist-table th { color:#a55375; font-weight:600; }
-    .info-prompt { font-size:0.7rem; color:#b48aa0; display:flex; align-items:center; gap:0.3rem; margin:0.3rem 0 0.8rem; }
+    .rec-heading { font-weight:700; color:#C43A6B; margin:0.5rem 0 0.1rem; font-size:0.8rem; }
+    .rec-text { font-size:0.75rem; color:#2c1a23; padding-left:0.3rem; border-left:2px solid #FF9FBB; margin-bottom:0.3rem; }
+    hr.divider { margin:0.5rem 0; border:none; height:1px; background:#ede3e8; }
 
-    .modal { display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.4); backdrop-filter:blur(2px); align-items:center; justify-content:center; z-index:1000; }
+    /* ===== MODALS ===== */
+    .modal { 
+      display:none; 
+      position:fixed; 
+      top:0; 
+      left:0; 
+      width:100%; 
+      height:100%; 
+      background:rgba(0,0,0,0.4); 
+      backdrop-filter:blur(2px); 
+      align-items:center; 
+      justify-content:center; 
+      z-index:1000; 
+      padding:1rem;
+    }
     .modal.active { display:flex; }
-    .modal-content { background:white; border-radius:1.2rem; width:500px; max-width:90%; padding:1.5rem; }
-    .modal-content input, .modal-content select { width:100%; padding:0.6rem; margin:0.5rem 0 1rem; border:1px solid #e4d7de; border-radius:0.6rem; }
-    .modal-content select[multiple] { height:120px; }
-    .modal-content label { font-weight:600; font-size:0.85rem; color:#3d2a33; }
-    .modal-footer { display:flex; gap:1rem; justify-content:flex-end; margin-top:0.5rem; }
+    .modal-content { 
+      background:white; 
+      border-radius:1.2rem; 
+      width:500px; 
+      max-width:100%; 
+      padding:1.2rem; 
+      max-height:90vh; 
+      overflow-y:auto; 
+    }
+    .modal-content input, 
+    .modal-content select { 
+      width:100%; 
+      padding:0.5rem; 
+      margin:0.3rem 0 0.8rem; 
+      border:1px solid #e4d7de; 
+      border-radius:0.6rem; 
+      font-size:0.9rem; 
+    }
+    .modal-content select[multiple] { height:100px; }
+    .modal-content label { font-weight:600; font-size:0.8rem; color:#3d2a33; }
+    .modal-footer { display:flex; gap:0.8rem; justify-content:flex-end; margin-top:0.5rem; flex-wrap:wrap; }
 
-    @media (max-width:1024px){
-      .main-header{padding:0.9rem 1rem;}
-      .dashboard-layout{flex-direction:column;}
-      .sidebar{width:100%; border-right:none; border-bottom:1px solid #e4d7de;}
-      .nav{padding:1rem; flex-direction:row; flex-wrap:wrap; gap:0.5rem;}
-      .nav-item{flex:1 1 calc(50% - 0.5rem); justify-content:center;}
-      .sidebar-footer{display:grid; grid-template-columns:repeat(auto-fit,minmax(180px,1fr)); gap:0.75rem;}
-      .main{padding:1rem;}
-      .stats-row{grid-template-columns:1fr;}
+    /* ===== MOBILE MENU TOGGLE ===== */
+    .menu-toggle { 
+      display:none; 
+      background:none; 
+      border:none; 
+      font-size:1.3rem; 
+      color:#D43F6B; 
+      cursor:pointer; 
+      padding:0.3rem;
     }
-    @media (max-width:640px){
-      body{overflow:auto;}
-      .main-header{flex-direction:column; align-items:flex-start; padding:0.85rem 1rem;}
-      .header-brand h1{font-size:1.25rem;}
-      .signout-btn{width:100%; justify-content:center;}
-      .nav{padding:0.8rem;}
-      .nav-item{flex:1 1 100%; justify-content:center;}
-      .main{padding:0.8rem;}
-      .section-title{font-size:1.25rem;}
-      .card, .analytics-card, .stylist-card, .modal-content{border-radius:0.8rem;}
-      .service-row{flex-direction:column; align-items:flex-start;}
-      .service-price{text-align:left;}
-      .filter-bar{flex-direction:column; align-items:stretch;}
-      .filter-bar select, .filter-bar .date-input, .filter-bar .btn-outline{width:100%;}
-      .stylist-grid{grid-template-columns:1fr;}
-      .modal-content{width:min(95%, 500px); padding:1rem;}
-      .modal-content input, .modal-content select{margin:0.4rem 0 0.8rem;}
-      .modal-footer{flex-direction:column-reverse;}
-      .modal-footer button{width:100%;}
+
+    /* ===== RESPONSIVE ===== */
+    @media (max-width: 768px) {
+      .menu-toggle { display:block; }
+      .sidebar { 
+        position:fixed; 
+        top:0; 
+        left:0; 
+        width:280px; 
+        height:100vh; 
+        z-index:999; 
+        transform:translateX(-100%); 
+        box-shadow:2px 0 12px rgba(0,0,0,0.1);
+      }
+      .sidebar.open { transform:translateX(0); }
+      
+      .main { padding:0.8rem; }
+      .section-title { font-size:1.1rem; }
+      .stats-row { grid-template-columns:1fr; }
+      .stylist-grid { grid-template-columns:1fr; }
+      
+      .filter-bar { flex-direction:column; align-items:stretch; }
+      .filter-bar > * { width:100%; }
+      
+      .header-brand h1 { font-size:1rem; }
+      .header-brand p { display:none; }
+      
+      .service-row { flex-direction:column; align-items:flex-start; }
+      .service-price { text-align:left; width:100%; }
+      .service-actions { width:100%; justify-content:flex-end; }
+      
+      .modal-content { padding:1rem; margin:0.5rem; }
+      
+      /* Close button for mobile sidebar */
+      .sidebar-close { 
+        display:block; 
+        background:none; 
+        border:none; 
+        font-size:1.2rem; 
+        color:#6e4e5e; 
+        cursor:pointer; 
+        padding:0.5rem 0.8rem; 
+        text-align:right; 
+      }
+      .sidebar-close i { font-size:1.2rem; }
     }
+
+    @media (max-width: 480px) {
+      .main-header { padding:0.5rem 0.8rem; }
+      .signout-btn { font-size:0.65rem; padding:0.3rem 0.8rem; }
+      .btn-primary { font-size:0.75rem; padding:0.4rem 1rem; }
+      .stylist-card { padding:0.8rem; }
+      .analytics-card { padding:0.8rem; }
+      .card { padding:0.6rem; }
+      .modal-content { padding:0.8rem; }
+      .metric-item { font-size:0.7rem; }
+      .stylist-table { font-size:0.7rem; }
+    }
+
+    /* Show sidebar-close only on mobile */
+    .sidebar-close { display:none; }
+    @media (max-width: 768px) {
+      .sidebar-close { display:block; }
+    }
+
+    /* Overlay for mobile sidebar */
+    .sidebar-overlay {
+      display:none;
+      position:fixed;
+      top:0;
+      left:0;
+      width:100%;
+      height:100%;
+      background:rgba(0,0,0,0.3);
+      z-index:998;
+    }
+    .sidebar-overlay.active { display:block; }
   </style>
 </head>
 <body>
 <div class="app">
+  <!-- OVERLAY -->
+  <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+  <!-- HEADER -->
   <div class="main-header">
-    <div class="header-brand">
-      <h1>PinkMeUp Admin</h1>
-      <p>manage · analytics · strategy</p>
+    <div style="display:flex; align-items:center; gap:0.8rem;">
+      <button class="menu-toggle" id="menuToggle"><i class="fas fa-bars"></i></button>
+      <div class="header-brand">
+        <h1>PinkMeUp Admin</h1>
+        <p>manage · analytics · strategy</p>
+      </div>
     </div>
     <button class="signout-btn" id="signoutBtn">Sign out</button>
   </div>
 
   <div class="dashboard-layout">
-    <div class="sidebar">
+    <!-- SIDEBAR -->
+    <div class="sidebar" id="sidebar">
+      <div class="sidebar-close" id="sidebarClose"><i class="fas fa-times"></i></div>
       <div class="nav">
         <div class="nav-item active" data-view="services"><i class="fas fa-concierge-bell"></i> Manage Services</div>
         <div class="nav-item" data-view="stylists"><i class="fas fa-users"></i> Manage Stylists</div>
@@ -146,11 +456,12 @@
       </div>
     </div>
 
+    <!-- MAIN CONTENT -->
     <div class="main">
       <!-- MANAGE SERVICES -->
       <div id="services-view" class="view active">
         <div class="section-title">Manage Services</div>
-        <p class="info-prompt"><i class="fas fa-info-circle"></i> Add, edit or delete any service. All changes are immediately saved to the database.</p>
+        <p class="info-prompt"><i class="fas fa-info-circle"></i> Add, edit or delete any service. All changes are saved immediately.</p>
         <button class="btn-primary" id="addServiceBtn"><i class="fas fa-plus"></i> Add New Service</button>
         <div class="card" id="servicesContainer"></div>
       </div>
@@ -167,16 +478,16 @@
       <div id="reports-view" class="view">
         <div class="section-title">Analytics Reports</div>
         <div class="filter-bar">
-          <span>Period:</span>
+          <span style="font-size:0.8rem;">Period:</span>
           <select id="reportPeriod">
             <option value="last30">Last 30 days</option>
             <option value="last90">Last 90 days</option>
             <option value="lastYear">Last 12 months</option>
             <option value="custom">Custom range</option>
           </select>
-          <div id="customDateRange" style="display:none; gap:0.5rem;">
+          <div id="customDateRange" style="display:none; gap:0.3rem; flex-wrap:wrap; align-items:center;">
             <input type="date" id="startDate" class="date-input" />
-            <span>to</span>
+            <span style="font-size:0.8rem;">to</span>
             <input type="date" id="endDate" class="date-input" />
           </div>
           <button class="btn-outline" id="applyFilterBtn">Apply filter</button>
@@ -197,7 +508,7 @@
             <p>Appointments handled & average rating</p>
             <div style="overflow-x:auto;">
               <table class="stylist-table" id="stylistTable">
-                <thead><tr><th>Stylist</th><th>Appointments</th><th>Avg rating (1-5)</th></tr></thead>
+                <thead><tr><th>Stylist</th><th>Appointments</th><th>Avg rating</th></tr></thead>
                 <tbody id="stylistTableBody"></tbody>
               </table>
             </div>
@@ -234,7 +545,7 @@
     </select>
     <input type="text" id="serviceName" placeholder="Service name" />
     <input type="number" id="servicePrice" placeholder="Price (R)" />
-    <input type="number" id="serviceDuration" placeholder="Duration in minutes (e.g. 45)" />
+    <input type="number" id="serviceDuration" placeholder="Duration in minutes" />
     <input type="hidden" id="serviceId" />
     <div class="modal-footer">
       <button class="btn-outline" id="cancelModalBtn">Cancel</button>
@@ -268,23 +579,55 @@
 
 <script>
   // ============================================================
-  // API CONFIGURATION
+  // MOBILE SIDEBAR TOGGLE
   // ============================================================
-  const API_BASE = window.API_URL || 'http://localhost:5000/api/v1';
+  document.addEventListener('DOMContentLoaded', function() {
+    const sidebar = document.getElementById('sidebar');
+    const overlay = document.getElementById('sidebarOverlay');
+    const menuToggle = document.getElementById('menuToggle');
+    const sidebarClose = document.getElementById('sidebarClose');
+
+    function openSidebar() {
+      sidebar.classList.add('open');
+      overlay.classList.add('active');
+    }
+
+    function closeSidebar() {
+      sidebar.classList.remove('open');
+      overlay.classList.remove('active');
+    }
+
+    if (menuToggle) menuToggle.addEventListener('click', openSidebar);
+    if (sidebarClose) sidebarClose.addEventListener('click', closeSidebar);
+    if (overlay) overlay.addEventListener('click', closeSidebar);
+
+    // Close sidebar on nav item click (mobile)
+    document.querySelectorAll('.nav-item').forEach(item => {
+      item.addEventListener('click', function() {
+        if (window.innerWidth <= 768) closeSidebar();
+      });
+    });
+
+    // Close sidebar on window resize to desktop
+    window.addEventListener('resize', function() {
+      if (window.innerWidth > 768) closeSidebar();
+    });
+  });
 
   // ============================================================
-  // STATE
+  // REST OF YOUR EXISTING SCRIPT GOES HERE
+  // (Copy your existing JavaScript code below)
   // ============================================================
+  
+  const API_BASE = window.API_URL || 'http://localhost:5000/api/v1';
+
   let services = [];
   let stylists = [];
   let appointmentLogs = [];
   let doughnutChart;
   let currentFilter = { start: null, end: null };
-  const stylistNames = []; // will be filled from DB
+  const stylistNames = [];
 
-  // ============================================================
-  // UTILITY
-  // ============================================================
   function escapeHtml(str) {
     if (!str) return '';
     return str.replace(/[&<>]/g, m => m === '&' ? '&amp;' : (m === '<' ? '&lt;' : '&gt;'));
@@ -315,22 +658,12 @@
     setTimeout(() => { toast.style.opacity = '0'; }, 2500);
   }
 
-  function formatDate(d) {
-    if (!d) return '';
-    const [y, m, day] = d.split('-');
-    const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
-    return `${parseInt(day)} ${months[parseInt(m)-1]} ${y}`;
-  }
-
   function getServiceName(id) {
     const s = services.find(s => s._id === id || s.id === id);
     return s ? s.name : 'Unknown';
   }
 
-  // ============================================================
-  // SERVICE CRUD (Database)
-  // ============================================================
-
+  // SERVICE CRUD
   async function loadServicesFromDB() {
     try {
       const res = await fetch(`${API_BASE}/services?limit=100`, { credentials: 'include' });
@@ -339,7 +672,6 @@
         services = data.data.services || [];
         renderServiceManager();
         populateStylistServiceOptions();
-        // also rebuild categories for analytics
         updateCategoriesList();
       }
     } catch (err) {
@@ -348,7 +680,6 @@
   }
 
   function updateCategoriesList() {
-    // For analytics, we need categories from services
     window.categoriesList = [...new Set(services.map(s => s.category))];
   }
 
@@ -360,7 +691,7 @@
     const editId = document.getElementById('serviceId').value;
 
     if (!name || isNaN(price) || price <= 0 || isNaN(duration) || duration < 15) {
-      alert('Please fill all fields correctly. Duration must be in minutes (e.g., 45).');
+      alert('Please fill all fields correctly.');
       return;
     }
 
@@ -375,10 +706,7 @@
         body: JSON.stringify({ name, price, duration, category })
       });
       const data = await res.json();
-      if (!res.ok) {
-        showToast(data.message || 'Failed to save.');
-        return;
-      }
+      if (!res.ok) { showToast(data.message || 'Failed to save.'); return; }
       await loadServicesFromDB();
       closeServiceModal();
       showToast('Service saved.');
@@ -390,15 +718,9 @@
   async function deleteServiceFromDB(id) {
     if (!confirm('Delete this service permanently?')) return;
     try {
-      const res = await fetch(`${API_BASE}/services/${id}`, {
-        method: 'DELETE',
-        credentials: 'include'
-      });
+      const res = await fetch(`${API_BASE}/services/${id}`, { method: 'DELETE', credentials: 'include' });
       const data = await res.json();
-      if (!res.ok) {
-        showToast(data.message || 'Failed to delete.');
-        return;
-      }
+      if (!res.ok) { showToast(data.message || 'Failed to delete.'); return; }
       await loadServicesFromDB();
       showToast('Service deleted.');
     } catch (err) {
@@ -406,10 +728,7 @@
     }
   }
 
-  // ============================================================
-  // STYLIST CRUD (Database)
-  // ============================================================
-
+  // STYLIST CRUD
   async function loadStylistsFromDB() {
     try {
       const res = await fetch(`${API_BASE}/stylists?limit=100`, { credentials: 'include' });
@@ -424,10 +743,9 @@
           isAvailable: st.isAvailable,
           rating: st.rating
         }));
-        // update stylistNames for analytics
         window.stylistNames = stylists.map(s => s.name);
         renderStylists();
-        generateAppointmentLogs(); // regenerate with new stylist list
+        generateAppointmentLogs();
         if (document.getElementById('reports-view').classList.contains('active')) updateReports();
       }
     } catch (err) {
@@ -518,7 +836,6 @@
 
     try {
       if (editId) {
-        // Update existing stylist (only specialties are updatable via PUT /stylists/:id)
         const res = await fetch(`${API_BASE}/stylists/${editId}`, {
           method: 'PUT',
           headers: { 'Content-Type': 'application/json' },
@@ -528,8 +845,7 @@
         const data = await res.json();
         if (!res.ok) { showToast(data.message || 'Failed to update.'); return; }
       } else {
-        // Create new stylist via admin endpoint
-        const password = 'Stylist@123'; // default, could be generated
+        const password = 'Stylist@123';
         const res = await fetch(`${API_BASE}/admin/stylists`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
@@ -557,10 +873,7 @@
   async function deleteStylistFromDB(id) {
     if (!confirm('Delete this stylist?')) return;
     try {
-      const res = await fetch(`${API_BASE}/stylists/${id}`, {
-        method: 'DELETE',
-        credentials: 'include'
-      });
+      const res = await fetch(`${API_BASE}/stylists/${id}`, { method: 'DELETE', credentials: 'include' });
       const data = await res.json();
       if (!res.ok) { showToast(data.message || 'Failed to delete.'); return; }
       await loadStylistsFromDB();
@@ -574,17 +887,27 @@
     document.getElementById('stylistModal').classList.remove('active');
   }
 
-  // ============================================================
-  // ANALYTICS ENGINE (uses dynamic stylists & services)
-  // ============================================================
+  function closeServiceModal() {
+    document.getElementById('serviceModal').classList.remove('active');
+  }
 
+  function openEditServiceModal(id) {
+    const svc = services.find(s => s._id === id || s.id === id);
+    if (!svc) return;
+    document.getElementById('modalTitle').innerText = 'Edit Service';
+    document.getElementById('serviceCategory').value = svc.category;
+    document.getElementById('serviceName').value = svc.name;
+    document.getElementById('servicePrice').value = svc.price;
+    document.getElementById('serviceDuration').value = svc.duration;
+    document.getElementById('serviceId').value = svc._id || svc.id;
+    document.getElementById('serviceModal').classList.add('active');
+  }
+
+  // ANALYTICS
   function generateAppointmentLogs() {
     const categories = [...new Set(services.map(s => s.category))];
     const names = stylists.map(s => s.name);
-    if (names.length === 0) {
-      appointmentLogs = [];
-      return;
-    }
+    if (names.length === 0) { appointmentLogs = []; return; }
     const startGen = new Date(2024, 0, 1);
     const endGen = new Date();
     const logs = [];
@@ -593,13 +916,7 @@
       const stylist = names[Math.floor(Math.random() * names.length)];
       const category = categories.length ? categories[Math.floor(Math.random() * categories.length)] : 'General';
       const rating = 3.2 + Math.random() * 1.8;
-      logs.push({
-        id: i,
-        category,
-        stylist,
-        date: randDate.toISOString().slice(0, 10),
-        rating: Math.min(5, Math.round(rating * 10) / 10)
-      });
+      logs.push({ id: i, category, stylist, date: randDate.toISOString().slice(0, 10), rating: Math.min(5, Math.round(rating * 10) / 10) });
     }
     appointmentLogs = logs;
   }
@@ -608,10 +925,7 @@
     if (!startDate || !endDate) return logs;
     const start = new Date(startDate);
     const end = new Date(endDate);
-    return logs.filter(log => {
-      const d = new Date(log.date);
-      return d >= start && d <= end;
-    });
+    return logs.filter(log => { const d = new Date(log.date); return d >= start && d <= end; });
   }
 
   function computeAnalytics(filteredLogs) {
@@ -651,39 +965,26 @@
   async function updateReports() {
     const period = document.getElementById('reportPeriod').value;
     let startDate, endDate, today = new Date();
-    if (period === 'last30') {
-      startDate = new Date(); startDate.setDate(today.getDate() - 30);
-      endDate = today;
-    } else if (period === 'last90') {
-      startDate = new Date(); startDate.setDate(today.getDate() - 90);
-      endDate = today;
-    } else if (period === 'lastYear') {
-      startDate = new Date(); startDate.setFullYear(today.getFullYear() - 1);
-      endDate = today;
-    } else {
+    if (period === 'last30') { startDate = new Date(); startDate.setDate(today.getDate() - 30); endDate = today; }
+    else if (period === 'last90') { startDate = new Date(); startDate.setDate(today.getDate() - 90); endDate = today; }
+    else if (period === 'lastYear') { startDate = new Date(); startDate.setFullYear(today.getFullYear() - 1); endDate = today; }
+    else {
       startDate = new Date(document.getElementById('startDate').value);
       endDate = new Date(document.getElementById('endDate').value);
-      if (isNaN(startDate) || isNaN(endDate)) {
-        startDate = new Date(); startDate.setDate(today.getDate() - 30);
-        endDate = today;
-      }
+      if (isNaN(startDate) || isNaN(endDate)) { startDate = new Date(); startDate.setDate(today.getDate() - 30); endDate = today; }
     }
     currentFilter.start = startDate.toISOString().slice(0,10);
     currentFilter.end = endDate.toISOString().slice(0,10);
     const filtered = filterLogsByDateRange(appointmentLogs, currentFilter.start, currentFilter.end);
     const analytics = computeAnalytics(filtered);
 
-    // Doughnut chart
     const baseColors = ['#F4A2B6','#D43F6B','#6C9EAF','#2C8F6E','#F4A261'];
     const assignedColors = analytics.catLabels.map((_, idx) => baseColors[idx % baseColors.length]);
     if (doughnutChart) doughnutChart.destroy();
     const ctx = document.getElementById('popularityDoughnut').getContext('2d');
     doughnutChart = new Chart(ctx, {
       type: 'doughnut',
-      data: {
-        labels: analytics.catLabels,
-        datasets: [{ data: analytics.catData, backgroundColor: assignedColors, borderWidth: 0 }]
-      },
+      data: { labels: analytics.catLabels, datasets: [{ data: analytics.catData, backgroundColor: assignedColors, borderWidth: 0 }] },
       options: {
         responsive: true,
         maintainAspectRatio: true,
@@ -694,7 +995,6 @@
       }
     });
 
-    // Custom legend
     const legendContainer = document.getElementById('customLegend');
     legendContainer.innerHTML = analytics.catLabels.map((label, idx) => `
       <div class="legend-item">
@@ -703,13 +1003,11 @@
       </div>
     `).join('');
 
-    // Stylist table
     const tbody = document.getElementById('stylistTableBody');
     tbody.innerHTML = analytics.stylistData.map(s =>
       `<tr><td><strong>${s.name}</strong></td><td>${s.appointments}</td><td>${s.avgRating} / 5</td></tr>`
     ).join('');
 
-    // Detailed metrics
     const detailedHtml = `
       <div class="metric-item"><span>Total appointments</span><strong>${analytics.total}</strong></div>
       <div class="metric-item"><span>Active categories</span><strong>${analytics.catLabels.length}</strong></div>
@@ -721,7 +1019,6 @@
     `;
     document.getElementById('detailedMetrics').innerHTML = detailedHtml;
 
-    // Recommendations
     let recs = [];
     if (analytics.bestCount > analytics.worstCount * 2) {
       recs.push({ heading: "Category performance", text: `"${analytics.bestCat}" is more than twice as popular as "${analytics.worstCat}". Promote the slower category.` });
@@ -737,16 +1034,14 @@
     if (analytics.overallRating >= 4.5) {
       recs.push({ heading: "Client satisfaction", text: `Excellent overall rating (${analytics.overallRating}/5). Keep it up!` });
     } else {
-      recs.push({ heading: "Client feedback", text: `Overall rating is ${analytics.overallRating}/5. Consider post‑service surveys.` });
+      recs.push({ heading: "Client feedback", text: `Overall rating is ${analytics.overallRating}/5. Consider post-service surveys.` });
     }
     recs.push({ heading: "Period summary", text: `Data period: ${currentFilter.start} to ${currentFilter.end}. Use insights to adjust pricing and staffing.` });
     const recHtml = recs.map(r => `<div class="rec-heading">${r.heading}</div><div class="rec-text">${r.text}</div>`).join('');
     document.getElementById('recommendationsBox').innerHTML = recHtml;
   }
 
-  // ============================================================
   // VIEW SWITCHING
-  // ============================================================
   function switchView(viewId) {
     document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
     document.getElementById(`${viewId}-view`).classList.add('active');
@@ -755,28 +1050,7 @@
     if (viewId === 'reports') updateReports();
   }
 
-  // ============================================================
-  // SERVICE MODAL HELPERS (local)
-  // ============================================================
-  function closeServiceModal() {
-    document.getElementById('serviceModal').classList.remove('active');
-  }
-
-  function openEditServiceModal(id) {
-    const svc = services.find(s => s._id === id || s.id === id);
-    if (!svc) return;
-    document.getElementById('modalTitle').innerText = 'Edit Service';
-    document.getElementById('serviceCategory').value = svc.category;
-    document.getElementById('serviceName').value = svc.name;
-    document.getElementById('servicePrice').value = svc.price;
-    document.getElementById('serviceDuration').value = svc.duration;
-    document.getElementById('serviceId').value = svc._id || svc.id;
-    document.getElementById('serviceModal').classList.add('active');
-  }
-
-  // ============================================================
-  // RENDER SERVICE MANAGER (uses API data)
-  // ============================================================
+  // RENDER SERVICE MANAGER
   function renderServiceManager() {
     const container = document.getElementById('servicesContainer');
     if (!services.length) {
@@ -815,9 +1089,7 @@
     );
   }
 
-  // ============================================================
   // SIGN OUT
-  // ============================================================
   function signOut() {
     localStorage.removeItem('auth_token');
     localStorage.removeItem('user');
@@ -830,19 +1102,13 @@
     setTimeout(() => { window.location.href = 'login.html'; }, 300);
   }
 
-  // ============================================================
   // INIT
-  // ============================================================
   document.addEventListener('DOMContentLoaded', async function() {
-    // 1. Navigation
     document.querySelectorAll('.nav-item').forEach(nav =>
       nav.addEventListener('click', () => switchView(nav.getAttribute('data-view')))
     );
-
-    // 2. Sign out
     document.getElementById('signoutBtn').addEventListener('click', signOut);
 
-    // 3. Service modal
     document.getElementById('addServiceBtn').addEventListener('click', () => {
       document.getElementById('modalTitle').innerText = 'Add Service';
       document.getElementById('serviceCategory').value = "Nail Treatments";
@@ -855,7 +1121,6 @@
     document.getElementById('saveServiceBtn').addEventListener('click', saveServiceToDB);
     document.getElementById('cancelModalBtn').addEventListener('click', closeServiceModal);
 
-    // 4. Stylist modal
     document.getElementById('addStylistBtn').addEventListener('click', () => {
       populateStylistServiceOptions();
       openAddStylistModal();
@@ -863,7 +1128,6 @@
     document.getElementById('saveStylistBtn').addEventListener('click', saveStylistToDB);
     document.getElementById('cancelStylistModalBtn').addEventListener('click', closeStylistModal);
 
-    // 5. Close modals on backdrop click
     window.addEventListener('click', (e) => {
       if (e.target.classList.contains('modal')) {
         closeServiceModal();
@@ -871,7 +1135,6 @@
       }
     });
 
-    // 6. Report filter
     const periodSelect = document.getElementById('reportPeriod');
     const customDiv = document.getElementById('customDateRange');
     periodSelect.addEventListener('change', () => {
@@ -888,23 +1151,15 @@
       showToast("Analytics updated.");
     });
 
-    // 7. Load data from API
     await loadServicesFromDB();
     await loadStylistsFromDB();
-
-    // 8. Populate stylist service options (after services loaded)
     populateStylistServiceOptions();
-
-    // 9. Generate initial appointment logs
     generateAppointmentLogs();
 
-    // 10. Set default dates
     const todayStr = new Date().toISOString().slice(0,10);
     const thirtyAgo = new Date(); thirtyAgo.setDate(thirtyAgo.getDate() - 30);
     document.getElementById('startDate').value = thirtyAgo.toISOString().slice(0,10);
     document.getElementById('endDate').value = todayStr;
-
-    // 11. Initial reports
     updateReports();
   });
 </script>
