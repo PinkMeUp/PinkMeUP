@@ -146,8 +146,19 @@ function requireAuth() {
 /**
  * Redirect to dashboard if already authenticated
  */
-function requireGuest() {
-    if (isAuthenticated()) {
+async function requireGuest() {
+    const hasLocalUser = !!getCurrentUser();
+    if (!hasLocalUser) {
+        const authenticated = await syncAuthFromServer();
+        if (authenticated) {
+            redirectToDashboard();
+            return false;
+        }
+        return true;
+    }
+
+    const authenticated = await syncAuthFromServer();
+    if (authenticated) {
         redirectToDashboard();
         return false;
     }

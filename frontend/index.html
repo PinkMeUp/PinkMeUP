@@ -21,6 +21,16 @@
         const quickBookBtn = document.getElementById('quick-book-btn');
         if (quickBookBtn) {
             quickBookBtn.addEventListener('click', () => {
+                const guestUser = {
+                    id: 'guest-' + Date.now(),
+                    firstName: 'Guest',
+                    lastName: 'User',
+                    email: 'guest@pinkmeup.local',
+                    phone: '',
+                    role: 'customer'
+                };
+
+                localStorage.setItem('user', JSON.stringify(guestUser));
                 window.location.href = 'customerdashboard.html';
             });
         }
