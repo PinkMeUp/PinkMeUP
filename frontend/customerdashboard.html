@@ -1240,17 +1240,27 @@
   let appointments = [];
 
   async function loadAppointments() {
-    const res = await fetch(`${API_URL}/bookings/my?limit=100`, { credentials: 'include' });
-    const data = await res.json();
-    appointments = data.data.bookings.map(b => ({
-      id: b._id,
-      services: b.serviceIds.map(s => ({ id: s._id, name: s.name, price: s.price, duration: s.duration })),
-      date: b.date,
-      time: b.startTime,
-      stylist: b.stylistId?.userId?.firstName || 'Stylist',
-      notes: b.notes,
-      status: b.status
-    }));
+    try {
+      const res = await fetch(`${API_URL}/bookings/my?limit=100`, { credentials: 'include' });
+      const data = await res.json();
+      if (!res.ok || !data?.data?.bookings) {
+        appointments = [];
+        return;
+      }
+
+      appointments = data.data.bookings.map(b => ({
+        id: b._id,
+        services: (b.serviceIds || []).map(s => ({ id: s._id, name: s.name, price: s.price, duration: s.duration })),
+        date: b.date,
+        time: b.startTime,
+        stylist: b.stylistId?.userId?.firstName || 'Stylist',
+        notes: b.notes,
+        status: b.status
+      }));
+    } catch (error) {
+      console.warn('Could not load appointments:', error);
+      appointments = [];
+    }
   }
 
   let wizardStep = 1;

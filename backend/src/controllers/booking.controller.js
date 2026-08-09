@@ -132,7 +132,15 @@ const createBooking = async (req, res) => {
 const getMyBookings = async (req, res) => {
   try {
     const { status, page = 1, limit = 10 } = req.query;
-    const filter = { customerId: req.user.id };
+    const customerId = req.user?.id;
+    if (!customerId) {
+      return successResponse(res, 'Bookings retrieved.', {
+        bookings: [],
+        pagination: { page: 1, limit: parseInt(limit, 10) || 10, total: 0, pages: 0 }
+      });
+    }
+
+    const filter = { customerId };
     if (status) filter.status = status;
 
     const { page: pageNum, limit: limitNum } = parsePageLimit(page, limit);
