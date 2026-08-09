@@ -49,6 +49,14 @@ const startServer = async () => {
       });
     });
 
+    // SIGUSR2 for nodemon restarts
+    process.on('SIGUSR2', () => {
+      logger.info('SIGUSR2 received, restarting...');
+      server.close(() => {
+        process.kill(process.pid, 'SIGUSR2');
+      });
+    });
+
     return server;
   } catch (error) {
     logger.error('Failed to start server:', error.message);

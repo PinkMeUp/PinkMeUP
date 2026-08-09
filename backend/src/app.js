@@ -83,7 +83,7 @@ app.get('/health', (req, res) => {
 
 // Session middleware (required for Passport)
 app.use(session({
-  secret: process.env.JWT_SECRET || 'secret',
+  secret: process.env.SESSION_SECRET || process.env.JWT_SECRET,
   resave: false,
   saveUninitialized: false,
   cookie: {
