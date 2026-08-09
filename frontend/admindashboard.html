@@ -9,8 +9,8 @@
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
   <style>
     * { margin:0; padding:0; box-sizing:border-box; }
-    body { background:#f6f2f4; font-family:'Inter',sans-serif; height:100vh; overflow:hidden; }
-    .app { display:flex; flex-direction:column; height:100vh; width:100%; }
+    body { background:#f6f2f4; font-family:'Inter',sans-serif; min-height:100vh; overflow-x:hidden; overflow-y:auto; }
+    .app { display:flex; flex-direction:column; min-height:100vh; width:100%; }
     .main-header { background:white; border-bottom:1px solid #e4d7de; padding:0.8rem 2rem; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:1rem; }
     .header-brand h1 { font-family:'Playfair Display',serif; font-size:1.5rem; font-weight:700; background:linear-gradient(135deg,#D43F6B,#FF7CA6); -webkit-background-clip:text; background-clip:text; color:transparent; }
     .header-brand p { font-size:0.7rem; color:#b48aa0; }
@@ -90,8 +90,36 @@
     .modal-content label { font-weight:600; font-size:0.85rem; color:#3d2a33; }
     .modal-footer { display:flex; gap:1rem; justify-content:flex-end; margin-top:0.5rem; }
 
-    @media (max-width:800px){ .sidebar{width:240px;} .main{padding:1rem;} .service-row{flex-direction:column;align-items:flex-start;} .service-price{text-align:left;} }
-    @media (max-width:550px){ .stats-row{grid-template-columns:1fr;} .filter-bar{flex-direction:column;align-items:stretch;} }
+    @media (max-width:1024px){
+      .main-header{padding:0.9rem 1rem;}
+      .dashboard-layout{flex-direction:column;}
+      .sidebar{width:100%; border-right:none; border-bottom:1px solid #e4d7de;}
+      .nav{padding:1rem; flex-direction:row; flex-wrap:wrap; gap:0.5rem;}
+      .nav-item{flex:1 1 calc(50% - 0.5rem); justify-content:center;}
+      .sidebar-footer{display:grid; grid-template-columns:repeat(auto-fit,minmax(180px,1fr)); gap:0.75rem;}
+      .main{padding:1rem;}
+      .stats-row{grid-template-columns:1fr;}
+    }
+    @media (max-width:640px){
+      body{overflow:auto;}
+      .main-header{flex-direction:column; align-items:flex-start; padding:0.85rem 1rem;}
+      .header-brand h1{font-size:1.25rem;}
+      .signout-btn{width:100%; justify-content:center;}
+      .nav{padding:0.8rem;}
+      .nav-item{flex:1 1 100%; justify-content:center;}
+      .main{padding:0.8rem;}
+      .section-title{font-size:1.25rem;}
+      .card, .analytics-card, .stylist-card, .modal-content{border-radius:0.8rem;}
+      .service-row{flex-direction:column; align-items:flex-start;}
+      .service-price{text-align:left;}
+      .filter-bar{flex-direction:column; align-items:stretch;}
+      .filter-bar select, .filter-bar .date-input, .filter-bar .btn-outline{width:100%;}
+      .stylist-grid{grid-template-columns:1fr;}
+      .modal-content{width:min(95%, 500px); padding:1rem;}
+      .modal-content input, .modal-content select{margin:0.4rem 0 0.8rem;}
+      .modal-footer{flex-direction:column-reverse;}
+      .modal-footer button{width:100%;}
+    }
   </style>
 </head>
 <body>
