@@ -31,6 +31,7 @@ const createBooking = async (req, res) => {
   try {
     const { serviceIds, stylistId, date, startTime, notes, guestId, name, phone, email } = req.body;
     let customerId = req.user?.id;
+    let guestData = null;
 
     if (!customerId && (guestId || name || phone || email)) {
       const guestUser = await User.create({
@@ -42,6 +43,12 @@ const createBooking = async (req, res) => {
         role: 'customer'
       });
       customerId = guestUser._id;
+      guestData = {
+        firstName: guestUser.firstName,
+        lastName: guestUser.lastName,
+        email: guestUser.email,
+        phone: guestUser.phone
+      };
     }
 
     if (!serviceIds || !Array.isArray(serviceIds) || serviceIds.length === 0) {
@@ -109,9 +116,10 @@ const createBooking = async (req, res) => {
 
     // Send confirmation email
     try {
+      const customerForEmail = guestData || populatedAppointment.customerId;
       await emailService.sendBookingConfirmation(
         populatedAppointment,
-        populatedAppointment.customerId,
+        customerForEmail,
         populatedAppointment.serviceIds
       );
     } catch (error) {

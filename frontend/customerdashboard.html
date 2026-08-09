@@ -1055,17 +1055,23 @@
         <!-- Step 3: Details -->
         <div class="wizard-body" id="wbody3" style="display:none;">
           <div class="details-form">
-            <div class="form-group">
-              <label class="form-label">Full Name</label>
-              <input class="form-input" id="detName" type="text" placeholder="Your name" >
+            <div style="background: #FFF0F5; padding: 0.8rem; border-radius: 0.8rem; margin-bottom: 1rem; border-left: 3px solid var(--rose);">
+              <p style="font-size: 0.75rem; color: var(--muted);">
+                <i class="fas fa-info-circle"></i>
+                <strong>Quick Book:</strong> no account needed. Enter your details below and we will send a confirmation email.
+              </p>
             </div>
             <div class="form-group">
-              <label class="form-label">Phone Number</label>
-              <input class="form-input" id="detPhone" type="tel" placeholder="e.g. 071 234 5678" >
+              <label class="form-label">Full Name <span style="color: var(--rose);">*</span></label>
+              <input class="form-input" id="detName" type="text" placeholder="Your full name" >
             </div>
             <div class="form-group">
-              <label class="form-label">Email Address</label>
+              <label class="form-label">Email Address <span style="color: var(--rose);">*</span></label>
               <input class="form-input" id="detEmail" type="email" placeholder="you@example.com">
+            </div>
+            <div class="form-group">
+              <label class="form-label">Phone Number <span style="color: var(--rose);">*</span></label>
+              <input class="form-input" id="detPhone" type="tel" placeholder="e.g. 071 234 5678" >
             </div>
             <div class="form-group">
               <label class="form-label">Special Requests / Notes <span style="font-size:0.65rem;color:var(--muted);text-transform:none;letter-spacing:0;">(optional)</span></label>
@@ -1582,8 +1588,9 @@
     }
     if (wizardStep === 3) {
       const name = document.getElementById('detName').value.trim();
-      const phone= document.getElementById('detPhone').value.trim();
-      if (!name || !phone) { showToast('Please fill in your name and phone number.'); return; }
+      const email = document.getElementById('detEmail').value.trim();
+      const phone = document.getElementById('detPhone').value.trim();
+      if (!name || !email || !phone) { showToast('Please fill in your name, email, and phone number.'); return; }
     }
     if (wizardStep === 4) {
       confirmBooking(); return;
@@ -1629,6 +1636,15 @@
   }
 
   async function confirmBooking() {
+    const name = document.getElementById('detName').value.trim();
+    const email = document.getElementById('detEmail').value.trim();
+    const phone = document.getElementById('detPhone').value.trim();
+
+    if (!name || !email || !phone) {
+      showToast('Please fill in your name, email, and phone number.');
+      return;
+    }
+
     const res = await fetch(`${API_URL}/bookings`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -1638,13 +1654,29 @@
         stylistId: bookState.stylistId,
         date: bookState.date,
         startTime: bookState.time,
-        notes: document.getElementById('detNotes').value
+        notes: document.getElementById('detNotes').value,
+        name,
+        email,
+        phone
       })
     });
     const data = await res.json();
-    if (!res.ok) { showToast(data.message || 'Booking failed.'); return; }
 
-    showToast('Booking confirmed! See you soon ✨');
+    if (res.status === 409) {
+      showToast('This time slot is no longer available. Please select another time.');
+      gotoStep(2);
+      renderTimeSlots();
+      return;
+    }
+
+    if (!res.ok) {
+      showToast(data.message || 'Booking failed.');
+      return;
+    }
+
+    showToast('Booking confirmed! Check your email for confirmation.');
+    cartIds = [];
+    renderCart();
     await loadAppointments();
     setTimeout(() => { switchView('appointments'); }, 800);
   }
