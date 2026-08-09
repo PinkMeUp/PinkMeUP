@@ -9,6 +9,7 @@ const Appointment = require('../models/Appointment.model');
 const Service = require('../models/Service.model');
 const Stylist = require('../models/Stylist.model');
 const BusinessSetting = require('../models/BusinessSetting.model');
+const User = require('../models/User.model');
 const { successResponse, errorResponse } = require('../utils/response');
 const { APPOINTMENT_STATUS } = require('../utils/constants');
 const { calculateEndTime, isValidTimeFormat, getDayOfWeek, parseTimeToMinutes } = require('../utils/helpers');
@@ -28,8 +29,20 @@ const parsePageLimit = (page, limit) => ({
  */
 const createBooking = async (req, res) => {
   try {
-    const { serviceIds, stylistId, date, startTime, notes } = req.body;
-    const customerId = req.user.id;
+    const { serviceIds, stylistId, date, startTime, notes, guestId, name, phone, email } = req.body;
+    let customerId = req.user?.id;
+
+    if (!customerId && (guestId || name || phone || email)) {
+      const guestUser = await User.create({
+        firstName: name?.split(' ')[0] || 'Guest',
+        lastName: name?.split(' ').slice(1).join(' ') || 'User',
+        email: email || `guest-${Date.now()}@pinkmeup.local`,
+        phone: phone || '',
+        password: `${Date.now()}Guest!`,
+        role: 'customer'
+      });
+      customerId = guestUser._id;
+    }
 
     if (!serviceIds || !Array.isArray(serviceIds) || serviceIds.length === 0) {
       return errorResponse(res, 'At least one service is required.', 400);

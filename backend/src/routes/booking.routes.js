@@ -9,7 +9,31 @@ const { validate } = require('../middleware/validation');
 const { bookingValidation, rescheduleValidation, cancelValidation, idParamValidation, paginationValidation } = require('../validators');
 const bookingController = require('../controllers/booking.controller');
 
-router.use(authenticate);
+const allowGuestBooking = async (req, res, next) => {
+  if (req.user) {
+    return next();
+  }
+
+  const guestUser = {
+    id: req.body?.guestId || 'guest-temp',
+    role: 'customer',
+    firstName: 'Guest',
+    lastName: 'User',
+    email: 'guest@pinkmeup.local',
+    phone: req.body?.phone || ''
+  };
+
+  req.user = guestUser;
+  return next();
+};
+
+router.use(async (req, res, next) => {
+  if (req.headers.authorization || req.cookies?.token) {
+    return authenticate(req, res, next);
+  }
+
+  return allowGuestBooking(req, res, next);
+});
 
 // Customer routes
 router.get('/my', validate(paginationValidation), bookingController.getMyBookings);
