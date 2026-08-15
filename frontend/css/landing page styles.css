@@ -60,13 +60,18 @@ body::before{
 .top-row{
     display:flex;
     justify-content:space-between;
-    align-items:center;
+    align-items:flex-start; /* changed from center -> flex-start so buttons align with the heading top */
     flex-wrap:wrap;
-    gap:1rem;
+    gap:.8rem;
     margin-bottom:2rem;
 }
 
-/* ---------- BRAND ---------- */
+.brand{
+    margin-right:auto;
+    display:flex;
+    flex-direction:column; /* changed to column so the <p> sits under the <h1> */
+    align-items:flex-start;
+}
 
 .brand h1{
     font-family:'Cormorant Garamond', serif;
@@ -75,6 +80,9 @@ body::before{
     color:#FFA5C0;
     letter-spacing:-0.2px;
     text-shadow:0 2px 5px rgba(0,0,0,0.25);
+    text-align:left;
+    margin:0;
+    line-height:1.1;
 }
 
 /* ---------- LOGIN / SIGNUP ---------- */
@@ -82,9 +90,17 @@ body::before{
 .auth-group{
     display:flex;
     gap:.8rem;
+    margin-left:auto;
+    flex-wrap:wrap;
+    align-items:center;
 }
 
 .auth-btn{
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    height:2.3rem;
+    line-height:1;
     text-decoration:none;
     padding:.45rem 1.3rem;
     border-radius:40px;
@@ -117,8 +133,10 @@ body::before{
 /* ---------- ABOUT BUTTON ---------- */
 
 .about-wrapper{
-
     margin-bottom:2rem;
+    display:flex;
+    justify-content:flex-start;
+    align-items:flex-start;
 }
 
 .about-btn{
@@ -554,3 +572,43 @@ a{
 /* ==========================================================
    End of stylesheet
    ========================================================== */
+
+/* ---------- BRAND TAGLINE ---------- */
+
+.brand p{
+    font-size:.95rem;
+    font-weight:800;
+    letter-spacing:2.8px;
+    color:#FFBED2;
+    text-shadow:0 1px 3px rgba(0,0,0,.3);
+    margin-top:4px;
+    font-family:'Inter', sans-serif;
+}
+
+/* ---------- HERO TEXT ABOVE ABOUT BUTTON ---------- */
+
+.hero-text{
+    text-align:left;
+    max-width:620px;
+    margin:0;
+}
+
+.hero-text h2{
+    font-family:'Cormorant Garamond', serif;
+    font-size:2.7rem;
+    font-weight:600;
+    color:#1E1A1D;
+    letter-spacing:-0.4px;
+    line-height:1.2;
+    margin-bottom:0.5rem;
+}
+
+.hero-text p{
+    font-size:1rem;
+    font-weight:400;
+    color:#232023;
+    line-height:1.5;
+    margin:0.5rem 0 1.3rem;
+    max-width:520px;
+    opacity:0.92;
+}
