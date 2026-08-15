@@ -612,3 +612,38 @@ a{
     max-width:520px;
     opacity:0.92;
 }
+
+/* ---------- EXTRA FLUID RESPONSIVENESS ---------- */
+html, body { width:100%; min-width:0; }
+img, video, iframe { max-width:100%; height:auto; }
+.auth-container { width:100%; max-width:1600px; margin:0 auto; }
+.hero-text { width:100%; }
+.hero-text h2 { font-size:clamp(1.8rem,4vw,2.7rem); }
+.glass-card { min-width:0; width:100%; }
+
+@media (max-width:768px){
+    .auth-container{padding-left:clamp(1rem,4vw,1.8rem);padding-right:clamp(1rem,4vw,1.8rem);}
+    .top-row{align-items:center;width:100%;}
+    .brand{width:100%;margin-right:0;align-items:center;text-align:center;}
+    .brand h1{font-size:clamp(1.5rem,6vw,1.8rem);}
+    .brand p{font-size:clamp(.7rem,2.5vw,.95rem);letter-spacing:clamp(1.5px,.6vw,2.8px);}
+    .auth-group{width:100%;margin-left:0;}
+    .hero-text{text-align:center;max-width:100%;}
+    .hero-text h2{font-size:clamp(1.8rem,8vw,2.7rem);}
+    .hero-text p{max-width:100%;font-size:clamp(.88rem,3.2vw,1rem);}
+    .about-wrapper{width:100%;justify-content:center;}
+    .cards-row,.footer-container{width:100%;}
+    .glass-card{max-width:100%;}
+}
+@media (max-width:480px){
+    .auth-container{padding-left:1rem;padding-right:1rem;}
+    .glass-card{padding:1.1rem;border-radius:18px;}
+    .contact-item{overflow-wrap:anywhere;}
+    .footer-band{padding-left:.8rem;padding-right:.8rem;}
+}
+@media (max-width:360px){
+    .brand h1{font-size:1.4rem;}
+    .brand p{font-size:.68rem;letter-spacing:1.2px;}
+    .auth-container{padding-left:.75rem;padding-right:.75rem;}
+    .glass-card{padding:1rem;}
+}
