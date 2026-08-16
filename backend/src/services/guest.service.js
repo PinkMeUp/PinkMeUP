@@ -9,9 +9,14 @@ const createGuestUser = async (email = null, phone = null, name = null) => {
   const guestEmail = email || `guest_${Date.now()}@pinkmeup.com`;
   const guestPassword = crypto.randomBytes(16).toString('hex');
 
+  const trimmedName = (name || '').trim();
+  const nameParts = trimmedName.split(/\s+/).filter(Boolean);
+  const firstName = nameParts[0] || 'Guest';
+  const lastName = nameParts.slice(1).join(' ') || 'User';
+
   const guest = await User.create({
-    firstName: name || 'Guest',
-    lastName: 'User',
+    firstName,
+    lastName,
     email: guestEmail,
     password: guestPassword,
     phone: phone || '000-000-0000',

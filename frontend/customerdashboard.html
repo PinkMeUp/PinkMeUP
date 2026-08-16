@@ -1238,7 +1238,7 @@
   async function loadStylists() {
     const res = await fetch(`${API_URL}/stylists?limit=100`, { credentials: 'include' });
     const data = await res.json();
-    STYLISTS = data.data.stylists.map(s => ({ id: s._id, name: s.userId?.firstName || 'Stylist' }));
+    STYLISTS = data.data.stylists.map(s => ({ id: s._id, name: s.userId?.firstName || 'Stylist', serviceIds: (s.serviceIds || []).map(id => id.toString ? id.toString() : id) }));
   }
 
   const TIME_SLOTS = ["9:00","9:30","10:00","10:30","11:00","11:30","12:00","12:30","13:00","13:30","14:00","14:30","15:00","15:30","16:00","16:30"];
@@ -1389,6 +1389,14 @@ document.querySelectorAll('[data-reschedule-id]').forEach(btn =>
 let rescheduleApptId = null;
 
 function openRescheduleModal(id) {
+    const modal = document.getElementById('rescheduleModal');
+
+    if (!modal) {
+        console.error('Reschedule modal element not found.');
+        return;
+    }
+
+    modal.classList.remove('hidden')
   rescheduleApptId = id;
   document.getElementById('rescheduleModal').classList.add('active');
 }
@@ -1493,10 +1501,15 @@ async function confirmReschedule() {
     const today = new Date().toISOString().slice(0,10);
     document.getElementById('apptDate').min = today;
     document.getElementById('apptDate').value = '';
-    document.getElementById('apptDate').addEventListener('change', renderTimeSlots);
+    const apptDateInput = document.getElementById('apptDate');
+    if (!apptDateInput.dataset.listenerAttached) {
+      apptDateInput.addEventListener('change', refreshTimeSlots);
+      apptDateInput.dataset.listenerAttached = 'true';
+    }
 
     renderStylistGrid();
-    renderTimeSlots();
+    availableSlots = [];
+    renderTimeSlotsIntoDOM();
   }
 
   function renderCatNav() {
@@ -1531,7 +1544,7 @@ async function confirmReschedule() {
     } else {
       cartIds.push(id);
     }
-    renderstylistGrid();
+    renderStylistGrid();
     renderSvcGrid();
     renderCart();
     
@@ -1622,6 +1635,7 @@ async function confirmReschedule() {
     bookState.stylistId = id;
     bookState.stylist = name;
     renderStylistGrid();
+    refreshTimeSlots();
   }
 
   let availableSlots = [];
@@ -1647,9 +1661,20 @@ function renderTimeSlots() {
   }).join('');
 }
 
+  function renderTimeSlotsIntoDOM() {
+    const el = document.getElementById('timeSlots');
+    if (el) el.innerHTML = renderTimeSlots();
+  }
+
+  async function refreshTimeSlots() {
+    bookState.time = '';
+    await loadAvailableSlots();
+    renderTimeSlotsIntoDOM();
+  }
+
   function selectTime(t) {
     bookState.time = t;
-    renderTimeSlots();
+    renderTimeSlotsIntoDOM();
   }
 
   function gotoStep(n) {
@@ -1762,7 +1787,7 @@ function renderTimeSlots() {
     if (res.status === 409) {
       showToast('This time slot is no longer available. Please select another time.');
       gotoStep(2);
-      renderTimeSlots();
+      await refreshTimeSlots();
       return;
     }
 

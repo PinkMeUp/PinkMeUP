@@ -7,6 +7,7 @@ const Appointment = require('../models/Appointment.model');
 const Service = require('../models/Service.model');
 const Stylist = require('../models/Stylist.model');
 const BusinessSetting = require('../models/BusinessSetting.model');
+const { hasAppointmentConflict } = require('./booking.controller');
 const guestService = require('../services/guest.service');
 const emailService = require('../services/email.service');
 const { successResponse, errorResponse } = require('../utils/response');
@@ -108,15 +109,15 @@ const createGuestBooking = async (req, res) => {
       return errorResponse(res, `Bookings must be made ${settings.bookingLeadTime} minutes in advance.`, 400);
     }
 
-    const existing = await Appointment.findOne({
+    const hasConflict = await hasAppointmentConflict({
       stylistId,
       date: bookingDate,
       startTime,
-      status: { $nin: [APPOINTMENT_STATUS.CANCELLED, APPOINTMENT_STATUS.NO_SHOW] }
+      duration: totalDuration
     });
 
-    if (existing) {
-      return errorResponse(res, 'Time slot already booked.', 409);
+    if (hasConflict) {
+      return errorResponse(res, 'Time slot is unavailable. Please select another time.', 409);
     }
 
     const endTime = calculateEndTime(startTime, totalDuration);
@@ -131,7 +132,10 @@ const createGuestBooking = async (req, res) => {
       totalPrice,
       notes,
       status: APPOINTMENT_STATUS.CONFIRMED,
-      isWalkIn: true
+      // Only mark as a walk-in when an authenticated admin/stylist is
+      // recording it on behalf of a customer; public guest self-bookings
+      // made through the website are not walk-ins.
+      isWalkIn: req.user?.role === 'admin' || req.user?.role === 'stylist'
     });
 
     const populatedAppointment = await Appointment.findById(appointment._id)

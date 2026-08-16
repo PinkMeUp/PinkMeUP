@@ -9,38 +9,22 @@ const { validate } = require('../middleware/validation');
 const { bookingValidation, rescheduleValidation, cancelValidation, idParamValidation, paginationValidation } = require('../validators');
 const bookingController = require('../controllers/booking.controller');
 
-const allowGuestBooking = async (req, res, next) => {
-  if (req.user) {
-    return next();
-  }
-
-  const guestUser = {
-    id: req.body?.guestId || 'guest-temp',
-    role: 'customer',
-    firstName: 'Guest',
-    lastName: 'User',
-    email: 'guest@pinkmeup.local',
-    phone: req.body?.phone || ''
-  };
-
-  req.user = guestUser;
-  return next();
-};
-
-router.use(async (req, res, next) => {
+// Optionally authenticate: if the request carries credentials, verify them
+// and populate req.user; otherwise continue as an anonymous guest (req.user
+// stays undefined so createBooking's own guest-account logic can run).
+const optionalAuthenticate = async (req, res, next) => {
   if (req.headers.authorization || req.cookies?.token) {
     return authenticate(req, res, next);
   }
-
-  return allowGuestBooking(req, res, next);
-});
+  return next();
+};
 
 // Customer routes
-router.get('/my', validate(paginationValidation), bookingController.getMyBookings);
-router.get('/:id', validate(idParamValidation), bookingController.getBookingById);
-router.post('/', validate(bookingValidation), bookingController.createBooking);
-router.put('/:id/cancel', validate(cancelValidation), bookingController.cancelBooking);
-router.put('/:id/reschedule', validate(rescheduleValidation), bookingController.rescheduleBooking);
+router.get('/my', authenticate, validate(paginationValidation), bookingController.getMyBookings);
+router.get('/:id', authenticate, validate(idParamValidation), bookingController.getBookingById);
+router.post('/', optionalAuthenticate, validate(bookingValidation), bookingController.createBooking);
+router.put('/:id/cancel', authenticate, validate(cancelValidation), bookingController.cancelBooking);
+router.put('/:id/reschedule', authenticate, validate(rescheduleValidation), bookingController.rescheduleBooking);
 
 // Admin routes
 router.get('/all', authorize('admin'), validate(paginationValidation), bookingController.getAllBookings);

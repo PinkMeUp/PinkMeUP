@@ -21,7 +21,7 @@ const parsePageLimit = (page, limit) => ({
  */
 const createStylist = async (req, res) => {
   try {
-    const { userId, specialties, workingHours } = req.body;
+    const { userId, specialties, serviceIds, workingHours } = req.body;
 
     const user = await User.findById(userId);
     if (!user) return errorResponse(res, 'User not found.', 404);
@@ -34,7 +34,7 @@ const createStylist = async (req, res) => {
     const existing = await Stylist.findOne({ userId });
     if (existing) return errorResponse(res, 'Stylist profile already exists.', 409);
 
-    const stylist = await Stylist.create({ userId, specialties });
+    const stylist = await Stylist.create({ userId, specialties, serviceIds: serviceIds || [] });
     const populated = await Stylist.findById(stylist._id).populate('userId', 'firstName lastName email phone');
 
     return successResponse(res, 'Stylist created.', populated, 201);
@@ -87,12 +87,13 @@ const getStylistById = async (req, res) => {
 const updateStylist = async (req, res) => {
   try {
     const { id } = req.params;
-    const { specialties, isAvailable, rating } = req.body;
+    const { specialties, serviceIds, isAvailable, rating } = req.body;
 
     const stylist = await Stylist.findById(id);
     if (!stylist) return errorResponse(res, 'Stylist not found.', 404);
 
     if (specialties) stylist.specialties = specialties;
+    if (serviceIds) stylist.serviceIds = serviceIds;
     if (isAvailable !== undefined) stylist.isAvailable = isAvailable;
     if (rating !== undefined) stylist.rating = rating;
     await stylist.save();
@@ -138,7 +139,7 @@ const getStylistAvailability = async (req, res) => {
  */
 const createStylistByAdmin = async (req, res) => {
   try {
-    const { firstName, lastName, email, password, phone, specialties, workingHours } = req.body;
+    const { firstName, lastName, email, password, phone, specialties, serviceIds, workingHours } = req.body;
 
     const user = await User.create({
       firstName,
@@ -153,6 +154,7 @@ const createStylistByAdmin = async (req, res) => {
     const stylist = await Stylist.create({
       userId: user._id,
       specialties: specialties || [],
+      serviceIds: serviceIds || [],
       workingHours: workingHours || {},
       isAvailable: true
     });

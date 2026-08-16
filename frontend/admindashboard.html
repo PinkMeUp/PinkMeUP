@@ -795,7 +795,7 @@
           name: st.userId ? `${st.userId.firstName || ''} ${st.userId.lastName || ''}`.trim() : 'Unknown',
           email: st.userId?.email || '',
           phone: st.userId?.phone || '',
-          serviceIds: st.specialties || [],
+          serviceIds: st.serviceIds || [],
           isAvailable: st.isAvailable,
           rating: st.rating
         }));
@@ -896,7 +896,7 @@
           method: 'PUT',
           headers: { 'Content-Type': 'application/json' },
           credentials: 'include',
-          body: JSON.stringify({ specialties })
+          body: JSON.stringify({ serviceIds: specialties })
         });
         const data = await res.json();
         if (!res.ok) { showToast(data.message || 'Failed to update.'); return; }
@@ -912,7 +912,7 @@
             email: email || `${firstName.toLowerCase()}@salon.com`,
             password,
             phone: phone || '',
-            specialties
+            serviceIds: specialties
           })
         });
         const data = await res.json();

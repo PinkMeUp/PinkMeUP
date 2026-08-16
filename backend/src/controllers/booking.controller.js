@@ -82,19 +82,27 @@ const parsePageLimit = (page, limit) => ({
  */
 const createBooking = async (req, res) => {
   try {
-    const { serviceIds, stylistId, date, startTime, notes, guestId, name, phone, email } = req.body;
+    const { serviceIds, stylistId, date, startTime, notes, guestId, guestName, guestPhone, guestEmail } = req.body;
     let customerId = req.user?.id;
     let guestData = null;
 
-    if (!customerId && (guestId || name || phone || email)) {
-      const guestUser = await User.create({
-        firstName: name?.split(' ')[0] || 'Guest',
-        lastName: name?.split(' ').slice(1).join(' ') || 'User',
-        email: email || `guest-${Date.now()}@pinkmeup.local`,
-        phone: phone || '',
-        password: `${Date.now()}Guest!`,
-        role: 'customer'
-      });
+    if (!customerId && (guestId || guestName || guestPhone || guestEmail)) {
+      let guestUser = null;
+      if (guestEmail) {
+        guestUser = await User.findOne({ email: guestEmail });
+      }
+      if (!guestUser) {
+        const firstName = guestName?.split(' ')[0] || 'Guest';
+        const lastName = guestName?.split(' ').slice(1).join(' ') || 'User';
+        guestUser = await User.create({
+          firstName,
+          lastName,
+          email: guestEmail || `guest-${Date.now()}@pinkmeup.local`,
+          phone: guestPhone || '',
+          password: `${Date.now()}Guest!`,
+          role: 'customer'
+        });
+      }
       customerId = guestUser._id;
       guestData = {
         firstName: guestUser.firstName,
@@ -102,6 +110,10 @@ const createBooking = async (req, res) => {
         email: guestUser.email,
         phone: guestUser.phone
       };
+    }
+
+    if (!customerId) {
+      return errorResponse(res, 'Please provide your name, email, and phone number, or log in.', 400);
     }
 
     if (!serviceIds || !Array.isArray(serviceIds) || serviceIds.length === 0) {
@@ -377,11 +389,14 @@ const rescheduleBooking = async (req, res) => {
     }
     if (bookingEndMin > endMin) return errorResponse(res, 'Booking ends after closing time.', 400);
 
-    const existing = await Appointment.findOne({
-      _id: { $ne: id }, stylistId: appointment.stylistId, date: bookingDate, startTime,
-      status: { $nin: [APPOINTMENT_STATUS.CANCELLED, APPOINTMENT_STATUS.NO_SHOW] }
+    const hasConflict = await hasAppointmentConflict({
+      stylistId: appointment.stylistId,
+      date: bookingDate,
+      startTime,
+      duration: appointment.totalDuration,
+      excludeAppointmentId: id
     });
-    if (existing) return errorResponse(res, 'Time slot already booked.', 409);
+    if (hasConflict) return errorResponse(res, 'Time slot is unavailable. Please select another time.', 409);
 
     const endTime = calculateEndTime(startTime, appointment.totalDuration);
     appointment.date = bookingDate;
@@ -436,24 +451,47 @@ const updateBookingStatus = async (req, res) => {
   try {
     const { id } = req.params;
     const { status } = req.body;
-    const validStatuses = ['pending', 'confirmed', 'completed', 'no_show'];
+
+    const validStatuses = [
+      'pending',
+      'confirmed',
+      'completed',
+      'no_show'
+    ];
+
     if (!validStatuses.includes(status)) {
       return errorResponse(res, 'Invalid status.', 400);
     }
 
     const appointment = await Appointment.findById(id);
-    if (!appointment) return errorResponse(res, 'Booking not found.', 404);
+
+    if (!appointment) {
+      return errorResponse(res, 'Booking not found.', 404);
+    }
+
     if (appointment.status === APPOINTMENT_STATUS.CANCELLED) {
-      return errorResponse(res, 'Cancelled bookings cannot be updated.', 400);
+      return errorResponse(
+        res,
+        'Cancelled bookings cannot be updated.',
+        400
+      );
     }
 
     appointment.status = status;
     await appointment.save();
 
-    return successResponse(res, 'Booking status updated.', appointment);
+    return successResponse(
+      res,
+      'Booking status updated.',
+      appointment
+    );
   } catch (error) {
     logger.error('Update booking status error:', error);
-    return errorResponse(res, 'Failed to update booking status.', 500);
+    return errorResponse(
+      res,
+      'Failed to update booking status.',
+      500
+    );
   }
 };
 
@@ -490,6 +528,7 @@ module.exports = {
   cancelBooking,
   rescheduleBooking,
   getAllBookings,
-  getStylistBookings
-  updateBookingStatus
+  getStylistBookings,
+  updateBookingStatus,
+  hasAppointmentConflict
 };

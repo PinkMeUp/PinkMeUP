@@ -65,7 +65,8 @@ const guestBookingValidation = [
 // Stylist validations
 const stylistValidation = [
   body('userId').isMongoId().withMessage('Invalid user ID'),
-  body('specialties').optional().isArray().withMessage('Specialties must be an array')
+  body('specialties').optional().isArray().withMessage('Specialties must be an array'),
+  body('serviceIds').optional().isArray().withMessage('Service IDs must be an array')
 ];
 
 // Password reset validations
