@@ -895,21 +895,24 @@
   }
 
   // ANALYTICS — real data from the backend reports API
-  async function updateReports() {
-    const period = document.getElementById('reportPeriod').value;
-    let startDate, endDate, today = new Date();
-    if (period === 'last30') { startDate = new Date(); startDate.setDate(today.getDate() - 30); endDate = today; }
-    else if (period === 'last90') { startDate = new Date(); startDate.setDate(today.getDate() - 90); endDate = today; }
-    else if (period === 'lastYear') { startDate = new Date(); startDate.setFullYear(today.getFullYear() - 1); endDate = today; }
-    else {
-      startDate = new Date(document.getElementById('startDate').value);
-      endDate = new Date(document.getElementById('endDate').value);
-      if (isNaN(startDate) || isNaN(endDate)) { startDate = new Date(); startDate.setDate(today.getDate() - 30); endDate = today; }
-    }
-    currentFilter.start = startDate.toISOString().slice(0, 10);
-    currentFilter.end = endDate.toISOString().slice(0, 10);
+ async function updateReports() {
+  const period = document.getElementById('reportPeriod').value;
+  let startDate, endDate, today = new Date();
+  const future = new Date(); future.setFullYear(today.getFullYear() + 2); // far enough to catch all upcoming bookings
 
-    const qs = `?startDate=${currentFilter.start}&endDate=${currentFilter.end}`;
+  if (period === 'last30') { startDate = new Date(); startDate.setDate(today.getDate() - 30); endDate = future; }
+  else if (period === 'last90') { startDate = new Date(); startDate.setDate(today.getDate() - 90); endDate = future; }
+  else if (period === 'lastYear') { startDate = new Date(); startDate.setFullYear(today.getFullYear() - 1); endDate = future; }
+  else {
+    startDate = new Date(document.getElementById('startDate').value);
+    endDate = new Date(document.getElementById('endDate').value);
+    if (isNaN(startDate) || isNaN(endDate)) { startDate = new Date(); startDate.setDate(today.getDate() - 30); endDate = future; }
+  }
+
+  currentFilter.start = startDate.toISOString().slice(0, 10);
+  currentFilter.end = endDate.toISOString().slice(0, 10);
+
+  const qs = `?startDate=${currentFilter.start}&endDate=${currentFilter.end}`;
 
     try {
       const [trendsRes, popularityRes, performanceRes] = await Promise.all([
