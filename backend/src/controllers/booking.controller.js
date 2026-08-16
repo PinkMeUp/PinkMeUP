@@ -319,10 +319,13 @@ const rescheduleBooking = async (req, res) => {
 const getAllBookings = async (req, res) => {
   try {
     const { status, startDate, endDate, page = 1, limit = 10 } = req.query;
-    const filter = {};
-    if (status) filter.status = status;
-    if (startDate) filter.date = { $gte: new Date(startDate) };
-    if (endDate) filter.date = { $lte: new Date(endDate) };
+const filter = {};
+if (status) filter.status = status;
+if (startDate || endDate) {
+  filter.date = {};
+  if (startDate) filter.date.$gte = new Date(startDate);
+  if (endDate) filter.date.$lte = new Date(endDate);
+}
 
     const { page: pageNum, limit: limitNum } = parsePageLimit(page, limit);
     const skip = (pageNum - 1) * limitNum;

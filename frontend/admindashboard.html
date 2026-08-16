@@ -494,37 +494,30 @@
         </div>
         <div class="info-prompt"><i class="fas fa-chart-pie"></i> Select a date range to see updated insights.</div>
 
-        <div class="stats-row">
-          <div class="analytics-card">
-            <h3>Service popularity</h3>
-            <p>Booking share per category</p>
-            <div class="chart-container">
-              <canvas id="popularityDoughnut" width="400" height="240"></canvas>
-            </div>
-            <div id="customLegend" class="custom-legend"></div>
+        <div class="analytics-card" style="margin-bottom:1rem;">
+          <h3>Booking trends &amp; service popularity</h3>
+          <p>Busiest days and hours, plus the most-booked services</p>
+          <div class="chart-container" style="max-height:260px;">
+            <canvas id="trendsBarChart" width="700" height="260"></canvas>
           </div>
-          <div class="analytics-card">
-            <h3>Stylist performance</h3>
-            <p>Appointments handled & average rating</p>
-            <div style="overflow-x:auto;">
-              <table class="stylist-table" id="stylistTable">
-                <thead><tr><th>Stylist</th><th>Appointments</th><th>Avg rating</th></tr></thead>
-                <tbody id="stylistTableBody"></tbody>
-              </table>
-            </div>
+          <div id="peakHoursStrip" style="margin-top:0.6rem; font-size:0.8rem; color:#6c3b52;"></div>
+          <hr class="divider" />
+          <div style="overflow-x:auto;">
+            <table class="stylist-table" id="servicePopularityTable">
+              <thead><tr><th>Service</th><th>Category</th><th>Bookings</th></tr></thead>
+              <tbody id="servicePopularityBody"></tbody>
+            </table>
           </div>
         </div>
 
-        <div class="stats-row">
-          <div class="analytics-card">
-            <h3>Detailed metrics</h3>
-            <hr class="divider" />
-            <div id="detailedMetrics" class="metric-list-single"></div>
-          </div>
-          <div class="analytics-card">
-            <h3>Strategic recommendations</h3>
-            <hr class="divider" />
-            <div id="recommendationsBox" class="rec-card"></div>
+        <div class="analytics-card">
+          <h3>Stylist performance</h3>
+          <p>Appointments assigned, completed, and average rating</p>
+          <div style="overflow-x:auto;">
+            <table class="stylist-table" id="stylistTable">
+              <thead><tr><th>Stylist</th><th>Assigned</th><th>Completed</th><th>Completion rate</th><th>Avg rating</th></tr></thead>
+              <tbody id="stylistTableBody"></tbody>
+            </table>
           </div>
         </div>
       </div>
@@ -623,10 +616,9 @@
 
   let services = [];
   let stylists = [];
-  let appointmentLogs = [];
-  let doughnutChart;
+  let trendsChart;
   let currentFilter = { start: null, end: null };
-  const stylistNames = [];
+  const DAY_LABELS = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 
   function escapeHtml(str) {
     if (!str) return '';
@@ -745,7 +737,6 @@
         }));
         window.stylistNames = stylists.map(s => s.name);
         renderStylists();
-        generateAppointmentLogs();
         if (document.getElementById('reports-view').classList.contains('active')) updateReports();
       }
     } catch (err) {
@@ -903,65 +894,7 @@
     document.getElementById('serviceModal').classList.add('active');
   }
 
-  // ANALYTICS
-  function generateAppointmentLogs() {
-    const categories = [...new Set(services.map(s => s.category))];
-    const names = stylists.map(s => s.name);
-    if (names.length === 0) { appointmentLogs = []; return; }
-    const startGen = new Date(2024, 0, 1);
-    const endGen = new Date();
-    const logs = [];
-    for (let i = 0; i < 750; i++) {
-      const randDate = new Date(startGen.getTime() + Math.random() * (endGen.getTime() - startGen.getTime()));
-      const stylist = names[Math.floor(Math.random() * names.length)];
-      const category = categories.length ? categories[Math.floor(Math.random() * categories.length)] : 'General';
-      const rating = 3.2 + Math.random() * 1.8;
-      logs.push({ id: i, category, stylist, date: randDate.toISOString().slice(0, 10), rating: Math.min(5, Math.round(rating * 10) / 10) });
-    }
-    appointmentLogs = logs;
-  }
-
-  function filterLogsByDateRange(logs, startDate, endDate) {
-    if (!startDate || !endDate) return logs;
-    const start = new Date(startDate);
-    const end = new Date(endDate);
-    return logs.filter(log => { const d = new Date(log.date); return d >= start && d <= end; });
-  }
-
-  function computeAnalytics(filteredLogs) {
-    const catCounts = {};
-    filteredLogs.forEach(log => { catCounts[log.category] = (catCounts[log.category] || 0) + 1; });
-    const catLabels = Object.keys(catCounts);
-    const catData = Object.values(catCounts);
-
-    const stylistStats = {};
-    const names = stylists.map(s => s.name);
-    names.forEach(s => { stylistStats[s] = { appointments: 0, ratings: [] }; });
-    filteredLogs.forEach(log => {
-      if (stylistStats[log.stylist]) {
-        stylistStats[log.stylist].appointments++;
-        stylistStats[log.stylist].ratings.push(log.rating);
-      }
-    });
-    const stylistData = names.map(name => ({
-      name,
-      appointments: stylistStats[name]?.appointments || 0,
-      avgRating: stylistStats[name]?.ratings.length ? (stylistStats[name].ratings.reduce((a, b) => a + b, 0) / stylistStats[name].ratings.length).toFixed(1) : "0.0"
-    }));
-
-    const total = filteredLogs.length;
-    let bestCat = "", bestCount = 0, worstCat = "", worstCount = Infinity;
-    for (const [cat, cnt] of Object.entries(catCounts)) {
-      if (cnt > bestCount) { bestCount = cnt; bestCat = cat; }
-      if (cnt < worstCount) { worstCount = cnt; worstCat = cat; }
-    }
-    const busiest = stylistData.reduce((a, b) => a.appointments > b.appointments ? a : b, stylistData[0] || { name: 'N/A', appointments: 0 });
-    const highestRated = stylistData.reduce((a, b) => parseFloat(a.avgRating) > parseFloat(b.avgRating) ? a : b, stylistData[0] || { name: 'N/A', avgRating: '0.0' });
-    const overallRating = total ? (filteredLogs.reduce((s, l) => s + l.rating, 0) / total).toFixed(1) : "0.0";
-
-    return { catLabels, catData, stylistData, total, bestCat, bestCount, worstCat, worstCount, busiest, highestRated, overallRating };
-  }
-
+  // ANALYTICS — real data from the backend reports API
   async function updateReports() {
     const period = document.getElementById('reportPeriod').value;
     let startDate, endDate, today = new Date();
@@ -973,72 +906,95 @@
       endDate = new Date(document.getElementById('endDate').value);
       if (isNaN(startDate) || isNaN(endDate)) { startDate = new Date(); startDate.setDate(today.getDate() - 30); endDate = today; }
     }
-    currentFilter.start = startDate.toISOString().slice(0,10);
-    currentFilter.end = endDate.toISOString().slice(0,10);
-    const filtered = filterLogsByDateRange(appointmentLogs, currentFilter.start, currentFilter.end);
-    const analytics = computeAnalytics(filtered);
+    currentFilter.start = startDate.toISOString().slice(0, 10);
+    currentFilter.end = endDate.toISOString().slice(0, 10);
 
-    const baseColors = ['#F4A2B6','#D43F6B','#6C9EAF','#2C8F6E','#F4A261'];
-    const assignedColors = analytics.catLabels.map((_, idx) => baseColors[idx % baseColors.length]);
-    if (doughnutChart) doughnutChart.destroy();
-    const ctx = document.getElementById('popularityDoughnut').getContext('2d');
-    doughnutChart = new Chart(ctx, {
-      type: 'doughnut',
-      data: { labels: analytics.catLabels, datasets: [{ data: analytics.catData, backgroundColor: assignedColors, borderWidth: 0 }] },
+    const qs = `?startDate=${currentFilter.start}&endDate=${currentFilter.end}`;
+
+    try {
+      const [trendsRes, popularityRes, performanceRes] = await Promise.all([
+        fetch(`${API_BASE}/admin/reports/booking-trends${qs}`, { credentials: 'include' }),
+        fetch(`${API_BASE}/admin/reports/service-popularity${qs}`, { credentials: 'include' }),
+        fetch(`${API_BASE}/admin/reports/stylist-performance${qs}`, { credentials: 'include' })
+      ]);
+
+      const trendsJson = await trendsRes.json();
+      const popularityJson = await popularityRes.json();
+      const performanceJson = await performanceRes.json();
+
+      if (!trendsJson.success || !popularityJson.success || !performanceJson.success) {
+        throw new Error('One or more report requests failed.');
+      }
+
+      renderTrendsChart(trendsJson.data);
+      renderPeakHours(trendsJson.data);
+      renderServicePopularity(popularityJson.data);
+      renderStylistPerformance(performanceJson.data);
+    } catch (err) {
+      showToast('Failed to load reports.');
+    }
+  }
+
+  function renderTrendsChart(trends) {
+    const dayCounts = new Array(7).fill(0);
+    (trends.bookingsByDay || []).forEach(d => { dayCounts[d._id - 1] = d.count; }); // 1=Sunday..7=Saturday
+    if (trendsChart) trendsChart.destroy();
+    const ctx = document.getElementById('trendsBarChart').getContext('2d');
+    trendsChart = new Chart(ctx, {
+      type: 'bar',
+      data: {
+        labels: DAY_LABELS,
+        datasets: [{ label: 'Bookings', data: dayCounts, backgroundColor: '#D43F6B', borderRadius: 4 }]
+      },
       options: {
         responsive: true,
         maintainAspectRatio: true,
-        plugins: {
-          legend: { display: false },
-          tooltip: { callbacks: { label: (ctx) => `${ctx.label}: ${ctx.raw} bookings (${((ctx.raw / analytics.total) * 100).toFixed(1)}%)` } }
-        }
+        plugins: { legend: { display: false } },
+        scales: { y: { beginAtZero: true, ticks: { precision: 0 } } }
       }
     });
+  }
 
-    const legendContainer = document.getElementById('customLegend');
-    legendContainer.innerHTML = analytics.catLabels.map((label, idx) => `
-      <div class="legend-item">
-        <div class="legend-color" style="background-color:${assignedColors[idx]};"></div>
-        <span>${label}</span>
-      </div>
-    `).join('');
+  function renderPeakHours(trends) {
+    const byHour = trends.bookingsByHour || [];
+    const strip = document.getElementById('peakHoursStrip');
+    if (!byHour.length) {
+      strip.innerHTML = '<span style="color:#b48aa0;">No hourly data for this period.</span>';
+      return;
+    }
+    const top3 = [...byHour].sort((a, b) => b.count - a.count).slice(0, 3);
+    strip.innerHTML = 'Peak hours: ' + top3
+      .map(h => `<span style="display:inline-block;background:#fbe4ec;color:#a3315a;padding:0.2rem 0.6rem;border-radius:1rem;margin-right:0.4rem;">${String(h._id).padStart(2, '0')}:00 (${h.count})</span>`)
+      .join('');
+  }
 
-    const tbody = document.getElementById('stylistTableBody');
-    tbody.innerHTML = analytics.stylistData.map(s =>
-      `<tr><td><strong>${s.name}</strong></td><td>${s.appointments}</td><td>${s.avgRating} / 5</td></tr>`
+  function renderServicePopularity(popularity) {
+    const tbody = document.getElementById('servicePopularityBody');
+    if (!popularity || !popularity.length) {
+      tbody.innerHTML = '<tr><td colspan="3" style="color:#b48aa0;">No bookings in this period.</td></tr>';
+      return;
+    }
+    tbody.innerHTML = popularity.map(s =>
+      `<tr><td><strong>${escapeHtml(s.serviceName)}</strong></td><td>${escapeHtml(s.category)}</td><td>${s.bookingsCount}</td></tr>`
     ).join('');
+  }
 
-    const detailedHtml = `
-      <div class="metric-item"><span>Total appointments</span><strong>${analytics.total}</strong></div>
-      <div class="metric-item"><span>Active categories</span><strong>${analytics.catLabels.length}</strong></div>
-      <div class="metric-item"><span>Most popular category</span><strong>${analytics.bestCat} (${analytics.bestCount})</strong></div>
-      <div class="metric-item"><span>Least popular category</span><strong>${analytics.worstCat} (${analytics.worstCount})</strong></div>
-      <div class="metric-item"><span>Busiest stylist</span><strong>${analytics.busiest.name} (${analytics.busiest.appointments})</strong></div>
-      <div class="metric-item"><span>Highest rated stylist</span><strong>${analytics.highestRated.name} (${analytics.highestRated.avgRating}★)</strong></div>
-      <div class="metric-item"><span>Overall average rating</span><strong>${analytics.overallRating} / 5</strong></div>
-    `;
-    document.getElementById('detailedMetrics').innerHTML = detailedHtml;
-
-    let recs = [];
-    if (analytics.bestCount > analytics.worstCount * 2) {
-      recs.push({ heading: "Category performance", text: `"${analytics.bestCat}" is more than twice as popular as "${analytics.worstCat}". Promote the slower category.` });
+  function renderStylistPerformance(performance) {
+    const tbody = document.getElementById('stylistTableBody');
+    if (!performance || !performance.length) {
+      tbody.innerHTML = '<tr><td colspan="5" style="color:#b48aa0;">No stylist activity in this period.</td></tr>';
+      return;
     }
-    const avgApps = analytics.total / (stylists.length || 1);
-    if (analytics.busiest.appointments > avgApps * 1.4 && stylists.length > 1) {
-      recs.push({ heading: "Workload balance", text: `${analytics.busiest.name} handles significantly more appointments. Redistribute bookings.` });
-    }
-    const lowRated = analytics.stylistData.find(s => parseFloat(s.avgRating) < 4.0 && s.appointments > 0);
-    if (lowRated) {
-      recs.push({ heading: "Staff development", text: `${lowRated.name} has a rating below 4.0 (${lowRated.avgRating}/5). Provide coaching.` });
-    }
-    if (analytics.overallRating >= 4.5) {
-      recs.push({ heading: "Client satisfaction", text: `Excellent overall rating (${analytics.overallRating}/5). Keep it up!` });
-    } else {
-      recs.push({ heading: "Client feedback", text: `Overall rating is ${analytics.overallRating}/5. Consider post-service surveys.` });
-    }
-    recs.push({ heading: "Period summary", text: `Data period: ${currentFilter.start} to ${currentFilter.end}. Use insights to adjust pricing and staffing.` });
-    const recHtml = recs.map(r => `<div class="rec-heading">${r.heading}</div><div class="rec-text">${r.text}</div>`).join('');
-    document.getElementById('recommendationsBox').innerHTML = recHtml;
+    tbody.innerHTML = performance.map(s => {
+      const rate = s.totalAssigned ? Math.round((s.completedBookings / s.totalAssigned) * 100) : 0;
+      return `<tr>
+        <td><strong>${escapeHtml(s.stylistName)}</strong></td>
+        <td>${s.totalAssigned}</td>
+        <td>${s.completedBookings}</td>
+        <td>${rate}%</td>
+        <td>${s.rating.toFixed(1)} / 5</td>
+      </tr>`;
+    }).join('');
   }
 
   // VIEW SWITCHING
@@ -1169,11 +1125,10 @@
     await loadServicesFromDB();
     await loadStylistsFromDB();
     populateStylistServiceOptions();
-    generateAppointmentLogs();
 
-    const todayStr = new Date().toISOString().slice(0,10);
+    const todayStr = new Date().toISOString().slice(0, 10);
     const thirtyAgo = new Date(); thirtyAgo.setDate(thirtyAgo.getDate() - 30);
-    document.getElementById('startDate').value = thirtyAgo.toISOString().slice(0,10);
+    document.getElementById('startDate').value = thirtyAgo.toISOString().slice(0, 10);
     document.getElementById('endDate').value = todayStr;
     updateReports();
   });
