@@ -1246,28 +1246,46 @@
   let appointments = [];
 
   async function loadAppointments() {
-    try {
-      const res = await fetch(`${API_URL}/bookings/my?limit=100`, { credentials: 'include' });
-      const data = await res.json();
-      if (!res.ok || !data?.data?.bookings) {
-        appointments = [];
-        return;
+  try {
+    const res = await fetch(`${API_URL}/bookings/my?limit=100`, { credentials: 'include' });
+    const data = await res.json();
+    if (!res.ok || !data?.data?.bookings) {
+      appointments = [];
+      return;
+    }
+
+    const now = new Date();
+
+    appointments = data.data.bookings.map(b => {
+      let displayStatus;
+      if (b.status === 'cancelled') {
+        displayStatus = 'cancelled';
+      } else if (b.status === 'completed') {
+        displayStatus = 'past';
+      } else {
+        // 'confirmed' or 'pending' -> derive upcoming/past from the actual date+time
+        const apptDateTime = new Date(b.date);
+        const [h, m] = (b.startTime || '0:0').split(':').map(Number);
+        apptDateTime.setHours(h, m, 0, 0);
+        displayStatus = apptDateTime >= now ? 'upcoming' : 'past';
       }
 
-      appointments = data.data.bookings.map(b => ({
+      return {
         id: b._id,
         services: (b.serviceIds || []).map(s => ({ id: s._id, name: s.name, price: s.price, duration: s.duration })),
         date: b.date,
         time: b.startTime,
         stylist: b.stylistId?.userId?.firstName || 'Stylist',
         notes: b.notes,
-        status: b.status
-      }));
-    } catch (error) {
-      console.warn('Could not load appointments:', error);
-      appointments = [];
-    }
+        status: displayStatus,
+        rawStatus: b.status
+      };
+    });
+  } catch (error) {
+    console.warn('Could not load appointments:', error);
+    appointments = [];
   }
+}
 
   let wizardStep = 1;
   let cartIds    = [];

@@ -346,6 +346,35 @@ if (startDate || endDate) {
   }
 };
 
+
+const updateBookingStatus = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { status } = req.body;
+    const validStatuses = ['pending', 'confirmed', 'completed', 'no_show'];
+    if (!validStatuses.includes(status)) {
+      return errorResponse(res, 'Invalid status.', 400);
+    }
+
+    const appointment = await Appointment.findById(id);
+    if (!appointment) return errorResponse(res, 'Booking not found.', 404);
+    if (appointment.status === APPOINTMENT_STATUS.CANCELLED) {
+      return errorResponse(res, 'Cancelled bookings cannot be updated.', 400);
+    }
+
+    appointment.status = status;
+    await appointment.save();
+
+    return successResponse(res, 'Booking status updated.', appointment);
+  } catch (error) {
+    logger.error('Update booking status error:', error);
+    return errorResponse(res, 'Failed to update booking status.', 500);
+  }
+};
+
+
+
+
 const getStylistBookings = async (req, res) => {
   try {
     const { id } = req.params;
@@ -377,4 +406,5 @@ module.exports = {
   rescheduleBooking,
   getAllBookings,
   getStylistBookings
+  updateBookingStatus
 };

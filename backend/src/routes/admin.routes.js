@@ -24,6 +24,7 @@ router.get('/settings/hours', settingController.getBusinessHours);
 router.put('/settings/hours', settingController.updateBusinessHours);
 
 // Bookings
+router.put('/bookings/:id/status', validate(idParamValidation), bookingController.updateBookingStatus);
 router.get('/bookings', bookingController.getAllBookings);
 router.get('/bookings/stylist/:id', validate(idParamValidation), bookingController.getStylistBookings);
 
