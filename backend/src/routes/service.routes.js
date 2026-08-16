@@ -17,6 +17,6 @@ router.get('/:id', validate(idParamValidation), serviceController.getServiceById
 // Admin routes
 router.post('/', authenticate, authorize('admin'), validate(serviceValidation), serviceController.createService);
 router.put('/:id', authenticate, authorize('admin'), validate(idParamValidation), serviceController.updateService);
-router.delete('/:id', authenticate, authorize('admin'), validate(idParamValidation), serviceController.deleteService);
+router.delete('/:id', authenticate, authorize('admin'), validate(idParamValidation), serviceController.archiveService);
 
 module.exports = router;

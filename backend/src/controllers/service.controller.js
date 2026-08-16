@@ -6,6 +6,7 @@
 const Service = require('../models/Service.model');
 const { successResponse, errorResponse } = require('../utils/response');
 const logger = require('../config/logger');
+const Appointment = require('../models/Appointment.model');
 
 const parsePageLimit = (page, limit) => ({
   page: Math.max(parseInt(page, 10) || 1, 1),
@@ -106,15 +107,25 @@ const updateService = async (req, res) => {
  * Delete a service by ID.
  * Admin only.
  */
-const deleteService = async (req, res) => {
+const archiveService = async (req, res) => {
   try {
     const service = await Service.findById(req.params.id);
     if (!service) return errorResponse(res, 'Service not found.', 404);
-    await service.deleteOne();
-    return successResponse(res, 'Service deleted.');
+
+    const linkedBookings = await Appointment.countDocuments({
+      serviceIds: service._id,
+      status: { $nin: ['cancelled', 'completed', 'no_show'] }
+    });
+    if (linkedBookings > 0) {
+      return errorResponse(res, `Cannot archive: this service is linked to ${linkedBookings} active booking(s).`, 409);
+    }
+
+    service.isActive = false;
+    await service.save();
+    return successResponse(res, 'Service archived.', service);
   } catch (error) {
-    logger.error('Delete service error:', error);
-    return errorResponse(res, 'Failed to delete service.', 500);
+    logger.error('Archive service error:', error);
+    return errorResponse(res, 'Failed to archive service.', 500);
   }
 };
 
@@ -133,6 +144,6 @@ module.exports = {
   getServices,
   getServiceById,
   updateService,
-  deleteService,
+  archiveService,
   getServiceCategories
 };

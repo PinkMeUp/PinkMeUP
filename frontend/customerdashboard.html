@@ -1351,6 +1351,10 @@
         <div class="appt-actions">
           <button class="icon-btn" title="View details" data-view-id="${a.id}"><i class="fas fa-eye"></i></button>
           ${a.status === 'upcoming' ? `<button class="icon-btn danger" title="Cancel" data-cancel-id="${a.id}"><i class="fas fa-times"></i></button>` : ''}
+${a.status === 'upcoming' ? `
+  <button class="icon-btn" title="Reschedule" data-reschedule-id="${a.id}"><i class="fas fa-calendar-alt"></i></button>
+  <button class="icon-btn danger" title="Cancel" data-cancel-id="${a.id}"><i class="fas fa-times"></i></button>
+` : ''}
         </div>
       </td>
     </tr>`;
@@ -1377,7 +1381,44 @@
     document.querySelectorAll('[data-cancel-id]').forEach(btn =>
       btn.addEventListener('click', () => cancelAppointment(btn.dataset.cancelId))
     );
+document.querySelectorAll('[data-reschedule-id]').forEach(btn =>
+  btn.addEventListener('click', () => openRescheduleModal(btn.dataset.rescheduleId))
+);
   }
+
+let rescheduleApptId = null;
+
+function openRescheduleModal(id) {
+  rescheduleApptId = id;
+  document.getElementById('rescheduleModal').classList.add('active');
+}
+
+async function confirmReschedule() {
+  const date = document.getElementById('rescheduleDate').value;
+  const time = document.getElementById('rescheduleTime').value;
+  if (!date || !time) { showToast('Please pick a new date and time.'); return; }
+
+  showLoading('Rescheduling...');
+  try {
+    const res = await fetch(`${API_URL}/bookings/${rescheduleApptId}/reschedule`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      credentials: 'include',
+      body: JSON.stringify({ date, startTime: time })
+    });
+    const data = await res.json();
+    if (res.status === 409) { showToast('That slot is no longer available.'); return; }
+    if (!res.ok) { showToast(data.message || 'Reschedule failed.'); return; }
+
+    showToast('Appointment rescheduled.');
+    document.getElementById('rescheduleModal').classList.remove('active');
+    await loadAppointments();
+    renderAppointments();
+    renderOverview();
+  } finally {
+    hideLoading();
+  }
+}
 
   async function cancelAppointment(id) {
     const appt = appointments.find(a => a.id === id);
@@ -1553,26 +1594,28 @@
     renderStylistGrid();
   }
 
-  function renderTimeSlots() {
-    const el = document.getElementById('timeSlots');
-    const dateVal = document.getElementById('apptDate').value;
-    const now = new Date();
-    const today = now.toISOString().slice(0,10);
+  let availableSlots = [];
 
-    el.innerHTML = TIME_SLOTS.map(slot => {
-      let unavail = false;
-      if (dateVal === today) {
-        const [h,m] = slot.split(':').map(Number);
-        const slotDate = new Date(); slotDate.setHours(h,m,0,0);
-        if (slotDate <= now) unavail = true;
-      }
-      const hash = (dateVal + slot).split('').reduce((a,c)=>a+c.charCodeAt(0),0);
-      if (hash % 7 === 0) unavail = true;
-
-      const sel = bookState.time === slot;
-      return `<div class="time-slot ${sel?'selected':''} ${unavail?'unavailable':''}" onclick="${unavail?'':'selectTime(\''+slot+'\')'}">${slot}</div>`;
-    }).join('');
+async function loadAvailableSlots() {
+  const dateVal = document.getElementById('apptDate').value;
+  if (!dateVal || !bookState.stylistId) { availableSlots = []; return; }
+  try {
+    const qs = `?date=${dateVal}&serviceIds=${cartIds.join(',')}`;
+    const res = await fetch(`${API_URL}/stylists/${bookState.stylistId}/available-slots${qs}`, { credentials: 'include' });
+    const data = await res.json();
+    availableSlots = (res.ok && data.data?.availableSlots) ? data.data.availableSlots : [];
+  } catch (err) {
+    availableSlots = [];
   }
+}
+
+function renderTimeSlots() {
+  return TIME_SLOTS.map(slot => {
+    const unavail = !availableSlots.includes(slot);
+    const sel = bookState.time === slot;
+    return `<div class="time-slot ${sel?'selected':''} ${unavail?'unavailable':''}" onclick="${unavail?'':'selectTime(\''+slot+'\')'}">${slot}</div>`;
+  }).join('');
+}
 
   function selectTime(t) {
     bookState.time = t;

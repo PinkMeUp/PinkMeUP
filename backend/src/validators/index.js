@@ -24,7 +24,10 @@ const bookingValidation = [
   body('stylistId').notEmpty().withMessage('Stylist ID is required').isMongoId().withMessage('Invalid stylist ID'),
   body('date').notEmpty().withMessage('Date is required').isISO8601().withMessage('Invalid date format'),
   body('startTime').notEmpty().withMessage('Start time is required').matches(/^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$/).withMessage('Use HH:MM'),
-  body('notes').optional().isLength({ max: 500 }).withMessage('Max 500 characters')
+  body('notes').optional().isLength({ max: 500 }).withMessage('Max 500 characters'),
+  body('guestEmail').optional().isEmail().withMessage('Invalid email address'),
+  body('guestName').optional().trim().isLength({ min: 2 }).withMessage('Name is required'),
+  body('guestPhone').optional().trim().isLength({ min: 7 }).withMessage('Valid phone number is required')
 ];
 
 const rescheduleValidation = [
