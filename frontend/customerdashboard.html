@@ -1531,8 +1531,10 @@ async function confirmReschedule() {
     } else {
       cartIds.push(id);
     }
+    renderstylistGrid();
     renderSvcGrid();
     renderCart();
+    
   }
 
   function removeFromCart(id) {
@@ -1579,14 +1581,42 @@ async function confirmReschedule() {
     }
   }
 
-  function renderStylistGrid() {
-    document.getElementById('stylistGrid').innerHTML = STYLISTS.map(s => `
-      <button class="stylist-btn ${bookState.stylistId === s.id ? 'selected' : ''}" onclick="selectStylist('${s.id}','${s.name}')">
-        <div class="stylist-av">${s.name[0]}</div>
-        <div class="stylist-name">${s.name}</div>
-      </button>
-    `).join('');
+ function renderStylistGrid() {
+  const selectedServices = SERVICES.filter(
+    s => cartIds.includes(s.id)
+  );
+
+  const eligibleStylists = STYLISTS.filter(stylist => {
+    if (!stylist.serviceIds || !stylist.serviceIds.length) {
+      return false;
+    }
+
+    return selectedServices.every(service =>
+      stylist.serviceIds.includes(service.id)
+    );
+  });
+
+  const grid = document.getElementById('stylistGrid');
+
+  if (!eligibleStylists.length) {
+    grid.innerHTML = `
+      <div class="empty-state">
+        <p>No stylists are available for the selected service.</p>
+      </div>
+    `;
+    return;
   }
+
+  grid.innerHTML = eligibleStylists.map(s => `
+    <button
+      class="stylist-btn ${bookState.stylistId === s.id ? 'selected' : ''}"
+      onclick="selectStylist('${s.id}','${s.name}')"
+    >
+      <div class="stylist-av">${s.name[0]}</div>
+      <div class="stylist-name">${s.name}</div>
+    </button>
+  `).join('');
+}
 
   function selectStylist(id, name) {
     bookState.stylistId = id;

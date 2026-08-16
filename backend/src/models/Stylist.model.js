@@ -10,6 +10,10 @@ const StylistSchema = new mongoose.Schema(
   {
     userId: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true, index: true },
     specialties: [{ type: String, trim: true }],
+    serviceIds: [{
+  type: mongoose.Schema.Types.ObjectId,
+  ref: 'Service'
+}],
     isAvailable: { type: Boolean, default: true },
     rating: { type: Number, min: 0, max: 5, default: 0 },
     ratingCount: { type: Number, default: 0 }

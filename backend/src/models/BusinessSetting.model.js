@@ -6,7 +6,7 @@
 const mongoose = require('mongoose');
 
 const DaySchema = new mongoose.Schema({
-  start: { type: String, default: '08:00', match: [/^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$/, 'Use HH:MM'] },
+  start: { type: String, default: '09:00', match: [/^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$/, 'Use HH:MM'] },
   end: { type: String, default: '17:00', match: [/^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$/, 'Use HH:MM'] },
   isOpen: { type: Boolean, default: true }
 });
@@ -15,11 +15,11 @@ const businessDay = (start, end, isOpen) => ({ start, end, isOpen });
 
 const BusinessSettingSchema = new mongoose.Schema({
   businessHours: {
-    monday: { type: DaySchema, default: () => businessDay('08:00', '17:00', true) },
-    tuesday: { type: DaySchema, default: () => businessDay('08:00', '17:00', true) },
-    wednesday: { type: DaySchema, default: () => businessDay('08:00', '17:00', true) },
-    thursday: { type: DaySchema, default: () => businessDay('08:00', '17:00', true) },
-    friday: { type: DaySchema, default: () => businessDay('08:00', '17:00', true) },
+    monday: { type: DaySchema, default: () => businessDay('09:00', '17:00', true) },
+    tuesday: { type: DaySchema, default: () => businessDay('09:00', '17:00', true) },
+    wednesday: { type: DaySchema, default: () => businessDay('09:00', '17:00', true) },
+    thursday: { type: DaySchema, default: () => businessDay('09:00', '17:00', true) },
+    friday: { type: DaySchema, default: () => businessDay('09:00', '17:00', true) },
     saturday: { type: DaySchema, default: () => businessDay('09:00', '14:00', true) },
     sunday: { type: DaySchema, default: () => businessDay('', '', false) }
   },

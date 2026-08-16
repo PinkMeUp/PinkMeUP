@@ -18,6 +18,59 @@ const emailService = require('../services/email.service');
 
 const getSettings = async () => await BusinessSetting.getSettings();
 
+/**
+ * Check whether a stylist has an overlapping appointment.
+ *
+ * @param {Object} params
+ * @param {String} params.stylistId
+ * @param {Date} params.date
+ * @param {String} params.startTime
+ * @param {Number} params.duration
+ * @param {String|null} params.excludeAppointmentId
+ * @returns {Promise<Boolean>}
+ */
+const hasAppointmentConflict = async ({
+  stylistId,
+  date,
+  startTime,
+  duration,
+  excludeAppointmentId = null
+}) => {
+  const query = {
+    stylistId,
+    date,
+    status: {
+      $nin: [
+        APPOINTMENT_STATUS.CANCELLED,
+        APPOINTMENT_STATUS.NO_SHOW
+      ]
+    }
+  };
+
+  if (excludeAppointmentId) {
+    query._id = { $ne: excludeAppointmentId };
+  }
+
+  const appointments = await Appointment.find(query);
+
+  const newStart = parseTimeToMinutes(startTime);
+  const newEnd = newStart + duration;
+
+  return appointments.some(appointment => {
+    const existingStart = parseTimeToMinutes(
+      appointment.startTime
+    );
+
+    const existingEnd =
+      existingStart + appointment.totalDuration;
+
+    return (
+      newStart < existingEnd &&
+      newEnd > existingStart
+    );
+  });
+};
+
 const parsePageLimit = (page, limit) => ({
   page: Math.max(parseInt(page, 10) || 1, 1),
   limit: Math.max(parseInt(limit, 10) || 10, 1)
@@ -67,8 +120,31 @@ const createBooking = async (req, res) => {
     services.forEach(s => { totalDuration += s.duration; totalPrice += s.price; });
 
     const stylist = await Stylist.findById(stylistId);
-    if (!stylist) return errorResponse(res, 'Stylist not found.', 404);
-    if (!stylist.isAvailable) return errorResponse(res, 'Stylist is not available.', 400);
+
+if (!stylist) {
+  return errorResponse(res, 'Stylist not found.', 404);
+}
+
+if (!stylist.isAvailable) {
+  return errorResponse(res, 'Stylist is not available.', 400);
+}
+
+if (stylist.serviceIds && stylist.serviceIds.length > 0) {
+  const providesAllServices = serviceIds.every(serviceId =>
+    stylist.serviceIds.some(
+      id => id.toString() === serviceId.toString()
+    )
+  );
+
+  if (!providesAllServices) {
+    return errorResponse(
+      res,
+      'Selected stylist does not provide one or more selected services.',
+      400
+    );
+  }
+}
+
     if (!isValidTimeFormat(startTime)) return errorResponse(res, 'Invalid time format. Use HH:MM.', 400);
 
     const settings = await getSettings();
@@ -97,11 +173,20 @@ const createBooking = async (req, res) => {
       return errorResponse(res, `Bookings must be made ${settings.bookingLeadTime} minutes in advance.`, 400);
     }
 
-    const existing = await Appointment.findOne({
-      stylistId, date: bookingDate, startTime,
-      status: { $nin: [APPOINTMENT_STATUS.CANCELLED, APPOINTMENT_STATUS.NO_SHOW] }
-    });
-    if (existing) return errorResponse(res, 'Time slot already booked.', 409);
+    const hasConflict = await hasAppointmentConflict({
+  stylistId,
+  date: bookingDate,
+  startTime,
+  duration: totalDuration
+});
+
+if (hasConflict) {
+  return errorResponse(
+    res,
+    'Time slot is unavailable. Please select another time.',
+    409
+  );
+}
 
     const endTime = calculateEndTime(startTime, totalDuration);
     const appointment = await Appointment.create({

@@ -107,7 +107,7 @@ const getAvailableSlots = async (req, res) => {
     }
 
     const slotInterval = settings.slotInterval || 30;
-    const stylists = await Stylist.find({ isAvailable: true }).populate('userId', 'firstName lastName');
+    const stylists = await Stylist.find({ isAvailable: true }).populate('userId', 'firstName lastName','serviceIds');
     const availableStylists = [];
 
     for (const stylist of stylists) {
