@@ -700,9 +700,14 @@ const rescheduleBooking = async (req, res) => {
 
     return successResponse(res, 'Booking rescheduled.', updated);
   } catch (error) {
-    logger.error('Reschedule error:', error);
-    return errorResponse(res, 'Failed to reschedule booking.', 500);
-  }
+  logger.error('Reschedule error:', error);
+
+  return errorResponse(
+    res,
+    error.message || 'Failed to reschedule booking.',
+    error.statusCode || 500
+  );
+}
 };
 
 const getAllBookings = async (req, res) => {
