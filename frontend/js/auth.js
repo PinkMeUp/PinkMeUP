@@ -148,12 +148,12 @@ function requireAuth() {
  */
 async function requireGuest() {
     const hasLocalUser = !!getCurrentUser();
-    if (!hasLocalUser) {
-        const authenticated = await syncAuthFromServer();
-        if (authenticated) {
-            redirectToDashboard();
-            return false;
-        }
+    const hasToken = !!getAuthToken();
+
+    // A first-time visitor has neither saved user data nor an OAuth token.
+    // Avoid making an intentionally unauthorized profile request, which only
+    // creates a distracting 401 error in the browser console.
+    if (!hasLocalUser && !hasToken) {
         return true;
     }
 

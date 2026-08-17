@@ -1436,7 +1436,6 @@ async function confirmReschedule() {
   const time = document.getElementById('rescheduleTime').value;
   if (!date || !time) { showToast('Please pick a new date and time.'); return; }
 
-  showLoading('Rescheduling...');
   try {
     const res = await fetch(`${API_URL}/bookings/${rescheduleApptId}/reschedule`, {
       method: 'PUT',
@@ -1453,8 +1452,6 @@ async function confirmReschedule() {
     await loadAppointments();
     renderAppointments();
     renderOverview();
-  } finally {
-    hideLoading();
   }
 }
 

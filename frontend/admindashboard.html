@@ -885,9 +885,20 @@
     const specialties = Array.from(select.selectedOptions).map(opt => opt.value);
     const editId = document.getElementById('stylistId').value;
 
-    if (!name) { alert('Name is required.'); return; }
+    if (!name || !email || !phone) {
+      showToast('Full name, email, and phone number are required.');
+      return;
+    }
     const [firstName, ...lastNameParts] = name.split(' ');
     const lastName = lastNameParts.join(' ') || '';
+    if (!lastName) {
+      showToast('Please enter both a first and last name.');
+      return;
+    }
+    if (!/^\+?[0-9\s\-()]{7,25}$/.test(phone)) {
+      showToast('Please enter a valid phone number.');
+      return;
+    }
 
     showLoading(editId ? 'Saving changes...' : 'Creating stylist...');
     try {
@@ -909,9 +920,9 @@
           body: JSON.stringify({
             firstName,
             lastName,
-            email: email || `${firstName.toLowerCase()}@salon.com`,
+            email,
             password,
-            phone: phone || '',
+            phone,
             serviceIds: specialties
           })
         });

@@ -141,6 +141,18 @@ const createStylistByAdmin = async (req, res) => {
   try {
     const { firstName, lastName, email, password, phone, specialties, serviceIds, workingHours } = req.body;
 
+    if (!firstName || !lastName || !email || !password || !phone) {
+      return errorResponse(res, 'First name, last name, email, password, and phone number are required.', 400);
+    }
+    if (!/^\+?[0-9\s\-()]{7,25}$/.test(phone)) {
+      return errorResponse(res, 'Please provide a valid phone number.', 400);
+    }
+
+    const existingUser = await User.findOne({ email: email.toLowerCase() });
+    if (existingUser) {
+      return errorResponse(res, 'An account with this email already exists.', 409);
+    }
+
     const user = await User.create({
       firstName,
       lastName,
