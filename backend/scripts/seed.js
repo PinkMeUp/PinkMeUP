@@ -84,7 +84,7 @@ const seedUsers = async () => {
       phone: '+27 82 456 7890', role: 'customer', isActive: true
     },
     {
-      firstName: 'Zanele', lastName: 'Dlamini',
+      firstName: 'Zanel', lastName: 'Dlamini',
       email: 'zanele@example.com',
       password: await bcrypt.hash('Customer@123', 10),
       phone: '+27 82 567 8901', role: 'customer', isActive: true
