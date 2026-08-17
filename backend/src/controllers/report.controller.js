@@ -128,13 +128,30 @@ const getStylistPerformance = async (req, res) => {
     const { startDate, endDate } = req.query;
     const dateFilter = buildDateFilter(startDate, endDate);
 
+    // Start with the stylist collection, not only appointments. This means
+    // newly-created stylists appear in reports immediately, even when they
+    // have zero bookings yet.
+    const stylists = await Stylist.find({})
+      .populate('userId', 'firstName lastName email phone')
+      .sort({ createdAt: 1 });
+
     const assignedStats = await Appointment.aggregate([
       { $match: dateFilter },
-      { $group: { _id: '$stylistId', totalAssigned: { $sum: 1 } } }
+      {
+        $group: {
+          _id: '$stylistId',
+          totalAssigned: { $sum: 1 }
+        }
+      }
     ]);
 
     const completedStats = await Appointment.aggregate([
-      { $match: { ...dateFilter, status: APPOINTMENT_STATUS.COMPLETED } },
+      {
+        $match: {
+          ...dateFilter,
+          status: APPOINTMENT_STATUS.COMPLETED
+        }
+      },
       {
         $group: {
           _id: '$stylistId',
@@ -144,28 +161,63 @@ const getStylistPerformance = async (req, res) => {
       }
     ]);
 
-    const completedMap = new Map(completedStats.map(s => [s._id.toString(), s]));
-    const stylistIds = assignedStats.map(s => s._id);
-    const stylists = await Stylist.find({ _id: { $in: stylistIds } }).populate('userId', 'firstName lastName');
+    const assignedMap = new Map(
+      assignedStats
+        .filter(s => s._id)
+        .map(s => [String(s._id), s])
+    );
 
-    const result = assignedStats
+    const completedMap = new Map(
+      completedStats
+        .filter(s => s._id)
+        .map(s => [String(s._id), s])
+    );
+
+    // Also handle legacy/orphaned appointment references gracefully. If an
+    // appointment points to a stylist profile that no longer exists, do not
+    // crash the report; expose it separately as an unknown assignment.
+    const knownStylistIds = new Set(stylists.map(s => String(s._id)));
+
+    const result = stylists.map(stylist => {
+      const key = String(stylist._id);
+      const assigned = assignedMap.get(key);
+      const completed = completedMap.get(key);
+      const firstName = stylist.userId?.firstName || '';
+      const lastName = stylist.userId?.lastName || '';
+      const fullName = `${firstName} ${lastName}`.trim();
+
+      return {
+        stylistId: stylist._id,
+        stylistName: fullName || stylist.userId?.email || 'Stylist',
+        totalAssigned: assigned?.totalAssigned || 0,
+        completedBookings: completed?.completedBookings || 0,
+        totalRevenue: completed?.totalRevenue || 0,
+        rating: stylist.rating || 0
+      };
+    });
+
+    const orphaned = assignedStats
+      .filter(stat => stat._id && !knownStylistIds.has(String(stat._id)))
       .map(stat => {
-        const stylist = stylists.find(s => s._id.toString() === stat._id.toString());
-        const completed = completedMap.get(stat._id.toString());
+        const completed = completedMap.get(String(stat._id));
         return {
           stylistId: stat._id,
-          stylistName: stylist && stylist.userId
-            ? `${stylist.userId.firstName} ${stylist.userId.lastName}`
-            : 'Unknown',
+          stylistName: 'Unknown',
           totalAssigned: stat.totalAssigned,
-          completedBookings: completed ? completed.completedBookings : 0,
-          totalRevenue: completed ? completed.totalRevenue : 0,
-          rating: stylist ? stylist.rating : 0
+          completedBookings: completed?.completedBookings || 0,
+          totalRevenue: completed?.totalRevenue || 0,
+          rating: 0
         };
-      })
-      .sort((a, b) => b.totalAssigned - a.totalAssigned);
+      });
 
-    return successResponse(res, 'Stylist performance retrieved.', result);
+    result.push(...orphaned);
+    result.sort((a, b) => b.totalAssigned - a.totalAssigned);
+
+    return successResponse(
+      res,
+      'Stylist performance retrieved.',
+      result
+    );
   } catch (error) {
     logger.error('Get stylist performance error:', error);
     return errorResponse(res, 'Failed to retrieve stylist performance.', 500);
@@ -217,7 +269,7 @@ const getDashboardStats = async (req, res) => {
     const tomorrow = new Date(today).setDate(new Date(today).getDate() + 1);
 
     const totalCustomers = await User.countDocuments({ role: 'customer' });
-    const totalStylists = await User.countDocuments({ role: 'stylist' });
+    const totalStylists = await Stylist.countDocuments({});
     const totalServices = await Service.countDocuments({ isActive: true });
 
     const todayBookings = await Appointment.countDocuments({
@@ -234,6 +286,7 @@ const getDashboardStats = async (req, res) => {
     const recentBookings = await Appointment.find()
       .populate('customerId', 'firstName lastName')
       .populate('serviceIds', 'name')
+      .populate({ path: 'stylistId', select: 'userId', populate: { path: 'userId', select: 'firstName lastName' } })
       .sort({ createdAt: -1 })
       .limit(5);
 

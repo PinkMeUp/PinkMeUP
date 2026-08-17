@@ -1600,7 +1600,8 @@ async function loadRescheduleSlots() {
       `${API_URL}/bookings/availability/time-slots` +
       `?stylistId=${encodeURIComponent(appointment.stylistId || '')}` +
       `&date=${encodeURIComponent(date)}` +
-      `&serviceIds=${encodeURIComponent(serviceIds.join(','))}`,
+      `&serviceIds=${encodeURIComponent(serviceIds.join(','))}` +
+      `&excludeAppointmentId=${encodeURIComponent(rescheduleApptId)}`,
       {
         credentials: 'include'
       }
