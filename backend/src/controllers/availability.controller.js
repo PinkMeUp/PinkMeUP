@@ -10,10 +10,33 @@ const Service = require('../models/Service.model');
 const Stylist = require('../models/Stylist.model');
 const BusinessSetting = require('../models/BusinessSetting.model');
 const { successResponse, errorResponse } = require('../utils/response');
-const { generateTimeSlots, getDayOfWeek } = require('../utils/helpers');
+const { generateTimeSlots, getDayOfWeek, parseTimeToMinutes } = require('../utils/helpers');
 const logger = require('../config/logger');
 
 const getSettings = async () => await BusinessSetting.getSettings();
+
+/**
+ * Return only slots whose full appointment duration does not overlap an
+ * existing appointment and still fits inside the business day.
+ */
+const findAvailableSlots = ({ appointments, daySchedule, slotInterval, requiredDuration }) => {
+  const appointmentDuration = requiredDuration || slotInterval;
+  const closingTime = parseTimeToMinutes(daySchedule.end);
+
+  return generateTimeSlots(daySchedule.start, daySchedule.end, slotInterval)
+    .filter((slot) => {
+      const slotStart = parseTimeToMinutes(slot);
+      const slotEnd = slotStart + appointmentDuration;
+
+      if (slotEnd > closingTime) return false;
+
+      return !appointments.some((appointment) => {
+        const appointmentStart = parseTimeToMinutes(appointment.startTime);
+        const appointmentEnd = appointmentStart + appointment.totalDuration;
+        return slotStart < appointmentEnd && slotEnd > appointmentStart;
+      });
+    });
+};
 
 /**
  * Check availability for a specific stylist and date.
@@ -49,28 +72,14 @@ const checkAvailability = async (req, res) => {
 
     const bookedSlots = await Appointment.find({
       stylistId, date: bookingDate, status: { $nin: ['cancelled', 'no_show'] }
-    }).select('startTime');
-
-    const bookedStartTimes = bookedSlots.map(s => s.startTime);
+    }).select('startTime totalDuration');
     const slotInterval = settings.slotInterval || 30;
-    let availableSlots = generateTimeSlots(daySchedule.start, daySchedule.end, slotInterval)
-      .filter(slot => !bookedStartTimes.includes(slot));
-
-    if (requiredDuration > 0) {
-      const slotsNeeded = Math.ceil(requiredDuration / slotInterval);
-      const filtered = [];
-      for (let i = 0; i < availableSlots.length; i++) {
-        let consecutive = 1;
-        for (let j = i + 1; j < availableSlots.length && j < i + slotsNeeded; j++) {
-          const curr = parseInt(availableSlots[i].split(':')[0]) * 60 + parseInt(availableSlots[i].split(':')[1]);
-          const next = parseInt(availableSlots[j].split(':')[0]) * 60 + parseInt(availableSlots[j].split(':')[1]);
-          if (next - curr === slotInterval * (j - i)) consecutive++;
-          else break;
-        }
-        if (consecutive >= slotsNeeded) filtered.push(availableSlots[i]);
-      }
-      availableSlots = filtered;
-    }
+    const availableSlots = findAvailableSlots({
+      appointments: bookedSlots,
+      daySchedule,
+      slotInterval,
+      requiredDuration
+    });
 
     return successResponse(res, 'Availability retrieved.', {
       stylist: { id: stylist._id, specialties: stylist.specialties },
@@ -113,26 +122,13 @@ const getAvailableSlots = async (req, res) => {
     for (const stylist of stylists) {
       const bookedSlots = await Appointment.find({
         stylistId: stylist._id, date: bookingDate, status: { $nin: ['cancelled', 'no_show'] }
-      }).select('startTime');
-      const bookedStartTimes = bookedSlots.map(s => s.startTime);
-      let availableSlots = generateTimeSlots(daySchedule.start, daySchedule.end, slotInterval)
-        .filter(slot => !bookedStartTimes.includes(slot));
-
-      if (requiredDuration > 0) {
-        const slotsNeeded = Math.ceil(requiredDuration / slotInterval);
-        const filtered = [];
-        for (let i = 0; i < availableSlots.length; i++) {
-          let consecutive = 1;
-          for (let j = i + 1; j < availableSlots.length && j < i + slotsNeeded; j++) {
-            const curr = parseInt(availableSlots[i].split(':')[0]) * 60 + parseInt(availableSlots[i].split(':')[1]);
-            const next = parseInt(availableSlots[j].split(':')[0]) * 60 + parseInt(availableSlots[j].split(':')[1]);
-            if (next - curr === slotInterval * (j - i)) consecutive++;
-            else break;
-          }
-          if (consecutive >= slotsNeeded) filtered.push(availableSlots[i]);
-        }
-        availableSlots = filtered;
-      }
+      }).select('startTime totalDuration');
+      const availableSlots = findAvailableSlots({
+        appointments: bookedSlots,
+        daySchedule,
+        slotInterval,
+        requiredDuration
+      });
 
       if (availableSlots.length > 0) {
         availableStylists.push({
@@ -189,26 +185,13 @@ const getTimeSlotsForDate = async (req, res) => {
     const slotInterval = settings.slotInterval || 30;
     const bookedSlots = await Appointment.find({
       stylistId, date: bookingDate, status: { $nin: ['cancelled', 'no_show'] }
-    }).select('startTime');
-    const bookedStartTimes = bookedSlots.map(s => s.startTime);
-    let availableSlots = generateTimeSlots(daySchedule.start, daySchedule.end, slotInterval)
-      .filter(slot => !bookedStartTimes.includes(slot));
-
-    if (requiredDuration > 0) {
-      const slotsNeeded = Math.ceil(requiredDuration / slotInterval);
-      const filtered = [];
-      for (let i = 0; i < availableSlots.length; i++) {
-        let consecutive = 1;
-        for (let j = i + 1; j < availableSlots.length && j < i + slotsNeeded; j++) {
-          const curr = parseInt(availableSlots[i].split(':')[0]) * 60 + parseInt(availableSlots[i].split(':')[1]);
-          const next = parseInt(availableSlots[j].split(':')[0]) * 60 + parseInt(availableSlots[j].split(':')[1]);
-          if (next - curr === slotInterval * (j - i)) consecutive++;
-          else break;
-        }
-        if (consecutive >= slotsNeeded) filtered.push(availableSlots[i]);
-      }
-      availableSlots = filtered;
-    }
+    }).select('startTime totalDuration');
+    const availableSlots = findAvailableSlots({
+      appointments: bookedSlots,
+      daySchedule,
+      slotInterval,
+      requiredDuration
+    });
 
     return successResponse(res, 'Time slots retrieved.', {
       date, stylist: { id: stylist._id, specialties: stylist.specialties },

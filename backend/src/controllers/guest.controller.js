@@ -75,6 +75,14 @@ const createGuestBooking = async (req, res) => {
     if (!stylist.isAvailable) {
       return errorResponse(res, 'Stylist is not available.', 400);
     }
+    if (stylist.serviceIds && stylist.serviceIds.length > 0) {
+      const providesAllServices = serviceIds.every((serviceId) =>
+        stylist.serviceIds.some((id) => id.toString() === serviceId.toString())
+      );
+      if (!providesAllServices) {
+        return errorResponse(res, 'Selected stylist does not provide one or more selected services.', 400);
+      }
+    }
     if (!isValidTimeFormat(startTime)) {
       return errorResponse(res, 'Invalid time format. Use HH:MM.', 400);
     }

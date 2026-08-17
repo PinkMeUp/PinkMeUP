@@ -280,7 +280,10 @@ const getBookingById = async (req, res) => {
     if (!appointment) return errorResponse(res, 'Booking not found.', 404);
 
     const isOwner = appointment.customerId._id.toString() === req.user.id;
-    const isStylist = req.user.role === 'stylist';
+    const stylistProfile = req.user.role === 'stylist'
+      ? await Stylist.findOne({ userId: req.user.id }).select('_id')
+      : null;
+    const isStylist = stylistProfile && appointment.stylistId._id.toString() === stylistProfile._id.toString();
     const isAdmin = req.user.role === 'admin';
     if (!isOwner && !isStylist && !isAdmin) {
       return errorResponse(res, 'Access denied.', 403);
@@ -389,6 +392,13 @@ const rescheduleBooking = async (req, res) => {
     }
     if (bookingEndMin > endMin) return errorResponse(res, 'Booking ends after closing time.', 400);
 
+    const now = new Date();
+    const [hours, minutes] = startTime.split(':').map(Number);
+    const bookingDateTime = new Date(bookingDate).setHours(hours, minutes, 0, 0);
+    if ((bookingDateTime - now) / 60000 < settings.bookingLeadTime) {
+      return errorResponse(res, `Bookings must be made ${settings.bookingLeadTime} minutes in advance.`, 400);
+    }
+
     const hasConflict = await hasAppointmentConflict({
       stylistId: appointment.stylistId,
       date: bookingDate,
@@ -399,10 +409,7 @@ const rescheduleBooking = async (req, res) => {
     if (hasConflict) return errorResponse(res, 'Time slot is unavailable. Please select another time.', 409);
 
     const endTime = calculateEndTime(startTime, appointment.totalDuration);
-    appointment.date = bookingDate;
-    appointment.startTime = startTime;
-    appointment.endTime = endTime;
-    await appointment.save();
+    await appointment.reschedule(bookingDate, startTime, endTime);
 
     const updated = await Appointment.findById(id)
       .populate('customerId', 'firstName lastName email phone')

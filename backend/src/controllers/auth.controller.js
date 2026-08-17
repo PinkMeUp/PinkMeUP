@@ -251,7 +251,10 @@ const googleCallback = (req, res) => {
 
   res.cookie('token', token, cookieOptions);
 
-  const redirectUrl = `${process.env.FRONTEND_URL}/dashboard.html#token=${encodeURIComponent(token)}`;
+  const dashboard = req.user.role === 'customer'
+    ? 'customerdashboard.html'
+    : 'admindashboard.html';
+  const redirectUrl = `${process.env.FRONTEND_URL}/${dashboard}#token=${encodeURIComponent(token)}`;
   return res.redirect(redirectUrl);
 };
 
