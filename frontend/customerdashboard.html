@@ -2430,7 +2430,11 @@ function selectTime(time) {
     `;
   }
 
+let isBookingSubmitting = false;
+
   async function confirmBooking() {
+    if (isBookingSubmitting) return;
+
     const name = document.getElementById('detName').value.trim();
     const email = document.getElementById('detEmail').value.trim();
     const phone = document.getElementById('detPhone').value.trim();
@@ -2446,40 +2450,98 @@ function selectTime(time) {
       return;
     }
 
-    const res = await fetch(`${API_URL}/bookings`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      credentials: 'include',
-      body: JSON.stringify({
-        serviceIds: cartIds,
-        stylistId: bookState.stylistId,
-        date: bookState.date,
-        startTime: bookState.time,
-        notes: document.getElementById('detNotes').value,
-        guestName: name,
-        guestEmail: email,
-        guestPhone: phone
-      })
-    });
-    const data = await res.json();
 
-    if (res.status === 409) {
-      showToast('This time slot is no longer available. Please select another time.');
-      gotoStep(2);
-      await refreshTimeSlots();
-      return;
+	if (bookState.bookingSubmitting) {
+  return;
+}
+
+bookState.bookingSubmitting = true;
+
+try {
+  const res = await fetch(`${API_URL}/bookings`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    credentials: 'include',
+    body: JSON.stringify({
+      serviceIds: cartIds,
+      stylistId: bookState.stylistId,
+      date: bookState.date,
+      startTime: bookState.time,
+      notes: document.getElementById('detNotes').value,
+      guestName: name,
+      guestEmail: email,
+      guestPhone: phone
+    })
+  });
+
+  const data = await res.json();
+
+  if (!res.ok) {
+    throw new Error(
+      data.message || 'Failed to create booking.'
+    );
+  }
+
+  // booking succeeded
+  // continue to success screen here
+
+} catch (error) {
+  console.error('Booking error:', error);
+
+  // show error to customer
+
+} finally {
+  bookState.bookingSubmitting = false;
+}
+
+
+  isBookingSubmitting = true;
+    const wNextBtn = document.getElementById('wNext');
+    wNextBtn.disabled = true;
+    wNextBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Booking...';
+
+    try {
+      const res = await fetch(`${API_URL}/bookings`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        credentials: 'include',
+        body: JSON.stringify({
+          serviceIds: cartIds,
+          stylistId: bookState.stylistId,
+          date: bookState.date,
+          startTime: bookState.time,
+          notes: document.getElementById('detNotes').value,
+          guestName: name,
+          guestEmail: email,
+          guestPhone: phone
+        })
+      });
+      const data = await res.json();
+
+      if (res.status === 409) {
+        showToast('This time slot is no longer available. Please select another time.');
+        gotoStep(2);
+        await refreshTimeSlots();
+        return;
+      }
+
+      if (!res.ok) {
+        showToast(data.message || 'Booking failed.');
+        return;
+      }
+
+      showToast('Booking confirmed! Check your email for confirmation.');
+      cartIds = [];
+      renderCart();
+      await loadAppointments();
+      setTimeout(() => { switchView('appointments'); }, 800);
+    } finally {
+      isBookingSubmitting = false;
+      wNextBtn.disabled = false;
+      wNextBtn.innerHTML = '<i class="fas fa-check"></i> Confirm Booking';
     }
-
-    if (!res.ok) {
-      showToast(data.message || 'Booking failed.');
-      return;
-    }
-
-    showToast('Booking confirmed! Check your email for confirmation.');
-    cartIds = [];
-    renderCart();
-    await loadAppointments();
-    setTimeout(() => { switchView('appointments'); }, 800);
   }
 
   async function saveProfile() {
