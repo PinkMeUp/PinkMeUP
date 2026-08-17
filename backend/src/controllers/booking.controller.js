@@ -82,28 +82,58 @@ const parsePageLimit = (page, limit) => ({
  */
 const createBooking = async (req, res) => {
   try {
-    const { serviceIds, stylistId, date, startTime, notes, guestId, guestName, guestPhone, guestEmail } = req.body;
-    let customerId = req.user?.id;
+    const {
+      serviceIds,
+      stylistId,
+      date,
+      startTime,
+      notes,
+      guestId,
+      guestName,
+      guestPhone,
+      guestEmail
+    } = req.body;
+
+    let customerId = req.user?.id || req.user?._id;
     let guestData = null;
+
+    /*
+     * ---------------------------------------------------------
+     * CUSTOMER / GUEST
+     * ---------------------------------------------------------
+     */
 
     if (!customerId && (guestId || guestName || guestPhone || guestEmail)) {
       let guestUser = null;
+
       if (guestEmail) {
-        guestUser = await User.findOne({ email: guestEmail });
+        guestUser = await User.findOne({
+          email: guestEmail.toLowerCase().trim()
+        });
       }
+
       if (!guestUser) {
-        const firstName = guestName?.split(' ')[0] || 'Guest';
-        const lastName = guestName?.split(' ').slice(1).join(' ') || 'User';
+        const nameParts = (guestName || 'Guest User')
+          .trim()
+          .split(/\s+/);
+
+        const firstName = nameParts.shift() || 'Guest';
+        const lastName = nameParts.join(' ') || 'User';
+
         guestUser = await User.create({
           firstName,
           lastName,
-          email: guestEmail || `guest-${Date.now()}@pinkmeup.local`,
+          email:
+            guestEmail?.toLowerCase().trim() ||
+            `guest-${Date.now()}@pinkmeup.local`,
           phone: guestPhone || '',
           password: `${Date.now()}Guest!`,
           role: 'customer'
         });
       }
+
       customerId = guestUser._id;
+
       guestData = {
         firstName: guestUser.firstName,
         lastName: guestUser.lastName,
@@ -113,120 +143,372 @@ const createBooking = async (req, res) => {
     }
 
     if (!customerId) {
-      return errorResponse(res, 'Please provide your name, email, and phone number, or log in.', 400);
+      return errorResponse(
+        res,
+        'Please provide your name, email, and phone number, or log in.',
+        400
+      );
     }
 
-    if (!serviceIds || !Array.isArray(serviceIds) || serviceIds.length === 0) {
-      return errorResponse(res, 'At least one service is required.', 400);
+    /*
+     * ---------------------------------------------------------
+     * VALIDATE SERVICES
+     * ---------------------------------------------------------
+     */
+
+    if (!Array.isArray(serviceIds) || serviceIds.length === 0) {
+      return errorResponse(
+        res,
+        'At least one service is required.',
+        400
+      );
     }
 
-    const services = await Service.find({ _id: { $in: serviceIds } });
+    const services = await Service.find({
+      _id: { $in: serviceIds }
+    });
+
     if (services.length !== serviceIds.length) {
-      return errorResponse(res, 'One or more services not found.', 404);
+      return errorResponse(
+        res,
+        'One or more services not found.',
+        404
+      );
     }
 
-    const inactive = services.filter(s => !s.isActive);
-    if (inactive.length) return errorResponse(res, 'One or more services are unavailable.', 400);
+    const inactiveServices = services.filter(
+      service => !service.isActive
+    );
 
-    let totalDuration = 0, totalPrice = 0;
-    services.forEach(s => { totalDuration += s.duration; totalPrice += s.price; });
+    if (inactiveServices.length > 0) {
+      return errorResponse(
+        res,
+        'One or more selected services are unavailable.',
+        400
+      );
+    }
+
+    const totalDuration = services.reduce(
+      (total, service) =>
+        total + Number(service.duration || 0),
+      0
+    );
+
+    const totalPrice = services.reduce(
+      (total, service) =>
+        total + Number(service.price || 0),
+      0
+    );
+
+    /*
+     * ---------------------------------------------------------
+     * VALIDATE STYLIST
+     * ---------------------------------------------------------
+     */
 
     const stylist = await Stylist.findById(stylistId);
 
-if (!stylist) {
-  return errorResponse(res, 'Stylist not found.', 404);
-}
+    if (!stylist) {
+      return errorResponse(
+        res,
+        'Stylist not found.',
+        404
+      );
+    }
 
-if (!stylist.isAvailable) {
-  return errorResponse(res, 'Stylist is not available.', 400);
-}
+    if (!stylist.isAvailable) {
+      return errorResponse(
+        res,
+        'Stylist is not available.',
+        400
+      );
+    }
 
-if (stylist.serviceIds && stylist.serviceIds.length > 0) {
-  const providesAllServices = serviceIds.every(serviceId =>
-    stylist.serviceIds.some(
-      id => id.toString() === serviceId.toString()
-    )
-  );
+    if (
+      !Array.isArray(stylist.serviceIds) ||
+      stylist.serviceIds.length === 0
+    ) {
+      return errorResponse(
+        res,
+        'Selected stylist has no services assigned.',
+        400
+      );
+    }
 
-  if (!providesAllServices) {
-    return errorResponse(
-      res,
-      'Selected stylist does not provide one or more selected services.',
-      400
+    const providesAllServices = serviceIds.every(
+      serviceId =>
+        stylist.serviceIds.some(
+          assignedId =>
+            String(assignedId) === String(serviceId)
+        )
     );
-  }
-}
 
-    if (!isValidTimeFormat(startTime)) return errorResponse(res, 'Invalid time format. Use HH:MM.', 400);
+    if (!providesAllServices) {
+      return errorResponse(
+        res,
+        'Selected stylist does not provide one or more selected services.',
+        400
+      );
+    }
+
+    /*
+     * ---------------------------------------------------------
+     * DATE / TIME
+     * ---------------------------------------------------------
+     */
+
+    if (!date) {
+      return errorResponse(
+        res,
+        'Date is required.',
+        400
+      );
+    }
+
+    if (!isValidTimeFormat(startTime)) {
+      return errorResponse(
+        res,
+        'Invalid time format. Use HH:MM.',
+        400
+      );
+    }
+
+    const bookingDate = new Date(date);
+
+    if (Number.isNaN(bookingDate.getTime())) {
+      return errorResponse(
+        res,
+        'Invalid date.',
+        400
+      );
+    }
+
+    /*
+     * Normalize date to midnight.
+     */
+    bookingDate.setHours(0, 0, 0, 0);
+
+    const dayOfWeek = getDayOfWeek(bookingDate);
+
+    if (!dayOfWeek) {
+      return errorResponse(
+        res,
+        'Invalid date.',
+        400
+      );
+    }
+
+    /*
+     * ---------------------------------------------------------
+     * BUSINESS HOURS
+     * ---------------------------------------------------------
+     */
 
     const settings = await getSettings();
-    const bookingDate = new Date(date);
-    const dayOfWeek = getDayOfWeek(bookingDate);
-    if (!dayOfWeek) return errorResponse(res, 'Invalid date.', 400);
 
-    const daySchedule = settings.businessHours[dayOfWeek];
-    if (!daySchedule || !daySchedule.isOpen || !daySchedule.start || !daySchedule.end) {
-      return errorResponse(res, 'Business is closed on this day.', 400);
+    const daySchedule =
+      settings.businessHours[dayOfWeek];
+
+    if (
+      !daySchedule ||
+      !daySchedule.isOpen ||
+      !daySchedule.start ||
+      !daySchedule.end
+    ) {
+      return errorResponse(
+        res,
+        'Business is closed on this day.',
+        400
+      );
     }
 
-    const startMin = parseTimeToMinutes(startTime);
-    const endMin = parseTimeToMinutes(daySchedule.end);
-    const bookingEndMin = startMin + totalDuration;
+    const startMin =
+      parseTimeToMinutes(startTime);
 
-    if (startMin < parseTimeToMinutes(daySchedule.start)) {
-      return errorResponse(res, 'Booking starts before opening time.', 400);
+    const openingMin =
+      parseTimeToMinutes(daySchedule.start);
+
+    const closingMin =
+      parseTimeToMinutes(daySchedule.end);
+
+    const bookingEndMin =
+      startMin + totalDuration;
+
+    if (startMin < openingMin) {
+      return errorResponse(
+        res,
+        'Booking starts before opening time.',
+        400
+      );
     }
-    if (bookingEndMin > endMin) return errorResponse(res, 'Booking ends after closing time.', 400);
 
-    const now = new Date();
-    const [hours, minutes] = startTime.split(':').map(Number);
-    const bookingDateTime = new Date(bookingDate).setHours(hours, minutes, 0, 0);
-    if ((bookingDateTime - now) / 60000 < settings.bookingLeadTime) {
-      return errorResponse(res, `Bookings must be made ${settings.bookingLeadTime} minutes in advance.`, 400);
+    if (bookingEndMin > closingMin) {
+      return errorResponse(
+        res,
+        'Booking ends after closing time.',
+        400
+      );
     }
 
-    const hasConflict = await hasAppointmentConflict({
-  stylistId,
-  date: bookingDate,
-  startTime,
-  duration: totalDuration
-});
+    /*
+     * ---------------------------------------------------------
+     * LEAD TIME
+     * ---------------------------------------------------------
+     */
 
-if (hasConflict) {
-  return errorResponse(
-    res,
-    'Time slot is unavailable. Please select another time.',
-    409
-  );
-}
+    const [hours, minutes] =
+      startTime.split(':').map(Number);
 
-    const endTime = calculateEndTime(startTime, totalDuration);
-    const appointment = await Appointment.create({
-      customerId, stylistId, serviceIds, date: bookingDate, startTime, endTime,
-      totalDuration, totalPrice, notes, status: APPOINTMENT_STATUS.CONFIRMED
-    });
+    const bookingDateTime = new Date(bookingDate);
 
-    const populatedAppointment = await Appointment.findById(appointment._id)
-      .populate('customerId', 'firstName lastName email phone')
-      .populate({ path: 'stylistId', select: 'userId specialties rating', populate: { path: 'userId', select: 'firstName lastName email phone' } })
-      .populate('serviceIds', 'name price duration description');
+    bookingDateTime.setHours(
+      hours,
+      minutes,
+      0,
+      0
+    );
 
-    // Send confirmation email
+    const minutesUntilBooking =
+      (bookingDateTime.getTime() - Date.now()) /
+      60000;
+
+    if (
+      minutesUntilBooking <
+      Number(settings.bookingLeadTime || 0)
+    ) {
+      return errorResponse(
+        res,
+        `Bookings must be made ${settings.bookingLeadTime} minutes in advance.`,
+        400
+      );
+    }
+
+    /*
+     * ---------------------------------------------------------
+     * CONFLICT CHECK
+     * ---------------------------------------------------------
+     */
+
+    const hasConflict =
+      await hasAppointmentConflict({
+        stylistId,
+        date: bookingDate,
+        startTime,
+        duration: totalDuration
+      });
+
+    if (hasConflict) {
+      return errorResponse(
+        res,
+        'Time slot is unavailable. Please select another time.',
+        409
+      );
+    }
+
+    /*
+     * ---------------------------------------------------------
+     * CREATE APPOINTMENT
+     * ---------------------------------------------------------
+     */
+
+    const endTime =
+      calculateEndTime(
+        startTime,
+        totalDuration
+      );
+
+    const appointment =
+      await Appointment.create({
+        customerId,
+        stylistId,
+        serviceIds,
+        date: bookingDate,
+        startTime,
+        endTime,
+        totalDuration,
+        totalPrice,
+        notes: notes || '',
+        status:
+          APPOINTMENT_STATUS.CONFIRMED
+      });
+
+    /*
+     * ---------------------------------------------------------
+     * POPULATE RESPONSE
+     * ---------------------------------------------------------
+     */
+
+    const populatedAppointment =
+      await Appointment.findById(
+        appointment._id
+      )
+        .populate(
+          'customerId',
+          'firstName lastName email phone'
+        )
+        .populate({
+          path: 'stylistId',
+          select:
+            'userId specialties rating serviceIds',
+          populate: {
+            path: 'userId',
+            select:
+              'firstName lastName email phone'
+          }
+        })
+        .populate(
+          'serviceIds',
+          'name price duration description'
+        );
+
+    /*
+     * ---------------------------------------------------------
+     * EMAIL
+     * ---------------------------------------------------------
+     */
+
     try {
-      const customerForEmail = guestData || populatedAppointment.customerId;
+      const customerForEmail =
+        guestData ||
+        populatedAppointment.customerId;
+
       await emailService.sendBookingConfirmation(
         populatedAppointment,
         customerForEmail,
         populatedAppointment.serviceIds
       );
-    } catch (error) {
-      logger.warn('Booking confirmation email failed:', error.message);
+    } catch (emailError) {
+      logger.warn(
+        'Booking confirmation email failed:',
+        emailError.message
+      );
     }
 
-    return successResponse(res, 'Booking created.', populatedAppointment, 201);
+    return successResponse(
+      res,
+      'Booking created.',
+      populatedAppointment,
+      201
+    );
+
   } catch (error) {
-    logger.error('Create booking error:', error);
-    return errorResponse(res, 'Failed to create booking.', 500);
+
+    logger.error(
+      'Create booking error:',
+      {
+        message: error.message,
+        name: error.name,
+        code: error.code,
+        stack: error.stack
+      }
+    );
+
+    return errorResponse(
+      res,
+      error.message ||
+        'Failed to create booking.',
+      error.statusCode || 500
+    );
   }
 };
 
