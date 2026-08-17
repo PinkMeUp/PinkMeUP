@@ -1,0 +1,11 @@
+{
+  "name": "pinkmeup-frontend",
+  "version": "1.0.0",
+  "description": "PinkMeUP Beauty Spa Booking System Frontend",
+  "scripts": {
+    "start": "serve ."
+  },
+  "dependencies": {
+    "serve": "^14.2.0"
+  }
+}

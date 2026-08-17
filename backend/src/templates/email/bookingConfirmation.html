@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Booking Confirmation - PinkMeUP</title>
+  <style>
+    body {
+      font-family: Arial, Helvetica, sans-serif;
+      line-height: 1.6;
+      color: #333333;
+      max-width: 600px;
+      margin: 0 auto;
+      padding: 0;
+      background-color: #ffffff;
+    }
+    .header {
+      background: #ff6b9d;
+      padding: 20px 30px;
+      text-align: center;
+    }
+    .header h1 {
+      color: #ffffff;
+      font-size: 20px;
+      margin: 0;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+    }
+    .header p {
+      color: #ffffff;
+      margin: 4px 0 0 0;
+      font-size: 13px;
+      opacity: 0.9;
+    }
+    .content {
+      padding: 25px 30px 15px 30px;
+      border: 1px solid #e8e8e8;
+      border-top: none;
+    }
+    .greeting {
+      font-size: 15px;
+      margin-bottom: 15px;
+    }
+    .greeting strong {
+      color: #333333;
+    }
+    .section-title {
+      font-size: 15px;
+      font-weight: 600;
+      color: #333333;
+      margin: 20px 0 8px 0;
+      padding-bottom: 6px;
+      border-bottom: 2px solid #ff6b9d;
+    }
+    .details-box {
+      background: #f9f9f9;
+      padding: 12px 16px;
+      margin: 10px 0 15px 0;
+      border-left: 3px solid #ff6b9d;
+    }
+    .details-box p {
+      margin: 4px 0;
+      font-size: 14px;
+    }
+    .details-box .label {
+      font-weight: 600;
+      color: #555555;
+    }
+    .invoice-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 10px 0 8px 0;
+      font-size: 14px;
+    }
+    .invoice-table th {
+      background: #f0f0f0;
+      color: #333333;
+      padding: 8px 10px;
+      text-align: left;
+      font-weight: 600;
+      border-bottom: 2px solid #dddddd;
+    }
+    .invoice-table th.text-right {
+      text-align: right;
+    }
+    .invoice-table th.text-center {
+      text-align: center;
+    }
+    .invoice-table td {
+      padding: 8px 10px;
+      border-bottom: 1px solid #eeeeee;
+    }
+    .invoice-table td.text-right {
+      text-align: right;
+    }
+    .invoice-table td.text-center {
+      text-align: center;
+    }
+    .invoice-table .total-row td {
+      border-top: 2px solid #333333;
+      padding-top: 10px;
+      font-weight: 700;
+      font-size: 15px;
+    }
+    .payment-note {
+      background: #fafafa;
+      padding: 10px 16px;
+      margin: 15px 0;
+      border-left: 3px solid #ff6b9d;
+    }
+    .payment-note p {
+      margin: 3px 0;
+      font-size: 13px;
+    }
+    .payment-note strong {
+      color: #333333;
+    }
+    .location-box {
+      margin: 10px 0 15px 0;
+      padding: 12px 16px;
+      background: #f9f9f9;
+      font-size: 13px;
+    }
+    .location-box p {
+      margin: 3px 0;
+    }
+    .info-list {
+      padding-left: 18px;
+      margin: 8px 0 15px 0;
+      font-size: 13px;
+    }
+    .info-list li {
+      margin: 4px 0;
+    }
+    .closing {
+      margin-top: 20px;
+      font-size: 14px;
+    }
+    .footer {
+      padding: 12px 30px;
+      text-align: center;
+      font-size: 11px;
+      color: #999999;
+      border-top: 1px solid #e8e8e8;
+    }
+    .footer p {
+      margin: 3px 0;
+    }
+    .badge {
+      background: #28a745;
+      color: #ffffff;
+      padding: 2px 12px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 600;
+      display: inline-block;
+    }
+    .text-muted {
+      color: #888888;
+      font-size: 12px;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="header">
+    <h1>Booking Confirmed</h1>
+    <p>PinkMeUP Beauty Spa &amp; Academy</p>
+  </div>
+
+  <div class="content">
+    <p class="greeting">Dear <strong>{{customerName}}</strong>,</p>
+    <p>Your booking has been confirmed. Please find your appointment details below.</p>
+
+    <div class="section-title">Appointment Details</div>
+    <div class="details-box">
+      <p><span class="label">Date:</span> {{bookingDate}}</p>
+      <p><span class="label">Time:</span> {{bookingTime}}</p>
+      <p><span class="label">Status:</span> <span class="badge">Confirmed</span></p>
+      <p><span class="label">Reference:</span> #{{bookingId}}</p>
+    </div>
+
+    <div class="section-title">Services &amp; Invoice</div>
+    <table class="invoice-table">
+      <thead>
+        <tr>
+          <th>Service</th>
+          <th class="text-center">Duration</th>
+          <th class="text-right">Price</th>
+        </tr>
+      </thead>
+      <tbody>
+        {{{services}}}
+        <tr class="total-row">
+          <td colspan="2" class="text-right">Total</td>
+          <td class="text-right">R{{totalPrice}}</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="payment-note">
+      <p><strong>Payment</strong></p>
+      <p>Payment is made in-store on the day of your appointment.</p>
+      <p class="text-muted">We accept cash, credit card, and debit card.</p>
+    </div>
+
+    <div class="section-title">Location</div>
+    <div class="location-box">
+      <p><strong>PinkMeUP Beauty Spa &amp; Academy</strong></p>
+      <p>1 Jan Smuts Avenue, Wits University, Matrix Building, Floor 1</p>
+      <p>Phone: 076 769 0102</p>
+    </div>
+
+    <div class="section-title">Cancellation Policy</div>
+    <ul class="info-list">
+      <li>Cancellations require <strong>1 hour</strong> notice.</li>
+      <li>You can cancel or reschedule directly in the app.</li>
+      <li>For assistance, contact us on <strong>076 769 0102</strong>.</li>
+    </ul>
+
+    <p class="closing">We look forward to seeing you.</p>
+    <p class="closing">Kind regards,<br><strong>The PinkMeUP Team</strong></p>
+  </div>
+
+  <div class="footer">
+    <p>&copy; 2026 PinkMeUP Beauty Spa &amp; Academy</p>
+    <p>This is an automated email. Please do not reply.</p>
+  </div>
+
+</body>
+</html>

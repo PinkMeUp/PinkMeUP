@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Booking Cancelled - PinkMeUP</title>
+  <style>
+    body {
+      font-family: Arial, Helvetica, sans-serif;
+      line-height: 1.6;
+      color: #333333;
+      max-width: 600px;
+      margin: 0 auto;
+      padding: 0;
+      background-color: #ffffff;
+    }
+    .header {
+      background: #ff6b9d;
+      padding: 20px 30px;
+      text-align: center;
+    }
+    .header h1 {
+      color: #ffffff;
+      font-size: 20px;
+      margin: 0;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+    }
+    .header p {
+      color: #ffffff;
+      margin: 4px 0 0 0;
+      font-size: 13px;
+      opacity: 0.9;
+    }
+    .content {
+      padding: 25px 30px 15px 30px;
+      border: 1px solid #e8e8e8;
+      border-top: none;
+    }
+    .greeting {
+      font-size: 15px;
+      margin-bottom: 15px;
+    }
+    .greeting strong {
+      color: #333333;
+    }
+    .section-title {
+      font-size: 15px;
+      font-weight: 600;
+      color: #333333;
+      margin: 20px 0 8px 0;
+      padding-bottom: 6px;
+      border-bottom: 2px solid #ff6b9d;
+    }
+    .details-box {
+      background: #f9f9f9;
+      padding: 12px 16px;
+      margin: 10px 0 15px 0;
+      border-left: 3px solid #dc3545;
+    }
+    .details-box p {
+      margin: 4px 0;
+      font-size: 14px;
+    }
+    .details-box .label {
+      font-weight: 600;
+      color: #555555;
+    }
+    .cancellation-badge {
+      background: #dc3545;
+      color: #ffffff;
+      padding: 2px 12px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 600;
+      display: inline-block;
+    }
+    .contact-box {
+      margin: 10px 0 15px 0;
+      padding: 12px 16px;
+      background: #f9f9f9;
+      font-size: 13px;
+    }
+    .contact-box p {
+      margin: 3px 0;
+    }
+    .info-list {
+      padding-left: 18px;
+      margin: 8px 0 15px 0;
+      font-size: 13px;
+    }
+    .info-list li {
+      margin: 4px 0;
+    }
+    .closing {
+      margin-top: 20px;
+      font-size: 14px;
+    }
+    .footer {
+      padding: 12px 30px;
+      text-align: center;
+      font-size: 11px;
+      color: #999999;
+      border-top: 1px solid #e8e8e8;
+    }
+    .footer p {
+      margin: 3px 0;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="header">
+    <h1>Booking Cancelled</h1>
+    <p>PinkMeUP Beauty Spa &amp; Academy</p>
+  </div>
+
+  <div class="content">
+    <p class="greeting">Dear <strong>{{customerName}}</strong>,</p>
+    <p>Your booking has been cancelled as requested.</p>
+
+    <div class="section-title">Cancelled Appointment</div>
+    <div class="details-box">
+      <p><span class="label">Date:</span> {{bookingDate}}</p>
+      <p><span class="label">Time:</span> {{bookingTime}}</p>
+      <p><span class="label">Status:</span> <span class="cancellation-badge">Cancelled</span></p>
+      <p><span class="label">Reason:</span> {{cancellationReason}}</p>
+    </div>
+
+    <div class="section-title">Need to Rebook?</div>
+    <ul class="info-list">
+      <li>You can make a new booking directly in the app.</li>
+      <li>For assistance, contact us on <strong>076 769 0102</strong>.</li>
+    </ul>
+
+    <div class="section-title">Contact Us</div>
+    <div class="contact-box">
+      <p><strong>PinkMeUP Beauty Spa &amp; Academy</strong></p>
+      <p>1 Jan Smuts Avenue, Wits University, Matrix Building, Floor 1</p>
+      <p>Phone: 076 769 0102</p>
+    </div>
+
+    <p class="closing">We hope to welcome you again soon.</p>
+    <p class="closing">Kind regards,<br><strong>The PinkMeUP Team</strong></p>
+  </div>
+
+  <div class="footer">
+    <p>&copy; 2026 PinkMeUP Beauty Spa &amp; Academy</p>
+    <p>This is an automated email. Please do not reply.</p>
+  </div>
+
+</body>
+</html>
