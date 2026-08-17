@@ -722,26 +722,24 @@ AppointmentSchema.statics.getForDate =
 /**
  * Normalize appointment date before validation/save.
  */
-AppointmentSchema.pre('validate', function () {
-  if (!this.date) {
-    return;
+AppointmentSchema.pre(
+  'validate',
+  function () {
+    if (!this.date) {
+      return;
+    }
+
+    const normalizedDate = new Date(this.date);
+
+    if (Number.isNaN(normalizedDate.getTime())) {
+      return;
+    }
+
+    normalizedDate.setHours(0, 0, 0, 0);
+
+    this.date = normalizedDate;
   }
-
-  const normalizedDate = new Date(this.date);
-
-  if (Number.isNaN(normalizedDate.getTime())) {
-    return;
-  }
-
-  normalizedDate.setHours(
-    0,
-    0,
-    0,
-    0
-  );
-
-  this.date = normalizedDate;
-});
+);
 
 
 module.exports =
