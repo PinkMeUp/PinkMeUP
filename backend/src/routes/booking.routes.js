@@ -19,14 +19,17 @@ const optionalAuthenticate = async (req, res, next) => {
   return next();
 };
 
+// Admin routes
+// NOTE: '/all' must be declared before the '/:id' customer route below, or
+// Express will match "all" as an :id value first (and it isn't a valid Mongo
+// ID, so the request would fail validation instead of reaching this handler).
+router.get('/all', authenticate, authorize('admin'), validate(paginationValidation), bookingController.getAllBookings);
+
 // Customer routes
 router.get('/my', authenticate, validate(paginationValidation), bookingController.getMyBookings);
 router.get('/:id', authenticate, validate(idParamValidation), bookingController.getBookingById);
 router.post('/', optionalAuthenticate, validate(bookingValidation), bookingController.createBooking);
 router.put('/:id/cancel', authenticate, validate(cancelValidation), bookingController.cancelBooking);
 router.put('/:id/reschedule', authenticate, validate(rescheduleValidation), bookingController.rescheduleBooking);
-
-// Admin routes
-router.get('/all', authorize('admin'), validate(paginationValidation), bookingController.getAllBookings);
 
 module.exports = router;

@@ -214,12 +214,17 @@ const resetPassword = async (req, res) => {
 /**
  * Google OAuth - redirect user to Google consent screen.
  */
-const googleAuth = passport.authenticate('google', {
-  scope: ['profile', 'email'],
-  accessType: 'offline',
-  prompt: 'consent',
-  session: false
-});
+const googleAuth = (req, res, next) => {
+  if (!require('../config/env').GOOGLE.ENABLED) {
+    return errorResponse(res, 'Google login is not configured for this server.', 503);
+  }
+  return passport.authenticate('google', {
+    scope: ['profile', 'email'],
+    accessType: 'offline',
+    prompt: 'consent',
+    session: false
+  })(req, res, next);
+};
 
 /**
  * Google OAuth callback route.
