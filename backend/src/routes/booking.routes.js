@@ -1,17 +1,20 @@
-﻿/**
- * Booking management routes - protected
+/**
+ * Booking management routes
  */
-
 const express = require('express');
 const router = express.Router();
 const { authenticate, authorize } = require('../middleware/auth');
 const { validate } = require('../middleware/validation');
-const { bookingValidation, rescheduleValidation, cancelValidation, idParamValidation, paginationValidation } = require('../validators');
+const {
+  bookingValidation,
+  rescheduleValidation,
+  cancelValidation,
+  idParamValidation,
+  paginationValidation
+} = require('../validators');
 const bookingController = require('../controllers/booking.controller');
+const availabilityController = require('../controllers/availability.controller');
 
-// Optionally authenticate: if the request carries credentials, verify them
-// and populate req.user; otherwise continue as an anonymous guest (req.user
-// stays undefined so createBooking's own guest-account logic can run).
 const optionalAuthenticate = async (req, res, next) => {
   if (req.headers.authorization || req.cookies?.token) {
     return authenticate(req, res, next);
@@ -19,13 +22,19 @@ const optionalAuthenticate = async (req, res, next) => {
   return next();
 };
 
-// Admin routes
-// NOTE: '/all' must be declared before the '/:id' customer route below, or
-// Express will match "all" as an :id value first (and it isn't a valid Mongo
-// ID, so the request would fail validation instead of reaching this handler).
+// Admin
 router.get('/all', authenticate, authorize('admin'), validate(paginationValidation), bookingController.getAllBookings);
+router.put('/:id/status', authenticate, authorize('admin'), validate(idParamValidation), bookingController.updateBookingStatus);
 
-// Customer routes
+// Stylist/admin
+router.get('/stylist/:id', authenticate, authorize('stylist', 'admin'), validate(idParamValidation), bookingController.getStylistBookings);
+
+// Availability. These routes must be declared before /:id.
+router.get('/availability', availabilityController.getAvailableSlots);
+router.get('/availability/stylist', availabilityController.checkAvailability);
+router.get('/availability/time-slots', availabilityController.getTimeSlotsForDate);
+
+// Customer
 router.get('/my', authenticate, validate(paginationValidation), bookingController.getMyBookings);
 router.get('/:id', authenticate, validate(idParamValidation), bookingController.getBookingById);
 router.post('/', optionalAuthenticate, validate(bookingValidation), bookingController.createBooking);

@@ -44,13 +44,13 @@ const findAvailableSlots = ({ appointments, daySchedule, slotInterval, requiredD
  */
 const checkAvailability = async (req, res) => {
   try {
-    const { stylistId, date, serviceIds } = req.query;
+    const { stylistId, date, serviceIds, excludeAppointmentId } = req.query;
     if (!stylistId || !date) return errorResponse(res, 'Stylist ID and date are required.', 400);
 
     const settings = await getSettings();
     let serviceIdArray = [], requiredDuration = 0;
     if (serviceIds) {
-      serviceIdArray = Array.isArray(serviceIds) ? serviceIds : [serviceIds];
+      serviceIdArray = (Array.isArray(serviceIds) ? serviceIds : [serviceIds]).flatMap(v => String(v).split(',')).map(v => v.trim()).filter(Boolean);
       const services = await Service.find({ _id: { $in: serviceIdArray } });
       services.forEach(s => requiredDuration += s.duration);
     }
@@ -59,6 +59,10 @@ const checkAvailability = async (req, res) => {
     if (!stylist) return errorResponse(res, 'Stylist not found.', 404);
     if (!stylist.isAvailable) {
       return successResponse(res, 'Availability retrieved.', { available: false, message: 'Stylist not available.' });
+    }
+
+    if (serviceIdArray.length && (!Array.isArray(stylist.serviceIds) || !serviceIdArray.every(id => stylist.serviceIds.some(sid => String(sid) === String(id))))) {
+      return successResponse(res, 'Availability retrieved.', { available: false, availableSlots: [], totalAvailable: 0, message: 'Stylist does not provide all selected services.' });
     }
 
     const bookingDate = new Date(date);
@@ -71,7 +75,8 @@ const checkAvailability = async (req, res) => {
     }
 
     const bookedSlots = await Appointment.find({
-      stylistId, date: bookingDate, status: { $nin: ['cancelled', 'no_show'] }
+      stylistId, date: bookingDate, status: { $nin: ['cancelled', 'no_show'] },
+      ...(excludeAppointmentId ? { _id: { $ne: excludeAppointmentId } } : {})
     }).select('startTime totalDuration');
     const slotInterval = settings.slotInterval || 30;
     const availableSlots = findAvailableSlots({
@@ -101,7 +106,7 @@ const getAvailableSlots = async (req, res) => {
     const settings = await getSettings();
     let serviceIdArray = [], requiredDuration = 0;
     if (serviceIds) {
-      serviceIdArray = Array.isArray(serviceIds) ? serviceIds : [serviceIds];
+      serviceIdArray = (Array.isArray(serviceIds) ? serviceIds : [serviceIds]).flatMap(v => String(v).split(',')).map(v => v.trim()).filter(Boolean);
       const services = await Service.find({ _id: { $in: serviceIdArray } });
       services.forEach(s => requiredDuration += s.duration);
     }
@@ -156,13 +161,13 @@ const getAvailableSlots = async (req, res) => {
 
 const getTimeSlotsForDate = async (req, res) => {
   try {
-    const { stylistId, date, serviceIds } = req.query;
+    const { stylistId, date, serviceIds, excludeAppointmentId } = req.query;
     if (!stylistId || !date) return errorResponse(res, 'Stylist ID and date are required.', 400);
 
     const settings = await getSettings();
     let serviceIdArray = [], requiredDuration = 0;
     if (serviceIds) {
-      serviceIdArray = Array.isArray(serviceIds) ? serviceIds : [serviceIds];
+      serviceIdArray = (Array.isArray(serviceIds) ? serviceIds : [serviceIds]).flatMap(v => String(v).split(',')).map(v => v.trim()).filter(Boolean);
       const services = await Service.find({ _id: { $in: serviceIdArray } });
       services.forEach(s => requiredDuration += s.duration);
     }
@@ -171,6 +176,10 @@ const getTimeSlotsForDate = async (req, res) => {
     if (!stylist) return errorResponse(res, 'Stylist not found.', 404);
     if (!stylist.isAvailable) {
       return successResponse(res, 'Time slots retrieved.', { date, availableSlots: [], message: 'Stylist not available.' });
+    }
+
+    if (serviceIdArray.length && (!Array.isArray(stylist.serviceIds) || !serviceIdArray.every(id => stylist.serviceIds.some(sid => String(sid) === String(id))))) {
+      return successResponse(res, 'Time slots retrieved.', { date, availableSlots: [], totalAvailable: 0, message: 'Stylist does not provide all selected services.' });
     }
 
     const bookingDate = new Date(date);
@@ -184,7 +193,8 @@ const getTimeSlotsForDate = async (req, res) => {
 
     const slotInterval = settings.slotInterval || 30;
     const bookedSlots = await Appointment.find({
-      stylistId, date: bookingDate, status: { $nin: ['cancelled', 'no_show'] }
+      stylistId, date: bookingDate, status: { $nin: ['cancelled', 'no_show'] },
+      ...(excludeAppointmentId ? { _id: { $ne: excludeAppointmentId } } : {})
     }).select('startTime totalDuration');
     const availableSlots = findAvailableSlots({
       appointments: bookedSlots,

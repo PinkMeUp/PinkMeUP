@@ -1002,7 +1002,7 @@
       const dateStr = new Date(b.date).toLocaleDateString();
       const serviceNames = (b.serviceIds || []).map(s => s.name).join(', ');
       const customer = b.customerId ? `${b.customerId.firstName} ${b.customerId.lastName}` : 'Guest';
-      const stylistName = b.stylistId?.userId ? b.stylistId.userId.firstName : 'Stylist';
+      const stylistName = b.stylistId?.userId ? `${b.stylistId.userId.firstName || ''} ${b.stylistId.userId.lastName || ''}`.trim() || 'Stylist' : 'Stylist';
       const canAct = !['completed', 'cancelled', 'no_show'].includes(b.status);
       return `<tr>
         <td>${dateStr}<br><span style="color:#b48aa0;font-size:0.7rem;">${b.startTime}</span></td>
