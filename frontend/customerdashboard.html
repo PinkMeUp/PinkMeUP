@@ -1152,7 +1152,22 @@
             </div>
             <div class="form-group" style="margin-bottom:0;">
               <label class="form-label">Email</label>
-              <input class="form-input" id="profileEmailInput" type="email">
+              <input
+  class="form-input"
+  id="profileEmailInput"
+  type="email"
+  readonly
+  title="Email address cannot be changed here"
+>
+<div
+  style="
+    font-size:0.65rem;
+    color:var(--muted);
+    margin-top:0.25rem;
+  "
+>
+  Email address cannot be changed from this page.
+</div>
             </div>
           </div>
           <button class="btn-primary" onclick="saveProfile()"><i class="fas fa-save"></i> Save Changes</button>
@@ -1179,17 +1194,42 @@
   <div class="modal-box">
     <div class="modal-header">
       <div class="modal-title">Reschedule Appointment</div>
-      <button class="modal-close" onclick="closeRescheduleModal()"><i class="fas fa-times"></i></button>
+      <button class="modal-close" onclick="closeRescheduleModal()">
+        <i class="fas fa-times"></i>
+      </button>
     </div>
+
     <div class="form-group">
       <label class="form-label">New date</label>
       <input class="form-input" id="rescheduleDate" type="date">
     </div>
+
     <div class="form-group">
-      <label class="form-label">New time</label>
-      <input class="form-input" id="rescheduleTime" type="time" step="1800">
+      <label class="form-label">Available times</label>
+
+      <div
+        class="time-slots"
+        id="rescheduleTimeSlots"
+        style="margin-top:0.4rem;"
+      ></div>
+
+      <div
+        id="rescheduleSlotsMessage"
+        style="font-size:0.7rem;color:var(--muted);margin-top:0.5rem;"
+      >
+        Select a date to view available times.
+      </div>
     </div>
-    <button class="btn-primary" style="margin-top:0.6rem;width:100%;" onclick="confirmReschedule()"><i class="fas fa-calendar-alt"></i> Confirm New Time</button>
+
+    <button
+      class="btn-primary"
+      id="confirmRescheduleBtn"
+      style="margin-top:0.6rem;width:100%;"
+      onclick="confirmReschedule()"
+    >
+      <i class="fas fa-calendar-alt"></i>
+      Confirm New Time
+    </button>
   </div>
 </div>
 
@@ -1257,10 +1297,13 @@
   async function loadStylists() {
     const res = await fetch(`${API_URL}/stylists?limit=100`, { credentials: 'include' });
     const data = await res.json();
-    STYLISTS = data.data.stylists.map(s => ({ id: s._id, name: s.userId?.firstName || 'Stylist', serviceIds: (s.serviceIds || []).map(id => id.toString ? id.toString() : id) }));
+    STYLISTS = (data.data.stylists || []).map(s => ({
+      id: s._id,
+      name: [s.userId?.firstName, s.userId?.lastName].filter(Boolean).join(' ') || 'Stylist',
+      isAvailable: s.isAvailable !== false,
+      serviceIds: (s.serviceIds || []).map(id => id.toString ? id.toString() : id)
+    }));
   }
-
-  const TIME_SLOTS = ["09:00","09:30","10:00","10:30","11:00","11:30","12:00","12:30","13:00","13:30","14:00","14:30","15:00","15:30","16:00","16:30"];
 
   let appointments = [];
 
@@ -1289,12 +1332,18 @@
         displayStatus = apptDateTime >= now ? 'upcoming' : 'past';
       }
 
+      const appointmentDate = new Date(b.date);
+      const localDate = !Number.isNaN(appointmentDate.getTime())
+        ? `${appointmentDate.getFullYear()}-${String(appointmentDate.getMonth() + 1).padStart(2, '0')}-${String(appointmentDate.getDate()).padStart(2, '0')}`
+        : String(b.date || '').slice(0, 10);
+
       return {
         id: b._id,
         services: (b.serviceIds || []).map(s => ({ id: s._id, name: s.name, price: s.price, duration: s.duration })),
-        date: b.date,
+        date: localDate,
         time: b.startTime,
-        stylist: b.stylistId?.userId?.firstName || 'Stylist',
+        stylistId: b.stylistId?._id || b.stylistId || '',
+        stylist: [b.stylistId?.userId?.firstName, b.stylistId?.userId?.lastName].filter(Boolean).join(' ') || 'Stylist',
         notes: b.notes,
         status: displayStatus,
         rawStatus: b.status
@@ -1405,57 +1454,367 @@ document.querySelectorAll('[data-reschedule-id]').forEach(btn =>
   }
 
 let rescheduleApptId = null;
+let rescheduleAvailableSlots = [];
+let rescheduleSelectedTime = '';
+
+function getLocalDateString() {
+  const now = new Date();
+
+  const year = now.getFullYear();
+  const month = String(now.getMonth() + 1).padStart(2, '0');
+  const day = String(now.getDate()).padStart(2, '0');
+
+  return `${year}-${month}-${day}`;
+}
 
 function openRescheduleModal(id) {
   const modal = document.getElementById('rescheduleModal');
+
   if (!modal) {
     console.error('Reschedule modal element not found.');
     return;
   }
 
+  const appointment = appointments.find(a => a.id === id);
+
+  if (!appointment) {
+    showToast('Appointment could not be found.');
+    return;
+  }
+
+  if (appointment.status !== 'upcoming') {
+    showToast('Only upcoming appointments can be rescheduled.');
+    return;
+  }
+
   rescheduleApptId = id;
-  const today = new Date().toISOString().slice(0, 10);
+  rescheduleAvailableSlots = [];
+  rescheduleSelectedTime = '';
+
   const dateInput = document.getElementById('rescheduleDate');
-  const timeInput = document.getElementById('rescheduleTime');
+
+  if (!dateInput) {
+    console.error('Reschedule date input not found.');
+    return;
+  }
+
+  const today = getLocalDateString();
+
   dateInput.min = today;
   dateInput.value = '';
-  timeInput.value = '';
+
+  renderRescheduleTimeSlots();
 
   modal.classList.add('open');
-}
 
-function closeRescheduleModal() {
-  document.getElementById('rescheduleModal').classList.remove('open');
-}
-document.getElementById('rescheduleModal').addEventListener('click', e => {
-  if (e.target === e.currentTarget) closeRescheduleModal();
-});
-
-async function confirmReschedule() {
-  const date = document.getElementById('rescheduleDate').value;
-  const time = document.getElementById('rescheduleTime').value;
-  if (!date || !time) { showToast('Please pick a new date and time.'); return; }
-
-  try {
-    const res = await fetch(`${API_URL}/bookings/${rescheduleApptId}/reschedule`, {
-      method: 'PUT',
-      headers: { 'Content-Type': 'application/json' },
-      credentials: 'include',
-      body: JSON.stringify({ date, startTime: time })
-    });
-    const data = await res.json();
-    if (res.status === 409) { showToast('That slot is no longer available.'); return; }
-    if (!res.ok) { showToast(data.message || 'Reschedule failed.'); return; }
-
-    showToast('Appointment rescheduled.');
-    closeRescheduleModal();
-    await loadAppointments();
-    renderAppointments();
-    renderOverview();
+  if (!dateInput.dataset.listenerAttached) {
+    dateInput.addEventListener('change', loadRescheduleSlots);
+    dateInput.dataset.listenerAttached = 'true';
   }
 }
 
-  async function cancelAppointment(id) {
+function closeRescheduleModal() {
+  const modal = document.getElementById('rescheduleModal');
+
+  if (modal) {
+    modal.classList.remove('open');
+  }
+
+  rescheduleApptId = null;
+  rescheduleAvailableSlots = [];
+  rescheduleSelectedTime = '';
+
+  const dateInput = document.getElementById('rescheduleDate');
+  if (dateInput) {
+    dateInput.value = '';
+  }
+
+  renderRescheduleTimeSlots();
+}
+
+async function loadRescheduleSlots() {
+  const dateInput = document.getElementById('rescheduleDate');
+  const message = document.getElementById('rescheduleSlotsMessage');
+
+  if (!dateInput) {
+    return;
+  }
+
+  const date = dateInput.value;
+
+  rescheduleAvailableSlots = [];
+  rescheduleSelectedTime = '';
+
+  renderRescheduleTimeSlots();
+
+  if (!date) {
+    if (message) {
+      message.textContent = 'Select a date to view available times.';
+    }
+    return;
+  }
+
+  const appointment = appointments.find(
+    a => a.id === rescheduleApptId
+  );
+
+  if (!appointment) {
+    if (message) {
+      message.textContent = 'Appointment could not be found.';
+    }
+    return;
+  }
+
+  if (!appointment.services || !appointment.services.length) {
+    if (message) {
+      message.textContent = 'This appointment has no services.';
+    }
+    return;
+  }
+
+  /*
+   * Use the same availability endpoint as normal booking.
+   * The appointment's original stylist and services are preserved.
+   */
+  const serviceIds = appointment.services
+    .map(service => service.id)
+    .filter(Boolean);
+
+  if (!serviceIds.length) {
+    if (message) {
+      message.textContent = 'Unable to determine the services for this appointment.';
+    }
+    return;
+  }
+
+  if (message) {
+    message.textContent = 'Loading available times...';
+  }
+
+  try {
+    const query =
+      `?date=${encodeURIComponent(date)}` +
+      `&serviceIds=${encodeURIComponent(serviceIds.join(','))}`;
+
+    const res = await fetch(
+      `${API_URL}/bookings/availability/time-slots` +
+      `?stylistId=${encodeURIComponent(appointment.stylistId || '')}` +
+      `&date=${encodeURIComponent(date)}` +
+      `&serviceIds=${encodeURIComponent(serviceIds.join(','))}`,
+      {
+        credentials: 'include'
+      }
+    );
+
+    const data = await res.json();
+
+    if (!res.ok) {
+      rescheduleAvailableSlots = [];
+
+      if (message) {
+        message.textContent =
+          data.message || 'Could not load available times.';
+      }
+
+      renderRescheduleTimeSlots();
+      return;
+    }
+
+    rescheduleAvailableSlots =
+      Array.isArray(data.data?.availableSlots)
+        ? data.data.availableSlots
+        : [];
+
+    /*
+     * If the current appointment is already at a slot on the
+     * selected date, keep it selectable during rescheduling.
+     *
+     * The backend should exclude the current booking when doing
+     * the final conflict check.
+     */
+    if (
+      date === appointment.date &&
+      appointment.time &&
+      !rescheduleAvailableSlots.includes(appointment.time)
+    ) {
+      rescheduleAvailableSlots.push(appointment.time);
+    }
+
+    rescheduleAvailableSlots.sort();
+
+    if (!rescheduleAvailableSlots.length) {
+      if (message) {
+        message.textContent =
+          'No available times for this date. Please choose another date.';
+      }
+    } else {
+      if (message) {
+        message.textContent =
+          `${rescheduleAvailableSlots.length} available time slot(s).`;
+      }
+    }
+
+    renderRescheduleTimeSlots();
+
+  } catch (error) {
+    console.error('Could not load reschedule availability:', error);
+
+    rescheduleAvailableSlots = [];
+
+    if (message) {
+      message.textContent =
+        'Could not load available times. Please try again.';
+    }
+
+    renderRescheduleTimeSlots();
+  }
+}
+
+function renderRescheduleTimeSlots() {
+  const container = document.getElementById('rescheduleTimeSlots');
+
+  if (!container) {
+    return;
+  }
+
+  if (!rescheduleAvailableSlots.length) {
+    container.innerHTML = `
+      <div
+        style="
+          grid-column:1/-1;
+          text-align:center;
+          padding:0.8rem;
+          color:var(--muted);
+          font-size:0.7rem;
+        "
+      >
+        No available times
+      </div>
+    `;
+    return;
+  }
+
+  container.innerHTML = rescheduleAvailableSlots.map(slot => {
+    const selected = rescheduleSelectedTime === slot;
+
+    return `
+      <button
+        type="button"
+        class="time-slot ${selected ? 'selected' : ''}"
+        onclick="selectRescheduleTime('${slot}')"
+      >
+        ${slot}
+      </button>
+    `;
+  }).join('');
+}
+
+function selectRescheduleTime(time) {
+  if (!rescheduleAvailableSlots.includes(time)) {
+    return;
+  }
+
+  rescheduleSelectedTime = time;
+
+  renderRescheduleTimeSlots();
+}
+
+async function confirmReschedule() {
+  if (!rescheduleApptId) {
+    showToast('No appointment selected.');
+    return;
+  }
+
+  const dateInput = document.getElementById('rescheduleDate');
+  const date = dateInput ? dateInput.value : '';
+  const time = rescheduleSelectedTime;
+
+  if (!date) {
+    showToast('Please pick a new date.');
+    return;
+  }
+
+  if (!time) {
+    showToast('Please select an available time.');
+    return;
+  }
+
+  const appointment = appointments.find(
+    a => a.id === rescheduleApptId
+  );
+
+  if (!appointment) {
+    showToast('Appointment could not be found.');
+    return;
+  }
+
+  const confirmButton =
+    document.getElementById('confirmRescheduleBtn');
+
+  if (confirmButton) {
+    confirmButton.disabled = true;
+    confirmButton.innerHTML =
+      '<i class="fas fa-spinner fa-spin"></i> Rescheduling...';
+  }
+
+  try {
+    const res = await fetch(
+      `${API_URL}/bookings/${encodeURIComponent(rescheduleApptId)}/reschedule`,
+      {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        credentials: 'include',
+        body: JSON.stringify({
+          date,
+          startTime: time
+        })
+      }
+    );
+
+    const data = await res.json();
+
+    if (res.status === 409) {
+      showToast(
+        'That slot is no longer available. Please select another time.'
+      );
+
+      await loadRescheduleSlots();
+      return;
+    }
+
+    if (!res.ok) {
+      showToast(
+        data.message || 'Reschedule failed.'
+      );
+      return;
+    }
+
+    showToast('Appointment rescheduled successfully.');
+
+    closeRescheduleModal();
+
+    await loadAppointments();
+
+    renderAppointments();
+    renderOverview();
+
+  } catch (error) {
+    console.error('Reschedule error:', error);
+
+    showToast(
+      'Could not reschedule the appointment. Please try again.'
+    );
+
+  } finally {
+    if (confirmButton) {
+      confirmButton.disabled = false;
+      confirmButton.innerHTML =
+        '<i class="fas fa-calendar-alt"></i> Confirm New Time';
+    }
+  }
+}  async function cancelAppointment(id) {
     const appt = appointments.find(a => a.id === id);
     if (!appt) return;
     if (!confirm(`Cancel your appointment on ${formatDate(appt.date)} at ${appt.time}?`)) return;
@@ -1525,7 +1884,7 @@ async function confirmReschedule() {
     renderCart();
     gotoStep(1);
 
-    const today = new Date().toISOString().slice(0,10);
+    const today = getLocalDateString();
     document.getElementById('apptDate').min = today;
     document.getElementById('apptDate').value = '';
     const apptDateInput = document.getElementById('apptDate');
@@ -1566,22 +1925,122 @@ async function confirmReschedule() {
   }
 
   function toggleService(id) {
-    if (cartIds.includes(id)) {
-      cartIds = cartIds.filter(x => x !== id);
-    } else {
-      cartIds.push(id);
-    }
-    renderStylistGrid();
-    renderSvcGrid();
-    renderCart();
-    
+  if (cartIds.includes(id)) {
+    cartIds = cartIds.filter(
+      serviceId => serviceId !== id
+    );
+  } else {
+    cartIds.push(id);
   }
 
-  function removeFromCart(id) {
-    cartIds = cartIds.filter(x => x !== id);
-    renderSvcGrid();
-    renderCart();
+  /*
+   * Changing services can make the current stylist
+   * invalid.
+   */
+  if (
+    bookState.stylistId &&
+    !isStylistEligible(bookState.stylistId)
+  ) {
+    bookState.stylistId = '';
+    bookState.stylist = '';
+    bookState.time = '';
   }
+
+  availableSlots = [];
+
+  renderSvcGrid();
+  renderCart();
+  renderStylistGrid();
+  renderTimeSlotsIntoDOM();
+
+  /*
+   * If the current stylist is still valid and a date
+   * has already been selected, reload availability.
+   */
+  if (
+    cartIds.length &&
+    bookState.stylistId &&
+    document.getElementById('apptDate')?.value
+  ) {
+    refreshTimeSlots();
+  }
+}
+
+ function isStylistEligible(stylistId) {
+  const stylist = STYLISTS.find(
+    s => s.id === stylistId && s.isAvailable !== false
+  );
+
+  if (!stylist) {
+    return false;
+  }
+
+  const selectedServices = SERVICES.filter(
+    service => cartIds.includes(service.id)
+  );
+
+  /*
+   * No selected services means no stylist should be selected.
+   */
+  if (!selectedServices.length) {
+    return false;
+  }
+
+  /*
+   * Availability requires explicit service assignments.
+   * An empty serviceIds array therefore cannot be treated as
+   * "all services" on the frontend.
+   */
+  if (
+    !Array.isArray(stylist.serviceIds) ||
+    !stylist.serviceIds.length
+  ) {
+    return false;
+  }
+
+  return selectedServices.every(service =>
+    stylist.serviceIds.includes(service.id)
+  );
+}
+
+function removeFromCart(id) {
+  cartIds = cartIds.filter(
+    serviceId => serviceId !== id
+  );
+
+  /*
+   * The selected stylist may no longer be compatible
+   * with the remaining services.
+   */
+  if (
+    bookState.stylistId &&
+    !isStylistEligible(bookState.stylistId)
+  ) {
+    bookState.stylistId = '';
+    bookState.stylist = '';
+    bookState.time = '';
+  }
+
+  renderSvcGrid();
+  renderCart();
+  renderStylistGrid();
+
+  availableSlots = [];
+
+  renderTimeSlotsIntoDOM();
+
+  /*
+   * If services are still selected and a stylist/date
+   * remain valid, refresh availability.
+   */
+  if (
+    cartIds.length &&
+    bookState.stylistId &&
+    document.getElementById('apptDate')?.value
+  ) {
+    refreshTimeSlots();
+  }
+}
 
   function renderCart() {
     const items = SERVICES.filter(s => cartIds.includes(s.id));
@@ -1622,44 +2081,121 @@ async function confirmReschedule() {
   }
 
  function renderStylistGrid() {
+  const grid = document.getElementById('stylistGrid');
+
+  if (!grid) {
+    return;
+  }
+
   const selectedServices = SERVICES.filter(
-    s => cartIds.includes(s.id)
+    service => cartIds.includes(service.id)
   );
 
+  /*
+   * If no services have been selected yet, don't select
+   * a stylist prematurely.
+   */
+  if (!selectedServices.length) {
+    bookState.stylistId = '';
+    bookState.stylist = '';
+
+    grid.innerHTML = `
+      <div
+        class="empty-state"
+        style="grid-column:1/-1;padding:1rem;"
+      >
+        <p>Please select at least one service first.</p>
+      </div>
+    `;
+
+    return;
+  }
+
   const eligibleStylists = STYLISTS.filter(stylist => {
-    // A stylist with no services configured yet hasn't been set up with
-    // specific restrictions - treat them as available for any service
-    // rather than hiding them entirely. Once an admin assigns specific
-    // services to a stylist, only matching services will show them.
-    if (!stylist.serviceIds || !stylist.serviceIds.length) {
-      return true;
+    if (stylist.isAvailable === false) {
+      return false;
     }
 
+    /*
+     * Availability requires explicit service assignments.
+     */
+    if (
+      !Array.isArray(stylist.serviceIds) ||
+      !stylist.serviceIds.length
+    ) {
+      return false;
+    }
+
+    /*
+     * Stylist must support EVERY selected service.
+     */
     return selectedServices.every(service =>
       stylist.serviceIds.includes(service.id)
     );
   });
 
-  const grid = document.getElementById('stylistGrid');
+  /*
+   * If the currently selected stylist is no longer eligible,
+   * clear the selection.
+   */
+  if (
+    bookState.stylistId &&
+    !eligibleStylists.some(
+      stylist => stylist.id === bookState.stylistId
+    )
+  ) {
+    bookState.stylistId = '';
+    bookState.stylist = '';
+    bookState.time = '';
+    availableSlots = [];
+    renderTimeSlotsIntoDOM();
+  }
 
   if (!eligibleStylists.length) {
     grid.innerHTML = `
-      <div class="empty-state">
-        <p>No stylists are available for the selected service.</p>
+      <div
+        class="empty-state"
+        style="grid-column:1/-1;padding:1rem;"
+      >
+        <i class="fas fa-user-slash"></i>
+        <p>
+          No stylists are available for all of the
+          selected services.
+        </p>
       </div>
     `;
+
     return;
   }
 
-  grid.innerHTML = eligibleStylists.map(s => `
-    <button
-      class="stylist-btn ${bookState.stylistId === s.id ? 'selected' : ''}"
-      onclick="selectStylist('${s.id}','${s.name}')"
-    >
-      <div class="stylist-av">${s.name[0]}</div>
-      <div class="stylist-name">${s.name}</div>
-    </button>
-  `).join('');
+  grid.innerHTML = eligibleStylists.map(stylist => {
+
+    const name = stylist.name || 'Stylist';
+    const initial = name.charAt(0).toUpperCase();
+
+    return `
+      <button
+        type="button"
+        class="stylist-btn ${
+          bookState.stylistId === stylist.id
+            ? 'selected'
+            : ''
+        }"
+        onclick="selectStylist(
+          '${stylist.id}',
+          '${name.replace(/'/g, "\\'")}'
+        )"
+      >
+        <div class="stylist-av">
+          ${initial}
+        </div>
+
+        <div class="stylist-name">
+          ${name}
+        </div>
+      </button>
+    `;
+  }).join('');
 }
 
   function selectStylist(id, name) {
@@ -1669,44 +2205,155 @@ async function confirmReschedule() {
     refreshTimeSlots();
   }
 
-  let availableSlots = [];
+let availableSlots = [];
 
 async function loadAvailableSlots() {
-  const dateVal = document.getElementById('apptDate').value;
-  if (!dateVal || !bookState.stylistId) { availableSlots = []; return; }
-  try {
-    const qs = `?date=${dateVal}&serviceIds=${cartIds.join(',')}`;
-    const res = await fetch(`${API_URL}/stylists/${bookState.stylistId}/available-slots${qs}`, { credentials: 'include' });
-    const data = await res.json();
-    availableSlots = (res.ok && data.data?.availableSlots) ? data.data.availableSlots : [];
-  } catch (err) {
-    availableSlots = [];
+  const dateInput = document.getElementById('apptDate');
+  const dateVal = dateInput ? dateInput.value : '';
+
+  availableSlots = [];
+
+  if (!dateVal || !bookState.stylistId || !cartIds.length) {
+    renderTimeSlotsIntoDOM();
+    return;
   }
+
+  if (!isStylistEligible(bookState.stylistId)) {
+    bookState.time = '';
+    renderTimeSlotsIntoDOM();
+    showToast('The selected stylist does not provide all selected services.');
+    return;
+  }
+
+  try {
+    const query =
+      `?date=${encodeURIComponent(dateVal)}` +
+      `&serviceIds=${encodeURIComponent(cartIds.join(','))}`;
+
+    const res = await fetch(
+      `${API_URL}/bookings/availability/time-slots` +
+      `?stylistId=${encodeURIComponent(bookState.stylistId)}` +
+      `&date=${encodeURIComponent(dateVal)}` +
+      `&serviceIds=${encodeURIComponent(cartIds.join(','))}`,
+      {
+        credentials: 'include'
+      }
+    );
+
+    const data = await res.json();
+
+    if (!res.ok) {
+      console.error(
+        'Availability request failed:',
+        data.message || data
+      );
+
+      availableSlots = [];
+      renderTimeSlotsIntoDOM();
+
+      showToast(
+        data.message || 'Could not load available times.'
+      );
+
+      return;
+    }
+
+    availableSlots =
+      Array.isArray(data.data?.availableSlots)
+        ? data.data.availableSlots
+        : [];
+
+  } catch (error) {
+    console.error('Could not load available slots:', error);
+
+    availableSlots = [];
+
+    showToast(
+      'Could not load available times. Please try again.'
+    );
+  }
+
+  /*
+   * If the currently selected time is no longer available,
+   * clear it so the customer cannot submit an invalid slot.
+   */
+  if (
+    bookState.time &&
+    !availableSlots.includes(bookState.time)
+  ) {
+    bookState.time = '';
+  }
+
+  renderTimeSlotsIntoDOM();
 }
 
 function renderTimeSlots() {
-  return TIME_SLOTS.map(slot => {
-    const unavail = !availableSlots.includes(slot);
-    const sel = bookState.time === slot;
-    return `<div class="time-slot ${sel?'selected':''} ${unavail?'unavailable':''}" onclick="${unavail?'':'selectTime(\''+slot+'\')'}">${slot}</div>`;
+  const container = document.getElementById('timeSlots');
+
+  if (!availableSlots.length) {
+    return `
+      <div
+        style="
+          grid-column:1/-1;
+          text-align:center;
+          padding:1rem;
+          color:var(--muted);
+          font-size:0.7rem;
+        "
+      >
+        ${
+          !document.getElementById('apptDate')?.value
+            ? 'Select a date first.'
+            : !bookState.stylistId
+              ? 'Select a stylist first.'
+              : !cartIds.length
+                ? 'Select at least one service first.'
+                : 'No available times for this date.'
+        }
+      </div>
+    `;
+  }
+
+  return availableSlots.map(slot => {
+    const selected = bookState.time === slot;
+
+    return `
+      <button
+        type="button"
+        class="time-slot ${selected ? 'selected' : ''}"
+        onclick="selectTime('${slot}')"
+      >
+        ${slot}
+      </button>
+    `;
   }).join('');
 }
 
-  function renderTimeSlotsIntoDOM() {
-    const el = document.getElementById('timeSlots');
-    if (el) el.innerHTML = renderTimeSlots();
+function renderTimeSlotsIntoDOM() {
+  const el = document.getElementById('timeSlots');
+
+  if (el) {
+    el.innerHTML = renderTimeSlots();
+  }
+}
+
+async function refreshTimeSlots() {
+  bookState.time = '';
+
+  await loadAvailableSlots();
+
+  renderTimeSlotsIntoDOM();
+}
+
+function selectTime(time) {
+  if (!availableSlots.includes(time)) {
+    return;
   }
 
-  async function refreshTimeSlots() {
-    bookState.time = '';
-    await loadAvailableSlots();
-    renderTimeSlotsIntoDOM();
-  }
+  bookState.time = time;
 
-  function selectTime(t) {
-    bookState.time = t;
-    renderTimeSlotsIntoDOM();
-  }
+  renderTimeSlotsIntoDOM();
+}
 
   function gotoStep(n) {
     wizardStep = n;
@@ -1904,12 +2551,39 @@ function renderTimeSlots() {
   }
 
   (async function init() {
-    if (!getCurrentUser()) {
-      window.location.replace('login.html');
-      return;
-    }
+   const currentUser =
+  typeof getCurrentUser === 'function'
+    ? getCurrentUser()
+    : null;
 
-    const user = getCurrentUser && getCurrentUser();
+if (!currentUser) {
+  window.location.replace('login.html');
+  return;
+}
+
+/*
+ * Customer dashboard should only be used by customers.
+ * If your auth system stores the role under a different
+ * property, use that property here.
+ */
+if (
+  currentUser.role &&
+  currentUser.role.toLowerCase() !== 'customer'
+) {
+  if (currentUser.role.toLowerCase() === 'admin') {
+    window.location.replace('admindashboard.html');
+  } else if (
+    currentUser.role.toLowerCase() === 'stylist'
+  ) {
+    window.location.replace('stylistdashboard.html');
+  } else {
+    window.location.replace('login.html');
+  }
+
+  return;
+}
+
+    const user = currentUser;
     if (user) {
       document.getElementById('profileFullName').textContent = user.name || user.firstName + ' ' + user.lastName || 'User';
       document.getElementById('profileEmail').textContent = user.email || '';
