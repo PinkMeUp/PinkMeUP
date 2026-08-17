@@ -2450,54 +2450,7 @@ let isBookingSubmitting = false;
       return;
     }
 
-
-	if (bookState.bookingSubmitting) {
-  return;
-}
-
-bookState.bookingSubmitting = true;
-
-try {
-  const res = await fetch(`${API_URL}/bookings`, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    credentials: 'include',
-    body: JSON.stringify({
-      serviceIds: cartIds,
-      stylistId: bookState.stylistId,
-      date: bookState.date,
-      startTime: bookState.time,
-      notes: document.getElementById('detNotes').value,
-      guestName: name,
-      guestEmail: email,
-      guestPhone: phone
-    })
-  });
-
-  const data = await res.json();
-
-  if (!res.ok) {
-    throw new Error(
-      data.message || 'Failed to create booking.'
-    );
-  }
-
-  // booking succeeded
-  // continue to success screen here
-
-} catch (error) {
-  console.error('Booking error:', error);
-
-  // show error to customer
-
-} finally {
-  bookState.bookingSubmitting = false;
-}
-
-
-  isBookingSubmitting = true;
+    isBookingSubmitting = true;
     const wNextBtn = document.getElementById('wNext');
     wNextBtn.disabled = true;
     wNextBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Booking...';
@@ -2537,6 +2490,9 @@ try {
       renderCart();
       await loadAppointments();
       setTimeout(() => { switchView('appointments'); }, 800);
+    } catch (error) {
+      console.error('Booking error:', error);
+      showToast('Could not create booking. Please try again.');
     } finally {
       isBookingSubmitting = false;
       wNextBtn.disabled = false;
