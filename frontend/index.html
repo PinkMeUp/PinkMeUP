@@ -305,7 +305,7 @@
             border-left: none;
         }
 
-        .service-item, .contact-item, .step-item, .academy-item {
+        .service-item, .contact-item, .academy-item {
             display: flex;
             align-items: flex-start;
             margin-bottom: 12px;
@@ -313,12 +313,6 @@
             font-size: 0.95rem;
             font-weight: 400;
             line-height: 1.4;
-        }
-
-        .step-number {
-            color: #D43F6B;
-            font-weight: 600;
-            margin-right: 8px;
         }
 
         .hours-line {
@@ -602,7 +596,7 @@
                 margin-bottom: 14px;
             }
 
-            .service-item, .contact-item, .step-item, .academy-item {
+            .service-item, .contact-item, .academy-item {
                 font-size: 0.85rem;
                 margin-bottom: 10px;
             }
@@ -661,7 +655,6 @@
             <h2>Your beauty journey starts here</h2>
             <p>Book any service in under 30 seconds. Choose your favorite treatment, pick a time, and show up to pure relaxation. No stress, no hidden fees — just honest, luxurious self-care.</p>
             
-            <!-- THIS BUTTON TAKES YOU TO login.html -->
             <a href="login.html" class="book-cta-btn">Book Your Appointment</a>
         </div>
     </div>
@@ -726,15 +719,6 @@
 
             <!-- CARD 3 -->
             <div class="white-card">
-                <div class="card-title">How to Book</div>
-                <div class="step-item"><span class="step-number">1.</span> Select service</div>
-                <div class="step-item"><span class="step-number">2.</span> Choose stylist</div>
-                <div class="step-item"><span class="step-number">3.</span> Pick date & timeslot</div>
-                <div class="step-item"><span class="step-number">4.</span> Confirm your booking</div>
-            </div>
-
-            <!-- CARD 4 -->
-            <div class="white-card">
                 <div class="card-title">Beauty Academy</div>
                 
                 <div class="academy-item">
@@ -769,9 +753,10 @@
         <div class="footer-content">
             <div class="footer-links">
                 <a href="index.html">Home</a>
-                <a href="#" id="aboutUsBtn">About Us</a>
-                <a href="#" id="contactBtn">Contact</a>
-                <a href="#" id="privacyBtn">Privacy Policy</a>
+                <!-- FIXED: Added javascript:void(0) so it doesn't scroll up -->
+                <a href="javascript:void(0)" id="aboutUsBtn">About Us</a>
+                <a href="javascript:void(0)" id="contactBtn">Contact</a>
+                <a href="javascript:void(0)" id="privacyBtn">Privacy Policy</a>
             </div>
             <div style="display: flex; flex-direction: column; align-items: center; gap: 10px; width: 100%;">
                 <div class="social-links">
@@ -833,4 +818,88 @@
             </div>
 
             <button class="close-modal" id="closeContactBtn">Close</button>
-        </
+        </div>
+    </div>
+
+    <!-- PRIVACY POLICY MODAL -->
+    <div id="privacyModal" class="modal">
+        <div class="modal-content">
+            <h4>Privacy Policy</h4>
+            <p><strong>Effective Date:</strong> [Insert Current Date]</p>
+            <p><strong>PinkMeUp Beauty Spa & Academy</strong> ("we", "our", "us") respects your privacy. This policy explains how we collect, use, and protect your personal information when you use our website and services.</p>
+            
+            <p><strong>1. Information We Collect</strong><br>
+            We collect information you provide directly, such as your name, email address, phone number, and appointment preferences. We also automatically collect certain data like your IP address and browser type to improve our site performance.</p>
+            
+            <p><strong>2. How We Use Your Information</strong><br>
+            We use your information to book appointments, send reminders, process payments, and improve our services. We will never sell your personal data to third parties.</p>
+            
+            <p><strong>3. Data Security</strong><br>
+            We take reasonable steps to protect your data using secure servers and encryption. However, no online transmission is 100% secure.</p>
+            
+            <p><strong>4. Third-Party Links</strong><br>
+            Our site may contain links to social media or payment platforms. We are not responsible for their privacy practices.</p>
+            
+            <p><strong>5. Your Rights</strong><br>
+            You may request to view, update, or delete your data at any time by emailing us at <strong>pinkmeup01@gmail.com</strong>.</p>
+            
+            <p>By using our site, you agree to this policy. Updates will be posted here.</p>
+            
+            <button class="close-modal" id="closePrivacyBtn">Close</button>
+        </div>
+    </div>
+
+    <script>
+        // --- About Us Modal ---
+        const aboutModal = document.getElementById('aboutModal');
+        const aboutBtns = document.querySelectorAll('#aboutUsBtn');
+        const closeAboutBtn = document.getElementById('closeModalBtn');
+        
+        aboutBtns.forEach(btn => {
+            btn.onclick = function() {
+                aboutModal.style.display = 'flex';
+            }
+        });
+        closeAboutBtn.onclick = function() {
+            aboutModal.style.display = 'none';
+        }
+
+        // --- Contact Modal ---
+        const contactModal = document.getElementById('contactModal');
+        const contactBtn = document.getElementById('contactBtn');
+        const closeContactBtn = document.getElementById('closeContactBtn');
+
+        contactBtn.onclick = function() {
+            contactModal.style.display = 'flex';
+        }
+        closeContactBtn.onclick = function() {
+            contactModal.style.display = 'none';
+        }
+
+        // --- Privacy Modal ---
+        const privacyModal = document.getElementById('privacyModal');
+        const privacyBtn = document.getElementById('privacyBtn');
+        const closePrivacyBtn = document.getElementById('closePrivacyBtn');
+
+        privacyBtn.onclick = function() {
+            privacyModal.style.display = 'flex';
+        }
+        closePrivacyBtn.onclick = function() {
+            privacyModal.style.display = 'none';
+        }
+
+        // -- Close modals when clicking outside ---
+        window.onclick = function(event) {
+            if (event.target == aboutModal) {
+                aboutModal.style.display = 'none';
+            }
+            if (event.target == contactModal) {
+                contactModal.style.display = 'none';
+            }
+            if (event.target == privacyModal) {
+                privacyModal.style.display = 'none';
+            }
+        }
+    </script>
+</body>
+</html>
