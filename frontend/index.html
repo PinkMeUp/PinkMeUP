@@ -250,18 +250,49 @@
             line-height: 1.4;
         }
 
-        .section-image {
+        /* ========================================================== */
+        /* --- 3-PICTURE STRIP (No gaps, no barriers) --- */
+        /* ========================================================== */
+        .image-strip-wrapper {
             width: 100%;
-            max-width: 900px;
-            height: 250px;
+            max-width: 1100px;
             margin: 0 auto 40px auto;
-            border-radius: 16px;
-            background-image: url('https://images.unsplash.com/photo-1521590832167-7bcbfaa6381f?q=80&w=2070&auto=format&fit=crop');
-            background-size: cover;
-            background-position: center;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+            display: flex;
+            flex-direction: row;
+            overflow: hidden;
+            border-radius: 16px; /* Outer soft corner only */
         }
 
+        .strip-image {
+            flex: 1; /* Forces them to be exactly equal width */
+            height: 250px;
+            background-size: cover;
+            background-position: center;
+            transition: transform 0.4s ease;
+            cursor: pointer;
+        }
+
+        .strip-image:hover {
+            transform: scale(1.03); /* Slight zoom on hover */
+            z-index: 10;
+        }
+
+        /* NEW IMAGE 1 (Lashes/Brows) */
+        .strip-image-1 {
+            background-image: url('https://scontent-jnb2-1.xx.fbcdn.net/v/t39.30808-6/490978688_1219113733549992_4889656754582406729_n.jpg?stp=dst-jpg_tt6&cstp=mx1365x2048&ctp=s1365x2048&_nc_cat=109&ccb=1-7&_nc_sid=833d8c&_nc_ohc=JUUK9_ACEF4Q7kNvwGZDL8d&_nc_oc=AdpcZd4ZXYQpgWP31U_g6j9qCkRoGaUfn1c2ZPn_RxqdbTj_ts7T-LsyGSuiz78Iy54&_nc_zt=23&_nc_ht=scontent-jnb2-1.xx&_nc_gid=Gh2CGgaeJjvw8qApjtxczg&_nc_ss=7b289&oh=00_AQENY-TeanCtKMqdFgapnrkHAaF8Ad2qz5jHpr396-e5WQ&oe=6A8A799C');
+        }
+
+        /* IMAGE 2 (Hot Stones/Massage) */
+        .strip-image-2 {
+            background-image: url('https://scontent-jnb2-1.xx.fbcdn.net/v/t39.30808-6/580670226_1400526232075407_9073200784740387847_n.jpg?stp=dst-jpg_tt6&cstp=mx1044x1044&ctp=s1044x1044&_nc_cat=105&ccb=1-7&_nc_sid=833d8c&_nc_ohc=5-UxW8ubwkoQ7kNvwFE_rj2&_nc_oc=AdoTbTpUYoE-EvHfFP9dOBSv1ixqKwkl4a2cTwb951OsI35wOgIhj-ztt0auTB9KUcs&_nc_zt=23&_nc_ht=scontent-jnb2-1.xx&_nc_gid=GKrHOMPE8UuI3S1Hj2lqDw&_nc_ss=7b289&oh=00_AQFsWCAdobJk8vT77xcVkz7ATnbODt2oD9-2JoEbNyakfw&oe=6A8A625A');
+        }
+
+        /* IMAGE 3 (Nails) */
+        .strip-image-3 {
+            background-image: url('https://scontent-jnb2-1.xx.fbcdn.net/v/t39.30808-6/520941638_1296991112428920_2526096380252480794_n.jpg?stp=dst-jpg_tt6&cstp=mx1044x1118&ctp=s1044x1118&_nc_cat=100&ccb=1-7&_nc_sid=833d8c&_nc_ohc=504v_kzp0YMQ7kNvwH15rzQ&_nc_oc=AdpvVmbLWUx3fqGte4HsPBp_ViEM6D0jqZk8DDEQqiuli0DrvjPoCIoowfNI5eUCIbw&_nc_zt=23&_nc_ht=scontent-jnb2-1.xx&_nc_gid=mGYQgFLJNmP-nk3mZQopTQ&_nc_ss=7b289&oh=00_AQHEZdRzIMz-ZMhjFCN4ForKuLVs07Ysoiehw7i6Y3RZeQ&oe=6A8A962F');
+        }
+
+        /* --- CARDS CONTAINER --- */
         .cards-container {
             display: flex;
             flex-wrap: wrap;
@@ -340,6 +371,7 @@
             margin-top: 5px;
         }
 
+        /* --- FOOTER --- */
         .footer-content {
             display: flex;
             flex-wrap: wrap;
@@ -572,9 +604,13 @@
                 font-size: 1.6rem;
             }
 
-            .section-image {
-                height: 180px;
+            .image-strip-wrapper {
+                border-radius: 12px;
                 margin-bottom: 30px;
+            }
+
+            .strip-image {
+                height: 150px;
             }
 
             .cards-container {
@@ -668,7 +704,12 @@
             </p>
         </div>
 
-        <div class="section-image"></div>
+        <!-- 3-PICTURE STRIP -->
+        <div class="image-strip-wrapper">
+            <div class="strip-image strip-image-1"></div>
+            <div class="strip-image strip-image-2"></div>
+            <div class="strip-image strip-image-3"></div>
+        </div>
 
         <div class="why-choose-us">
             <h3>Why Choose PinkMeUp?</h3>
@@ -753,7 +794,6 @@
         <div class="footer-content">
             <div class="footer-links">
                 <a href="index.html">Home</a>
-                <!-- FIXED: Added javascript:void(0) so it doesn't scroll up -->
                 <a href="javascript:void(0)" id="aboutUsBtn">About Us</a>
                 <a href="javascript:void(0)" id="contactBtn">Contact</a>
                 <a href="javascript:void(0)" id="privacyBtn">Privacy Policy</a>
@@ -888,7 +928,7 @@
             privacyModal.style.display = 'none';
         }
 
-        // -- Close modals when clicking outside ---
+        // --- Close modals when clicking outside ---
         window.onclick = function(event) {
             if (event.target == aboutModal) {
                 aboutModal.style.display = 'none';
