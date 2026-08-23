@@ -791,14 +791,15 @@
       const data = await res.json();
       if (data.success) {
         stylists = (data.data.stylists || []).map(st => ({
-          id: st._id,
-          name: st.userId ? `${st.userId.firstName || ''} ${st.userId.lastName || ''}`.trim() : 'Unknown',
-          email: st.userId?.email || '',
-          phone: st.userId?.phone || '',
-          serviceIds: st.serviceIds || [],
-          isAvailable: st.isAvailable,
-          rating: st.rating
-        }));
+  id: st._id,
+  name: st.userId ? `${st.userId.firstName || ''} ${st.userId.lastName || ''}`.trim() : 'Unknown',
+  email: st.userId?.email || '',
+  phone: st.userId?.phone || '',
+  serviceIds: st.serviceIds || [],
+  isAvailable: st.isAvailable,
+  isActive: st.userId?.isActive !== false,
+  rating: st.rating
+}));
         window.stylistNames = stylists.map(s => s.name);
         renderStylists();
         if (document.getElementById('reports-view').classList.contains('active')) updateReports();
@@ -815,30 +816,42 @@
       return;
     }
     let html = '';
-    stylists.forEach(st => {
-      const serviceNames = st.serviceIds.map(id => getServiceName(id)).filter(Boolean);
-      html += `
-        <div class="stylist-card">
-          <h4>${escapeHtml(st.name)}</h4>
-          <div class="contact"><i class="fas fa-envelope"></i> ${escapeHtml(st.email || 'N/A')} &nbsp; <i class="fas fa-phone"></i> ${escapeHtml(st.phone || 'N/A')}</div>
-          <div><strong>Services offered:</strong></div>
-          <div class="service-chips">
-            ${serviceNames.length ? serviceNames.map(n => `<span class="chip">${escapeHtml(n)}</span>`).join('') : '<span style="color:#b48aa0;font-size:0.8rem;">No services assigned</span>'}
-          </div>
-          <div class="actions">
-            <button class="btn-outline edit-stylist" data-id="${st.id}"><i class="fas fa-edit"></i> Edit</button>
-            <button class="btn-danger delete-stylist" data-id="${st.id}"><i class="fas fa-trash"></i> Delete</button>
-          </div>
-        </div>
-      `;
-    });
-    container.innerHTML = html;
-    document.querySelectorAll('.edit-stylist').forEach(btn =>
-      btn.addEventListener('click', () => openEditStylistModal(btn.dataset.id))
-    );
-    document.querySelectorAll('.delete-stylist').forEach(btn =>
-      btn.addEventListener('click', () => deleteStylistFromDB(btn.dataset.id))
-    );
+stylists.forEach(st => {
+  const status = !st.isActive ? 'disabled' : (st.isAvailable ? 'active' : 'inactive');
+  const serviceNames = st.serviceIds.map(id => getServiceName(id)).filter(Boolean);
+  html += `
+    <div class="stylist-card">
+      <h4>${escapeHtml(st.name)}</h4>
+      <div class="contact"><i class="fas fa-envelope"></i> ${escapeHtml(st.email || 'N/A')} &nbsp; <i class="fas fa-phone"></i> ${escapeHtml(st.phone || 'N/A')}</div>
+      <div style="margin:0.4rem 0;">
+        <strong>Status:</strong>
+        <select class="stylist-status-select" data-id="${st.id}">
+          <option value="active" ${status==='active'?'selected':''}>Active</option>
+          <option value="inactive" ${status==='inactive'?'selected':''}>Inactive</option>
+          <option value="disabled" ${status==='disabled'?'selected':''}>Disabled</option>
+        </select>
+      </div>
+      <div><strong>Services offered:</strong></div>
+      <div class="service-chips">
+        ${serviceNames.length ? serviceNames.map(n => `<span class="chip">${escapeHtml(n)}</span>`).join('') : '<span style="color:#b48aa0;font-size:0.8rem;">No services assigned</span>'}
+      </div>
+      <div class="actions">
+        <button class="btn-outline edit-stylist" data-id="${st.id}"><i class="fas fa-edit"></i> Edit</button>
+        <button class="btn-danger delete-stylist" data-id="${st.id}"><i class="fas fa-trash"></i> Delete</button>
+      </div>
+    </div>
+  `;
+});
+container.innerHTML = html;
+document.querySelectorAll('.stylist-status-select').forEach(sel =>
+  sel.addEventListener('change', () => updateStylistStatus(sel.dataset.id, sel.value))
+);
+document.querySelectorAll('.edit-stylist').forEach(btn =>
+  btn.addEventListener('click', () => openEditStylistModal(btn.dataset.id))
+);
+document.querySelectorAll('.delete-stylist').forEach(btn =>
+  btn.addEventListener('click', () => deleteStylistFromDB(btn.dataset.id))
+);
   }
 
   function populateStylistServiceOptions() {
@@ -955,6 +968,26 @@
     }
   }
 
+async function updateStylistStatus(id, status) {
+  showLoading('Updating status...');
+  try {
+    const res = await fetch(`${API_BASE}/stylists/${id}`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      credentials: 'include',
+      body: JSON.stringify({ status })
+    });
+    const data = await res.json();
+    if (!res.ok) { showToast(data.message || 'Failed to update status.'); return; }
+    await loadStylistsFromDB();
+    showToast(`Stylist marked as ${status}.`);
+  } catch (err) {
+    showToast('Error updating stylist status.');
+  } finally {
+    hideLoading();
+  }
+}
+
   function closeStylistModal() {
     document.getElementById('stylistModal').classList.remove('active');
   }
@@ -1021,8 +1054,8 @@
     }).join('');
 
     document.querySelectorAll('.mark-complete').forEach(btn =>
-      btn.addEventListener('click', () => setBookingStatus(btn.dataset.id, 'completed'))
-    );
+  btn.addEventListener('click', () => markCompleteWithRating(btn.dataset.id))
+);
     document.querySelectorAll('.mark-noshow').forEach(btn =>
       btn.addEventListener('click', () => setBookingStatus(btn.dataset.id, 'no_show'))
     );
@@ -1031,25 +1064,40 @@
     );
   }
 
-  async function setBookingStatus(id, status) {
-    showLoading(status === 'completed' ? 'Marking as completed...' : 'Updating booking...');
-    try {
-      const res = await fetch(`${API_BASE}/admin/bookings/${id}/status`, {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
-        credentials: 'include',
-        body: JSON.stringify({ status })
-      });
-      const data = await res.json();
-      if (!res.ok) { showToast(data.message || 'Update failed.'); return; }
-      showToast('Booking updated.');
-      await loadAllBookings();
-    } catch (err) {
-      showToast('Error updating booking.');
-    } finally {
-      hideLoading();
-    }
+
+function markCompleteWithRating(id) {
+  const input = prompt('Rate this appointment (1–5) before marking it complete:');
+  if (input === null) return;
+  const rating = Number(input);
+  if (!Number.isFinite(rating) || rating < 1 || rating > 5) {
+    showToast('Please enter a rating between 1 and 5.');
+    return;
   }
+  setBookingStatus(id, 'completed', rating);
+}
+
+
+ async function setBookingStatus(id, status, rating) {
+  showLoading(status === 'completed' ? 'Marking as completed...' : 'Updating booking...');
+  try {
+    const body = { status };
+    if (rating !== undefined) body.rating = rating;
+    const res = await fetch(`${API_BASE}/admin/bookings/${id}/status`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      credentials: 'include',
+      body: JSON.stringify(body)
+    });
+    const data = await res.json();
+    if (!res.ok) { showToast(data.message || 'Update failed.'); return; }
+    showToast('Booking updated.');
+    await loadAllBookings();
+  } catch (err) {
+    showToast('Error updating booking.');
+  } finally {
+    hideLoading();
+  }
+}
 
   async function adminCancelBooking(id) {
     if (!confirm('Cancel this appointment?')) return;

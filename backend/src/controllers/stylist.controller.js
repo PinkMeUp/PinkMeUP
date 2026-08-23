@@ -87,7 +87,7 @@ const getStylistById = async (req, res) => {
 const updateStylist = async (req, res) => {
   try {
     const { id } = req.params;
-    const { specialties, serviceIds, isAvailable, rating } = req.body;
+    const { specialties, serviceIds, isAvailable, rating, status } = req.body;
 
     const stylist = await Stylist.findById(id);
     if (!stylist) return errorResponse(res, 'Stylist not found.', 404);
@@ -96,9 +96,19 @@ const updateStylist = async (req, res) => {
     if (serviceIds) stylist.serviceIds = serviceIds;
     if (isAvailable !== undefined) stylist.isAvailable = isAvailable;
     if (rating !== undefined) stylist.rating = rating;
+
+    if (status !== undefined) {
+      const validStatuses = ['active', 'inactive', 'disabled'];
+      if (!validStatuses.includes(status)) {
+        return errorResponse(res, 'Status must be active, inactive, or disabled.', 400);
+      }
+      stylist.isAvailable = status === 'active';
+      await User.findByIdAndUpdate(stylist.userId, { isActive: status !== 'disabled' });
+    }
+
     await stylist.save();
 
-    const updated = await Stylist.findById(id).populate('userId', 'firstName lastName email phone');
+    const updated = await Stylist.findById(id).populate('userId', 'firstName lastName email phone isActive');
     return successResponse(res, 'Stylist updated.', updated);
   } catch (error) {
     logger.error('Update stylist error:', error);
