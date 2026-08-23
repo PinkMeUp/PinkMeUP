@@ -1,158 +1,342 @@
-/* ===== RESET & BASE ===== */
+/* ==========================================================
+   PINKMEUP AUTH PAGES
+   Login + Register
+   ========================================================== */
+
+/* ===== RESET ===== */
+
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
 }
 
+/* ===== BASE ===== */
+
+html,
 body {
-    font-family: Arial, Helvetica, sans-serif;
-    background: #f5f5f5;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 100vh;
-    padding: 20px;
+    width: 100%;
+    min-height: 100%;
 }
 
-/* ===== AUTH CONTAINER ===== */
-.auth-container {
-    background: white;
-    padding: 40px;
-    border-radius: 8px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-    width: 100%;
-    max-width: 400px;
+body {
+    min-height: 100vh;
+    font-family: 'Inter', Arial, Helvetica, sans-serif;
+    background: #ffffff;
+    color: #000000;
 }
+
+/* ==========================================================
+   AUTH CONTAINER
+   ========================================================== */
+
+.auth-container {
+    width: 100%;
+    min-height: 100vh;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    padding: 50px 30px;
+
+    background: #ffffff;
+}
+
+/* ==========================================================
+   BRANDING
+   ========================================================== */
 
 .auth-container h1 {
-    color: #ff6b9d;
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    font-size: 3.2rem;
+    font-weight: 600;
+    letter-spacing: 1px;
+    line-height: 1;
+
+    background: linear-gradient(
+        135deg,
+        #FFB6C1 0%,
+        #D43F6B 100%
+    );
+
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+
     text-align: center;
-    font-size: 28px;
-    margin-bottom: 4px;
+    margin-bottom: 8px;
 }
 
 .auth-container h2 {
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    font-size: 2rem;
+    font-weight: 600;
+    color: #000000;
     text-align: center;
-    color: #333;
-    font-size: 20px;
-    font-weight: normal;
-    margin-bottom: 24px;
+
+    margin-bottom: 32px;
 }
 
-/* ===== FORM ===== */
+/* ==========================================================
+   FORM
+   ========================================================== */
+
+#login-form,
+#register-form {
+    width: 100%;
+    max-width: 430px;
+}
+
 .form-group {
-    margin-bottom: 16px;
+    width: 100%;
+    margin-bottom: 20px;
 }
 
 .form-group label {
     display: block;
-    margin-bottom: 4px;
-    color: #333;
-    font-size: 14px;
-    font-weight: 600;
+
+    font-family: 'Inter', Arial, sans-serif;
+    font-size: 0.85rem;
+    font-weight: 500;
+
+    color: #000000;
+
+    margin-bottom: 8px;
 }
 
 .form-group input {
     width: 100%;
-    padding: 10px 12px;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    font-size: 14px;
-    transition: border-color 0.2s;
+
+    padding: 13px 14px;
+
+    background: #ffffff;
+
+    border: 1px solid #cfcfcf;
+    border-radius: 0;
+
+    font-family: 'Inter', Arial, sans-serif;
+    font-size: 0.9rem;
+
+    color: #000000;
+
+    transition:
+        border-color 0.25s ease,
+        box-shadow 0.25s ease;
+}
+
+.form-group input::placeholder {
+    color: #999999;
 }
 
 .form-group input:focus {
     outline: none;
-    border-color: #ff6b9d;
+
+    border-color: #D43F6B;
+
+    box-shadow: 0 0 0 2px rgba(212, 63, 107, 0.08);
 }
 
-/* ===== BUTTONS ===== */
+/* ==========================================================
+   PASSWORD SHOW BUTTON
+   ========================================================== */
+
+#toggle-password {
+    color: #D43F6B !important;
+    font-family: 'Inter', Arial, sans-serif;
+    font-size: 0.8rem !important;
+    font-weight: 500;
+}
+
+/* ==========================================================
+   REMEMBER ME / FORGOT PASSWORD
+   ========================================================== */
+
+#login-form > div[style*="justify-content"] {
+    width: 100%;
+}
+
+#login-form > div[style*="justify-content"] label {
+    color: #666666 !important;
+    font-family: 'Inter', Arial, sans-serif;
+}
+
+#login-form > div[style*="justify-content"] a {
+    color: #D43F6B !important;
+    font-family: 'Inter', Arial, sans-serif;
+}
+
+#login-form > div[style*="justify-content"] a:hover {
+    text-decoration: underline !important;
+}
+
+/* ==========================================================
+   MAIN BUTTON
+   CREATE ACCOUNT / SIGN IN
+   ========================================================== */
+
 .btn {
     width: 100%;
-    padding: 12px;
-    background: #ff6b9d;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    font-size: 16px;
+
+    padding: 13px 20px;
+
+    background: #ffffff;
+
+    color: #000000;
+
+    border: 1.5px solid #D43F6B;
+    border-radius: 0;
+
+    font-family: 'Inter', Arial, sans-serif;
+    font-size: 0.9rem;
     font-weight: 600;
+
+    letter-spacing: 0.3px;
+
     cursor: pointer;
-    transition: background 0.2s;
+    text-decoration: none;
+    text-align: center;
+
+    display: block;
+
+    transition:
+        background-color 0.25s ease,
+        color 0.25s ease,
+        border-color 0.25s ease;
 }
 
 .btn:hover {
-    background: #e55a8a;
+    background: #D43F6B;
+    color: #ffffff;
 }
 
 .btn:disabled {
-    background: #ccc;
+    background: #eeeeee;
+    color: #999999;
+    border-color: #cccccc;
     cursor: not-allowed;
 }
 
-.btn-secondary {
-    background: transparent;
-    color: #ff6b9d;
-    border: 2px solid #ff6b9d;
-}
+/* ==========================================================
+   GOOGLE BUTTON
+   ========================================================== */
 
-.btn-secondary:hover {
-    background: #ff6b9d;
-    color: white;
-}
-
-/* ===== GOOGLE BUTTON ===== */
 .btn-google {
-    background: #db4437;
-    color: white;
-    border: none;
-    padding: 12px;
-    border-radius: 4px;
-    font-size: 16px;
-    font-weight: 600;
-    cursor: pointer;
-    transition: background 0.2s;
     width: 100%;
+
+    background: #000000;
+    color: #D43F6B;
+
+    border: 1.5px solid #000000;
+    border-radius: 0;
+
+    padding: 13px 20px;
+
+    font-family: 'Inter', Arial, sans-serif;
+    font-size: 0.9rem;
+    font-weight: 600;
+
     text-decoration: none;
-    display: block;
     text-align: center;
+
+    display: block;
+
+    transition:
+        background-color 0.25s ease,
+        color 0.25s ease,
+        border-color 0.25s ease;
 }
 
 .btn-google:hover {
-    background: #c23321;
+    background: #D43F6B;
+    color: #000000;
+    border-color: #D43F6B;
 }
 
-/* ===== DIVIDER ===== */
+/* ==========================================================
+   DIVIDER
+   ========================================================== */
+
 .divider {
+    width: 100%;
+    max-width: 430px;
+
     text-align: center;
-    margin: 20px 0 16px 0;
+
+    margin: 24px 0 16px;
+
     position: relative;
 }
 
 .divider::before {
     content: '';
+
     position: absolute;
+
     top: 50%;
     left: 0;
     right: 0;
+
     height: 1px;
-    background: #ddd;
+
+    background: #dddddd;
 }
 
 .divider span {
-    background: white;
-    padding: 0 12px;
-    color: #888;
-    font-size: 14px;
     position: relative;
     z-index: 1;
+
+    background: #ffffff;
+
+    padding: 0 14px;
+
+    color: #888888;
+
+    font-family: 'Inter', Arial, sans-serif;
+    font-size: 0.8rem;
 }
 
-/* ===== MESSAGES ===== */
+/* ==========================================================
+   LOGIN GOOGLE SECTION
+   This handles the inline Google section in login.html
+   ========================================================== */
+
+.auth-container > div[style*="text-align: center"] {
+    width: 100%;
+    max-width: 430px;
+}
+
+.auth-container > div[style*="text-align: center"] hr {
+    border: none !important;
+    border-top: 1px solid #dddddd !important;
+
+    margin: 24px 0 20px !important;
+}
+
+.auth-container > div[style*="text-align: center"] p {
+    color: #888888 !important;
+
+    font-family: 'Inter', Arial, sans-serif;
+
+    font-size: 0.8rem !important;
+}
+
+/* ==========================================================
+   ERROR / SUCCESS MESSAGES
+   ========================================================== */
+
 .error {
+    width: 100%;
+    max-width: 430px;
+
     color: #dc3545;
-    font-size: 14px;
-    margin-bottom: 12px;
+
+    font-family: 'Inter', Arial, sans-serif;
+    font-size: 0.8rem;
+
+    margin-bottom: 14px;
+
     display: none;
 }
 
@@ -161,9 +345,16 @@ body {
 }
 
 .success {
+    width: 100%;
+    max-width: 430px;
+
     color: #28a745;
-    font-size: 14px;
-    margin-bottom: 12px;
+
+    font-family: 'Inter', Arial, sans-serif;
+    font-size: 0.8rem;
+
+    margin-bottom: 14px;
+
     display: none;
 }
 
@@ -171,29 +362,68 @@ body {
     display: block;
 }
 
-/* ===== FOOTER ===== */
+/* ==========================================================
+   FOOTER
+   ========================================================== */
+
 .auth-footer {
+    width: 100%;
+    max-width: 430px;
+
     text-align: center;
-    margin-top: 20px;
-    color: #666;
-    font-size: 14px;
+
+    margin-top: 24px;
+
+    color: #666666;
+
+    font-family: 'Inter', Arial, sans-serif;
+    font-size: 0.8rem;
 }
 
 .auth-footer a {
-    color: #ff6b9d;
+    color: #D43F6B;
+
     text-decoration: none;
+
     font-weight: 600;
+
+    transition: color 0.2s ease;
 }
 
 .auth-footer a:hover {
+    color: #000000;
     text-decoration: underline;
 }
 
-/* ===== BUTTON GROUP (Index page) ===== */
+/* ==========================================================
+   SECONDARY BUTTON
+   ========================================================== */
+
+.btn-secondary {
+    background: #ffffff;
+    color: #D43F6B;
+
+    border: 1.5px solid #D43F6B;
+}
+
+.btn-secondary:hover {
+    background: #D43F6B;
+    color: #ffffff;
+}
+
+/* ==========================================================
+   BUTTON GROUP
+   ========================================================== */
+
 .btn-group {
+    width: 100%;
+    max-width: 430px;
+
     display: flex;
     flex-direction: column;
+
     gap: 12px;
+
     margin-top: 20px;
 }
 
@@ -203,23 +433,94 @@ body {
     display: block;
 }
 
-/* ===== RESPONSIVE ===== */
-@media (max-width: 480px) {
+/* ==========================================================
+   RESPONSIVE - LAPTOP
+   ========================================================== */
+
+@media (max-width: 1024px) {
+
     .auth-container {
-        padding: 24px;
-        border-radius: 4px;
+        padding: 40px 25px;
     }
-    
+
     .auth-container h1 {
-        font-size: 24px;
+        font-size: 3rem;
     }
-    
+
     .auth-container h2 {
-        font-size: 18px;
+        font-size: 1.9rem;
     }
-    
+}
+
+/* ==========================================================
+   RESPONSIVE - TABLET
+   ========================================================== */
+
+@media (max-width: 600px) {
+
+    .auth-container {
+        justify-content: center;
+
+        padding: 35px 22px;
+    }
+
+    .auth-container h1 {
+        font-size: 2.6rem;
+    }
+
+    .auth-container h2 {
+        font-size: 1.7rem;
+        margin-bottom: 26px;
+    }
+
+    #login-form,
+    #register-form,
+    .divider,
+    .error,
+    .success,
+    .auth-footer,
+    .auth-container > div[style*="text-align: center"] {
+        max-width: 100%;
+    }
+
+    .form-group {
+        margin-bottom: 18px;
+    }
+
     .form-group input {
-        font-size: 16px;  /* Prevents zoom on iPhone */
-        padding: 12px;
+        padding: 14px 13px;
+        font-size: 16px;
+    }
+
+    .btn,
+    .btn-google {
+        padding: 14px 18px;
+    }
+}
+
+/* ==========================================================
+   RESPONSIVE - SMALL PHONES
+   ========================================================== */
+
+@media (max-width: 400px) {
+
+    .auth-container {
+        padding: 25px 18px;
+    }
+
+    .auth-container h1 {
+        font-size: 2.3rem;
+    }
+
+    .auth-container h2 {
+        font-size: 1.5rem;
+    }
+
+    .form-group label {
+        font-size: 0.8rem;
+    }
+
+    .auth-footer {
+        font-size: 0.75rem;
     }
 }

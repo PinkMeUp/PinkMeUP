@@ -3,57 +3,616 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <title>Sign In - PinkMeUP</title>
-    <link rel="stylesheet" href="css/style.css">
+
+    <!-- PinkMeUP Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+
+    <style>
+        /* =====================================================
+           RESET
+           ===================================================== */
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        /* =====================================================
+           PAGE
+           ===================================================== */
+
+        html,
+        body {
+            width: 100%;
+            min-height: 100%;
+        }
+
+        body {
+            min-height: 100vh;
+
+            font-family: 'Inter', Arial, sans-serif;
+
+            background: #ffffff;
+            color: #000000;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            padding: 40px 25px;
+        }
+
+        /* =====================================================
+           AUTH AREA
+           ===================================================== */
+
+        .auth-container {
+            width: 100%;
+            max-width: 430px;
+
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+
+            padding: 20px 0;
+        }
+
+        /* =====================================================
+           BRAND
+           ===================================================== */
+
+        .auth-container h1 {
+            font-family: 'Cormorant Garamond', Georgia, serif;
+
+            font-size: 3.2rem;
+            font-weight: 600;
+
+            letter-spacing: 1px;
+            line-height: 1;
+
+            text-align: center;
+
+            background: linear-gradient(
+                135deg,
+                #FFB6C1 0%,
+                #D43F6B 100%
+            );
+
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+
+            margin-bottom: 8px;
+        }
+
+        .auth-container h2 {
+            font-family: 'Cormorant Garamond', Georgia, serif;
+
+            font-size: 2rem;
+            font-weight: 600;
+
+            color: #000000;
+
+            text-align: center;
+
+            margin-bottom: 32px;
+        }
+
+        /* =====================================================
+           MESSAGES
+           ===================================================== */
+
+        .error,
+        .success {
+            width: 100%;
+
+            font-size: 0.85rem;
+
+            margin-bottom: 15px;
+
+            display: none;
+        }
+
+        .error {
+            color: #dc3545;
+        }
+
+        .success {
+            color: #28a745;
+        }
+
+        .error.show,
+        .success.show {
+            display: block;
+        }
+
+        /* =====================================================
+           FORM
+           ===================================================== */
+
+        #login-form {
+            width: 100%;
+        }
+
+        .form-group {
+            width: 100%;
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+
+            font-family: 'Inter', Arial, sans-serif;
+
+            font-size: 0.85rem;
+            font-weight: 500;
+
+            color: #000000;
+
+            margin-bottom: 8px;
+        }
+
+        .form-group input {
+            width: 100%;
+
+            padding: 13px 14px;
+
+            background: #ffffff;
+
+            border: 1px solid #cfcfcf;
+            border-radius: 0;
+
+            font-family: 'Inter', Arial, sans-serif;
+            font-size: 0.9rem;
+
+            color: #000000;
+
+            transition:
+                border-color 0.25s ease,
+                box-shadow 0.25s ease;
+        }
+
+        .form-group input::placeholder {
+            color: #999999;
+        }
+
+        .form-group input:focus {
+            outline: none;
+
+            border-color: #D43F6B;
+
+            box-shadow: 0 0 0 2px rgba(212, 63, 107, 0.08);
+        }
+
+        /* =====================================================
+           PASSWORD
+           ===================================================== */
+
+        .password-wrapper {
+            position: relative;
+            width: 100%;
+        }
+
+        .password-wrapper input {
+            padding-right: 55px;
+        }
+
+        #toggle-password {
+            position: absolute;
+
+            right: 12px;
+            top: 50%;
+
+            transform: translateY(-50%);
+
+            cursor: pointer;
+
+            color: #D43F6B;
+
+            font-size: 0.8rem;
+            font-weight: 500;
+
+            user-select: none;
+        }
+
+        /* =====================================================
+           REMEMBER ME / FORGOT PASSWORD
+           ===================================================== */
+
+        .login-options {
+            width: 100%;
+
+            display: flex;
+
+            justify-content: space-between;
+            align-items: center;
+
+            margin-bottom: 20px;
+        }
+
+        .remember-label {
+            display: flex !important;
+
+            align-items: center;
+
+            gap: 6px;
+
+            margin-bottom: 0 !important;
+
+            color: #666666 !important;
+
+            font-size: 0.8rem !important;
+
+            font-weight: 400 !important;
+
+            cursor: pointer;
+        }
+
+        #remember {
+            width: 14px;
+            height: 14px;
+
+            accent-color: #D43F6B;
+
+            cursor: pointer;
+        }
+
+        .forgot-password {
+            color: #D43F6B;
+
+            font-size: 0.8rem;
+
+            text-decoration: none;
+
+            transition: color 0.2s ease;
+        }
+
+        .forgot-password:hover {
+            color: #000000;
+
+            text-decoration: underline;
+        }
+
+        /* =====================================================
+           SIGN IN BUTTON
+           ===================================================== */
+
+        #login-btn {
+            width: 100%;
+
+            padding: 13px 20px;
+
+            background: #ffffff;
+
+            color: #000000;
+
+            border: 1.5px solid #D43F6B;
+            border-radius: 0;
+
+            font-family: 'Inter', Arial, sans-serif;
+
+            font-size: 0.9rem;
+            font-weight: 600;
+
+            letter-spacing: 0.3px;
+
+            cursor: pointer;
+
+            transition: all 0.25s ease;
+        }
+
+        #login-btn:hover {
+            background: #D43F6B;
+            color: #ffffff;
+        }
+
+        #login-btn:disabled {
+            background: #eeeeee;
+            color: #999999;
+
+            border-color: #cccccc;
+
+            cursor: not-allowed;
+        }
+
+        /* =====================================================
+           GOOGLE SECTION
+           ===================================================== */
+
+        .google-section {
+            width: 100%;
+
+            margin-top: 25px;
+        }
+
+        .google-divider {
+            width: 100%;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            position: relative;
+
+            margin-bottom: 18px;
+        }
+
+        .google-divider::before {
+            content: "";
+
+            position: absolute;
+
+            left: 0;
+            right: 0;
+
+            height: 1px;
+
+            background: #dddddd;
+        }
+
+        .google-divider span {
+            position: relative;
+            z-index: 1;
+
+            background: #ffffff;
+
+            padding: 0 14px;
+
+            color: #888888;
+
+            font-size: 0.8rem;
+        }
+
+        /* =====================================================
+           GOOGLE BUTTON
+           ===================================================== */
+
+        .btn-google {
+            width: 100%;
+
+            display: block;
+
+            padding: 13px 20px;
+
+            background: #000000;
+
+            color: #D43F6B;
+
+            border: 1.5px solid #000000;
+            border-radius: 0;
+
+            font-family: 'Inter', Arial, sans-serif;
+
+            font-size: 0.9rem;
+            font-weight: 600;
+
+            letter-spacing: 0.3px;
+
+            text-align: center;
+            text-decoration: none;
+
+            transition: all 0.25s ease;
+        }
+
+        .btn-google:hover {
+            background: #D43F6B;
+
+            color: #000000;
+
+            border-color: #D43F6B;
+        }
+
+        /* =====================================================
+           FOOTER
+           ===================================================== */
+
+        .auth-footer {
+            width: 100%;
+
+            text-align: center;
+
+            margin-top: 24px;
+
+            color: #666666;
+
+            font-family: 'Inter', Arial, sans-serif;
+
+            font-size: 0.8rem;
+        }
+
+        .auth-footer a {
+            color: #D43F6B;
+
+            text-decoration: none;
+
+            font-weight: 600;
+
+            transition: color 0.2s ease;
+        }
+
+        .auth-footer a:hover {
+            color: #000000;
+
+            text-decoration: underline;
+        }
+
+        /* =====================================================
+           TABLET
+           ===================================================== */
+
+        @media (max-width: 600px) {
+
+            body {
+                padding: 30px 20px;
+            }
+
+            .auth-container {
+                max-width: 100%;
+            }
+
+            .auth-container h1 {
+                font-size: 2.7rem;
+            }
+
+            .auth-container h2 {
+                font-size: 1.8rem;
+
+                margin-bottom: 28px;
+            }
+
+            .form-group {
+                margin-bottom: 18px;
+            }
+
+            .form-group input {
+                padding: 14px;
+
+                font-size: 16px;
+            }
+
+            #login-btn,
+            .btn-google {
+                padding: 14px 18px;
+            }
+        }
+
+        /* =====================================================
+           SMALL PHONE
+           ===================================================== */
+
+        @media (max-width: 400px) {
+
+            body {
+                padding: 25px 18px;
+            }
+
+            .auth-container h1 {
+                font-size: 2.4rem;
+            }
+
+            .auth-container h2 {
+                font-size: 1.6rem;
+            }
+
+            .form-group label {
+                font-size: 0.8rem;
+            }
+
+            .auth-footer {
+                font-size: 0.75rem;
+            }
+        }
+    </style>
 </head>
+
 <body>
+
     <div class="auth-container">
+
         <h1>PinkMeUP</h1>
+
         <h2>Welcome Back</h2>
 
         <div id="error" class="error"></div>
+
         <div id="success" class="success"></div>
 
         <form id="login-form">
+
             <div class="form-group">
                 <label for="email">Email</label>
-                <input type="email" id="email" placeholder="Enter your email" required>
+
+                <input
+                    type="email"
+                    id="email"
+                    placeholder="Enter your email"
+                    required
+                >
             </div>
 
             <div class="form-group">
+
                 <label for="password">Password</label>
-                <div style="position: relative;">
-                    <input type="password" id="password" placeholder="Enter your password" required>
-                    <span id="toggle-password" style="position: absolute; right: 12px; top: 50%; transform: translateY(-50%); cursor: pointer; color: #888; font-size: 14px; user-select: none;">Show</span>
+
+                <div class="password-wrapper">
+
+                    <input
+                        type="password"
+                        id="password"
+                        placeholder="Enter your password"
+                        required
+                    >
+
+                    <span id="toggle-password">
+                        Show
+                    </span>
+
                 </div>
+
             </div>
 
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
-                <label style="font-size: 14px; color: #666; cursor: pointer;">
-                    <input type="checkbox" id="remember"> Remember Me
+            <div class="login-options">
+
+                <label
+                    for="remember"
+                    class="remember-label"
+                >
+                    <input
+                        type="checkbox"
+                        id="remember"
+                    >
+
+                    Remember Me
                 </label>
-                <a href="reset.html" style="color: #ff6b9d; font-size: 14px; text-decoration: none;">Forgot Password?</a>
+
+                <a
+                    href="reset.html"
+                    class="forgot-password"
+                >
+                    Forgot Password?
+                </a>
+
             </div>
 
-            <button type="submit" class="btn" id="login-btn">Sign In</button>
+            <button
+                type="submit"
+                id="login-btn"
+            >
+                Sign In
+            </button>
+
         </form>
 
         <!-- Google Sign-In -->
-        <div style="text-align: center; margin-top: 20px;">
-            <hr style="border: none; border-top: 1px solid #ddd; margin: 20px 0;">
-            <p style="color: #888; font-size: 14px; margin-bottom: 12px;">or</p>
-            <a href="https://pinkmeup-api.onrender.com/api/v1/auth/google" class="btn btn-google">
+
+        <div class="google-section">
+
+            <div class="google-divider">
+                <span>or</span>
+            </div>
+
+            <a
+                href="https://pinkmeup-api.onrender.com/api/v1/auth/google"
+                class="btn-google"
+            >
                 Sign in with Google
             </a>
+
         </div>
 
         <div class="auth-footer">
-            Don't have an account? <a href="register.html">Create one</a>
+            Don't have an account?
+            <a href="register.html">Create one</a>
         </div>
+
     </div>
 
     <script src="js/config.js"></script>
     <script src="js/auth.js"></script>
     <script src="js/login.js"></script>
+
 </body>
 </html>

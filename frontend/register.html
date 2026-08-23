@@ -3,61 +3,501 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <title>Register - PinkMeUP</title>
-    <link rel="stylesheet" href="css/style.css">
+
+    <!-- PinkMeUP Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+
+    <style>
+        /* =====================================================
+           RESET
+           ===================================================== */
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        /* =====================================================
+           PAGE
+           ===================================================== */
+
+        html,
+        body {
+            width: 100%;
+            min-height: 100%;
+        }
+
+        body {
+            min-height: 100vh;
+
+            font-family: 'Inter', Arial, sans-serif;
+
+            background: #ffffff;
+            color: #000000;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            padding: 40px 25px;
+        }
+
+        /* =====================================================
+           AUTH AREA
+           ===================================================== */
+
+        .auth-container {
+            width: 100%;
+            max-width: 430px;
+
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+
+            padding: 20px 0;
+        }
+
+        /* =====================================================
+           BRAND
+           ===================================================== */
+
+        .auth-container h1 {
+            font-family: 'Cormorant Garamond', Georgia, serif;
+
+            font-size: 3.2rem;
+            font-weight: 600;
+
+            letter-spacing: 1px;
+            line-height: 1;
+
+            text-align: center;
+
+            background: linear-gradient(
+                135deg,
+                #FFB6C1 0%,
+                #D43F6B 100%
+            );
+
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+
+            margin-bottom: 8px;
+        }
+
+        .auth-container h2 {
+            font-family: 'Cormorant Garamond', Georgia, serif;
+
+            font-size: 2rem;
+            font-weight: 600;
+
+            color: #000000;
+
+            text-align: center;
+
+            margin-bottom: 32px;
+        }
+
+        /* =====================================================
+           ERROR MESSAGE
+           ===================================================== */
+
+        .error {
+            width: 100%;
+
+            color: #dc3545;
+
+            font-size: 0.85rem;
+
+            margin-bottom: 15px;
+
+            display: none;
+        }
+
+        .error.show {
+            display: block;
+        }
+
+        /* =====================================================
+           FORM
+           ===================================================== */
+
+        #register-form {
+            width: 100%;
+        }
+
+        .form-group {
+            width: 100%;
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+
+            font-family: 'Inter', Arial, sans-serif;
+
+            font-size: 0.85rem;
+            font-weight: 500;
+
+            color: #000000;
+
+            margin-bottom: 8px;
+        }
+
+        .form-group input {
+            width: 100%;
+
+            padding: 13px 14px;
+
+            background: #ffffff;
+
+            border: 1px solid #cfcfcf;
+            border-radius: 0;
+
+            font-family: 'Inter', Arial, sans-serif;
+            font-size: 0.9rem;
+
+            color: #000000;
+
+            transition: border-color 0.25s ease,
+                        box-shadow 0.25s ease;
+        }
+
+        .form-group input::placeholder {
+            color: #999999;
+        }
+
+        .form-group input:focus {
+            outline: none;
+
+            border-color: #D43F6B;
+
+            box-shadow: 0 0 0 2px rgba(212, 63, 107, 0.08);
+        }
+
+        /* =====================================================
+           CREATE ACCOUNT BUTTON
+           ===================================================== */
+
+        #register-btn {
+            width: 100%;
+
+            padding: 13px 20px;
+
+            background: #ffffff;
+
+            color: #000000;
+
+            border: 1.5px solid #D43F6B;
+            border-radius: 0;
+
+            font-family: 'Inter', Arial, sans-serif;
+
+            font-size: 0.9rem;
+            font-weight: 600;
+
+            letter-spacing: 0.3px;
+
+            cursor: pointer;
+
+            transition: all 0.25s ease;
+        }
+
+        #register-btn:hover {
+            background: #D43F6B;
+            color: #ffffff;
+        }
+
+        #register-btn:disabled {
+            background: #eeeeee;
+            color: #999999;
+
+            border-color: #cccccc;
+
+            cursor: not-allowed;
+        }
+
+        /* =====================================================
+           DIVIDER
+           ===================================================== */
+
+        .divider {
+            width: 100%;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            position: relative;
+
+            margin: 25px 0 18px;
+        }
+
+        .divider::before {
+            content: "";
+
+            position: absolute;
+
+            left: 0;
+            right: 0;
+
+            height: 1px;
+
+            background: #dddddd;
+        }
+
+        .divider span {
+            position: relative;
+            z-index: 1;
+
+            background: #ffffff;
+
+            padding: 0 14px;
+
+            color: #888888;
+
+            font-family: 'Inter', Arial, sans-serif;
+
+            font-size: 0.8rem;
+        }
+
+        /* =====================================================
+           GOOGLE BUTTON
+           ===================================================== */
+
+        .btn-google {
+            width: 100%;
+
+            display: block;
+
+            padding: 13px 20px;
+
+            background: #000000;
+
+            color: #D43F6B;
+
+            border: 1.5px solid #000000;
+            border-radius: 0;
+
+            font-family: 'Inter', Arial, sans-serif;
+
+            font-size: 0.9rem;
+            font-weight: 600;
+
+            letter-spacing: 0.3px;
+
+            text-align: center;
+            text-decoration: none;
+
+            transition: all 0.25s ease;
+        }
+
+        .btn-google:hover {
+            background: #D43F6B;
+
+            color: #000000;
+
+            border-color: #D43F6B;
+        }
+
+        /* =====================================================
+           FOOTER
+           ===================================================== */
+
+        .auth-footer {
+            width: 100%;
+
+            text-align: center;
+
+            margin-top: 24px;
+
+            color: #666666;
+
+            font-family: 'Inter', Arial, sans-serif;
+
+            font-size: 0.8rem;
+        }
+
+        .auth-footer a {
+            color: #D43F6B;
+
+            text-decoration: none;
+
+            font-weight: 600;
+
+            transition: color 0.2s ease;
+        }
+
+        .auth-footer a:hover {
+            color: #000000;
+
+            text-decoration: underline;
+        }
+
+        /* =====================================================
+           TABLET
+           ===================================================== */
+
+        @media (max-width: 600px) {
+
+            body {
+                padding: 30px 20px;
+            }
+
+            .auth-container {
+                max-width: 100%;
+            }
+
+            .auth-container h1 {
+                font-size: 2.7rem;
+            }
+
+            .auth-container h2 {
+                font-size: 1.8rem;
+                margin-bottom: 28px;
+            }
+
+            .form-group {
+                margin-bottom: 18px;
+            }
+
+            .form-group input {
+                padding: 14px;
+                font-size: 16px;
+            }
+
+            #register-btn,
+            .btn-google {
+                padding: 14px 18px;
+            }
+        }
+
+        /* =====================================================
+           SMALL PHONE
+           ===================================================== */
+
+        @media (max-width: 400px) {
+
+            body {
+                padding: 25px 18px;
+            }
+
+            .auth-container h1 {
+                font-size: 2.4rem;
+            }
+
+            .auth-container h2 {
+                font-size: 1.6rem;
+            }
+
+            .form-group label {
+                font-size: 0.8rem;
+            }
+
+            .auth-footer {
+                font-size: 0.75rem;
+            }
+        }
+    </style>
 </head>
+
 <body>
+
     <div class="auth-container">
+
         <h1>PinkMeUP</h1>
+
         <h2>Create Account</h2>
 
         <div id="error" class="error"></div>
 
         <form id="register-form">
+
             <div class="form-group">
                 <label for="firstName">First Name</label>
-                <input type="text" id="firstName" placeholder="Enter your first name" required>
+                <input
+                    type="text"
+                    id="firstName"
+                    placeholder="Enter your first name"
+                    required
+                >
             </div>
 
             <div class="form-group">
                 <label for="lastName">Last Name</label>
-                <input type="text" id="lastName" placeholder="Enter your last name" required>
+                <input
+                    type="text"
+                    id="lastName"
+                    placeholder="Enter your last name"
+                    required
+                >
             </div>
 
             <div class="form-group">
                 <label for="email">Email</label>
-                <input type="email" id="email" placeholder="Enter your email" required>
+                <input
+                    type="email"
+                    id="email"
+                    placeholder="Enter your email"
+                    required
+                >
             </div>
 
             <div class="form-group">
                 <label for="phone">Phone</label>
-                <input type="tel" id="phone" placeholder="+27 82 123 4567" required>
+                <input
+                    type="tel"
+                    id="phone"
+                    placeholder="+27 82 123 4567"
+                    required
+                >
             </div>
 
             <div class="form-group">
                 <label for="password">Password</label>
-                <input type="password" id="password" placeholder="Minimum 6 characters" required>
+                <input
+                    type="password"
+                    id="password"
+                    placeholder="Minimum 6 characters"
+                    required
+                >
             </div>
 
-            <button type="submit" class="btn" id="register-btn">Create Account</button>
+            <button
+                type="submit"
+                id="register-btn"
+            >
+                Create Account
+            </button>
+
         </form>
 
         <!-- Google Sign-Up -->
+
         <div class="divider">
             <span>or</span>
         </div>
 
-        <a href="https://pinkmeup-api.onrender.com/api/v1/auth/google" class="btn btn-google">
+        <a
+            href="https://pinkmeup-api.onrender.com/api/v1/auth/google"
+            class="btn-google"
+        >
             Sign up with Google
         </a>
 
         <div class="auth-footer">
-            Already have an account? <a href="login.html">Sign In</a>
+            Already have an account?
+            <a href="login.html">Sign In</a>
         </div>
+
     </div>
 
     <script src="js/config.js"></script>
     <script src="js/auth.js"></script>
     <script src="js/register.js"></script>
+
 </body>
 </html>
