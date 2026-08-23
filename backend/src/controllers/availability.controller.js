@@ -121,7 +121,24 @@ const getAvailableSlots = async (req, res) => {
     }
 
     const slotInterval = settings.slotInterval || 30;
-    const stylists = await Stylist.find({ isAvailable: true }).populate('userId', 'firstName lastName');
+ const stylist = await Stylist.findById(stylistId)
+  .populate('userId', 'isActive');
+
+if (!stylist) {
+  return errorResponse(res, 'Stylist not found.', 404);
+}
+
+if (!stylist.userId?.isActive || !stylist.isAvailable) {
+  return successResponse(res, 'Availability retrieved.', {
+    available: false,
+    availableSlots: [],
+    totalAvailable: 0,
+    message: !stylist.userId?.isActive
+      ? 'Stylist is disabled.'
+      : 'Stylist is not available.'
+  });
+}
+
     const availableStylists = [];
 
     for (const stylist of stylists) {
@@ -172,11 +189,23 @@ const getTimeSlotsForDate = async (req, res) => {
       services.forEach(s => requiredDuration += s.duration);
     }
 
-    const stylist = await Stylist.findById(stylistId);
+    const stylist = await Stylist.findById(stylistId)
+  .populate('userId', 'isActive');
     if (!stylist) return errorResponse(res, 'Stylist not found.', 404);
-    if (!stylist.isAvailable) {
-      return successResponse(res, 'Time slots retrieved.', { date, availableSlots: [], message: 'Stylist not available.' });
-    }
+   if (!stylist) {
+  return errorResponse(res, 'Stylist not found.', 404);
+}
+
+if (!stylist.userId?.isActive || !stylist.isAvailable) {
+  return successResponse(res, 'Availability retrieved.', {
+    available: false,
+    availableSlots: [],
+    totalAvailable: 0,
+    message: !stylist.userId?.isActive
+      ? 'Stylist is disabled.'
+      : 'Stylist is not available.'
+  });
+}
 
     if (serviceIdArray.length && (!Array.isArray(stylist.serviceIds) || !serviceIdArray.every(id => stylist.serviceIds.some(sid => String(sid) === String(id))))) {
       return successResponse(res, 'Time slots retrieved.', { date, availableSlots: [], totalAvailable: 0, message: 'Stylist does not provide all selected services.' });

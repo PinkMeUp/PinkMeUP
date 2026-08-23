@@ -57,7 +57,10 @@ const getStylists = async (req, res) => {
     const { page: pageNum, limit: limitNum } = parsePageLimit(page, limit);
     const skip = (pageNum - 1) * limitNum;
     const stylists = await Stylist.find(filter)
-      .populate('userId', 'firstName lastName email phone isActive')
+      .populate(
+  'userId',
+  'firstName lastName email phone isActive'
+)
       .skip(skip)
       .limit(limitNum)
       .sort({ rating: -1 });
@@ -75,7 +78,11 @@ const getStylists = async (req, res) => {
 
 const getStylistById = async (req, res) => {
   try {
-    const stylist = await Stylist.findById(req.params.id).populate('userId', 'firstName lastName email phone');
+   const stylist = await Stylist.findById(req.params.id)
+  .populate(
+    'userId',
+    'firstName lastName email phone isActive'
+  );
     if (!stylist) return errorResponse(res, 'Stylist not found.', 404);
     return successResponse(res, 'Stylist retrieved.', stylist);
   } catch (error) {
@@ -133,10 +140,19 @@ const getStylistAvailability = async (req, res) => {
     const stylist = await Stylist.findById(req.params.id);
     if (!stylist) return errorResponse(res, 'Stylist not found.', 404);
 
-    return successResponse(res, 'Stylist availability retrieved.', {
-      available: stylist.isAvailable,
-      specialties: stylist.specialties
-    });
+   const user = await User.findById(stylist.userId).select('isActive');
+
+const status = !user?.isActive
+  ? 'disabled'
+  : stylist.isAvailable
+    ? 'active'
+    : 'inactive';
+
+return successResponse(res, 'Stylist availability retrieved.', {
+  available: status === 'active',
+  status,
+  specialties: stylist.specialties
+});
   } catch (error) {
     logger.error('Get availability error:', error);
     return errorResponse(res, 'Failed to retrieve availability.', 500);

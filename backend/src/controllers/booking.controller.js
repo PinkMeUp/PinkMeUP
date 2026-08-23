@@ -216,13 +216,32 @@ const createBooking = async (req, res) => {
       );
     }
 
-    if (!stylist.isAvailable) {
-      return errorResponse(
-        res,
-        'Stylist is not available.',
-        400
-      );
-    }
+   const stylist = await Stylist.findById(stylistId)
+  .populate('userId', 'isActive');
+
+if (!stylist) {
+  return errorResponse(
+    res,
+    'Stylist not found.',
+    404
+  );
+}
+
+if (!stylist.userId?.isActive) {
+  return errorResponse(
+    res,
+    'Stylist is disabled.',
+    400
+  );
+}
+
+if (!stylist.isAvailable) {
+  return errorResponse(
+    res,
+    'Stylist is not available.',
+    400
+  );
+}
 
     if (
       !Array.isArray(stylist.serviceIds) ||

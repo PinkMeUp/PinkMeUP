@@ -146,20 +146,26 @@ const getStylistPerformance = async (req, res) => {
     ]);
 
     const completedStats = await Appointment.aggregate([
-      {
-        $match: {
-          ...dateFilter,
-          status: APPOINTMENT_STATUS.COMPLETED
-        }
-      },
-      {
-        $group: {
-          _id: '$stylistId',
-          completedBookings: { $sum: 1 },
-          totalRevenue: { $sum: '$totalPrice' }
-        }
-      }
-    ]);
+  {
+    $match: {
+      ...dateFilter,
+      status: APPOINTMENT_STATUS.COMPLETED
+    }
+  },
+  {
+    $group: {
+      _id: '$stylistId',
+      completedBookings: { $sum: 1 },
+      totalRevenue: { $sum: '$totalPrice' }
+    }
+  }
+]);
+
+const ratingMap = new Map(
+  ratingStats
+    .filter(s => s._id)
+    .map(s => [String(s._id), s])
+);
 
     const assignedMap = new Map(
       assignedStats
@@ -180,6 +186,7 @@ const getStylistPerformance = async (req, res) => {
 
     const result = stylists.map(stylist => {
       const key = String(stylist._id);
+	const rating = ratingMap.get(key);
       const assigned = assignedMap.get(key);
       const completed = completedMap.get(key);
       const firstName = stylist.userId?.firstName || '';
@@ -192,7 +199,11 @@ const getStylistPerformance = async (req, res) => {
         totalAssigned: assigned?.totalAssigned || 0,
         completedBookings: completed?.completedBookings || 0,
         totalRevenue: completed?.totalRevenue || 0,
-        rating: stylist.rating || 0
+        rating: rating?.averageRating
+  ? Number(rating.averageRating.toFixed(1))
+  : 0,
+
+ratingCount: rating?.ratingCount || 0
       };
     });
 

@@ -2063,22 +2063,39 @@ async function confirmBooking() {
       return;
     }
     if (!res.ok) {
-      showToast(data.message || 'Booking failed.');
-      return;
-    }
+  wNextBtn.innerHTML = '<i class="fas fa-times"></i> Booking Failed';
+  showToast(data.message || 'Booking failed.');
+  return;
+}
 
-    showToast('Booking confirmed! Check your email for confirmation.');
-    cartIds = [];
-    renderCart();
-    await loadAppointments();
-    setTimeout(() => { switchView('appointments'); }, 800);
-  } catch (error) {
-    clearTimeout(timeoutId);
-    console.error('Booking error:', error);
-    showToast(error.name === 'AbortError'
-      ? 'This is taking longer than expected. Please check your connection and try again.'
-      : 'Could not create booking. Please try again.');
-  } finally {
+    showToast('Booking confirmed successfully!');
+
+wNextBtn.innerHTML = '<i class="fas fa-check"></i> Booking Successful';
+wNextBtn.disabled = true;
+
+cartIds = [];
+renderCart();
+
+// Do not make the success state depend on loading appointments.
+loadAppointments().catch(err => {
+  console.warn('Could not refresh appointments after booking:', err);
+});
+
+setTimeout(() => {
+  switchView('appointments');
+}, 800);
+  } } catch (error) {
+  clearTimeout(timeoutId);
+  console.error('Booking error:', error);
+
+  wNextBtn.innerHTML = '<i class="fas fa-times"></i> Booking Failed';
+
+  showToast(
+    error.name === 'AbortError'
+      ? 'Booking timed out. Please check your appointments before trying again.'
+      : 'Could not create booking. Please try again.'
+  );
+} finally {
     isBookingSubmitting = false;
     wNextBtn.disabled = false;
     wNextBtn.innerHTML = wizardStep === 4
