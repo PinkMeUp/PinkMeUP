@@ -161,6 +161,27 @@ const getStylistPerformance = async (req, res) => {
   }
 ]);
 
+
+const ratingStats = await Appointment.aggregate([
+  {
+    $match: {
+      ...dateFilter,
+      status: APPOINTMENT_STATUS.COMPLETED,
+      'feedback.rating': {
+        $gte: 1,
+        $lte: 5
+      }
+    }
+  },
+  {
+    $group: {
+      _id: '$stylistId',
+      averageRating: { $avg: '$feedback.rating' },
+      ratingCount: { $sum: 1 }
+    }
+  }
+]);
+
 const ratingMap = new Map(
   ratingStats
     .filter(s => s._id)
