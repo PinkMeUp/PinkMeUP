@@ -831,6 +831,13 @@ stylists.forEach(st => {
           <option value="disabled" ${status==='disabled'?'selected':''}>Disabled</option>
         </select>
       </div>
+      <div style="margin:0.4rem 0;">
+        <strong>Status:</strong>
+        <select class="stylist-status-select" data-id="${st.id}">
+          ...
+        </select>
+      </div>
+      <div style="font-size:0.8rem;color:#b48aa0;">★ ${Number(st.rating || 0).toFixed(1)} / 5 average rating</div>
       <div><strong>Services offered:</strong></div>
       <div class="service-chips">
         ${serviceNames.length ? serviceNames.map(n => `<span class="chip">${escapeHtml(n)}</span>`).join('') : '<span style="color:#b48aa0;font-size:0.8rem;">No services assigned</span>'}
@@ -1089,9 +1096,10 @@ function markCompleteWithRating(id) {
       body: JSON.stringify(body)
     });
     const data = await res.json();
-    if (!res.ok) { showToast(data.message || 'Update failed.'); return; }
+        if (!res.ok) { showToast(data.message || 'Update failed.'); return; }
     showToast('Booking updated.');
     await loadAllBookings();
+    if (document.getElementById('reports-view').classList.contains('active')) updateReports();
   } catch (err) {
     showToast('Error updating booking.');
   } finally {

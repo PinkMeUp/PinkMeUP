@@ -467,22 +467,10 @@ const createBooking = async (req, res) => {
      * ---------------------------------------------------------
      */
 
-    try {
-      const customerForEmail =
-        guestData ||
-        populatedAppointment.customerId;
-
-      await emailService.sendBookingConfirmation(
-        populatedAppointment,
-        customerForEmail,
-        populatedAppointment.serviceIds
-      );
-    } catch (emailError) {
-      logger.warn(
-        'Booking confirmation email failed:',
-        emailError.message
-      );
-    }
+    const customerForEmail = guestData || populatedAppointment.customerId;
+    emailService
+      .sendBookingConfirmation(populatedAppointment, customerForEmail, populatedAppointment.serviceIds)
+      .catch(emailError => logger.warn('Booking confirmation email failed:', emailError.message));
 
     return successResponse(
       res,

@@ -57,7 +57,7 @@ const getStylists = async (req, res) => {
     const { page: pageNum, limit: limitNum } = parsePageLimit(page, limit);
     const skip = (pageNum - 1) * limitNum;
     const stylists = await Stylist.find(filter)
-      .populate('userId', 'firstName lastName email phone')
+      .populate('userId', 'firstName lastName email phone isActive')
       .skip(skip)
       .limit(limitNum)
       .sort({ rating: -1 });
