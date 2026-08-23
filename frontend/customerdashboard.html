@@ -2084,7 +2084,7 @@ loadAppointments().catch(err => {
 setTimeout(() => {
   switchView('appointments');
 }, 800);
-  } } catch (error) {
+  } catch (error) {
   clearTimeout(timeoutId);
   console.error('Booking error:', error);
 
@@ -2097,6 +2097,11 @@ setTimeout(() => {
   );
 } finally {
     isBookingSubmitting = false;
+
+    if (wNextBtn.innerHTML.includes('Booking Successful')) {
+      return;
+    }
+
     wNextBtn.disabled = false;
     wNextBtn.innerHTML = wizardStep === 4
       ? '<i class="fas fa-check"></i> Confirm Booking'
