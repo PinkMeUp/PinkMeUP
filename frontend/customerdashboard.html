@@ -2034,7 +2034,7 @@ async function confirmBooking() {
   wNextBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Booking...';
 
   const controller = new AbortController();
-  const timeoutId = setTimeout(() => controller.abort(), 15000);
+  const timeoutId = setTimeout(() => controller.abort(), 60000);
 
   try {
     const res = await fetch(`${API_URL}/bookings`, {
@@ -2088,13 +2088,21 @@ setTimeout(() => {
   clearTimeout(timeoutId);
   console.error('Booking error:', error);
 
-  wNextBtn.innerHTML = '<i class="fas fa-times"></i> Booking Failed';
+  if (error.name === 'AbortError') {
+    wNextBtn.innerHTML =
+      '<i class="fas fa-exclamation-triangle"></i> Booking Timed Out';
 
-  showToast(
-    error.name === 'AbortError'
-      ? 'Booking timed out. Please check your appointments before trying again.'
-      : 'Could not create booking. Please try again.'
-  );
+    showToast(
+      'The booking request took too long. Please check your appointments before trying again.'
+    );
+  } else {
+    wNextBtn.innerHTML =
+      '<i class="fas fa-times"></i> Booking Failed';
+
+    showToast(
+      'Could not create booking. Please try again.'
+    );
+  }
 } finally {
     isBookingSubmitting = false;
 
