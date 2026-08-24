@@ -7,6 +7,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js" integrity="sha512-GsLlZN/3F2ErC5ifS5QtgpiJtWd43JWSuIgh7mbzZ8zBps+dvLusV+eNQATqgA/HdeKFVgA5v3S/cIrLF7QnIg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
   <style>
     /* ----- ROOT — matching customer dashboard ----- */
     :root {
@@ -447,7 +448,7 @@
       overflow-x: auto;
     }
 
-    /* ----- TABLES — matching customer dashboard ----- */
+    /* ----- TABLES — matching customer dashboard with better alignment ----- */
     .admin-table {
       width: 100%;
       border-collapse: collapse;
@@ -455,20 +456,22 @@
     }
 
     .admin-table th {
-      padding: 0.7rem 1rem;
+      padding: 0.7rem 0.8rem;
       font-size: 0.75rem;
       font-weight: 700;
       letter-spacing: 0.4px;
       text-transform: uppercase;
-      color: var(--ink);
+      color: var(--muted);
       background: #f9f9f9;
       border-bottom: 1px solid var(--border);
+      text-align: left;
     }
 
     .admin-table td {
-      padding: 0.8rem 1rem;
+      padding: 0.7rem 0.8rem;
       border-bottom: 1px solid #eee;
       vertical-align: middle;
+      text-align: left;
     }
 
     .admin-table tr:last-child td {
@@ -479,14 +482,22 @@
       background: #fafafa;
     }
 
+    .admin-table .text-right {
+      text-align: right;
+    }
+
+    .admin-table .text-center {
+      text-align: center;
+    }
+
     /* ----- BADGES — matching customer dashboard ----- */
     .badge {
       display: inline-flex;
       align-items: center;
       gap: 0.2rem;
-      padding: 0.25rem 0.8rem;
+      padding: 0.2rem 0.8rem;
       border-radius: 2rem;
-      font-size: 0.75rem;
+      font-size: 0.7rem;
       font-weight: 600;
       letter-spacing: 0.3px;
       text-transform: capitalize;
@@ -591,7 +602,7 @@
       color: var(--rose);
     }
 
-    /* ----- STYLIST CARDS ----- */
+    /* ----- STYLIST CARDS — cleaner, more presentable ----- */
     .stylist-grid {
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
@@ -603,7 +614,7 @@
       background: var(--white);
       border: 1px solid var(--border);
       border-radius: 1.2rem;
-      padding: 1.2rem;
+      padding: 1.2rem 1.2rem 1rem;
       transition: box-shadow 0.2s;
     }
 
@@ -612,33 +623,36 @@
     }
 
     .stylist-card .stylist-name {
-      font-size: 1.1rem;
+      font-size: 1.05rem;
       font-weight: 700;
       color: var(--ink);
-      margin-bottom: 0.15rem;
+      margin-bottom: 0.1rem;
     }
 
-    .stylist-card .stylist-contact {
+    .stylist-card .stylist-contact-item {
       font-size: 0.8rem;
       color: var(--muted);
-      margin-bottom: 0.5rem;
+      padding: 0.1rem 0;
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
     }
 
-    .stylist-card .stylist-contact i {
+    .stylist-card .stylist-contact-item i {
       width: 18px;
-      margin-right: 0.2rem;
       color: var(--rose);
+      font-size: 0.8rem;
     }
 
     .stylist-card .stylist-status {
       display: inline-flex;
       align-items: center;
       gap: 0.3rem;
-      font-size: 0.75rem;
+      font-size: 0.7rem;
       font-weight: 600;
-      padding: 0.2rem 0.7rem;
+      padding: 0.15rem 0.7rem;
       border-radius: 2rem;
-      margin-bottom: 0.5rem;
+      margin: 0.4rem 0;
     }
 
     .stylist-card .stylist-status.active {
@@ -657,7 +671,7 @@
     }
 
     .stylist-card .stylist-rating {
-      font-size: 0.85rem;
+      font-size: 0.8rem;
       color: var(--muted);
     }
 
@@ -665,11 +679,19 @@
       color: var(--ink);
     }
 
+    .stylist-card .stylist-services-label {
+      font-size: 0.7rem;
+      font-weight: 600;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.3px;
+      margin: 0.5rem 0 0.2rem;
+    }
+
     .stylist-card .service-chips {
       display: flex;
       flex-wrap: wrap;
       gap: 0.3rem;
-      margin: 0.5rem 0;
     }
 
     .stylist-card .chip {
@@ -684,7 +706,7 @@
     .stylist-card .stylist-actions {
       display: flex;
       gap: 0.4rem;
-      margin-top: 0.6rem;
+      margin-top: 0.8rem;
       flex-wrap: wrap;
     }
 
@@ -727,7 +749,7 @@
     /* ----- ANALYTICS CARDS ----- */
     .analytics-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
       gap: 1rem;
       margin-bottom: 1.2rem;
     }
@@ -753,8 +775,15 @@
     }
 
     .chart-container {
-      max-height: 220px;
+      max-height: 260px;
+      min-height: 200px;
       margin-bottom: 0.8rem;
+      position: relative;
+    }
+
+    .chart-container canvas {
+      width: 100% !important;
+      height: 100% !important;
     }
 
     .peak-hours {
@@ -954,6 +983,11 @@
       margin-bottom: 0.8rem;
     }
 
+    /* PDF hidden elements for download */
+    #pdfContent {
+      display: none;
+    }
+
     /* ----- RESPONSIVE — matching customer dashboard ----- */
     @media (max-width: 768px) {
       .menu-toggle { display: block; }
@@ -1004,7 +1038,7 @@
 
       .admin-table { font-size: 0.8rem; }
       .admin-table th,
-      .admin-table td { padding: 0.5rem 0.7rem; }
+      .admin-table td { padding: 0.4rem 0.5rem; }
     }
 
     @media (max-width: 480px) {
@@ -1153,7 +1187,7 @@
           <div class="section-sub">Booking insights and stylist performance</div>
         </div>
         <div style="display:flex; gap:0.6rem; flex-wrap:wrap;">
-          <button class="btn-download" id="downloadReportBtn"><i class="fas fa-download"></i> Download Report</button>
+          <button class="btn-download" id="downloadReportBtn"><i class="fas fa-file-pdf"></i> Download PDF</button>
         </div>
       </div>
 
@@ -1173,35 +1207,37 @@
         <button class="btn-outline" id="applyFilterBtn">Apply</button>
       </div>
 
-      <div class="analytics-grid">
-        <div class="analytics-card">
-          <h3>Booking Trends</h3>
-          <p>Bookings by day of week</p>
-          <div class="chart-container">
-            <canvas id="trendsBarChart" height="200"></canvas>
+      <div id="analyticsContent">
+        <div class="analytics-grid">
+          <div class="analytics-card">
+            <h3>Booking Trends</h3>
+            <p>Bookings by day of week</p>
+            <div class="chart-container">
+              <canvas id="trendsBarChart"></canvas>
+            </div>
+            <div id="peakHoursStrip"></div>
           </div>
-          <div id="peakHoursStrip"></div>
+
+          <div class="analytics-card">
+            <h3>Popular Services</h3>
+            <p>Most requested services</p>
+            <table class="admin-table" id="servicePopularityTable">
+              <thead><tr><th>Service</th><th>Category</th><th class="text-right">Bookings</th></tr></thead>
+              <tbody id="servicePopularityBody"></tbody>
+            </table>
+          </div>
         </div>
 
-        <div class="analytics-card">
-          <h3>Popular Services</h3>
-          <p>Most requested services</p>
-          <table class="admin-table" id="servicePopularityTable">
-            <thead><tr><th>Service</th><th>Category</th><th>Bookings</th></tr></thead>
-            <tbody id="servicePopularityBody"></tbody>
+        <div class="analytics-card" style="margin-top:0;">
+          <h3>Stylist Performance</h3>
+          <p>Completion rates and average ratings</p>
+          <table class="admin-table" id="stylistTable">
+            <thead>
+              <tr><th>Stylist</th><th class="text-right">Assigned</th><th class="text-right">Completed</th><th class="text-right">Rate</th><th class="text-right">Rating</th></tr>
+            </thead>
+            <tbody id="stylistTableBody"></tbody>
           </table>
         </div>
-      </div>
-
-      <div class="analytics-card" style="margin-top:0;">
-        <h3>Stylist Performance</h3>
-        <p>Completion rates and average ratings</p>
-        <table class="admin-table" id="stylistTable">
-          <thead>
-            <tr><th>Stylist</th><th>Assigned</th><th>Completed</th><th>Rate</th><th>Rating</th></tr>
-          </thead>
-          <tbody id="stylistTableBody"></tbody>
-        </table>
       </div>
     </section>
   </main>
@@ -1329,9 +1365,9 @@
     if (signOutBtn) signOutBtn.addEventListener('click', signOut);
     if (sidebarSignOut) sidebarSignOut.addEventListener('click', signOut);
 
-    // Download Report button - downloads the current analytics view as CSV
+    // Download Report button - generates PDF
     if (downloadBtn) {
-      downloadBtn.addEventListener('click', downloadReport);
+      downloadBtn.addEventListener('click', downloadPDFReport);
     }
 
     document.querySelectorAll('.nav-item:not(.signout-nav)').forEach(item => {
@@ -1347,111 +1383,99 @@
   });
 
   // ============================================================
-  // DOWNLOAD REPORT — exports current analytics data as CSV
+  // PDF DOWNLOAD — exports entire analytics page as PDF
   // ============================================================
-  function downloadReport() {
-    // Get current period and date range
-    const period = document.getElementById('reportPeriod').value;
-    let startDate, endDate;
+  function downloadPDFReport() {
+    showLoading('Generating PDF...');
 
-    if (period === 'last30') {
-      const today = new Date();
-      startDate = new Date();
-      startDate.setDate(today.getDate() - 30);
-      endDate = new Date();
-    } else if (period === 'last90') {
-      const today = new Date();
-      startDate = new Date();
-      startDate.setDate(today.getDate() - 90);
-      endDate = new Date();
-    } else if (period === 'lastYear') {
-      const today = new Date();
-      startDate = new Date();
-      startDate.setFullYear(today.getFullYear() - 1);
-      endDate = new Date();
-    } else {
-      startDate = new Date(document.getElementById('startDate').value);
-      endDate = new Date(document.getElementById('endDate').value);
-      if (isNaN(startDate) || isNaN(endDate)) {
-        const today = new Date();
-        startDate = new Date();
-        startDate.setDate(today.getDate() - 30);
-        endDate = new Date();
+    // Wait for chart to render
+    setTimeout(() => {
+      const element = document.getElementById('analyticsContent');
+      const header = document.querySelector('.view-header');
+
+      // Clone the content for PDF
+      const clone = element.cloneNode(true);
+
+      // Get the current period text
+      const period = document.getElementById('reportPeriod');
+      const periodText = period.options[period.selectedIndex].text;
+
+      // Create wrapper with header info
+      const wrapper = document.createElement('div');
+      wrapper.style.padding = '20px';
+      wrapper.style.background = 'white';
+      wrapper.style.fontFamily = 'DM Sans, sans-serif';
+
+      const title = document.createElement('h1');
+      title.textContent = 'PinkMeUp Analytics Report';
+      title.style.fontFamily = 'Cormorant Garamond, serif';
+      title.style.fontSize = '24px';
+      title.style.color = '#D43F6B';
+      title.style.marginBottom = '4px';
+
+      const subtitle = document.createElement('p');
+      subtitle.textContent = `Period: ${periodText} • Generated: ${new Date().toLocaleString()}`;
+      subtitle.style.fontSize = '14px';
+      subtitle.style.color = '#666';
+      subtitle.style.marginBottom = '20px';
+      subtitle.style.borderBottom = '1px solid #ddd';
+      subtitle.style.paddingBottom = '12px';
+
+      wrapper.appendChild(title);
+      wrapper.appendChild(subtitle);
+      wrapper.appendChild(clone);
+
+      // Fix chart containers in clone
+      const chartCanvas = clone.querySelector('#trendsBarChart');
+      if (chartCanvas) {
+        const originalCanvas = document.getElementById('trendsBarChart');
+        const img = document.createElement('img');
+        img.src = originalCanvas.toDataURL('image/png');
+        img.style.width = '100%';
+        img.style.maxWidth = '600px';
+        img.style.height = 'auto';
+        chartCanvas.parentNode.replaceChild(img, chartCanvas);
       }
-    }
 
-    const startStr = startDate.toISOString().slice(0, 10);
-    const endStr = endDate.toISOString().slice(0, 10);
+      // Clean up table alignments
+      clone.querySelectorAll('.admin-table th, .admin-table td').forEach(el => {
+        el.style.padding = '6px 10px';
+        el.style.textAlign = 'left';
+      });
 
-    showLoading('Generating report...');
+      const options = {
+        margin: [10, 10, 10, 10],
+        filename: `PinkMeUp_Report_${new Date().toISOString().slice(0, 10)}.pdf`,
+        image: { type: 'jpeg', quality: 0.98 },
+        html2canvas: {
+          scale: 2,
+          useCORS: true,
+          letterRendering: true,
+          scrollY: 0,
+          windowHeight: element.scrollHeight + 100
+        },
+        jsPDF: {
+          unit: 'mm',
+          format: 'a4',
+          orientation: 'portrait'
+        },
+        pagebreak: { mode: ['avoid-all', 'css', 'legacy'] }
+      };
 
-    // Fetch all three datasets
-    Promise.all([
-      fetch(`${API_BASE}/admin/reports/service-popularity?startDate=${startStr}&endDate=${endStr}`, { credentials: 'include' }),
-      fetch(`${API_BASE}/admin/reports/stylist-performance?startDate=${startStr}&endDate=${endStr}`, { credentials: 'include' }),
-      fetch(`${API_BASE}/admin/reports/booking-trends?startDate=${startStr}&endDate=${endStr}`, { credentials: 'include' })
-    ])
-    .then(async ([popRes, perfRes, trendRes]) => {
-      const popData = await popRes.json();
-      const perfData = await perfRes.json();
-      const trendData = await trendRes.json();
-
-      hideLoading();
-
-      // Build CSV content
-      let csv = 'PinkMeUp Admin Report\n';
-      csv += `Report Period: ${startStr} to ${endStr}\n\n`;
-
-      // Service Popularity
-      csv += 'Popular Services\n';
-      csv += 'Service,Category,Bookings\n';
-      if (popData.success && popData.data && popData.data.length) {
-        popData.data.forEach(s => {
-          csv += `"${s.serviceName}","${s.category}",${s.bookingsCount}\n`;
+      html2pdf()
+        .set(options)
+        .from(wrapper)
+        .save()
+        .then(() => {
+          hideLoading();
+          showToast('PDF downloaded successfully!');
+        })
+        .catch(err => {
+          hideLoading();
+          console.error('PDF generation error:', err);
+          showToast('Failed to generate PDF. Please try again.');
         });
-      } else {
-        csv += 'No data available\n';
-      }
-
-      csv += '\nStylist Performance\n';
-      csv += 'Stylist,Assigned,Completed,Completion Rate,Average Rating\n';
-      if (perfData.success && perfData.data && perfData.data.length) {
-        perfData.data.forEach(s => {
-          const rate = s.totalAssigned ? Math.round((s.completedBookings / s.totalAssigned) * 100) : 0;
-          csv += `"${s.stylistName}",${s.totalAssigned},${s.completedBookings},${rate}%,${s.rating.toFixed(1)}\n`;
-        });
-      } else {
-        csv += 'No data available\n';
-      }
-
-      csv += '\nBooking Trends\n';
-      csv += 'Day,Bookings\n';
-      if (trendData.success && trendData.data && trendData.data.bookingsByDay) {
-        const dayMap = {1:'Sun',2:'Mon',3:'Tue',4:'Wed',5:'Thu',6:'Fri',7:'Sat'};
-        trendData.data.bookingsByDay.forEach(d => {
-          csv += `${dayMap[d._id] || d._id},${d.count}\n`;
-        });
-      } else {
-        csv += 'No data available\n';
-      }
-
-      // Create download
-      const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
-      const link = document.createElement('a');
-      link.href = URL.createObjectURL(blob);
-      link.download = `PinkMeUp_Report_${startStr}_to_${endStr}.csv`;
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
-      URL.revokeObjectURL(link.href);
-
-      showToast('Report downloaded successfully!');
-    })
-    .catch(err => {
-      hideLoading();
-      console.error('Download error:', err);
-      showToast('Failed to generate report. Please try again.');
-    });
+    }, 800);
   }
 
   // ============================================================
@@ -1643,9 +1667,11 @@
       return `
         <div class="stylist-card">
           <div class="stylist-name">${escapeHtml(st.name)}</div>
-          <div class="stylist-contact"><i class="fas fa-envelope"></i> ${escapeHtml(st.email || 'N/A')} &nbsp; <i class="fas fa-phone"></i> ${escapeHtml(st.phone || 'N/A')}</div>
+          <div class="stylist-contact-item"><i class="fas fa-envelope"></i> ${escapeHtml(st.email || 'N/A')}</div>
+          <div class="stylist-contact-item"><i class="fas fa-phone"></i> ${escapeHtml(st.phone || 'N/A')}</div>
           <div class="stylist-status ${status}">● ${statusLabel}</div>
           <div class="stylist-rating"><strong>★ ${Number(st.rating).toFixed(1)}</strong> / 5 average rating</div>
+          <div class="stylist-services-label">Services Offered</div>
           <div class="service-chips">
             ${serviceNames.length ? serviceNames.map(n => `<span class="chip">${escapeHtml(n)}</span>`).join('') : '<span style="font-size:0.8rem;color:var(--muted);">No services assigned</span>'}
           </div>
@@ -1909,7 +1935,7 @@
       },
       options: {
         responsive: true,
-        maintainAspectRatio: true,
+        maintainAspectRatio: false,
         plugins: { legend: { display: false } },
         scales: { y: { beginAtZero: true, ticks: { precision: 0 } } }
       }
@@ -1934,7 +1960,7 @@
       return;
     }
     tbody.innerHTML = popularity.map(s =>
-      `<tr><td><strong>${escapeHtml(s.serviceName)}</strong></td><td>${escapeHtml(s.category)}</td><td>${s.bookingsCount}</td></tr>`
+      `<tr><td><strong>${escapeHtml(s.serviceName)}</strong></td><td>${escapeHtml(s.category)}</td><td class="text-right">${s.bookingsCount}</td></tr>`
     ).join('');
   }
 
@@ -1948,10 +1974,10 @@
       const rate = s.totalAssigned ? Math.round((s.completedBookings / s.totalAssigned) * 100) : 0;
       return `<tr>
         <td><strong>${escapeHtml(s.stylistName)}</strong></td>
-        <td>${s.totalAssigned}</td>
-        <td>${s.completedBookings}</td>
-        <td>${rate}%</td>
-        <td>${s.rating.toFixed(1)} / 5</td>
+        <td class="text-right">${s.totalAssigned}</td>
+        <td class="text-right">${s.completedBookings}</td>
+        <td class="text-right">${rate}%</td>
+        <td class="text-right">${s.rating.toFixed(1)} / 5</td>
       </tr>`;
     }).join('');
   }
