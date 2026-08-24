@@ -1636,7 +1636,7 @@
   }
 
   // ============================================================
-  // STYLISTS — UPDATED WITH STATUS MANAGEMENT
+  // STYLISTS — UPDATED WITH STATUS MANAGEMENT (cleaner design)
   // ============================================================
   async function loadStylists() {
     try {
@@ -1683,10 +1683,10 @@
           
           <div style="margin: 0.5rem 0 0.3rem; display:flex; align-items:center; gap:0.8rem; flex-wrap:wrap;">
             <div class="stylist-status ${currentStatus}">● ${statusLabel}</div>
-            <select class="stylist-status-select" data-id="${st.id}" style="padding:0.25rem 0.6rem; border-radius:2rem; border:1.5px solid var(--border); font-size:0.75rem; font-family:inherit; background:white; cursor:pointer;">
-              <option value="active" ${currentStatus === 'active' ? 'selected' : ''}>Active</option>
-              <option value="inactive" ${currentStatus === 'inactive' ? 'selected' : ''}>Inactive</option>
-              <option value="disabled" ${currentStatus === 'disabled' ? 'selected' : ''}>Disabled</option>
+            <select class="stylist-status-select" data-id="${st.id}" style="padding:0.2rem 0.5rem; border-radius:2rem; border:1px solid var(--border); font-size:0.7rem; font-family:inherit; background:white; cursor:pointer; color:var(--muted);">
+              <option value="active" ${currentStatus === 'active' ? 'selected' : ''}>Change to Active</option>
+              <option value="inactive" ${currentStatus === 'inactive' ? 'selected' : ''}>Change to Inactive</option>
+              <option value="disabled" ${currentStatus === 'disabled' ? 'selected' : ''}>Change to Disabled</option>
             </select>
           </div>
           
