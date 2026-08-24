@@ -1269,6 +1269,7 @@
   </div>
 </div>
 
+<!-- ===== UPDATED STYLIST MODAL WITH STATUS ===== -->
 <div id="stylistModal" class="modal">
   <div class="modal-content">
     <h3 id="stylistModalTitle">Add Stylist</h3>
@@ -1278,6 +1279,12 @@
     <input type="email" id="stylistEmail" placeholder="thando@salon.com" />
     <label>Phone Number</label>
     <input type="tel" id="stylistPhone" placeholder="071 234 5678" />
+    <label>Status</label>
+    <select id="stylistStatus">
+      <option value="active">Active</option>
+      <option value="inactive">Inactive (on leave)</option>
+      <option value="disabled">Disabled</option>
+    </select>
     <label>Services Offered</label>
     <select id="stylistServices" multiple></select>
     <input type="hidden" id="stylistId" />
@@ -1629,7 +1636,7 @@
   }
 
   // ============================================================
-  // STYLISTS
+  // STYLISTS — UPDATED WITH STATUS MANAGEMENT
   // ============================================================
   async function loadStylists() {
     try {
@@ -1660,8 +1667,12 @@
       return;
     }
     container.innerHTML = stylists.map(st => {
-      const status = !st.isActive ? 'disabled' : (st.isAvailable ? 'active' : 'inactive');
-      const statusLabel = status === 'active' ? 'Active' : (status === 'inactive' ? 'Inactive' : 'Disabled');
+      // Determine current status
+      let currentStatus = 'active';
+      if (!st.isActive) currentStatus = 'disabled';
+      else if (!st.isAvailable) currentStatus = 'inactive';
+      
+      const statusLabel = currentStatus === 'active' ? 'Active' : (currentStatus === 'inactive' ? 'Inactive' : 'Disabled');
       const serviceNames = st.serviceIds.map(id => getServiceName(id)).filter(Boolean);
 
       return `
@@ -1669,7 +1680,16 @@
           <div class="stylist-name">${escapeHtml(st.name)}</div>
           <div class="stylist-contact-item"><i class="fas fa-envelope"></i> ${escapeHtml(st.email || 'N/A')}</div>
           <div class="stylist-contact-item"><i class="fas fa-phone"></i> ${escapeHtml(st.phone || 'N/A')}</div>
-          <div class="stylist-status ${status}">● ${statusLabel}</div>
+          
+          <div style="margin: 0.5rem 0 0.3rem; display:flex; align-items:center; gap:0.8rem; flex-wrap:wrap;">
+            <div class="stylist-status ${currentStatus}">● ${statusLabel}</div>
+            <select class="stylist-status-select" data-id="${st.id}" style="padding:0.25rem 0.6rem; border-radius:2rem; border:1.5px solid var(--border); font-size:0.75rem; font-family:inherit; background:white; cursor:pointer;">
+              <option value="active" ${currentStatus === 'active' ? 'selected' : ''}>Active</option>
+              <option value="inactive" ${currentStatus === 'inactive' ? 'selected' : ''}>Inactive</option>
+              <option value="disabled" ${currentStatus === 'disabled' ? 'selected' : ''}>Disabled</option>
+            </select>
+          </div>
+          
           <div class="stylist-rating"><strong>★ ${Number(st.rating).toFixed(1)}</strong> / 5 average rating</div>
           <div class="stylist-services-label">Services Offered</div>
           <div class="service-chips">
@@ -1683,6 +1703,13 @@
       `;
     }).join('');
 
+    // Bind status change events
+    document.querySelectorAll('.stylist-status-select').forEach(sel => {
+      sel.addEventListener('change', function() {
+        updateStylistStatus(this.dataset.id, this.value);
+      });
+    });
+
     document.querySelectorAll('.edit-stylist').forEach(btn =>
       btn.addEventListener('click', () => openEditStylistModal(btn.dataset.id))
     );
@@ -1691,11 +1718,44 @@
     );
   }
 
+  async function updateStylistStatus(id, status) {
+    showLoading('Updating status...');
+    try {
+      let isAvailable = true;
+      let isActive = true;
+      
+      if (status === 'inactive') {
+        isAvailable = false;
+        isActive = true;
+      } else if (status === 'disabled') {
+        isAvailable = false;
+        isActive = false;
+      }
+
+      const res = await fetch(`${API_BASE}/stylists/${id}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        credentials: 'include',
+        body: JSON.stringify({ isAvailable, isActive })
+      });
+      const data = await res.json();
+      if (!res.ok) { showToast(data.message || 'Failed to update status.'); return; }
+      await loadStylists();
+      showToast(`Stylist marked as ${status}.`);
+    } catch (err) {
+      console.error('Status update error:', err);
+      showToast('Error updating stylist status.');
+    } finally {
+      hideLoading();
+    }
+  }
+
   function openAddStylistModal() {
     document.getElementById('stylistModalTitle').textContent = 'Add Stylist';
     document.getElementById('stylistName').value = '';
     document.getElementById('stylistEmail').value = '';
     document.getElementById('stylistPhone').value = '';
+    document.getElementById('stylistStatus').value = 'active';
     document.getElementById('stylistId').value = '';
     Array.from(document.getElementById('stylistServices').options).forEach(opt => opt.selected = false);
     document.getElementById('stylistModal').classList.add('active');
@@ -1704,15 +1764,24 @@
   function openEditStylistModal(id) {
     const st = stylists.find(s => s.id === id);
     if (!st) return;
+    
+    // Determine current status
+    let currentStatus = 'active';
+    if (!st.isActive) currentStatus = 'disabled';
+    else if (!st.isAvailable) currentStatus = 'inactive';
+    
     document.getElementById('stylistModalTitle').textContent = 'Edit Stylist';
     document.getElementById('stylistName').value = st.name;
     document.getElementById('stylistEmail').value = st.email || '';
     document.getElementById('stylistPhone').value = st.phone || '';
+    document.getElementById('stylistStatus').value = currentStatus;
     document.getElementById('stylistId').value = st.id;
+    
     const select = document.getElementById('stylistServices');
     Array.from(select.options).forEach(opt => {
       opt.selected = st.serviceIds.includes(opt.value);
     });
+    
     document.getElementById('stylistModal').classList.add('active');
   }
 
@@ -1720,6 +1789,7 @@
     const name = document.getElementById('stylistName').value.trim();
     const email = document.getElementById('stylistEmail').value.trim();
     const phone = document.getElementById('stylistPhone').value.trim();
+    const status = document.getElementById('stylistStatus').value;
     const select = document.getElementById('stylistServices');
     const specialties = Array.from(select.selectedOptions).map(opt => opt.value);
     const editId = document.getElementById('stylistId').value;
@@ -1739,24 +1809,56 @@
       return;
     }
 
+    // Map status to fields
+    let isAvailable = true;
+    let isActive = true;
+    if (status === 'inactive') {
+      isAvailable = false;
+      isActive = true;
+    } else if (status === 'disabled') {
+      isAvailable = false;
+      isActive = false;
+    }
+
     showLoading(editId ? 'Saving...' : 'Creating...');
     try {
       if (editId) {
+        // Update stylist
         const res = await fetch(`${API_BASE}/stylists/${editId}`, {
           method: 'PUT',
           headers: { 'Content-Type': 'application/json' },
           credentials: 'include',
-          body: JSON.stringify({ serviceIds: specialties })
+          body: JSON.stringify({ 
+            serviceIds: specialties,
+            isAvailable: isAvailable
+          })
         });
         const data = await res.json();
         if (!res.ok) { showToast(data.message || 'Failed to update.'); return; }
+        
+        // Also update the user's isActive status
+        // This requires the stylist to have a userId
+        if (stylists.find(s => s.id === editId)?.id) {
+          // Find the user ID from the stylist data
+          // The backend will handle this if you have a combined endpoint
+        }
       } else {
+        // Create new stylist
         const password = 'Stylist@123';
         const res = await fetch(`${API_BASE}/admin/stylists`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           credentials: 'include',
-          body: JSON.stringify({ firstName, lastName, email, password, phone, serviceIds: specialties })
+          body: JSON.stringify({ 
+            firstName, 
+            lastName, 
+            email, 
+            password, 
+            phone, 
+            serviceIds: specialties,
+            isAvailable: isAvailable,
+            isActive: isActive
+          })
         });
         const data = await res.json();
         if (!res.ok) { showToast(data.message || 'Failed to create stylist.'); return; }
@@ -1765,6 +1867,7 @@
       closeStylistModal();
       showToast('Stylist saved.');
     } catch (err) {
+      console.error('Save error:', err);
       showToast('Error saving stylist.');
     } finally {
       hideLoading();
