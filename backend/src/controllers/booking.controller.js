@@ -206,7 +206,8 @@ const createBooking = async (req, res) => {
      * ---------------------------------------------------------
      */
 
-    const stylist = await Stylist.findById(stylistId);
+    const stylist = await Stylist.findById(stylistId)
+  .populate('userId', 'isActive');
 
     if (!stylist) {
       return errorResponse(
@@ -215,9 +216,6 @@ const createBooking = async (req, res) => {
         404
       );
     }
-
-   const stylist = await Stylist.findById(stylistId)
-  .populate('userId', 'isActive');
 
 if (!stylist) {
   return errorResponse(
@@ -301,6 +299,12 @@ if (!stylist.isAvailable) {
         400
       );
     }
+
+const today = new Date();
+today.setHours(0, 0, 0, 0);
+if (bookingDate < today) {
+  return errorResponse(res, 'Cannot book on a past date.', 400);
+}
 
     /*
      * Normalize date to midnight.
@@ -800,7 +804,6 @@ module.exports = {
   cancelBooking,
   rescheduleBooking,
   getAllBookings,
-  getStylistBookings,
   updateBookingStatus,
   hasAppointmentConflict
 };

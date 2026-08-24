@@ -4,7 +4,7 @@
  */
 
 const mongoose = require('mongoose');
-const USER_PUBLIC_FIELDS = 'firstName lastName email phone';
+const USER_PUBLIC_FIELDS = 'firstName lastName email phone isActive';
 
 const StylistSchema = new mongoose.Schema(
   {

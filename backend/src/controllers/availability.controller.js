@@ -100,7 +100,8 @@ const checkAvailability = async (req, res) => {
 
 const getAvailableSlots = async (req, res) => {
   try {
-    const { date, serviceIds } = req.query;
+    const { date, serviceIds, stylistId } = req.query;
+if (!stylistId) return errorResponse(res, 'Stylist ID is required.', 400);
     if (!date) return errorResponse(res, 'Date is required.', 400);
 
     const settings = await getSettings();
