@@ -113,6 +113,9 @@ const createBooking = async (req, res) => {
       }
 
       if (!guestUser) {
+        const crypto = require('crypto');
+        const generateSecurePassword = () => crypto.randomBytes(20).toString('hex');
+
         const nameParts = (guestName || 'Guest User')
           .trim()
           .split(/\s+/);
@@ -127,8 +130,9 @@ const createBooking = async (req, res) => {
             guestEmail?.toLowerCase().trim() ||
             `guest-${Date.now()}@pinkmeup.local`,
           phone: guestPhone || '',
-          password: `${Date.now()}Guest!`,
-          role: 'customer'
+          password: generateSecurePassword(),
+          role: 'customer',
+          isActive: true
         });
       }
 
@@ -207,7 +211,7 @@ const createBooking = async (req, res) => {
      */
 
     const stylist = await Stylist.findById(stylistId)
-  .populate('userId', 'isActive');
+      .populate('userId', 'isActive');
 
     if (!stylist) {
       return errorResponse(
@@ -217,29 +221,21 @@ const createBooking = async (req, res) => {
       );
     }
 
-if (!stylist) {
-  return errorResponse(
-    res,
-    'Stylist not found.',
-    404
-  );
-}
+    if (!stylist.userId?.isActive) {
+      return errorResponse(
+        res,
+        'Stylist is disabled.',
+        400
+      );
+    }
 
-if (!stylist.userId?.isActive) {
-  return errorResponse(
-    res,
-    'Stylist is disabled.',
-    400
-  );
-}
-
-if (!stylist.isAvailable) {
-  return errorResponse(
-    res,
-    'Stylist is not available.',
-    400
-  );
-}
+    if (!stylist.isAvailable) {
+      return errorResponse(
+        res,
+        'Stylist is not available.',
+        400
+      );
+    }
 
     if (
       !Array.isArray(stylist.serviceIds) ||
@@ -300,16 +296,21 @@ if (!stylist.isAvailable) {
       );
     }
 
-const today = new Date();
-today.setHours(0, 0, 0, 0);
-if (bookingDate < today) {
-  return errorResponse(res, 'Cannot book on a past date.', 400);
-}
-
     /*
      * Normalize date to midnight.
      */
     bookingDate.setHours(0, 0, 0, 0);
+
+    // Validate date is not in the past
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    if (bookingDate < today) {
+      return errorResponse(
+        res,
+        'Cannot book on a past date.',
+        400
+      );
+    }
 
     const dayOfWeek = getDayOfWeek(bookingDate);
 
@@ -476,7 +477,7 @@ if (bookingDate < today) {
           populate: {
             path: 'userId',
             select:
-              'firstName lastName email phone'
+              'firstName lastName email phone isActive'
           }
         })
         .populate(
@@ -545,7 +546,7 @@ const getMyBookings = async (req, res) => {
     const skip = (pageNum - 1) * limitNum;
     const bookings = await Appointment.find(filter)
       .populate('customerId', 'firstName lastName email phone')
-      .populate({ path: 'stylistId', select: 'userId specialties rating', populate: { path: 'userId', select: 'firstName lastName email phone' } })
+      .populate({ path: 'stylistId', select: 'userId specialties rating', populate: { path: 'userId', select: 'firstName lastName email phone isActive' } })
       .populate('serviceIds', 'name price duration description')
       .skip(skip).limit(limitNum).sort({ date: -1, startTime: -1 });
     const total = await Appointment.countDocuments(filter);
@@ -567,7 +568,7 @@ const getBookingById = async (req, res) => {
   try {
     const appointment = await Appointment.findById(req.params.id)
       .populate('customerId', 'firstName lastName email phone')
-      .populate({ path: 'stylistId', select: 'userId specialties rating', populate: { path: 'userId', select: 'firstName lastName email phone' } })
+      .populate({ path: 'stylistId', select: 'userId specialties rating', populate: { path: 'userId', select: 'firstName lastName email phone isActive' } })
       .populate('serviceIds', 'name price duration description');
 
     if (!appointment) return errorResponse(res, 'Booking not found.', 404);
@@ -668,6 +669,14 @@ const rescheduleBooking = async (req, res) => {
 
     const settings = await getSettings();
     const bookingDate = new Date(date);
+    
+    // Validate date is not in the past
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    if (bookingDate < today) {
+      return errorResponse(res, 'Cannot reschedule to a past date.', 400);
+    }
+
     const dayOfWeek = getDayOfWeek(bookingDate);
     if (!dayOfWeek) return errorResponse(res, 'Invalid date.', 400);
 
@@ -706,37 +715,37 @@ const rescheduleBooking = async (req, res) => {
 
     const updated = await Appointment.findById(id)
       .populate('customerId', 'firstName lastName email phone')
-      .populate({ path: 'stylistId', select: 'userId specialties rating', populate: { path: 'userId', select: 'firstName lastName email phone' } })
+      .populate({ path: 'stylistId', select: 'userId specialties rating', populate: { path: 'userId', select: 'firstName lastName email phone isActive' } })
       .populate('serviceIds', 'name price duration description');
 
     return successResponse(res, 'Booking rescheduled.', updated);
   } catch (error) {
-  logger.error('Reschedule error:', error);
+    logger.error('Reschedule error:', error);
 
-  return errorResponse(
-    res,
-    error.message || 'Failed to reschedule booking.',
-    error.statusCode || 500
-  );
-}
+    return errorResponse(
+      res,
+      error.message || 'Failed to reschedule booking.',
+      error.statusCode || 500
+    );
+  }
 };
 
 const getAllBookings = async (req, res) => {
   try {
     const { status, startDate, endDate, page = 1, limit = 10 } = req.query;
-const filter = {};
-if (status) filter.status = status;
-if (startDate || endDate) {
-  filter.date = {};
-  if (startDate) filter.date.$gte = new Date(startDate);
-  if (endDate) filter.date.$lte = new Date(endDate);
-}
+    const filter = {};
+    if (status) filter.status = status;
+    if (startDate || endDate) {
+      filter.date = {};
+      if (startDate) filter.date.$gte = new Date(startDate);
+      if (endDate) filter.date.$lte = new Date(endDate);
+    }
 
     const { page: pageNum, limit: limitNum } = parsePageLimit(page, limit);
     const skip = (pageNum - 1) * limitNum;
     const bookings = await Appointment.find(filter)
       .populate('customerId', 'firstName lastName email phone')
-      .populate({ path: 'stylistId', select: 'userId specialties rating', populate: { path: 'userId', select: 'firstName lastName email phone' } })
+      .populate({ path: 'stylistId', select: 'userId specialties rating', populate: { path: 'userId', select: 'firstName lastName email phone isActive' } })
       .populate('serviceIds', 'name price duration description')
       .skip(skip).limit(limitNum).sort({ date: -1, startTime: -1 });
     const total = await Appointment.countDocuments(filter);
@@ -751,7 +760,79 @@ if (startDate || endDate) {
   }
 };
 
+/**
+ * Get bookings for a specific stylist (for stylist's own view or admin)
+ * Query: { status?, startDate?, endDate?, page?, limit? }
+ * Params: id (stylist ID)
+ */
+const getStylistBookings = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { status, startDate, endDate, page = 1, limit = 10 } = req.query;
 
+    // Verify the stylist exists
+    const stylist = await Stylist.findById(id).populate('userId', 'isActive');
+    if (!stylist) {
+      return errorResponse(res, 'Stylist not found.', 404);
+    }
+
+    // Check permission: user must be the stylist themselves or an admin
+    const isOwnStylist = req.user.role === 'stylist' && 
+      stylist.userId._id.toString() === req.user.id;
+    const isAdmin = req.user.role === 'admin';
+
+    if (!isOwnStylist && !isAdmin) {
+      return errorResponse(res, 'Access denied.', 403);
+    }
+
+    // Build filter
+    const filter = { stylistId: id };
+    if (status) filter.status = status;
+    
+    if (startDate || endDate) {
+      filter.date = {};
+      if (startDate) filter.date.$gte = new Date(startDate);
+      if (endDate) filter.date.$lte = new Date(endDate);
+    }
+
+    const { page: pageNum, limit: limitNum } = parsePageLimit(page, limit);
+    const skip = (pageNum - 1) * limitNum;
+
+    const bookings = await Appointment.find(filter)
+      .populate('customerId', 'firstName lastName email phone')
+      .populate({
+        path: 'stylistId',
+        select: 'userId specialties rating serviceIds',
+        populate: {
+          path: 'userId',
+          select: 'firstName lastName email phone isActive'
+        }
+      })
+      .populate('serviceIds', 'name price duration description')
+      .skip(skip)
+      .limit(limitNum)
+      .sort({ date: -1, startTime: -1 });
+
+    const total = await Appointment.countDocuments(filter);
+
+    return successResponse(res, 'Stylist bookings retrieved.', {
+      bookings,
+      pagination: {
+        page: pageNum,
+        limit: limitNum,
+        total,
+        pages: Math.ceil(total / limitNum)
+      }
+    });
+  } catch (error) {
+    logger.error('Get stylist bookings error:', error);
+    return errorResponse(res, 'Failed to retrieve stylist bookings.', 500);
+  }
+};
+
+/**
+ * Update booking status with proper rating handling
+ */
 const updateBookingStatus = async (req, res) => {
   try {
     const { id } = req.params;
@@ -762,37 +843,90 @@ const updateBookingStatus = async (req, res) => {
       return errorResponse(res, 'Invalid status.', 400);
     }
 
+    // Find the appointment first
+    const appointment = await Appointment.findById(id);
+    if (!appointment) return errorResponse(res, 'Booking not found.', 404);
+    
+    if (appointment.status === APPOINTMENT_STATUS.CANCELLED) {
+      return errorResponse(res, 'Cancelled bookings cannot be updated.', 400);
+    }
+
+    let numericRating = null;
     if (status === APPOINTMENT_STATUS.COMPLETED) {
-      const numericRating = Number(rating);
+      numericRating = Number(rating);
       if (!Number.isFinite(numericRating) || numericRating < 1 || numericRating > 5) {
         return errorResponse(res, 'A rating between 1 and 5 is required to mark an appointment as completed.', 400);
       }
     }
 
-    const appointment = await Appointment.findById(id).select('_id status stylistId');
-    if (!appointment) return errorResponse(res, 'Booking not found.', 404);
-    if (appointment.status === APPOINTMENT_STATUS.CANCELLED) {
-      return errorResponse(res, 'Cancelled bookings cannot be updated.', 400);
-    }
-
+    // Prepare update fields
     const updateFields = { status };
-    if (status === APPOINTMENT_STATUS.COMPLETED) {
-      updateFields.feedback = { rating: Number(rating), comment: String(comment || '').trim(), createdAt: new Date() };
+    if (status === APPOINTMENT_STATUS.COMPLETED && numericRating) {
+      updateFields.feedback = {
+        rating: numericRating,
+        comment: String(comment || '').trim(),
+        createdAt: new Date()
+      };
     }
 
-    const updated = await Appointment.findByIdAndUpdate(id, { $set: updateFields }, { new: true, runValidators: true })
+    // Update the appointment
+    const updated = await Appointment.findByIdAndUpdate(
+      id,
+      { $set: updateFields },
+      { new: true, runValidators: true }
+    )
       .populate('customerId', 'firstName lastName email phone')
-      .populate({ path: 'stylistId', select: 'userId specialties rating', populate: { path: 'userId', select: 'firstName lastName email phone' } })
+      .populate({
+        path: 'stylistId',
+        select: 'userId specialties rating serviceIds',
+        populate: {
+          path: 'userId',
+          select: 'firstName lastName email phone isActive'
+        }
+      })
       .populate('serviceIds', 'name price duration description');
 
-    if (status === APPOINTMENT_STATUS.COMPLETED) {
+    // CRITICAL: Update stylist rating when completed
+    if (status === APPOINTMENT_STATUS.COMPLETED && numericRating) {
       const stylist = await Stylist.findById(appointment.stylistId);
-      if (stylist) await stylist.addRating(Number(rating));
+      if (stylist) {
+        await stylist.addRating(numericRating);
+        
+        // Force save and verify
+        await stylist.save({ validateBeforeSave: false });
+        
+        // Log for debugging
+        logger.info('Stylist rating updated on appointment completion:', {
+          appointmentId: id,
+          stylistId: stylist._id,
+          rating: numericRating,
+          newAverage: stylist.rating,
+          totalRatings: stylist.ratingCount
+        });
+        
+        // Re-fetch the appointment with updated stylist rating
+        const refreshedAppointment = await Appointment.findById(id)
+          .populate('customerId', 'firstName lastName email phone')
+          .populate({
+            path: 'stylistId',
+            select: 'userId specialties rating serviceIds',
+            populate: {
+              path: 'userId',
+              select: 'firstName lastName email phone isActive'
+            }
+          })
+          .populate('serviceIds', 'name price duration description');
+          
+        return successResponse(res, 'Booking status updated with rating.', refreshedAppointment);
+      }
     }
 
     return successResponse(res, 'Booking status updated.', updated);
   } catch (error) {
-    logger.error('Update booking status error:', error);
+    logger.error('Update booking status error:', {
+      message: error.message,
+      stack: error.stack
+    });
     return errorResponse(res, 'Failed to update booking status.', 500);
   }
 };
@@ -804,6 +938,7 @@ module.exports = {
   cancelBooking,
   rescheduleBooking,
   getAllBookings,
+  getStylistBookings,
   updateBookingStatus,
   hasAppointmentConflict
 };

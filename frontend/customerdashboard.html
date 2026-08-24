@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+f<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
@@ -2010,11 +2010,19 @@ function selectTime(time) {
     `;
   }
 
+/**
+ * This is the complete confirmBooking function to replace the existing one
+ * in customerdashboard.html
+ */
+
 let isBookingSubmitting = false;
+let bookingRetryCount = 0;
+const MAX_BOOKING_RETRIES = 2;
 
 async function confirmBooking() {
   if (isBookingSubmitting) return;
 
+  // Validate form inputs
   const name = document.getElementById('detName').value.trim();
   const email = document.getElementById('detEmail').value.trim();
   const phone = document.getElementById('detPhone').value.trim();
@@ -2023,18 +2031,34 @@ async function confirmBooking() {
     showToast('Please fill in your name, email, and phone number.');
     return;
   }
+
   if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
     showToast('Please enter a valid email address.');
     return;
   }
 
+  // Validate booking state
+  if (!cartIds.length) {
+    showToast('Please select at least one service.');
+    return;
+  }
+
+  if (!bookState.date || !bookState.time || !bookState.stylistId) {
+    showToast('Please complete the date, time, and stylist selection.');
+    return;
+  }
+
   isBookingSubmitting = true;
   const wNextBtn = document.getElementById('wNext');
+  const originalText = wNextBtn.innerHTML;
   wNextBtn.disabled = true;
   wNextBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Booking...';
 
+  // Abort controller for timeout
   const controller = new AbortController();
-  const timeoutId = setTimeout(() => controller.abort(), 60000);
+  const timeoutId = setTimeout(() => {
+    controller.abort();
+  }, 30000); // 30 second timeout
 
   try {
     const res = await fetch(`${API_URL}/bookings`, {
@@ -2047,76 +2071,147 @@ async function confirmBooking() {
         stylistId: bookState.stylistId,
         date: bookState.date,
         startTime: bookState.time,
-        notes: document.getElementById('detNotes').value,
+        notes: document.getElementById('detNotes').value || '',
         guestName: name,
         guestEmail: email,
         guestPhone: phone
       })
     });
+
     clearTimeout(timeoutId);
     const data = await res.json();
 
+    // Handle 409 Conflict - Time slot no longer available
     if (res.status === 409) {
       showToast('This time slot is no longer available. Please select another time.');
       gotoStep(2);
       await refreshTimeSlots();
+      
+      // Verify the booking wasn't created despite the conflict
+      await loadAppointments();
+      const existing = appointments.filter(a => 
+        a.date === bookState.date && 
+        a.time === bookState.time &&
+        a.services.some(s => cartIds.includes(s.id))
+      );
+      
+      if (existing.length > 0) {
+        showToast('Your booking was actually successful! Please check your appointments.');
+        cartIds = [];
+        renderCart();
+        setTimeout(() => { switchView('appointments'); }, 800);
+        return;
+      }
+      
+      // Reset button state
+      isBookingSubmitting = false;
+      wNextBtn.disabled = false;
+      wNextBtn.innerHTML = originalText;
       return;
     }
+
+    // Handle other errors
     if (!res.ok) {
-  wNextBtn.innerHTML = '<i class="fas fa-times"></i> Booking Failed';
-  showToast(data.message || 'Booking failed.');
-  return;
-}
-
-    showToast('Booking confirmed successfully!');
-
-wNextBtn.innerHTML = '<i class="fas fa-check"></i> Booking Successful';
-wNextBtn.disabled = true;
-
-cartIds = [];
-renderCart();
-
-// Do not make the success state depend on loading appointments.
-loadAppointments().catch(err => {
-  console.warn('Could not refresh appointments after booking:', err);
-});
-
-setTimeout(() => {
-  switchView('appointments');
-}, 800);
-  } catch (error) {
-  clearTimeout(timeoutId);
-  console.error('Booking error:', error);
-
-  if (error.name === 'AbortError') {
-    wNextBtn.innerHTML =
-      '<i class="fas fa-exclamation-triangle"></i> Booking Timed Out';
-
-    showToast(
-      'The booking request took too long. Please check your appointments before trying again.'
-    );
-  } else {
-    wNextBtn.innerHTML =
-      '<i class="fas fa-times"></i> Booking Failed';
-
-    showToast(
-      'Could not create booking. Please try again.'
-    );
-  }
-} finally {
-    isBookingSubmitting = false;
-
-    if (wNextBtn.innerHTML.includes('Booking Successful')) {
+      const errorMsg = data.message || 'Booking failed. Please try again.';
+      showToast(errorMsg);
+      
+      // Check if the booking was created despite the error
+      await loadAppointments();
+      const existing = appointments.filter(a => 
+        a.date === bookState.date && 
+        a.time === bookState.time &&
+        a.services.some(s => cartIds.includes(s.id))
+      );
+      
+      if (existing.length > 0) {
+        showToast('Your booking was successful! Please check your appointments.');
+        cartIds = [];
+        renderCart();
+        setTimeout(() => { switchView('appointments'); }, 800);
+        return;
+      }
+      
+      // Reset button state
+      isBookingSubmitting = false;
+      wNextBtn.disabled = false;
+      wNextBtn.innerHTML = originalText;
       return;
     }
 
+    // Success!
+    if (data.data) {
+      showToast('Booking confirmed! Check your email for confirmation.');
+      cartIds = [];
+      renderCart();
+      await loadAppointments();
+      
+      // Show success state briefly before redirecting
+      wNextBtn.innerHTML = '<i class="fas fa-check"></i> Booking Successful';
+      wNextBtn.style.background = '#2C8F6E';
+      
+      setTimeout(() => { 
+        switchView('appointments'); 
+        // Reset button style for next use
+        wNextBtn.style.background = '';
+        wNextBtn.innerHTML = originalText;
+        wNextBtn.disabled = false;
+        isBookingSubmitting = false;
+      }, 1500);
+    } else {
+      showToast('Booking was created but confirmation is pending. Please check your appointments.');
+      await loadAppointments();
+      setTimeout(() => { switchView('appointments'); }, 800);
+    }
+
+  } catch (error) {
+    clearTimeout(timeoutId);
+    
+    if (error.name === 'AbortError') {
+      // Request timed out - check if booking was created anyway
+      showToast('Booking request is taking longer than expected. Checking if it was successful...');
+      
+      try {
+        await loadAppointments();
+        // Look for a booking that matches our selection and time
+        const justBooked = appointments.filter(a => 
+          a.date === bookState.date && 
+          a.time === bookState.time &&
+          a.services.some(s => cartIds.includes(s.id))
+        );
+        
+        if (justBooked.length > 0) {
+          showToast('Your booking was successful! Please check your appointments.');
+          cartIds = [];
+          renderCart();
+          
+          wNextBtn.innerHTML = '<i class="fas fa-check"></i> Booking Successful';
+          wNextBtn.style.background = '#2C8F6E';
+          
+          setTimeout(() => { 
+            switchView('appointments');
+            wNextBtn.style.background = '';
+            wNextBtn.innerHTML = originalText;
+            wNextBtn.disabled = false;
+            isBookingSubmitting = false;
+          }, 1500);
+          return;
+        }
+      } catch (e) {
+        console.warn('Could not verify booking after timeout:', e);
+      }
+      
+      showToast('Booking request timed out. Please check your appointments page.');
+    } else {
+      console.error('Booking error:', error);
+      showToast('Could not create booking. Please try again.');
+    }
+    
+    // Reset button state for errors
+    isBookingSubmitting = false;
     wNextBtn.disabled = false;
-    wNextBtn.innerHTML = wizardStep === 4
-      ? '<i class="fas fa-check"></i> Confirm Booking'
-      : 'Next <i class="fas fa-arrow-right"></i>';
+    wNextBtn.innerHTML = originalText;
   }
 }
-
   async function saveProfile() {
     const name = document.getElementById('profileName').value.trim();
     if (!name) { showToast('Name cannot be empty.'); return; }

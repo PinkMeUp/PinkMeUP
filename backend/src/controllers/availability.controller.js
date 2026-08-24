@@ -55,8 +55,13 @@ const checkAvailability = async (req, res) => {
       services.forEach(s => requiredDuration += s.duration);
     }
 
-    const stylist = await Stylist.findById(stylistId);
+    const stylist = await Stylist.findById(stylistId).populate('userId', 'isActive');
     if (!stylist) return errorResponse(res, 'Stylist not found.', 404);
+    
+    if (!stylist.userId?.isActive) {
+      return successResponse(res, 'Availability retrieved.', { available: false, message: 'Stylist is disabled.' });
+    }
+    
     if (!stylist.isAvailable) {
       return successResponse(res, 'Availability retrieved.', { available: false, message: 'Stylist not available.' });
     }
@@ -87,7 +92,11 @@ const checkAvailability = async (req, res) => {
     });
 
     return successResponse(res, 'Availability retrieved.', {
-      stylist: { id: stylist._id, specialties: stylist.specialties },
+      stylist: { 
+        id: stylist._id, 
+        name: stylist.userId ? `${stylist.userId.firstName} ${stylist.userId.lastName}` : 'Stylist',
+        specialties: stylist.specialties 
+      },
       date, businessHours: { start: daySchedule.start, end: daySchedule.end },
       slotInterval, availableSlots, totalAvailable: availableSlots.length,
       requiredDuration: requiredDuration || null, serviceCount: serviceIdArray.length || 0
@@ -98,18 +107,67 @@ const checkAvailability = async (req, res) => {
   }
 };
 
+/**
+ * Get available slots for a specific stylist and date
+ * Query: { stylistId, date, serviceIds? }
+ */
 const getAvailableSlots = async (req, res) => {
   try {
     const { date, serviceIds, stylistId } = req.query;
-if (!stylistId) return errorResponse(res, 'Stylist ID is required.', 400);
+    
     if (!date) return errorResponse(res, 'Date is required.', 400);
+    if (!stylistId) return errorResponse(res, 'Stylist ID is required.', 400);
 
     const settings = await getSettings();
     let serviceIdArray = [], requiredDuration = 0;
+    
     if (serviceIds) {
-      serviceIdArray = (Array.isArray(serviceIds) ? serviceIds : [serviceIds]).flatMap(v => String(v).split(',')).map(v => v.trim()).filter(Boolean);
+      serviceIdArray = (Array.isArray(serviceIds) ? serviceIds : [serviceIds])
+        .flatMap(v => String(v).split(','))
+        .map(v => v.trim())
+        .filter(Boolean);
+        
       const services = await Service.find({ _id: { $in: serviceIdArray } });
       services.forEach(s => requiredDuration += s.duration);
+    }
+
+    // Check stylist and user isActive
+    const stylist = await Stylist.findById(stylistId)
+      .populate('userId', 'isActive firstName lastName');
+
+    if (!stylist) {
+      return errorResponse(res, 'Stylist not found.', 404);
+    }
+
+    // Critical: Check if user is active
+    if (!stylist.userId?.isActive) {
+      return successResponse(res, 'Availability retrieved.', {
+        available: false,
+        availableSlots: [],
+        totalAvailable: 0,
+        message: 'Stylist is disabled.'
+      });
+    }
+
+    if (!stylist.isAvailable) {
+      return successResponse(res, 'Availability retrieved.', {
+        available: false,
+        availableSlots: [],
+        totalAvailable: 0,
+        message: 'Stylist is not available.'
+      });
+    }
+
+    // Check service eligibility
+    if (serviceIdArray.length && 
+        (!Array.isArray(stylist.serviceIds) || 
+         !serviceIdArray.every(id => stylist.serviceIds.some(sid => String(sid) === String(id))))) {
+      return successResponse(res, 'Availability retrieved.', {
+        available: false,
+        availableSlots: [],
+        totalAvailable: 0,
+        message: 'Stylist does not provide all selected services.'
+      });
     }
 
     const bookingDate = new Date(date);
@@ -118,58 +176,42 @@ if (!stylistId) return errorResponse(res, 'Stylist ID is required.', 400);
 
     const daySchedule = settings.businessHours[dayOfWeek];
     if (!daySchedule || !daySchedule.isOpen || !daySchedule.start || !daySchedule.end) {
-      return successResponse(res, 'Available slots retrieved.', { date, stylists: [], message: 'Business closed.' });
+      return successResponse(res, 'Availability retrieved.', {
+        available: false,
+        message: 'Business closed.'
+      });
     }
 
     const slotInterval = settings.slotInterval || 30;
- const stylist = await Stylist.findById(stylistId)
-  .populate('userId', 'isActive');
+    const bookedSlots = await Appointment.find({
+      stylistId,
+      date: bookingDate,
+      status: { $nin: ['cancelled', 'no_show'] }
+    }).select('startTime totalDuration');
 
-if (!stylist) {
-  return errorResponse(res, 'Stylist not found.', 404);
-}
-
-if (!stylist.userId?.isActive || !stylist.isAvailable) {
-  return successResponse(res, 'Availability retrieved.', {
-    available: false,
-    availableSlots: [],
-    totalAvailable: 0,
-    message: !stylist.userId?.isActive
-      ? 'Stylist is disabled.'
-      : 'Stylist is not available.'
-  });
-}
-
-    const availableStylists = [];
-
-    for (const stylist of stylists) {
-      const bookedSlots = await Appointment.find({
-        stylistId: stylist._id, date: bookingDate, status: { $nin: ['cancelled', 'no_show'] }
-      }).select('startTime totalDuration');
-      const availableSlots = findAvailableSlots({
-        appointments: bookedSlots,
-        daySchedule,
-        slotInterval,
-        requiredDuration
-      });
-
-      if (availableSlots.length > 0) {
-        availableStylists.push({
-          stylist: {
-            id: stylist._id,
-            name: stylist.userId ? stylist.userId.firstName + ' ' + stylist.userId.lastName : 'Stylist',
-            specialties: stylist.specialties,
-            rating: stylist.rating
-          },
-          availableSlots
-        });
-      }
-    }
+    const availableSlots = findAvailableSlots({
+      appointments: bookedSlots,
+      daySchedule,
+      slotInterval,
+      requiredDuration
+    });
 
     return successResponse(res, 'Available slots retrieved.', {
-      date, businessHours: { start: daySchedule.start, end: daySchedule.end },
-      slotInterval, stylists: availableStylists,
-      requiredDuration: requiredDuration || null, serviceCount: serviceIdArray.length || 0
+      date,
+      stylist: {
+        id: stylist._id,
+        name: stylist.userId ? 
+          `${stylist.userId.firstName} ${stylist.userId.lastName}` : 
+          'Stylist',
+        specialties: stylist.specialties,
+        rating: stylist.rating
+      },
+      businessHours: { start: daySchedule.start, end: daySchedule.end },
+      slotInterval,
+      availableSlots,
+      totalAvailable: availableSlots.length,
+      requiredDuration: requiredDuration || null,
+      serviceCount: serviceIdArray.length || 0
     });
   } catch (error) {
     logger.error('Get available slots error:', error);
@@ -177,6 +219,10 @@ if (!stylist.userId?.isActive || !stylist.isAvailable) {
   }
 };
 
+/**
+ * Get time slots for a specific stylist and date
+ * Query: { stylistId, date, serviceIds?, excludeAppointmentId? }
+ */
 const getTimeSlotsForDate = async (req, res) => {
   try {
     const { stylistId, date, serviceIds, excludeAppointmentId } = req.query;
@@ -191,22 +237,20 @@ const getTimeSlotsForDate = async (req, res) => {
     }
 
     const stylist = await Stylist.findById(stylistId)
-  .populate('userId', 'isActive');
+      .populate('userId', 'isActive');
+      
     if (!stylist) return errorResponse(res, 'Stylist not found.', 404);
-   if (!stylist) {
-  return errorResponse(res, 'Stylist not found.', 404);
-}
 
-if (!stylist.userId?.isActive || !stylist.isAvailable) {
-  return successResponse(res, 'Availability retrieved.', {
-    available: false,
-    availableSlots: [],
-    totalAvailable: 0,
-    message: !stylist.userId?.isActive
-      ? 'Stylist is disabled.'
-      : 'Stylist is not available.'
-  });
-}
+    if (!stylist.userId?.isActive || !stylist.isAvailable) {
+      return successResponse(res, 'Availability retrieved.', {
+        available: false,
+        availableSlots: [],
+        totalAvailable: 0,
+        message: !stylist.userId?.isActive
+          ? 'Stylist is disabled.'
+          : 'Stylist is not available.'
+      });
+    }
 
     if (serviceIdArray.length && (!Array.isArray(stylist.serviceIds) || !serviceIdArray.every(id => stylist.serviceIds.some(sid => String(sid) === String(id))))) {
       return successResponse(res, 'Time slots retrieved.', { date, availableSlots: [], totalAvailable: 0, message: 'Stylist does not provide all selected services.' });
@@ -234,7 +278,12 @@ if (!stylist.userId?.isActive || !stylist.isAvailable) {
     });
 
     return successResponse(res, 'Time slots retrieved.', {
-      date, stylist: { id: stylist._id, specialties: stylist.specialties },
+      date, 
+      stylist: { 
+        id: stylist._id, 
+        name: stylist.userId ? `${stylist.userId.firstName} ${stylist.userId.lastName}` : 'Stylist',
+        specialties: stylist.specialties 
+      },
       businessHours: { start: daySchedule.start, end: daySchedule.end },
       slotInterval, availableSlots, totalAvailable: availableSlots.length,
       requiredDuration: requiredDuration || null, serviceCount: serviceIdArray.length || 0

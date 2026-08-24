@@ -39,14 +39,12 @@ const getBookingTrends = async (req, res) => {
       { $group: { _id: '$status', count: { $sum: 1 } } }
     ]);
 
-    // Busiest days of the week (1 = Sunday ... 7 = Saturday)
     const bookingsByDay = await Appointment.aggregate([
       { $match: filter },
       { $group: { _id: { $dayOfWeek: '$date' }, count: { $sum: 1 } } },
       { $sort: { _id: 1 } }
     ]);
 
-    // Busiest hours of the day, parsed from the "HH:MM" startTime string
     const bookingsByHour = await Appointment.aggregate([
       { $match: filter },
       {
@@ -122,6 +120,8 @@ const getServicePopularity = async (req, res) => {
 /**
  * Get stylist performance: appointments assigned (any status), completed, and rating.
  * Query: { startDate?, endDate? }
+ * 
+ * ✅ FIXED: Uses stylist's stored rating from the model instead of calculating from feedback
  */
 const getStylistPerformance = async (req, res) => {
   try {
@@ -132,7 +132,7 @@ const getStylistPerformance = async (req, res) => {
     // newly-created stylists appear in reports immediately, even when they
     // have zero bookings yet.
     const stylists = await Stylist.find({})
-      .populate('userId', 'firstName lastName email phone')
+      .populate('userId', 'firstName lastName email phone isActive')
       .sort({ createdAt: 1 });
 
     const assignedStats = await Appointment.aggregate([
@@ -146,47 +146,20 @@ const getStylistPerformance = async (req, res) => {
     ]);
 
     const completedStats = await Appointment.aggregate([
-  {
-    $match: {
-      ...dateFilter,
-      status: APPOINTMENT_STATUS.COMPLETED
-    }
-  },
-  {
-    $group: {
-      _id: '$stylistId',
-      completedBookings: { $sum: 1 },
-      totalRevenue: { $sum: '$totalPrice' }
-    }
-  }
-]);
-
-
-const ratingStats = await Appointment.aggregate([
-  {
-    $match: {
-      ...dateFilter,
-      status: APPOINTMENT_STATUS.COMPLETED,
-      'feedback.rating': {
-        $gte: 1,
-        $lte: 5
+      {
+        $match: {
+          ...dateFilter,
+          status: APPOINTMENT_STATUS.COMPLETED
+        }
+      },
+      {
+        $group: {
+          _id: '$stylistId',
+          completedBookings: { $sum: 1 },
+          totalRevenue: { $sum: '$totalPrice' }
+        }
       }
-    }
-  },
-  {
-    $group: {
-      _id: '$stylistId',
-      averageRating: { $avg: '$feedback.rating' },
-      ratingCount: { $sum: 1 }
-    }
-  }
-]);
-
-const ratingMap = new Map(
-  ratingStats
-    .filter(s => s._id)
-    .map(s => [String(s._id), s])
-);
+    ]);
 
     const assignedMap = new Map(
       assignedStats
@@ -200,31 +173,28 @@ const ratingMap = new Map(
         .map(s => [String(s._id), s])
     );
 
-    // Also handle legacy/orphaned appointment references gracefully. If an
-    // appointment points to a stylist profile that no longer exists, do not
-    // crash the report; expose it separately as an unknown assignment.
+    // Also handle legacy/orphaned appointment references gracefully.
     const knownStylistIds = new Set(stylists.map(s => String(s._id)));
 
     const result = stylists.map(stylist => {
       const key = String(stylist._id);
-	const rating = ratingMap.get(key);
       const assigned = assignedMap.get(key);
       const completed = completedMap.get(key);
       const firstName = stylist.userId?.firstName || '';
       const lastName = stylist.userId?.lastName || '';
       const fullName = `${firstName} ${lastName}`.trim();
 
+      // ✅ CRITICAL FIX: Use the stylist's stored rating from the model
+      // This reflects ratings added via admin dashboard "Complete" action
       return {
         stylistId: stylist._id,
         stylistName: fullName || stylist.userId?.email || 'Stylist',
         totalAssigned: assigned?.totalAssigned || 0,
         completedBookings: completed?.completedBookings || 0,
         totalRevenue: completed?.totalRevenue || 0,
-        rating: rating?.averageRating
-  ? Number(rating.averageRating.toFixed(1))
-  : 0,
-
-ratingCount: rating?.ratingCount || 0
+        // ✅ Use stored rating from stylist model
+        rating: Number(stylist.rating || 0),
+        ratingCount: Number(stylist.ratingCount || 0)
       };
     });
 
@@ -234,11 +204,12 @@ ratingCount: rating?.ratingCount || 0
         const completed = completedMap.get(String(stat._id));
         return {
           stylistId: stat._id,
-          stylistName: 'Unknown',
+          stylistName: 'Unknown (Deleted)',
           totalAssigned: stat.totalAssigned,
           completedBookings: completed?.completedBookings || 0,
           totalRevenue: completed?.totalRevenue || 0,
-          rating: 0
+          rating: 0,
+          ratingCount: 0
         };
       });
 
@@ -318,7 +289,7 @@ const getDashboardStats = async (req, res) => {
     const recentBookings = await Appointment.find()
       .populate('customerId', 'firstName lastName')
       .populate('serviceIds', 'name')
-      .populate({ path: 'stylistId', select: 'userId', populate: { path: 'userId', select: 'firstName lastName' } })
+      .populate({ path: 'stylistId', select: 'userId', populate: { path: 'userId', select: 'firstName lastName isActive' } })
       .sort({ createdAt: -1 })
       .limit(5);
 

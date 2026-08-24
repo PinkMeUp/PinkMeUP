@@ -35,7 +35,7 @@ const createStylist = async (req, res) => {
     if (existing) return errorResponse(res, 'Stylist profile already exists.', 409);
 
     const stylist = await Stylist.create({ userId, specialties, serviceIds: serviceIds || [] });
-    const populated = await Stylist.findById(stylist._id).populate('userId', 'firstName lastName email phone');
+    const populated = await Stylist.findById(stylist._id).populate('userId', 'firstName lastName email phone isActive');
 
     return successResponse(res, 'Stylist created.', populated, 201);
   } catch (error) {
@@ -57,10 +57,7 @@ const getStylists = async (req, res) => {
     const { page: pageNum, limit: limitNum } = parsePageLimit(page, limit);
     const skip = (pageNum - 1) * limitNum;
     const stylists = await Stylist.find(filter)
-      .populate(
-  'userId',
-  'firstName lastName email phone isActive'
-)
+      .populate('userId', 'firstName lastName email phone isActive')
       .skip(skip)
       .limit(limitNum)
       .sort({ rating: -1 });
@@ -78,11 +75,8 @@ const getStylists = async (req, res) => {
 
 const getStylistById = async (req, res) => {
   try {
-   const stylist = await Stylist.findById(req.params.id)
-  .populate(
-    'userId',
-    'firstName lastName email phone isActive'
-  );
+    const stylist = await Stylist.findById(req.params.id)
+      .populate('userId', 'firstName lastName email phone isActive');
     if (!stylist) return errorResponse(res, 'Stylist not found.', 404);
     return successResponse(res, 'Stylist retrieved.', stylist);
   } catch (error) {
@@ -91,6 +85,10 @@ const getStylistById = async (req, res) => {
   }
 };
 
+/**
+ * Update stylist with proper status handling
+ * Status values: 'active', 'inactive', 'disabled'
+ */
 const updateStylist = async (req, res) => {
   try {
     const { id } = req.params;
@@ -99,24 +97,48 @@ const updateStylist = async (req, res) => {
     const stylist = await Stylist.findById(id);
     if (!stylist) return errorResponse(res, 'Stylist not found.', 404);
 
+    // Update basic fields
     if (specialties) stylist.specialties = specialties;
     if (serviceIds) stylist.serviceIds = serviceIds;
-    if (isAvailable !== undefined) stylist.isAvailable = isAvailable;
     if (rating !== undefined) stylist.rating = rating;
 
+    // Handle status changes properly
     if (status !== undefined) {
       const validStatuses = ['active', 'inactive', 'disabled'];
       if (!validStatuses.includes(status)) {
         return errorResponse(res, 'Status must be active, inactive, or disabled.', 400);
       }
-      stylist.isAvailable = status === 'active';
-      await User.findByIdAndUpdate(stylist.userId, { isActive: status !== 'disabled' });
+
+      // Map status to isAvailable and user isActive
+      switch (status) {
+        case 'active':
+          stylist.isAvailable = true;
+          await User.findByIdAndUpdate(stylist.userId, { isActive: true });
+          break;
+        case 'inactive':
+          stylist.isAvailable = false;
+          // User remains active but stylist is temporarily unavailable
+          await User.findByIdAndUpdate(stylist.userId, { isActive: true });
+          break;
+        case 'disabled':
+          stylist.isAvailable = false;
+          await User.findByIdAndUpdate(stylist.userId, { isActive: false });
+          break;
+        default:
+          return errorResponse(res, 'Invalid status value.', 400);
+      }
+    } else if (isAvailable !== undefined) {
+      // Legacy support for isAvailable boolean
+      stylist.isAvailable = isAvailable;
     }
 
     await stylist.save();
 
-    const updated = await Stylist.findById(id).populate('userId', 'firstName lastName email phone isActive');
-    return successResponse(res, 'Stylist updated.', updated);
+    // Populate and return the updated stylist
+    const updated = await Stylist.findById(id)
+      .populate('userId', 'firstName lastName email phone isActive');
+
+    return successResponse(res, 'Stylist updated successfully.', updated);
   } catch (error) {
     logger.error('Update stylist error:', error);
     return errorResponse(res, 'Failed to update stylist.', 500);
@@ -140,19 +162,21 @@ const getStylistAvailability = async (req, res) => {
     const stylist = await Stylist.findById(req.params.id);
     if (!stylist) return errorResponse(res, 'Stylist not found.', 404);
 
-   const user = await User.findById(stylist.userId).select('isActive');
+    const user = await User.findById(stylist.userId).select('isActive');
 
-const status = !user?.isActive
-  ? 'disabled'
-  : stylist.isAvailable
-    ? 'active'
-    : 'inactive';
+    const status = !user?.isActive
+      ? 'disabled'
+      : stylist.isAvailable
+        ? 'active'
+        : 'inactive';
 
-return successResponse(res, 'Stylist availability retrieved.', {
-  available: status === 'active',
-  status,
-  specialties: stylist.specialties
-});
+    return successResponse(res, 'Stylist availability retrieved.', {
+      available: status === 'active',
+      status,
+      specialties: stylist.specialties,
+      rating: stylist.rating,
+      ratingCount: stylist.ratingCount
+    });
   } catch (error) {
     logger.error('Get availability error:', error);
     return errorResponse(res, 'Failed to retrieve availability.', 500);
@@ -198,7 +222,7 @@ const createStylistByAdmin = async (req, res) => {
     });
 
     const populated = await Stylist.findById(stylist._id)
-      .populate('userId', 'firstName lastName email phone');
+      .populate('userId', 'firstName lastName email phone isActive');
 
     return successResponse(res, 'Stylist created successfully.', populated, 201);
   } catch (error) {
