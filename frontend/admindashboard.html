@@ -1,575 +1,1217 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-  <title>PinkMeUp | Admin Panel</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;400;500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>PinkMeUp · Admin Panel</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
   <style>
-    * { margin:0; padding:0; box-sizing:border-box; }
-    body { background:#f6f2f4; font-family:'Inter',sans-serif; height:100vh; overflow:hidden; }
-    .app { display:flex; flex-direction:column; height:100vh; width:100%; }
+    /* ----- ROOT — matching customer dashboard ----- */
+    :root {
+      --rose: #D43F6B;
+      --rose-light: #FFB6C1;
+      --rose-pale: #FFF0F5;
+      --rose-mid: #F5C6D8;
+      --ink: #1a1a1a;
+      --muted: #2c2c2c;
+      --border: #ddd;
+      --bg: #ffffff;
+      --white: #FFFFFF;
+      --success: #2C8F6E;
+      --warning: #E07B39;
+      --danger: #DC2626;
+    }
 
-    /* ===== HEADER ===== */
-    .main-header {
-      background:white;
-      border-bottom:1px solid #e4d7de;
-      padding:0.8rem 1rem;
-      display:flex;
-      justify-content:space-between;
-      align-items:center;
-      flex-wrap:wrap;
-      gap:0.5rem;
-      flex-shrink:0;
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--bg);
+      color: var(--ink);
+      height: 100vh;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
     }
-    .header-brand h1 {
-      font-family:'Playfair Display',serif;
-      font-size:1.2rem;
-      font-weight:700;
-      background:linear-gradient(135deg,#D43F6B,#FF7CA6);
-      -webkit-background-clip:text;
-      background-clip:text;
-      color:transparent;
+
+    /* ----- HEADER — matching customer dashboard ----- */
+    .header {
+      background: var(--white);
+      border-bottom: 1px solid var(--border);
+      padding: 1rem 1.5rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-shrink: 0;
+      gap: 0.8rem;
+      flex-wrap: wrap;
     }
-    .header-brand p { font-size:0.6rem; color:#b48aa0; }
+
+    .brand {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 0.1rem;
+    }
+
+    .brand-top {
+      display: flex;
+      align-items: baseline;
+      gap: 0.5rem;
+    }
+
+    .brand-name {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.8rem;
+      font-weight: 700;
+      background: linear-gradient(135deg, var(--rose), var(--rose-light));
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      line-height: 1;
+    }
+
+    .brand-slogan {
+      font-size: 0.7rem;
+      font-weight: 400;
+      letter-spacing: 1.2px;
+      color: #000000;
+      margin-top: 0.05rem;
+    }
+
+    .header-right {
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+    }
+
+    .user-pill {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      background: var(--rose-pale);
+      padding: 0.4rem 1rem 0.4rem 0.6rem;
+      border-radius: 2rem;
+    }
+
+    .avatar {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: var(--rose);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 0.8rem;
+      font-weight: 600;
+    }
+
+    .user-name {
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: var(--ink);
+    }
+
     .signout-btn {
-      background:white;
-      border:1.5px solid #D43F6B;
-      padding:0.35rem 1rem;
-      border-radius:2rem;
-      font-weight:600;
-      color:#D43F6B;
-      cursor:pointer;
-      transition:0.2s;
-      font-size:0.75rem;
-      white-space:nowrap;
-    }
-    .signout-btn:hover { background:#fef0f5; }
-
-    /* ===== LAYOUT ===== */
-    .dashboard-layout {
-      display:flex;
-      flex:1;
-      overflow:hidden;
+      background: transparent;
+      border: 1.5px solid var(--border);
+      padding: 0.4rem 1rem;
+      border-radius: 2rem;
+      font-size: 0.85rem;
+      font-weight: 500;
+      color: var(--ink);
+      cursor: pointer;
+      transition: 0.2s;
+      font-family: inherit;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
     }
 
-    /* ===== SIDEBAR ===== */
-    .sidebar {
-      width:240px;
-      background:#fff;
-      border-right:1px solid #e4d7de;
-      display:flex;
-      flex-direction:column;
-      flex-shrink:0;
-      overflow-y:auto;
-      transition:transform 0.3s ease;
+    .signout-btn i {
+      font-size: 0.7rem;
+      color: var(--muted);
     }
-    .nav { padding:1.2rem 0.8rem; display:flex; flex-direction:column; gap:0.3rem; flex:1; }
-    .nav-item {
-      display:flex;
-      align-items:center;
-      gap:0.8rem;
-      padding:0.6rem 0.8rem;
-      border-radius:0.6rem;
-      color:#6e4e5e;
-      font-weight:500;
-      cursor:pointer;
-      transition:0.2s;
-      font-size:0.85rem;
-    }
-    .nav-item i { width:20px; font-size:0.9rem; color:#c47b99; }
-    .nav-item.active { background:#fef0f5; color:#C43A6B; }
-    .nav-item.active i { color:#D43F6B; }
-    .nav-item:hover:not(.active) { background:#faf5f8; }
-    .sidebar-footer {
-      padding:0.8rem 0.8rem 1rem;
-      border-top:1px solid #e4d7de;
-      font-size:0.7rem;
-    }
-    .support-line { margin-bottom:0.3rem; display:flex; align-items:center; gap:0.5rem; }
-    .support-line i { width:18px; color:#D43F6B; font-size:0.8rem; }
-    .support-label { font-weight:700; }
-    .support-line a { color:#6e4e5e; text-decoration:none; }
-    .support-line a:hover { text-decoration:underline; }
 
-    /* ===== MAIN CONTENT ===== */
-    .main {
-      flex:1;
-      overflow-y:auto;
-      padding:1.2rem;
-      background:#fefbfd;
-      min-width:0;
-    }
-    .view { display:none; animation:fadeIn 0.2s ease; }
-    .view.active { display:block; }
-    @keyframes fadeIn { from{opacity:0;transform:translateY(5px);} to{opacity:1;transform:translateY(0);} }
+    .signout-btn:hover { border-color: var(--rose); color: var(--rose); }
+    .signout-btn:hover i { color: var(--rose); }
 
-    .section-title {
-      font-size:1.3rem;
-      font-weight:700;
-      color:#2c1a23;
-      margin-bottom:0.6rem;
-      display:inline-block;
-      position:relative;
-    }
-    .section-title::after {
-      content:'';
-      position:absolute;
-      bottom:-4px;
-      left:0;
-      width:40px;
-      height:2px;
-      background:#D43F6B;
-      border-radius:2px;
-    }
-    .info-prompt {
-      font-size:0.7rem;
-      color:#b48aa0;
-      display:flex;
-      align-items:center;
-      gap:0.3rem;
-      margin:0.2rem 0 0.8rem;
-      flex-wrap:wrap;
-    }
-    .btn-primary {
-      background:#D43F6B;
-      border:none;
-      color:white;
-      padding:0.5rem 1.2rem;
-      border-radius:2rem;
-      font-weight:600;
-      cursor:pointer;
-      transition:0.2s;
-      display:inline-flex;
-      align-items:center;
-      gap:0.5rem;
-      font-size:0.85rem;
-    }
-    .btn-primary:hover { background:#b73b5e; }
-    .btn-outline {
-      background:transparent;
-      border:1px solid #D43F6B;
-      color:#D43F6B;
-      padding:0.35rem 0.7rem;
-      border-radius:2rem;
-      cursor:pointer;
-      font-size:0.8rem;
-    }
-    .btn-danger {
-      background:#dc3545;
-      border:none;
-      color:white;
-      padding:0.35rem 0.7rem;
-      border-radius:2rem;
-      cursor:pointer;
-      font-size:0.8rem;
-    }
-    .btn-danger:hover { background:#b02a37; }
-    .btn-sm { padding:0.25rem 0.6rem; font-size:0.7rem; }
-
-    /* ===== CARDS ===== */
-    .card {
-      background:white;
-      border-radius:1rem;
-      border:1px solid #e4d7de;
-      padding:0.8rem;
-      margin-top:0.8rem;
-      overflow-x:auto;
-    }
-    .category-group { margin-bottom:1rem; }
-    .category-header {
-      font-weight:700;
-      font-size:0.9rem;
-      color:#C43A6B;
-      padding:0.2rem 0;
-      margin-bottom:0.4rem;
-      border-left:3px solid #FF9FBB;
-      padding-left:0.5rem;
-    }
-    .service-row {
-      display:flex;
-      justify-content:space-between;
-      align-items:center;
-      padding:0.4rem 0;
-      border-bottom:1px solid #ede3e8;
-      flex-wrap:wrap;
-      gap:0.3rem;
-    }
-    .service-info { display:flex; flex-wrap:wrap; gap:0.4rem; align-items:center; flex:1; }
-    .service-name { font-weight:500; font-size:0.85rem; }
-    .service-duration { font-size:0.65rem; color:#8e6b7c; }
-    .service-price { font-weight:600; color:#6e4e5e; min-width:60px; text-align:right; font-size:0.85rem; }
-    .service-actions { display:flex; gap:0.3rem; }
-    .service-actions button { background:none; border:none; cursor:pointer; color:#b48aa0; padding:0.2rem; }
-    .service-actions button:hover { color:#D43F6B; }
-
-    /* ===== STYLIST GRID ===== */
-    .stylist-grid {
-      display:grid;
-      grid-template-columns:repeat(auto-fill, minmax(280px,1fr));
-      gap:0.8rem;
-      margin-top:0.8rem;
-    }
-    .stylist-card {
-      background:white;
-      border:1px solid #e4d7de;
-      border-radius:1rem;
-      padding:1rem;
-      transition:0.2s;
-    }
-    .stylist-card:hover { box-shadow:0 4px 12px rgba(0,0,0,0.05); }
-    .stylist-card h4 { margin-bottom:0.2rem; color:#2c1a23; font-size:0.95rem; }
-    .stylist-card .contact { font-size:0.7rem; color:#6e4e5e; margin-bottom:0.4rem; word-break:break-all; }
-    .stylist-card .service-chips { display:flex; flex-wrap:wrap; gap:0.2rem; margin-top:0.3rem; }
-    .stylist-card .chip {
-      background:#fef0f5;
-      color:#D43F6B;
-      padding:0.1rem 0.5rem;
-      border-radius:1rem;
-      font-size:0.6rem;
-      font-weight:500;
-    }
-    .stylist-card .actions { margin-top:0.6rem; display:flex; gap:0.4rem; flex-wrap:wrap; }
-
-    /* ===== FILTERS & REPORTS ===== */
-    .filter-bar {
-      display:flex;
-      gap:0.6rem;
-      flex-wrap:wrap;
-      align-items:center;
-      background:white;
-      padding:0.6rem 1rem;
-      border-radius:1rem;
-      border:1px solid #e4d7de;
-      margin-bottom:1rem;
-    }
-    .filter-bar select,
-    .filter-bar input {
-      padding:0.35rem 0.7rem;
-      border-radius:2rem;
-      border:1px solid #e4d7de;
-      background:white;
-      font-size:0.8rem;
-    }
-    .filter-bar .btn-outline { padding:0.35rem 1rem; }
-
-    .stats-row {
-      display:grid;
-      grid-template-columns:repeat(auto-fit, minmax(300px,1fr));
-      gap:1rem;
-      margin-bottom:1.2rem;
-    }
-    .analytics-card {
-      background:white;
-      border-radius:1rem;
-      padding:1rem;
-      border:1px solid #e4d7de;
-      overflow-x:auto;
-    }
-    .analytics-card h3 { font-size:0.95rem; margin-bottom:0.2rem; }
-    .analytics-card p { font-size:0.75rem; color:#8e6b7c; }
-    .chart-container { max-height:200px; margin-top:0.8rem; }
-    .custom-legend { margin-top:0.8rem; display:flex; flex-direction:column; gap:0.3rem; }
-    .legend-item { display:flex; align-items:center; gap:0.4rem; font-size:0.7rem; }
-    .legend-color { width:12px; height:12px; border-radius:2px; flex-shrink:0; }
-
-    .metric-list-single { display:flex; flex-direction:column; gap:0.3rem; margin-top:0.3rem; }
-    .metric-item {
-      display:flex;
-      justify-content:space-between;
-      align-items:center;
-      padding:0.3rem 0;
-      font-size:0.8rem;
-      border-bottom:1px solid #ede3e8;
-      flex-wrap:wrap;
-      gap:0.3rem;
-    }
-    .metric-item span:first-child { color:#5e3e4c; font-weight:500; }
-    .metric-item strong { color:#2c1a23; font-weight:700; }
-
-    .stylist-table { width:100%; border-collapse:collapse; margin-top:0.5rem; min-width:200px; font-size:0.8rem; }
-    .stylist-table th, .stylist-table td { padding:0.3rem 0.4rem; text-align:left; border-bottom:1px solid #ede3e8; }
-    .stylist-table th { color:#a55375; font-weight:600; }
-    .rec-heading { font-weight:700; color:#C43A6B; margin:0.5rem 0 0.1rem; font-size:0.8rem; }
-    .rec-text { font-size:0.75rem; color:#2c1a23; padding-left:0.3rem; border-left:2px solid #FF9FBB; margin-bottom:0.3rem; }
-    hr.divider { margin:0.5rem 0; border:none; height:1px; background:#ede3e8; }
-
-    /* ===== BOOKING STATUS BADGES ===== */
-    .badge { padding:0.15rem 0.5rem; border-radius:1rem; font-size:0.65rem; font-weight:600; text-transform:capitalize; display:inline-block; }
-    .badge-completed { background:#E6F7F2; color:#1a8f6f; }
-    .badge-confirmed { background:#E8F0FE; color:#2563EB; }
-    .badge-pending   { background:#FFF7E0; color:#B7791F; }
-    .badge-cancelled { background:#FDE8E8; color:#C53030; }
-    .badge-no_show   { background:#F3E8FF; color:#7C3AED; }
-
-    /* ===== MODALS ===== */
-    .modal {
-      display:none;
-      position:fixed;
-      top:0;
-      left:0;
-      width:100%;
-      height:100%;
-      background:rgba(0,0,0,0.4);
-      backdrop-filter:blur(2px);
-      align-items:center;
-      justify-content:center;
-      z-index:1000;
-      padding:1rem;
-    }
-    .modal.active { display:flex; }
-    .modal-content {
-      background:white;
-      border-radius:1.2rem;
-      width:500px;
-      max-width:100%;
-      padding:1.2rem;
-      max-height:90vh;
-      overflow-y:auto;
-    }
-    .modal-content input,
-    .modal-content select {
-      width:100%;
-      padding:0.5rem;
-      margin:0.3rem 0 0.8rem;
-      border:1px solid #e4d7de;
-      border-radius:0.6rem;
-      font-size:0.9rem;
-    }
-    .modal-content select[multiple] { height:100px; }
-    .modal-content label { font-weight:600; font-size:0.8rem; color:#3d2a33; }
-    .modal-footer { display:flex; gap:0.8rem; justify-content:flex-end; margin-top:0.5rem; flex-wrap:wrap; }
-
-    /* ===== MOBILE MENU TOGGLE ===== */
+    /* ----- MENU TOGGLE — matching customer dashboard ----- */
     .menu-toggle {
-      display:none;
-      background:none;
-      border:none;
-      font-size:1.3rem;
-      color:#D43F6B;
-      cursor:pointer;
-      padding:0.3rem;
+      display: none;
+      background: none;
+      border: none;
+      font-size: 1.6rem;
+      color: var(--ink);
+      cursor: pointer;
+      padding: 0.2rem;
     }
 
-    /* ===== LOADING OVERLAY ===== */
-    #loadingOverlay {
-      display:none;
-      position:fixed;
-      inset:0;
-      background:rgba(255,255,255,0.75);
-      backdrop-filter:blur(2px);
-      z-index:9999;
-      align-items:center;
-      justify-content:center;
-      flex-direction:column;
-      gap:0.8rem;
-    }
-    .spinner {
-      width:42px; height:42px;
-      border:4px solid #f3d6e0;
-      border-top-color:#D43F6B;
-      border-radius:50%;
-      animation:spin 0.8s linear infinite;
-    }
-    @keyframes spin { to { transform: rotate(360deg); } }
-    #loadingOverlayText { font-size:0.85rem; color:#7a3c53; font-weight:600; }
-
-    /* ===== RESPONSIVE ===== */
-    @media (max-width: 768px) {
-      .menu-toggle { display:block; }
-      .sidebar {
-        position:fixed;
-        top:0;
-        left:0;
-        width:280px;
-        height:100vh;
-        z-index:999;
-        transform:translateX(-100%);
-        box-shadow:2px 0 12px rgba(0,0,0,0.1);
-      }
-      .sidebar.open { transform:translateX(0); }
-
-      .main { padding:0.8rem; }
-      .section-title { font-size:1.1rem; }
-      .stats-row { grid-template-columns:1fr; }
-      .stylist-grid { grid-template-columns:1fr; }
-
-      .filter-bar { flex-direction:column; align-items:stretch; }
-      .filter-bar > * { width:100%; }
-
-      .header-brand h1 { font-size:1rem; }
-      .header-brand p { display:none; }
-
-      .service-row { flex-direction:column; align-items:flex-start; }
-      .service-price { text-align:left; width:100%; }
-      .service-actions { width:100%; justify-content:flex-end; }
-
-      .modal-content { padding:1rem; margin:0.5rem; }
-
-      .sidebar-close {
-        display:block;
-        background:none;
-        border:none;
-        font-size:1.2rem;
-        color:#6e4e5e;
-        cursor:pointer;
-        padding:0.5rem 0.8rem;
-        text-align:right;
-      }
-      .sidebar-close i { font-size:1.2rem; }
-    }
-
-    @media (max-width: 480px) {
-      .main-header { padding:0.5rem 0.8rem; }
-      .signout-btn { font-size:0.65rem; padding:0.3rem 0.8rem; }
-      .btn-primary { font-size:0.75rem; padding:0.4rem 1rem; }
-      .stylist-card { padding:0.8rem; }
-      .analytics-card { padding:0.8rem; }
-      .card { padding:0.6rem; }
-      .modal-content { padding:0.8rem; }
-      .metric-item { font-size:0.7rem; }
-      .stylist-table { font-size:0.7rem; }
-    }
-
-    .sidebar-close { display:none; }
-    @media (max-width: 768px) {
-      .sidebar-close { display:block; }
+    .sidebar-close {
+      display: none;
+      background: none;
+      border: none;
+      font-size: 1.4rem;
+      color: var(--ink);
+      cursor: pointer;
+      padding: 0.8rem 1.5rem;
+      text-align: right;
+      width: 100%;
     }
 
     .sidebar-overlay {
-      display:none;
-      position:fixed;
-      top:0;
-      left:0;
-      width:100%;
-      height:100%;
-      background:rgba(0,0,0,0.3);
-      z-index:998;
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.3);
+      z-index: 998;
     }
-    .sidebar-overlay.active { display:block; }
+
+    .sidebar-overlay.active { display: block; }
+
+    /* ----- APP LAYOUT ----- */
+    .app {
+      display: flex;
+      flex: 1;
+      overflow: hidden;
+    }
+
+    /* ----- SIDEBAR — matching customer dashboard ----- */
+    .sidebar {
+      width: 250px;
+      background: var(--white);
+      border-right: 1px solid var(--border);
+      display: flex;
+      flex-direction: column;
+      flex-shrink: 0;
+      transition: transform 0.3s ease;
+      z-index: 999;
+      padding: 1.2rem 0.8rem 1rem;
+    }
+
+    .sidebar-greeting {
+      padding: 0.5rem 0.8rem 1.2rem 0.8rem;
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 0.8rem;
+    }
+
+    .greeting-name {
+      font-size: 1.2rem;
+      font-weight: 400;
+      color: var(--ink);
+    }
+
+    .greeting-sub {
+      font-size: 0.9rem;
+      font-weight: 300;
+      color: var(--muted);
+      margin-top: 0.1rem;
+    }
+
+    .nav {
+      padding: 0.2rem 0;
+      display: flex;
+      flex-direction: column;
+      gap: 0.2rem;
+      flex: 1;
+    }
+
+    .nav-item {
+      display: flex;
+      align-items: center;
+      gap: 0.9rem;
+      padding: 0.6rem 1rem;
+      border-radius: 0.8rem;
+      font-size: 0.95rem;
+      font-weight: 300;
+      color: var(--ink);
+      cursor: pointer;
+      transition: 0.18s;
+    }
+
+    .nav-item i {
+      width: 24px;
+      font-size: 1rem;
+      color: var(--ink);
+      font-weight: 300;
+      opacity: 0.8;
+    }
+
+    .nav-item.active {
+      background: var(--rose-pale);
+      color: var(--ink);
+    }
+
+    .nav-item.active i {
+      color: var(--rose);
+      opacity: 1;
+    }
+
+    .nav-item:hover:not(.active) {
+      background: #f5f5f5;
+    }
+
+    .nav-item.signout-nav {
+      margin-top: 0.1rem;
+      border-top: none;
+      border-radius: 0.8rem;
+      padding: 0.6rem 1rem;
+      font-weight: 300;
+      display: flex;
+      align-items: center;
+      gap: 0.9rem;
+    }
+
+    .nav-item.signout-nav i {
+      color: var(--ink);
+      opacity: 0.8;
+      font-size: 0.8rem;
+    }
+
+    .nav-item.signout-nav:hover {
+      background: #f5f5f5;
+    }
+
+    /* ----- SIDEBAR FOOTER — with Hours + IT Support (no emojis) ----- */
+    .sidebar-footer {
+      padding: 1rem 0.8rem 0.2rem;
+      border-top: 1px solid var(--border);
+      font-size: 0.9rem;
+      font-weight: 300;
+      color: var(--ink);
+    }
+
+    .sidebar-footer p {
+      margin-bottom: 0.3rem;
+    }
+
+    .sidebar-footer strong {
+      color: var(--rose);
+      font-weight: 400;
+    }
+
+    .sidebar-footer .support-line {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.85rem;
+      color: var(--ink);
+    }
+
+    .sidebar-footer .support-line i {
+      width: 18px;
+      color: var(--rose);
+      font-size: 0.8rem;
+    }
+
+    /* ----- MAIN ----- */
+    .main {
+      flex: 1;
+      overflow-y: auto;
+      padding: 1.8rem 2rem;
+      background: var(--bg);
+      min-width: 0;
+    }
+
+    .view {
+      display: none;
+      animation: fadeIn 0.22s ease;
+    }
+
+    .view.active {
+      display: block;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(6px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .view-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      flex-wrap: wrap;
+      gap: 0.8rem;
+      margin-bottom: 1.8rem;
+    }
+
+    .section-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 2rem;
+      font-weight: 600;
+      color: var(--ink);
+    }
+
+    .section-sub {
+      font-size: 0.95rem;
+      color: var(--muted);
+      margin-top: 0.1rem;
+    }
+
+    /* ----- BUTTONS — matching customer dashboard ----- */
+    .btn-primary {
+      background: var(--rose);
+      border: none;
+      color: white;
+      padding: 0.6rem 1.6rem;
+      border-radius: 2rem;
+      font-weight: 600;
+      font-size: 0.9rem;
+      cursor: pointer;
+      transition: 0.2s;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      font-family: inherit;
+      white-space: nowrap;
+    }
+
+    .btn-primary:hover {
+      background: #b83b5e;
+      transform: translateY(-1px);
+    }
+
+    .btn-outline {
+      background: transparent;
+      border: 1.5px solid var(--border);
+      color: var(--ink);
+      padding: 0.5rem 1.2rem;
+      border-radius: 2rem;
+      font-size: 0.85rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: 0.2s;
+      font-family: inherit;
+    }
+
+    .btn-outline:hover {
+      border-color: var(--rose);
+      color: var(--rose);
+    }
+
+    .btn-danger {
+      background: var(--danger);
+      border: none;
+      color: white;
+      padding: 0.35rem 0.9rem;
+      border-radius: 2rem;
+      font-size: 0.75rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: 0.2s;
+      font-family: inherit;
+    }
+
+    .btn-danger:hover {
+      background: #b91c1c;
+    }
+
+    .btn-sm {
+      padding: 0.25rem 0.6rem;
+      font-size: 0.7rem;
+    }
+
+    /* ----- CARDS — matching customer dashboard ----- */
+    .card {
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: 1.2rem;
+      overflow: hidden;
+    }
+
+    .card-head {
+      padding: 1rem 1.2rem;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+    }
+
+    .card-head-title {
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--ink);
+    }
+
+    .card-body {
+      padding: 1.2rem;
+      overflow-x: auto;
+    }
+
+    /* ----- TABLES — matching customer dashboard ----- */
+    .admin-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.9rem;
+    }
+
+    .admin-table th {
+      padding: 0.7rem 1rem;
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.4px;
+      text-transform: uppercase;
+      color: var(--ink);
+      background: #f9f9f9;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .admin-table td {
+      padding: 0.8rem 1rem;
+      border-bottom: 1px solid #eee;
+      vertical-align: middle;
+    }
+
+    .admin-table tr:last-child td {
+      border-bottom: none;
+    }
+
+    .admin-table tr:hover td {
+      background: #fafafa;
+    }
+
+    /* ----- BADGES — matching customer dashboard ----- */
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.2rem;
+      padding: 0.25rem 0.8rem;
+      border-radius: 2rem;
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.3px;
+      text-transform: capitalize;
+    }
+
+    .badge-completed {
+      background: #E6F7F2;
+      color: var(--success);
+    }
+
+    .badge-confirmed {
+      background: #E8F0FE;
+      color: #2563EB;
+    }
+
+    .badge-pending {
+      background: #FFF7E0;
+      color: #B7791F;
+    }
+
+    .badge-cancelled {
+      background: #FDE8E8;
+      color: var(--danger);
+    }
+
+    .badge-no_show {
+      background: #F3E8FF;
+      color: #7C3AED;
+    }
+
+    /* ----- SERVICE ROWS ----- */
+    .category-group {
+      margin-bottom: 1rem;
+    }
+
+    .category-header {
+      font-weight: 700;
+      font-size: 0.9rem;
+      color: var(--rose);
+      padding: 0.2rem 0;
+      margin-bottom: 0.4rem;
+      border-left: 3px solid var(--rose-light);
+      padding-left: 0.6rem;
+    }
+
+    .service-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0.5rem 0;
+      border-bottom: 1px solid #eee;
+      flex-wrap: wrap;
+      gap: 0.3rem;
+    }
+
+    .service-row:last-child {
+      border-bottom: none;
+    }
+
+    .service-info {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.4rem;
+      align-items: center;
+      flex: 1;
+    }
+
+    .service-name {
+      font-weight: 500;
+      font-size: 0.9rem;
+    }
+
+    .service-duration {
+      font-size: 0.75rem;
+      color: var(--muted);
+    }
+
+    .service-price {
+      font-weight: 600;
+      color: var(--ink);
+      min-width: 60px;
+      text-align: right;
+      font-size: 0.9rem;
+    }
+
+    .service-actions {
+      display: flex;
+      gap: 0.3rem;
+    }
+
+    .service-actions button {
+      background: none;
+      border: none;
+      cursor: pointer;
+      color: var(--muted);
+      padding: 0.2rem;
+      font-size: 0.9rem;
+      transition: 0.15s;
+    }
+
+    .service-actions button:hover {
+      color: var(--rose);
+    }
+
+    /* ----- STYLIST CARDS ----- */
+    .stylist-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 1rem;
+      margin-top: 0.8rem;
+    }
+
+    .stylist-card {
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: 1.2rem;
+      padding: 1.2rem;
+      transition: box-shadow 0.2s;
+    }
+
+    .stylist-card:hover {
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.05);
+    }
+
+    .stylist-card .stylist-name {
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--ink);
+      margin-bottom: 0.15rem;
+    }
+
+    .stylist-card .stylist-contact {
+      font-size: 0.8rem;
+      color: var(--muted);
+      margin-bottom: 0.5rem;
+    }
+
+    .stylist-card .stylist-contact i {
+      width: 18px;
+      margin-right: 0.2rem;
+      color: var(--rose);
+    }
+
+    .stylist-card .stylist-status {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.3rem;
+      font-size: 0.75rem;
+      font-weight: 600;
+      padding: 0.2rem 0.7rem;
+      border-radius: 2rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .stylist-card .stylist-status.active {
+      background: #E6F7F2;
+      color: var(--success);
+    }
+
+    .stylist-card .stylist-status.inactive {
+      background: #FEF3E8;
+      color: var(--warning);
+    }
+
+    .stylist-card .stylist-status.disabled {
+      background: #f5f5f5;
+      color: #888;
+    }
+
+    .stylist-card .stylist-rating {
+      font-size: 0.85rem;
+      color: var(--muted);
+    }
+
+    .stylist-card .stylist-rating strong {
+      color: var(--ink);
+    }
+
+    .stylist-card .service-chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.3rem;
+      margin: 0.5rem 0;
+    }
+
+    .stylist-card .chip {
+      background: var(--rose-pale);
+      color: var(--rose);
+      padding: 0.15rem 0.7rem;
+      border-radius: 2rem;
+      font-size: 0.7rem;
+      font-weight: 500;
+    }
+
+    .stylist-card .stylist-actions {
+      display: flex;
+      gap: 0.4rem;
+      margin-top: 0.6rem;
+      flex-wrap: wrap;
+    }
+
+    /* ----- FILTER BAR ----- */
+    .filter-bar {
+      display: flex;
+      gap: 0.8rem;
+      flex-wrap: wrap;
+      align-items: center;
+      background: var(--white);
+      padding: 0.8rem 1.2rem;
+      border-radius: 1.2rem;
+      border: 1px solid var(--border);
+      margin-bottom: 1.2rem;
+    }
+
+    .filter-bar label {
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--muted);
+    }
+
+    .filter-bar select,
+    .filter-bar input {
+      padding: 0.4rem 0.8rem;
+      border-radius: 2rem;
+      border: 1px solid var(--border);
+      background: var(--white);
+      font-size: 0.85rem;
+      font-family: inherit;
+      color: var(--ink);
+    }
+
+    .filter-bar select:focus,
+    .filter-bar input:focus {
+      outline: none;
+      border-color: var(--rose);
+    }
+
+    /* ----- ANALYTICS CARDS ----- */
+    .analytics-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+      gap: 1rem;
+      margin-bottom: 1.2rem;
+    }
+
+    .analytics-card {
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: 1.2rem;
+      padding: 1.2rem;
+    }
+
+    .analytics-card h3 {
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--ink);
+      margin-bottom: 0.1rem;
+    }
+
+    .analytics-card p {
+      font-size: 0.85rem;
+      color: var(--muted);
+      margin-bottom: 0.8rem;
+    }
+
+    .chart-container {
+      max-height: 220px;
+      margin-bottom: 0.8rem;
+    }
+
+    .peak-hours {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.4rem;
+      margin-top: 0.4rem;
+    }
+
+    .peak-hour-tag {
+      background: #FDF3F7;
+      color: #a3315a;
+      padding: 0.2rem 0.7rem;
+      border-radius: 2rem;
+      font-size: 0.8rem;
+      font-weight: 500;
+    }
+
+    /* ----- DOWNLOAD BUTTON ----- */
+    .btn-download {
+      background: transparent;
+      border: 1.5px solid var(--rose);
+      color: var(--rose);
+      padding: 0.5rem 1.2rem;
+      border-radius: 2rem;
+      font-size: 0.85rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: 0.2s;
+      font-family: inherit;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+
+    .btn-download:hover {
+      background: var(--rose);
+      color: white;
+    }
+
+    /* ----- MODALS ----- */
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.4);
+      backdrop-filter: blur(2px);
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+      padding: 1rem;
+    }
+
+    .modal.active {
+      display: flex;
+    }
+
+    .modal-content {
+      background: var(--white);
+      border-radius: 1.2rem;
+      width: 520px;
+      max-width: 100%;
+      padding: 1.8rem;
+      max-height: 90vh;
+      overflow-y: auto;
+      animation: fadeIn 0.2s ease;
+    }
+
+    .modal-content h3 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.6rem;
+      font-weight: 600;
+      color: var(--rose);
+      margin-bottom: 1.2rem;
+    }
+
+    .modal-content label {
+      display: block;
+      font-size: 0.8rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.3px;
+      color: var(--muted);
+      margin-bottom: 0.2rem;
+      margin-top: 0.6rem;
+    }
+
+    .modal-content input,
+    .modal-content select {
+      width: 100%;
+      padding: 0.7rem 1rem;
+      border: 1.5px solid var(--border);
+      border-radius: 0.8rem;
+      font-size: 0.95rem;
+      font-family: inherit;
+      color: var(--ink);
+      background: var(--white);
+      transition: 0.15s;
+    }
+
+    .modal-content input:focus,
+    .modal-content select:focus {
+      outline: none;
+      border-color: var(--rose);
+    }
+
+    .modal-content select[multiple] {
+      height: 120px;
+    }
+
+    .modal-footer {
+      display: flex;
+      gap: 0.8rem;
+      justify-content: flex-end;
+      margin-top: 1.2rem;
+      flex-wrap: wrap;
+    }
+
+    /* ----- TOAST ----- */
+    #toast {
+      position: fixed;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%) translateY(10px);
+      background: var(--ink);
+      color: white;
+      padding: 0.6rem 1.5rem;
+      border-radius: 2rem;
+      font-size: 0.9rem;
+      opacity: 0;
+      transition: 0.25s;
+      pointer-events: none;
+      z-index: 3000;
+      white-space: nowrap;
+    }
+
+    #toast.show {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
+    }
+
+    /* ----- LOADING ----- */
+    #loadingOverlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(255, 255, 255, 0.8);
+      backdrop-filter: blur(2px);
+      z-index: 9999;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      gap: 0.8rem;
+    }
+
+    #loadingOverlay.show {
+      display: flex;
+    }
+
+    .spinner {
+      width: 40px;
+      height: 40px;
+      border: 3px solid var(--rose-mid);
+      border-top-color: var(--rose);
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    #loadingOverlayText {
+      font-size: 0.9rem;
+      color: var(--muted);
+      font-weight: 600;
+    }
+
+    .empty-state {
+      text-align: center;
+      padding: 2.5rem 1rem;
+      color: var(--muted);
+    }
+
+    .empty-state i {
+      font-size: 2.5rem;
+      color: var(--rose-mid);
+      margin-bottom: 0.7rem;
+      display: block;
+    }
+
+    .empty-state p {
+      font-size: 0.95rem;
+      margin-bottom: 0.8rem;
+    }
+
+    /* ----- RESPONSIVE — matching customer dashboard ----- */
+    @media (max-width: 768px) {
+      .menu-toggle { display: block; }
+      .sidebar-close { display: block; }
+
+      .sidebar {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 280px;
+        height: 100vh;
+        transform: translateX(-100%);
+        box-shadow: 2px 0 12px rgba(0,0,0,0.1);
+        z-index: 999;
+        border-right: none;
+      }
+
+      .sidebar.open { transform: translateX(0); }
+
+      .header { padding: 0.6rem 1rem; }
+      .main { padding: 1rem; }
+      .section-title { font-size: 1.6rem; }
+
+      .analytics-grid { grid-template-columns: 1fr; }
+      .stylist-grid { grid-template-columns: 1fr 1fr; }
+
+      .filter-bar {
+        flex-direction: column;
+        align-items: stretch;
+      }
+
+      .filter-bar > * { width: 100%; }
+
+      .service-row {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .service-price {
+        text-align: left;
+        width: 100%;
+      }
+
+      .service-actions {
+        width: 100%;
+        justify-content: flex-end;
+      }
+
+      .admin-table { font-size: 0.8rem; }
+      .admin-table th,
+      .admin-table td { padding: 0.5rem 0.7rem; }
+    }
+
+    @media (max-width: 480px) {
+      .header { padding: 0.4rem 0.6rem; }
+      .brand-name { font-size: 1.2rem; }
+      .brand-slogan { font-size: 0.6rem; }
+
+      .user-pill { padding: 0.2rem 0.6rem 0.2rem 0.3rem; }
+      .avatar { width: 24px; height: 24px; font-size: 0.6rem; }
+      .user-name { font-size: 0.7rem; }
+      .signout-btn { font-size: 0.7rem; padding: 0.25rem 0.7rem; }
+
+      .main { padding: 0.6rem; }
+      .section-title { font-size: 1.3rem; }
+      .section-sub { font-size: 0.8rem; }
+
+      .btn-primary { font-size: 0.8rem; padding: 0.4rem 1rem; }
+      .btn-outline { font-size: 0.8rem; padding: 0.35rem 0.9rem; }
+
+      .stylist-grid { grid-template-columns: 1fr; }
+      .analytics-grid { grid-template-columns: 1fr; }
+
+      .admin-table { font-size: 0.7rem; }
+      .admin-table th,
+      .admin-table td { padding: 0.3rem 0.4rem; }
+
+      .modal-content { padding: 1rem; margin: 0.5rem; }
+      .sidebar { width: 240px; }
+    }
   </style>
 </head>
 <body>
+
+<!-- ===== HEADER — matching customer dashboard ===== -->
+<header class="header">
+  <div style="display:flex; align-items:center; gap:0.8rem;">
+    <button class="menu-toggle" id="menuToggle"><i class="fas fa-bars"></i></button>
+    <div class="brand">
+      <div class="brand-top">
+        <span class="brand-name">PinkMeUp Admin</span>
+      </div>
+      <span class="brand-slogan">Manage · Analyze · Grow</span>
+    </div>
+  </div>
+  <div class="header-right">
+    <div class="user-pill">
+      <div class="avatar" id="adminAvatar">AD</div>
+    </div>
+    <button class="signout-btn" id="signoutBtn"><i class="fas fa-arrow-left"></i> Sign out</button>
+  </div>
+</header>
+
+<!-- ===== APP ===== -->
 <div class="app">
-  <!-- OVERLAY -->
   <div class="sidebar-overlay" id="sidebarOverlay"></div>
 
-  <!-- HEADER -->
-  <div class="main-header">
-    <div style="display:flex; align-items:center; gap:0.8rem;">
-      <button class="menu-toggle" id="menuToggle"><i class="fas fa-bars"></i></button>
-      <div class="header-brand">
-        <h1>PinkMeUp Admin</h1>
-        <p>manage · analytics · strategy</p>
-      </div>
-    </div>
-    <button class="signout-btn" id="signoutBtn">Sign out</button>
-  </div>
+  <!-- SIDEBAR — matching customer dashboard -->
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-close" id="sidebarClose"><i class="fas fa-times"></i></div>
 
-  <div class="dashboard-layout">
-    <!-- SIDEBAR -->
-    <div class="sidebar" id="sidebar">
-      <div class="sidebar-close" id="sidebarClose"><i class="fas fa-times"></i></div>
-      <div class="nav">
-        <div class="nav-item active" data-view="services"><i class="fas fa-concierge-bell"></i> Manage Services</div>
-        <div class="nav-item" data-view="stylists"><i class="fas fa-users"></i> Manage Stylists</div>
-        <div class="nav-item" data-view="bookings"><i class="fas fa-calendar-check"></i> Manage Bookings</div>
-        <div class="nav-item" data-view="reports"><i class="fas fa-chart-line"></i> Analytics Reports</div>
-      </div>
-      <div class="sidebar-footer">
-        <div class="support-line"><span class="support-label">IT Support</span></div>
-        <div class="support-line"><i class="fas fa-phone-alt"></i> 072 536 9347</div>
-        <div class="support-line"><i class="fas fa-envelope"></i> <a href="mailto:nexgentechs@salon.com">nexgentechs@salon.com</a></div>
-      </div>
+    <div class="sidebar-greeting">
+      <div class="greeting-name" id="greetingName">Hello, Admin</div>
+      <div class="greeting-sub">Manage your salon operations</div>
     </div>
 
-    <!-- MAIN CONTENT -->
-    <div class="main">
-      <!-- MANAGE SERVICES -->
-      <div id="services-view" class="view active">
-        <div class="section-title">Manage Services</div>
-        <p class="info-prompt"><i class="fas fa-info-circle"></i> Add, edit or archive any service. All changes are saved immediately.</p>
-        <button class="btn-primary" id="addServiceBtn"><i class="fas fa-plus"></i> Add New Service</button>
-        <div class="card" id="servicesContainer"></div>
-      </div>
+    <nav class="nav">
+      <div class="nav-item active" data-view="services"><i class="fas fa-concierge-bell"></i> Services</div>
+      <div class="nav-item" data-view="stylists"><i class="fas fa-users"></i> Stylists</div>
+      <div class="nav-item" data-view="bookings"><i class="fas fa-calendar-check"></i> Bookings</div>
+      <div class="nav-item" data-view="reports"><i class="fas fa-chart-line"></i> Analytics</div>
+      <div class="nav-item signout-nav" id="sidebarSignOut"><i class="fas fa-arrow-left"></i> Sign out</div>
+    </nav>
 
-      <!-- MANAGE STYLISTS -->
-      <div id="stylists-view" class="view">
-        <div class="section-title">Manage Stylists</div>
-        <p class="info-prompt"><i class="fas fa-info-circle"></i> Add stylists and assign the services they offer.</p>
-        <button class="btn-primary" id="addStylistBtn"><i class="fas fa-plus"></i> Add New Stylist</button>
-        <div id="stylistsContainer" class="stylist-grid"></div>
-      </div>
+    <!-- SIDEBAR FOOTER — Hours (no Sunday) + IT Support (no emojis) -->
+    <div class="sidebar-footer">
+      <p><strong>Hours</strong></p>
+      <p>Mon–Fri: 9am – 5pm</p>
+      <p>Sat: 9am – 2pm</p>
+      <br>
+      <p><strong>IT Support</strong></p>
+      <div class="support-line">072 536 9347</div>
+      <div class="support-line">nexgentechs@salon.com</div>
+    </div>
+  </aside>
 
-      <!-- MANAGE BOOKINGS -->
-      <div id="bookings-view" class="view">
-        <div class="section-title">Manage Bookings</div>
-        <p class="info-prompt"><i class="fas fa-info-circle"></i> Mark appointments as completed or no-show once they've happened. This drives your analytics reports.</p>
-        <div class="card" style="overflow-x:auto;">
-          <table class="stylist-table" id="bookingsTable">
-            <thead><tr><th>Date & Time</th><th>Customer</th><th>Services</th><th>Stylist</th><th>Status</th><th>Actions</th></tr></thead>
+  <!-- MAIN -->
+  <main class="main">
+    <!-- SERVICES -->
+    <section id="services-view" class="view active">
+      <div class="view-header">
+        <div>
+          <div class="section-title">Manage Services</div>
+          <div class="section-sub">Add, edit, or archive services offered at your salon</div>
+        </div>
+        <button class="btn-primary" id="addServiceBtn"><i class="fas fa-plus"></i> New Service</button>
+      </div>
+      <div class="card">
+        <div class="card-body" id="servicesContainer"></div>
+      </div>
+    </section>
+
+    <!-- STYLISTS -->
+    <section id="stylists-view" class="view">
+      <div class="view-header">
+        <div>
+          <div class="section-title">Manage Stylists</div>
+          <div class="section-sub">Add stylists and assign their service specialties</div>
+        </div>
+        <button class="btn-primary" id="addStylistBtn"><i class="fas fa-plus"></i> New Stylist</button>
+      </div>
+      <div id="stylistsContainer" class="stylist-grid"></div>
+    </section>
+
+    <!-- BOOKINGS -->
+    <section id="bookings-view" class="view">
+      <div class="view-header">
+        <div>
+          <div class="section-title">Manage Bookings</div>
+          <div class="section-sub">Review and update appointment statuses</div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-body">
+          <table class="admin-table" id="bookingsTable">
+            <thead>
+              <tr>
+                <th>Date &amp; Time</th>
+                <th>Customer</th>
+                <th>Services</th>
+                <th>Stylist</th>
+                <th>Status</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
             <tbody id="bookingsTableBody"></tbody>
           </table>
         </div>
       </div>
+    </section>
 
-      <!-- ANALYTICS REPORTS -->
-      <div id="reports-view" class="view">
-        <div class="section-title">Analytics Reports</div>
-        <div class="filter-bar">
-          <span style="font-size:0.8rem;">Period:</span>
-          <select id="reportPeriod">
-            <option value="last30">Last 30 days</option>
-            <option value="last90">Last 90 days</option>
-            <option value="lastYear">Last 12 months</option>
-            <option value="custom">Custom range</option>
-          </select>
-          <div id="customDateRange" style="display:none; gap:0.3rem; flex-wrap:wrap; align-items:center;">
-            <input type="date" id="startDate" class="date-input" />
-            <span style="font-size:0.8rem;">to</span>
-            <input type="date" id="endDate" class="date-input" />
-          </div>
-          <button class="btn-outline" id="applyFilterBtn">Apply filter</button>
+    <!-- ANALYTICS -->
+    <section id="reports-view" class="view">
+      <div class="view-header">
+        <div>
+          <div class="section-title">Analytics</div>
+          <div class="section-sub">Booking insights and stylist performance</div>
         </div>
-        <div class="info-prompt"><i class="fas fa-chart-pie"></i> Select a date range to see updated insights.</div>
+        <div style="display:flex; gap:0.6rem; flex-wrap:wrap;">
+          <button class="btn-download" id="downloadReportBtn"><i class="fas fa-download"></i> Download Report</button>
+        </div>
+      </div>
 
-        <div class="analytics-card" style="margin-bottom:1rem;">
-          <h3>Booking trends &amp; service popularity</h3>
-          <p>Busiest days and hours, plus the most-booked services</p>
-          <div class="chart-container" style="max-height:260px;">
-            <canvas id="trendsBarChart" width="700" height="260"></canvas>
+      <div class="filter-bar">
+        <label>Period</label>
+        <select id="reportPeriod">
+          <option value="last30">Last 30 days</option>
+          <option value="last90">Last 90 days</option>
+          <option value="lastYear">Last 12 months</option>
+          <option value="custom">Custom range</option>
+        </select>
+        <div id="customDateRange" style="display:none; display:flex; gap:0.4rem; align-items:center; flex-wrap:wrap;">
+          <input type="date" id="startDate" />
+          <span style="font-size:0.85rem;color:var(--muted);">to</span>
+          <input type="date" id="endDate" />
+        </div>
+        <button class="btn-outline" id="applyFilterBtn">Apply</button>
+      </div>
+
+      <div class="analytics-grid">
+        <div class="analytics-card">
+          <h3>Booking Trends</h3>
+          <p>Bookings by day of week</p>
+          <div class="chart-container">
+            <canvas id="trendsBarChart" height="200"></canvas>
           </div>
-          <div id="peakHoursStrip" style="margin-top:0.6rem; font-size:0.8rem; color:#6c3b52;"></div>
-          <hr class="divider" />
-          <div style="overflow-x:auto;">
-            <table class="stylist-table" id="servicePopularityTable">
-              <thead><tr><th>Service</th><th>Category</th><th>Bookings</th></tr></thead>
-              <tbody id="servicePopularityBody"></tbody>
-            </table>
-          </div>
+          <div id="peakHoursStrip"></div>
         </div>
 
         <div class="analytics-card">
-          <h3>Stylist performance</h3>
-          <p>Appointments assigned, completed, and average rating</p>
-          <div style="overflow-x:auto;">
-            <table class="stylist-table" id="stylistTable">
-              <thead><tr><th>Stylist</th><th>Assigned</th><th>Completed</th><th>Completion rate</th><th>Avg rating</th></tr></thead>
-              <tbody id="stylistTableBody"></tbody>
-            </table>
-          </div>
+          <h3>Popular Services</h3>
+          <p>Most requested services</p>
+          <table class="admin-table" id="servicePopularityTable">
+            <thead><tr><th>Service</th><th>Category</th><th>Bookings</th></tr></thead>
+            <tbody id="servicePopularityBody"></tbody>
+          </table>
         </div>
       </div>
-    </div>
-  </div>
+
+      <div class="analytics-card" style="margin-top:0;">
+        <h3>Stylist Performance</h3>
+        <p>Completion rates and average ratings</p>
+        <table class="admin-table" id="stylistTable">
+          <thead>
+            <tr><th>Stylist</th><th>Assigned</th><th>Completed</th><th>Rate</th><th>Rating</th></tr>
+          </thead>
+          <tbody id="stylistTableBody"></tbody>
+        </table>
+      </div>
+    </section>
+  </main>
 </div>
 
-<!-- MODAL: Service -->
+<!-- ===== MODALS ===== -->
 <div id="serviceModal" class="modal">
   <div class="modal-content">
-    <h3 id="modalTitle">Add Service</h3>
+    <h3 id="serviceModalTitle">Add Service</h3>
+    <label>Category</label>
     <select id="serviceCategory">
       <option value="Nail Treatments">Nail Treatments</option>
       <option value="Lash Treatments">Lash Treatments</option>
@@ -577,9 +1219,12 @@
       <option value="Thread & Wax">Thread & Wax</option>
       <option value="Facials & Packages">Facials & Packages</option>
     </select>
-    <input type="text" id="serviceName" placeholder="Service name" />
-    <input type="number" id="servicePrice" placeholder="Price (R)" />
-    <input type="number" id="serviceDuration" placeholder="Duration in minutes" />
+    <label>Service Name</label>
+    <input type="text" id="serviceName" placeholder="e.g. Gel Manicure" />
+    <label>Price (R)</label>
+    <input type="number" id="servicePrice" placeholder="350" />
+    <label>Duration (minutes)</label>
+    <input type="number" id="serviceDuration" placeholder="45" />
     <input type="hidden" id="serviceId" />
     <div class="modal-footer">
       <button class="btn-outline" id="cancelModalBtn">Cancel</button>
@@ -588,17 +1233,16 @@
   </div>
 </div>
 
-<!-- MODAL: Stylist -->
 <div id="stylistModal" class="modal">
   <div class="modal-content">
     <h3 id="stylistModalTitle">Add Stylist</h3>
     <label>Full Name</label>
-    <input type="text" id="stylistName" placeholder="e.g. Thando" />
-    <label>Email</label>
+    <input type="text" id="stylistName" placeholder="e.g. Thando Mokoena" />
+    <label>Email Address</label>
     <input type="email" id="stylistEmail" placeholder="thando@salon.com" />
-    <label>Phone</label>
+    <label>Phone Number</label>
     <input type="tel" id="stylistPhone" placeholder="071 234 5678" />
-    <label>Services offered (hold Ctrl/Cmd to select multiple)</label>
+    <label>Services Offered</label>
     <select id="stylistServices" multiple></select>
     <input type="hidden" id="stylistId" />
     <div class="modal-footer">
@@ -608,29 +1252,72 @@
   </div>
 </div>
 
-<!-- LOADING OVERLAY -->
+<!-- ===== TOAST ===== -->
+<div id="toast"></div>
+
+<!-- ===== LOADING OVERLAY ===== -->
 <div id="loadingOverlay">
   <div class="spinner"></div>
   <div id="loadingOverlayText">Loading...</div>
 </div>
 
-<script src="js/config.js"></script>
-<script src="js/auth.js"></script>
-
 <script>
   // ============================================================
-  // MOBILE SIDEBAR TOGGLE
+  // CONFIG
+  // ============================================================
+  const API_BASE = window.API_URL || 'http://localhost:5000/api/v1';
+  let services = [];
+  let stylists = [];
+  let allBookings = [];
+  let trendsChart = null;
+  const DAY_LABELS = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+
+  // ============================================================
+  // HELPERS
+  // ============================================================
+  function escapeHtml(str) {
+    if (!str) return '';
+    return str.replace(/[&<>]/g, m => m === '&' ? '&amp;' : (m === '<' ? '&lt;' : '&gt;'));
+  }
+
+  function showToast(msg) {
+    const t = document.getElementById('toast');
+    t.textContent = msg;
+    t.classList.add('show');
+    setTimeout(() => t.classList.remove('show'), 2800);
+  }
+
+  function showLoading(msg = 'Loading...') {
+    document.getElementById('loadingOverlayText').textContent = msg;
+    document.getElementById('loadingOverlay').classList.add('show');
+  }
+
+  function hideLoading() {
+    document.getElementById('loadingOverlay').classList.remove('show');
+  }
+
+  function getServiceName(id) {
+    const s = services.find(s => s._id === id || s.id === id);
+    return s ? s.name : 'Unknown';
+  }
+
+  // ============================================================
+  // SIDEBAR TOGGLE — matching customer dashboard
   // ============================================================
   document.addEventListener('DOMContentLoaded', function() {
     const sidebar = document.getElementById('sidebar');
     const overlay = document.getElementById('sidebarOverlay');
     const menuToggle = document.getElementById('menuToggle');
     const sidebarClose = document.getElementById('sidebarClose');
+    const signOutBtn = document.getElementById('signoutBtn');
+    const sidebarSignOut = document.getElementById('sidebarSignOut');
+    const downloadBtn = document.getElementById('downloadReportBtn');
 
     function openSidebar() {
       sidebar.classList.add('open');
       overlay.classList.add('active');
     }
+
     function closeSidebar() {
       sidebar.classList.remove('open');
       overlay.classList.remove('active');
@@ -639,10 +1326,18 @@
     if (menuToggle) menuToggle.addEventListener('click', openSidebar);
     if (sidebarClose) sidebarClose.addEventListener('click', closeSidebar);
     if (overlay) overlay.addEventListener('click', closeSidebar);
+    if (signOutBtn) signOutBtn.addEventListener('click', signOut);
+    if (sidebarSignOut) sidebarSignOut.addEventListener('click', signOut);
 
-    document.querySelectorAll('.nav-item').forEach(item => {
+    // Download Report button - downloads the current analytics view as CSV
+    if (downloadBtn) {
+      downloadBtn.addEventListener('click', downloadReport);
+    }
+
+    document.querySelectorAll('.nav-item:not(.signout-nav)').forEach(item => {
       item.addEventListener('click', function() {
         if (window.innerWidth <= 768) closeSidebar();
+        switchView(this.dataset.view);
       });
     });
 
@@ -652,208 +1347,183 @@
   });
 
   // ============================================================
-  // LOADING OVERLAY HELPERS
+  // DOWNLOAD REPORT — exports current analytics data as CSV
   // ============================================================
-  function showLoading(msg = 'Loading...') {
-    document.getElementById('loadingOverlayText').textContent = msg;
-    document.getElementById('loadingOverlay').style.display = 'flex';
-  }
-  function hideLoading() {
-    document.getElementById('loadingOverlay').style.display = 'none';
-  }
+  function downloadReport() {
+    // Get current period and date range
+    const period = document.getElementById('reportPeriod').value;
+    let startDate, endDate;
 
-  // ============================================================
-  // CORE STATE + HELPERS
-  // ============================================================
-  const API_BASE = window.API_URL || 'http://localhost:5000/api/v1';
-
-  let services = [];
-  let stylists = [];
-  let allBookings = [];
-  let trendsChart;
-  let currentFilter = { start: null, end: null };
-  const DAY_LABELS = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
-
-  function escapeHtml(str) {
-    if (!str) return '';
-    return str.replace(/[&<>]/g, m => m === '&' ? '&amp;' : (m === '<' ? '&lt;' : '&gt;'));
-  }
-
-  function showToast(msg) {
-    let toast = document.getElementById('adminToast');
-    if (!toast) {
-      toast = document.createElement('div');
-      toast.id = 'adminToast';
-      toast.style.position = 'fixed';
-      toast.style.bottom = '20px';
-      toast.style.left = '50%';
-      toast.style.transform = 'translateX(-50%)';
-      toast.style.background = '#2c1a23';
-      toast.style.color = 'white';
-      toast.style.padding = '0.6rem 1.2rem';
-      toast.style.borderRadius = '2rem';
-      toast.style.fontSize = '0.8rem';
-      toast.style.opacity = '0';
-      toast.style.transition = '0.2s';
-      toast.style.pointerEvents = 'none';
-      toast.style.zIndex = '2000';
-      document.body.appendChild(toast);
+    if (period === 'last30') {
+      const today = new Date();
+      startDate = new Date();
+      startDate.setDate(today.getDate() - 30);
+      endDate = new Date();
+    } else if (period === 'last90') {
+      const today = new Date();
+      startDate = new Date();
+      startDate.setDate(today.getDate() - 90);
+      endDate = new Date();
+    } else if (period === 'lastYear') {
+      const today = new Date();
+      startDate = new Date();
+      startDate.setFullYear(today.getFullYear() - 1);
+      endDate = new Date();
+    } else {
+      startDate = new Date(document.getElementById('startDate').value);
+      endDate = new Date(document.getElementById('endDate').value);
+      if (isNaN(startDate) || isNaN(endDate)) {
+        const today = new Date();
+        startDate = new Date();
+        startDate.setDate(today.getDate() - 30);
+        endDate = new Date();
+      }
     }
-    toast.textContent = msg;
-    toast.style.opacity = '1';
-    setTimeout(() => { toast.style.opacity = '0'; }, 2500);
-  }
 
-  function getServiceName(id) {
-    const s = services.find(s => s._id === id || s.id === id);
-    return s ? s.name : 'Unknown';
+    const startStr = startDate.toISOString().slice(0, 10);
+    const endStr = endDate.toISOString().slice(0, 10);
+
+    showLoading('Generating report...');
+
+    // Fetch all three datasets
+    Promise.all([
+      fetch(`${API_BASE}/admin/reports/service-popularity?startDate=${startStr}&endDate=${endStr}`, { credentials: 'include' }),
+      fetch(`${API_BASE}/admin/reports/stylist-performance?startDate=${startStr}&endDate=${endStr}`, { credentials: 'include' }),
+      fetch(`${API_BASE}/admin/reports/booking-trends?startDate=${startStr}&endDate=${endStr}`, { credentials: 'include' })
+    ])
+    .then(async ([popRes, perfRes, trendRes]) => {
+      const popData = await popRes.json();
+      const perfData = await perfRes.json();
+      const trendData = await trendRes.json();
+
+      hideLoading();
+
+      // Build CSV content
+      let csv = 'PinkMeUp Admin Report\n';
+      csv += `Report Period: ${startStr} to ${endStr}\n\n`;
+
+      // Service Popularity
+      csv += 'Popular Services\n';
+      csv += 'Service,Category,Bookings\n';
+      if (popData.success && popData.data && popData.data.length) {
+        popData.data.forEach(s => {
+          csv += `"${s.serviceName}","${s.category}",${s.bookingsCount}\n`;
+        });
+      } else {
+        csv += 'No data available\n';
+      }
+
+      csv += '\nStylist Performance\n';
+      csv += 'Stylist,Assigned,Completed,Completion Rate,Average Rating\n';
+      if (perfData.success && perfData.data && perfData.data.length) {
+        perfData.data.forEach(s => {
+          const rate = s.totalAssigned ? Math.round((s.completedBookings / s.totalAssigned) * 100) : 0;
+          csv += `"${s.stylistName}",${s.totalAssigned},${s.completedBookings},${rate}%,${s.rating.toFixed(1)}\n`;
+        });
+      } else {
+        csv += 'No data available\n';
+      }
+
+      csv += '\nBooking Trends\n';
+      csv += 'Day,Bookings\n';
+      if (trendData.success && trendData.data && trendData.data.bookingsByDay) {
+        const dayMap = {1:'Sun',2:'Mon',3:'Tue',4:'Wed',5:'Thu',6:'Fri',7:'Sat'};
+        trendData.data.bookingsByDay.forEach(d => {
+          csv += `${dayMap[d._id] || d._id},${d.count}\n`;
+        });
+      } else {
+        csv += 'No data available\n';
+      }
+
+      // Create download
+      const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+      const link = document.createElement('a');
+      link.href = URL.createObjectURL(blob);
+      link.download = `PinkMeUp_Report_${startStr}_to_${endStr}.csv`;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      URL.revokeObjectURL(link.href);
+
+      showToast('Report downloaded successfully!');
+    })
+    .catch(err => {
+      hideLoading();
+      console.error('Download error:', err);
+      showToast('Failed to generate report. Please try again.');
+    });
   }
 
   // ============================================================
-  // SERVICE CRUD
+  // VIEW SWITCHING
   // ============================================================
-  async function loadServicesFromDB() {
+  function switchView(viewId) {
+    document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+    const target = document.getElementById(`${viewId}-view`);
+    if (target) target.classList.add('active');
+
+    document.querySelectorAll('.nav-item:not(.signout-nav)').forEach(n => n.classList.remove('active'));
+    const nav = document.querySelector(`.nav-item[data-view="${viewId}"]`);
+    if (nav) nav.classList.add('active');
+
+    if (viewId === 'reports') updateReports();
+    if (viewId === 'bookings') loadAllBookings();
+  }
+
+  // ============================================================
+  // SERVICES
+  // ============================================================
+  async function loadServices() {
     try {
       const res = await fetch(`${API_BASE}/services?limit=100`, { credentials: 'include' });
       const data = await res.json();
       if (data.success) {
         services = data.data.services || [];
-        renderServiceManager();
+        renderServices();
         populateStylistServiceOptions();
-        updateCategoriesList();
       }
     } catch (err) {
       showToast('Failed to load services.');
     }
   }
 
-  function updateCategoriesList() {
-    window.categoriesList = [...new Set(services.map(s => s.category))];
-  }
-
-  async function saveServiceToDB() {
-    const category = document.getElementById('serviceCategory').value;
-    const name = document.getElementById('serviceName').value.trim();
-    const price = parseFloat(document.getElementById('servicePrice').value);
-    const duration = parseInt(document.getElementById('serviceDuration').value);
-    const editId = document.getElementById('serviceId').value;
-
-    if (!name || isNaN(price) || price <= 0 || isNaN(duration) || duration < 15) {
-      alert('Please fill all fields correctly.');
+  function renderServices() {
+    const container = document.getElementById('servicesContainer');
+    if (!services.length) {
+      container.innerHTML = `<p style="color:var(--muted);padding:0.5rem;">No services yet. Add your first service.</p>`;
       return;
     }
-
-    const method = editId ? 'PUT' : 'POST';
-    const url = editId ? `${API_BASE}/services/${editId}` : `${API_BASE}/services`;
-
-    showLoading(editId ? 'Saving changes...' : 'Creating service...');
-    try {
-      const res = await fetch(url, {
-        method,
-        headers: { 'Content-Type': 'application/json' },
-        credentials: 'include',
-        body: JSON.stringify({ name, price, duration, category })
-      });
-      const data = await res.json();
-      if (!res.ok) { showToast(data.message || 'Failed to save.'); return; }
-      await loadServicesFromDB();
-      closeServiceModal();
-      showToast('Service saved.');
-    } catch (err) {
-      showToast('Error saving service.');
-    } finally {
-      hideLoading();
-    }
-  }
-
-  async function deleteServiceFromDB(id) {
-    if (!confirm('Archive this service? It will no longer be visible to customers.')) return;
-    showLoading('Archiving service...');
-    try {
-      const res = await fetch(`${API_BASE}/services/${id}`, { method: 'DELETE', credentials: 'include' });
-      const data = await res.json();
-      if (!res.ok) { showToast(data.message || 'Failed to archive.'); return; }
-      await loadServicesFromDB();
-      showToast('Service archived.');
-    } catch (err) {
-      showToast('Error archiving service.');
-    } finally {
-      hideLoading();
-    }
-  }
-
-  // ============================================================
-  // STYLIST CRUD
-  // ============================================================
-  async function loadStylistsFromDB() {
-    try {
-      const res = await fetch(`${API_BASE}/stylists?limit=100`, { credentials: 'include' });
-      const data = await res.json();
-      if (data.success) {
-        stylists = (data.data.stylists || []).map(st => ({
-  id: st._id,
-  name: st.userId ? `${st.userId.firstName || ''} ${st.userId.lastName || ''}`.trim() : 'Unknown',
-  email: st.userId?.email || '',
-  phone: st.userId?.phone || '',
-  serviceIds: st.serviceIds || [],
-  isAvailable: st.isAvailable,
-  isActive: st.userId?.isActive !== false,
-  rating: st.rating
-}));
-        window.stylistNames = stylists.map(s => s.name);
-        renderStylists();
-        if (document.getElementById('reports-view').classList.contains('active')) updateReports();
-      }
-    } catch (err) {
-      showToast('Failed to load stylists.');
-    }
-  }
-
-  function renderStylists() {
-    const container = document.getElementById('stylistsContainer');
-    if (stylists.length === 0) {
-      container.innerHTML = `<p style="color:#b48aa0;padding:1rem;">No stylists yet. Click "Add New Stylist" to get started.</p>`;
-      return;
-    }
+    const categories = [...new Set(services.map(s => s.category))];
     let html = '';
-stylists.forEach(st => {
-  const status = !st.isActive ? 'disabled' : (st.isAvailable ? 'active' : 'inactive');
-  const serviceNames = st.serviceIds.map(id => getServiceName(id)).filter(Boolean);
-  html += `
-    <div class="stylist-card">
-      <h4>${escapeHtml(st.name)}</h4>
-      <div class="contact"><i class="fas fa-envelope"></i> ${escapeHtml(st.email || 'N/A')} &nbsp; <i class="fas fa-phone"></i> ${escapeHtml(st.phone || 'N/A')}</div>
-      <div style="margin:0.4rem 0;">
-        <strong>Status:</strong>
-        <select class="stylist-status-select" data-id="${st.id}">
-          <option value="active" ${status==='active'?'selected':''}>Active</option>
-          <option value="inactive" ${status==='inactive'?'selected':''}>Inactive</option>
-          <option value="disabled" ${status==='disabled'?'selected':''}>Disabled</option>
-        </select>
-      </div>
-      
-      <div style="font-size:0.8rem;color:#b48aa0;">★ ${Number(st.rating || 0).toFixed(1)} / 5 average rating</div>
-      <div><strong>Services offered:</strong></div>
-      <div class="service-chips">
-        ${serviceNames.length ? serviceNames.map(n => `<span class="chip">${escapeHtml(n)}</span>`).join('') : '<span style="color:#b48aa0;font-size:0.8rem;">No services assigned</span>'}
-      </div>
-      <div class="actions">
-        <button class="btn-outline edit-stylist" data-id="${st.id}"><i class="fas fa-edit"></i> Edit</button>
-        <button class="btn-danger delete-stylist" data-id="${st.id}"><i class="fas fa-trash"></i> Delete</button>
-      </div>
-    </div>
-  `;
-});
-container.innerHTML = html;
-document.querySelectorAll('.stylist-status-select').forEach(sel =>
-  sel.addEventListener('change', () => updateStylistStatus(sel.dataset.id, sel.value))
-);
-document.querySelectorAll('.edit-stylist').forEach(btn =>
-  btn.addEventListener('click', () => openEditStylistModal(btn.dataset.id))
-);
-document.querySelectorAll('.delete-stylist').forEach(btn =>
-  btn.addEventListener('click', () => deleteStylistFromDB(btn.dataset.id))
-);
+    categories.forEach(cat => {
+      const catServices = services.filter(s => s.category === cat);
+      html += `<div class="category-group"><div class="category-header">${cat}</div>`;
+      catServices.forEach(s => {
+        const sid = s._id || s.id;
+        html += `
+          <div class="service-row">
+            <div class="service-info">
+              <span class="service-name">${escapeHtml(s.name)}</span>
+              <span class="service-duration">${s.duration} min</span>
+            </div>
+            <div class="service-price">R${s.price}</div>
+            <div class="service-actions">
+              <button class="edit-service" data-id="${sid}" title="Edit"><i class="fas fa-edit"></i></button>
+              <button class="delete-service" data-id="${sid}" title="Archive"><i class="fas fa-trash-alt"></i></button>
+            </div>
+          </div>
+        `;
+      });
+      html += `</div>`;
+    });
+    container.innerHTML = html;
+
+    document.querySelectorAll('.edit-service').forEach(btn =>
+      btn.addEventListener('click', () => openEditServiceModal(btn.dataset.id))
+    );
+    document.querySelectorAll('.delete-service').forEach(btn =>
+      btn.addEventListener('click', () => deleteService(btn.dataset.id))
+    );
   }
 
   function populateStylistServiceOptions() {
@@ -867,8 +1537,136 @@ document.querySelectorAll('.delete-stylist').forEach(btn =>
     });
   }
 
+  function openEditServiceModal(id) {
+    const svc = services.find(s => s._id === id || s.id === id);
+    if (!svc) return;
+    document.getElementById('serviceModalTitle').textContent = 'Edit Service';
+    document.getElementById('serviceCategory').value = svc.category;
+    document.getElementById('serviceName').value = svc.name;
+    document.getElementById('servicePrice').value = svc.price;
+    document.getElementById('serviceDuration').value = svc.duration;
+    document.getElementById('serviceId').value = svc._id || svc.id;
+    document.getElementById('serviceModal').classList.add('active');
+  }
+
+  async function saveService() {
+    const category = document.getElementById('serviceCategory').value;
+    const name = document.getElementById('serviceName').value.trim();
+    const price = parseFloat(document.getElementById('servicePrice').value);
+    const duration = parseInt(document.getElementById('serviceDuration').value);
+    const editId = document.getElementById('serviceId').value;
+
+    if (!name || isNaN(price) || price <= 0 || isNaN(duration) || duration < 15) {
+      showToast('Please fill all fields correctly.');
+      return;
+    }
+
+    const method = editId ? 'PUT' : 'POST';
+    const url = editId ? `${API_BASE}/services/${editId}` : `${API_BASE}/services`;
+
+    showLoading(editId ? 'Saving...' : 'Creating...');
+    try {
+      const res = await fetch(url, {
+        method,
+        headers: { 'Content-Type': 'application/json' },
+        credentials: 'include',
+        body: JSON.stringify({ name, price, duration, category })
+      });
+      const data = await res.json();
+      if (!res.ok) { showToast(data.message || 'Failed to save.'); return; }
+      await loadServices();
+      closeServiceModal();
+      showToast('Service saved.');
+    } catch (err) {
+      showToast('Error saving service.');
+    } finally {
+      hideLoading();
+    }
+  }
+
+  async function deleteService(id) {
+    if (!confirm('Archive this service? It will no longer be visible to customers.')) return;
+    showLoading('Archiving...');
+    try {
+      const res = await fetch(`${API_BASE}/services/${id}`, { method: 'DELETE', credentials: 'include' });
+      const data = await res.json();
+      if (!res.ok) { showToast(data.message || 'Failed to archive.'); return; }
+      await loadServices();
+      showToast('Service archived.');
+    } catch (err) {
+      showToast('Error archiving service.');
+    } finally {
+      hideLoading();
+    }
+  }
+
+  function closeServiceModal() {
+    document.getElementById('serviceModal').classList.remove('active');
+  }
+
+  // ============================================================
+  // STYLISTS
+  // ============================================================
+  async function loadStylists() {
+    try {
+      const res = await fetch(`${API_BASE}/stylists?limit=100`, { credentials: 'include' });
+      const data = await res.json();
+      if (data.success) {
+        stylists = (data.data.stylists || []).map(st => ({
+          id: st._id,
+          name: st.userId ? `${st.userId.firstName || ''} ${st.userId.lastName || ''}`.trim() : 'Unknown',
+          email: st.userId?.email || '',
+          phone: st.userId?.phone || '',
+          serviceIds: st.serviceIds || [],
+          isAvailable: st.isAvailable,
+          isActive: st.userId?.isActive !== false,
+          rating: st.rating || 0
+        }));
+        renderStylists();
+      }
+    } catch (err) {
+      showToast('Failed to load stylists.');
+    }
+  }
+
+  function renderStylists() {
+    const container = document.getElementById('stylistsContainer');
+    if (!stylists.length) {
+      container.innerHTML = `<p style="color:var(--muted);padding:0.5rem;">No stylists yet. Add your first stylist.</p>`;
+      return;
+    }
+    container.innerHTML = stylists.map(st => {
+      const status = !st.isActive ? 'disabled' : (st.isAvailable ? 'active' : 'inactive');
+      const statusLabel = status === 'active' ? 'Active' : (status === 'inactive' ? 'Inactive' : 'Disabled');
+      const serviceNames = st.serviceIds.map(id => getServiceName(id)).filter(Boolean);
+
+      return `
+        <div class="stylist-card">
+          <div class="stylist-name">${escapeHtml(st.name)}</div>
+          <div class="stylist-contact"><i class="fas fa-envelope"></i> ${escapeHtml(st.email || 'N/A')} &nbsp; <i class="fas fa-phone"></i> ${escapeHtml(st.phone || 'N/A')}</div>
+          <div class="stylist-status ${status}">● ${statusLabel}</div>
+          <div class="stylist-rating"><strong>★ ${Number(st.rating).toFixed(1)}</strong> / 5 average rating</div>
+          <div class="service-chips">
+            ${serviceNames.length ? serviceNames.map(n => `<span class="chip">${escapeHtml(n)}</span>`).join('') : '<span style="font-size:0.8rem;color:var(--muted);">No services assigned</span>'}
+          </div>
+          <div class="stylist-actions">
+            <button class="btn-outline btn-sm edit-stylist" data-id="${st.id}"><i class="fas fa-edit"></i> Edit</button>
+            <button class="btn-danger btn-sm delete-stylist" data-id="${st.id}"><i class="fas fa-trash"></i> Delete</button>
+          </div>
+        </div>
+      `;
+    }).join('');
+
+    document.querySelectorAll('.edit-stylist').forEach(btn =>
+      btn.addEventListener('click', () => openEditStylistModal(btn.dataset.id))
+    );
+    document.querySelectorAll('.delete-stylist').forEach(btn =>
+      btn.addEventListener('click', () => deleteStylist(btn.dataset.id))
+    );
+  }
+
   function openAddStylistModal() {
-    document.getElementById('stylistModalTitle').innerText = 'Add Stylist';
+    document.getElementById('stylistModalTitle').textContent = 'Add Stylist';
     document.getElementById('stylistName').value = '';
     document.getElementById('stylistEmail').value = '';
     document.getElementById('stylistPhone').value = '';
@@ -880,7 +1678,7 @@ document.querySelectorAll('.delete-stylist').forEach(btn =>
   function openEditStylistModal(id) {
     const st = stylists.find(s => s.id === id);
     if (!st) return;
-    document.getElementById('stylistModalTitle').innerText = 'Edit Stylist';
+    document.getElementById('stylistModalTitle').textContent = 'Edit Stylist';
     document.getElementById('stylistName').value = st.name;
     document.getElementById('stylistEmail').value = st.email || '';
     document.getElementById('stylistPhone').value = st.phone || '';
@@ -892,7 +1690,7 @@ document.querySelectorAll('.delete-stylist').forEach(btn =>
     document.getElementById('stylistModal').classList.add('active');
   }
 
-  async function saveStylistToDB() {
+  async function saveStylist() {
     const name = document.getElementById('stylistName').value.trim();
     const email = document.getElementById('stylistEmail').value.trim();
     const phone = document.getElementById('stylistPhone').value.trim();
@@ -901,13 +1699,13 @@ document.querySelectorAll('.delete-stylist').forEach(btn =>
     const editId = document.getElementById('stylistId').value;
 
     if (!name || !email || !phone) {
-      showToast('Full name, email, and phone number are required.');
+      showToast('All fields are required.');
       return;
     }
     const [firstName, ...lastNameParts] = name.split(' ');
     const lastName = lastNameParts.join(' ') || '';
     if (!lastName) {
-      showToast('Please enter both a first and last name.');
+      showToast('Please enter both first and last name.');
       return;
     }
     if (!/^\+?[0-9\s\-()]{7,25}$/.test(phone)) {
@@ -915,7 +1713,7 @@ document.querySelectorAll('.delete-stylist').forEach(btn =>
       return;
     }
 
-    showLoading(editId ? 'Saving changes...' : 'Creating stylist...');
+    showLoading(editId ? 'Saving...' : 'Creating...');
     try {
       if (editId) {
         const res = await fetch(`${API_BASE}/stylists/${editId}`, {
@@ -932,19 +1730,12 @@ document.querySelectorAll('.delete-stylist').forEach(btn =>
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           credentials: 'include',
-          body: JSON.stringify({
-            firstName,
-            lastName,
-            email,
-            password,
-            phone,
-            serviceIds: specialties
-          })
+          body: JSON.stringify({ firstName, lastName, email, password, phone, serviceIds: specialties })
         });
         const data = await res.json();
         if (!res.ok) { showToast(data.message || 'Failed to create stylist.'); return; }
       }
-      await loadStylistsFromDB();
+      await loadStylists();
       closeStylistModal();
       showToast('Stylist saved.');
     } catch (err) {
@@ -954,14 +1745,14 @@ document.querySelectorAll('.delete-stylist').forEach(btn =>
     }
   }
 
-  async function deleteStylistFromDB(id) {
+  async function deleteStylist(id) {
     if (!confirm('Delete this stylist? This cannot be undone.')) return;
-    showLoading('Deleting stylist...');
+    showLoading('Deleting...');
     try {
       const res = await fetch(`${API_BASE}/stylists/${id}`, { method: 'DELETE', credentials: 'include' });
       const data = await res.json();
       if (!res.ok) { showToast(data.message || 'Failed to delete.'); return; }
-      await loadStylistsFromDB();
+      await loadStylists();
       showToast('Stylist deleted.');
     } catch (err) {
       showToast('Error deleting stylist.');
@@ -970,47 +1761,12 @@ document.querySelectorAll('.delete-stylist').forEach(btn =>
     }
   }
 
-async function updateStylistStatus(id, status) {
-  showLoading('Updating status...');
-  try {
-    const res = await fetch(`${API_BASE}/stylists/${id}`, {
-      method: 'PUT',
-      headers: { 'Content-Type': 'application/json' },
-      credentials: 'include',
-      body: JSON.stringify({ status })
-    });
-    const data = await res.json();
-    if (!res.ok) { showToast(data.message || 'Failed to update status.'); return; }
-    await loadStylistsFromDB();
-    showToast(`Stylist marked as ${status}.`);
-  } catch (err) {
-    showToast('Error updating stylist status.');
-  } finally {
-    hideLoading();
-  }
-}
-
   function closeStylistModal() {
     document.getElementById('stylistModal').classList.remove('active');
   }
-  function closeServiceModal() {
-    document.getElementById('serviceModal').classList.remove('active');
-  }
-
-  function openEditServiceModal(id) {
-    const svc = services.find(s => s._id === id || s.id === id);
-    if (!svc) return;
-    document.getElementById('modalTitle').innerText = 'Edit Service';
-    document.getElementById('serviceCategory').value = svc.category;
-    document.getElementById('serviceName').value = svc.name;
-    document.getElementById('servicePrice').value = svc.price;
-    document.getElementById('serviceDuration').value = svc.duration;
-    document.getElementById('serviceId').value = svc._id || svc.id;
-    document.getElementById('serviceModal').classList.add('active');
-  }
 
   // ============================================================
-  // BOOKINGS MANAGEMENT
+  // BOOKINGS
   // ============================================================
   async function loadAllBookings() {
     showLoading('Loading bookings...');
@@ -1019,7 +1775,7 @@ async function updateStylistStatus(id, status) {
       const data = await res.json();
       if (!res.ok) { showToast(data.message || 'Failed to load bookings.'); return; }
       allBookings = data.data.bookings || [];
-      renderBookingsTable();
+      renderBookings();
     } catch (err) {
       showToast('Error loading bookings.');
     } finally {
@@ -1027,109 +1783,84 @@ async function updateStylistStatus(id, status) {
     }
   }
 
-  function renderBookingsTable() {
+  function renderBookings() {
     const tbody = document.getElementById('bookingsTableBody');
     if (!allBookings.length) {
-      tbody.innerHTML = '<tr><td colspan="6" style="color:#b48aa0;">No bookings found.</td></tr>';
+      tbody.innerHTML = '<tr><td colspan="6" style="color:var(--muted);">No bookings found.</td></tr>';
       return;
     }
     tbody.innerHTML = allBookings.map(b => {
       const dateStr = new Date(b.date).toLocaleDateString();
       const serviceNames = (b.serviceIds || []).map(s => s.name).join(', ');
-      const customer = b.customerId ? `${b.customerId.firstName} ${b.customerId.lastName}` : 'Guest';
+      const customer = b.customerId ? `${b.customerId.firstName || ''} ${b.customerId.lastName || ''}`.trim() : 'Guest';
       const stylistName = b.stylistId?.userId ? `${b.stylistId.userId.firstName || ''} ${b.stylistId.userId.lastName || ''}`.trim() || 'Stylist' : 'Stylist';
       const canAct = !['completed', 'cancelled', 'no_show'].includes(b.status);
+
       return `<tr>
-        <td>${dateStr}<br><span style="color:#b48aa0;font-size:0.7rem;">${b.startTime}</span></td>
+        <td>${dateStr}<br><span style="color:var(--muted);font-size:0.75rem;">${b.startTime}</span></td>
         <td>${escapeHtml(customer)}</td>
         <td>${escapeHtml(serviceNames)}</td>
         <td>${escapeHtml(stylistName)}</td>
         <td><span class="badge badge-${b.status}">${b.status}</span></td>
         <td>
           ${canAct ? `
-            <button class="btn-outline mark-complete" data-id="${b._id}" style="font-size:0.7rem;padding:0.3rem 0.5rem;">Complete</button>
-            <button class="btn-danger mark-noshow" data-id="${b._id}" style="font-size:0.7rem;padding:0.3rem 0.5rem;">No-show</button>
-            <button class="btn-outline admin-cancel" data-id="${b._id}" style="font-size:0.7rem;padding:0.3rem 0.5rem;">Cancel</button>
+            <button class="btn-outline btn-sm mark-complete" data-id="${b._id}">Complete</button>
+            <button class="btn-danger btn-sm mark-noshow" data-id="${b._id}">No-show</button>
           ` : ''}
         </td>
       </tr>`;
     }).join('');
 
     document.querySelectorAll('.mark-complete').forEach(btn =>
-  btn.addEventListener('click', () => markCompleteWithRating(btn.dataset.id))
-);
+      btn.addEventListener('click', () => markComplete(btn.dataset.id))
+    );
     document.querySelectorAll('.mark-noshow').forEach(btn =>
       btn.addEventListener('click', () => setBookingStatus(btn.dataset.id, 'no_show'))
     );
-    document.querySelectorAll('.admin-cancel').forEach(btn =>
-      btn.addEventListener('click', () => adminCancelBooking(btn.dataset.id))
-    );
   }
 
-
-function markCompleteWithRating(id) {
-  const input = prompt('Rate this appointment (1–5) before marking it complete:');
-  if (input === null) return;
-  const rating = Number(input);
-  if (!Number.isFinite(rating) || rating < 1 || rating > 5) {
-    showToast('Please enter a rating between 1 and 5.');
-    return;
+  function markComplete(id) {
+    const rating = prompt('Rate this appointment (1–5):');
+    if (rating === null) return;
+    const num = Number(rating);
+    if (!Number.isFinite(num) || num < 1 || num > 5) {
+      showToast('Please enter a rating between 1 and 5.');
+      return;
+    }
+    setBookingStatus(id, 'completed', num);
   }
-  setBookingStatus(id, 'completed', rating);
-}
 
-
- async function setBookingStatus(id, status, rating) {
-  showLoading(status === 'completed' ? 'Marking as completed...' : 'Updating booking...');
-  try {
-    const body = { status };
-    if (rating !== undefined) body.rating = rating;
-    const res = await fetch(`${API_BASE}/admin/bookings/${id}/status`, {
-      method: 'PUT',
-      headers: { 'Content-Type': 'application/json' },
-      credentials: 'include',
-      body: JSON.stringify(body)
-    });
-    const data = await res.json();
-        if (!res.ok) { showToast(data.message || 'Update failed.'); return; }
-    showToast('Booking updated.');
-    await loadAllBookings();
-    if (document.getElementById('reports-view').classList.contains('active')) updateReports();
-  } catch (err) {
-    showToast('Error updating booking.');
-  } finally {
-    hideLoading();
-  }
-}
-
-  async function adminCancelBooking(id) {
-    if (!confirm('Cancel this appointment?')) return;
-    showLoading('Cancelling...');
+  async function setBookingStatus(id, status, rating) {
+    showLoading('Updating...');
     try {
-      const res = await fetch(`${API_BASE}/bookings/${id}/cancel`, {
+      const body = { status };
+      if (rating !== undefined) body.rating = rating;
+      const res = await fetch(`${API_BASE}/admin/bookings/${id}/status`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         credentials: 'include',
-        body: JSON.stringify({})
+        body: JSON.stringify(body)
       });
       const data = await res.json();
-      if (!res.ok) { showToast(data.message || 'Cancel failed.'); return; }
-      showToast('Booking cancelled.');
+      if (!res.ok) { showToast(data.message || 'Update failed.'); return; }
+      showToast('Booking updated.');
       await loadAllBookings();
+      if (document.getElementById('reports-view').classList.contains('active')) updateReports();
     } catch (err) {
-      showToast('Error cancelling booking.');
+      showToast('Error updating booking.');
     } finally {
       hideLoading();
     }
   }
 
   // ============================================================
-  // ANALYTICS — real data from the backend reports API
+  // REPORTS / ANALYTICS
   // ============================================================
   async function updateReports() {
     const period = document.getElementById('reportPeriod').value;
     let startDate, endDate, today = new Date();
-    const future = new Date(); future.setFullYear(today.getFullYear() + 2); // catch all upcoming bookings
+    const future = new Date();
+    future.setFullYear(today.getFullYear() + 2);
 
     if (period === 'last30') { startDate = new Date(); startDate.setDate(today.getDate() - 30); endDate = future; }
     else if (period === 'last90') { startDate = new Date(); startDate.setDate(today.getDate() - 90); endDate = future; }
@@ -1140,12 +1871,9 @@ function markCompleteWithRating(id) {
       if (isNaN(startDate) || isNaN(endDate)) { startDate = new Date(); startDate.setDate(today.getDate() - 30); endDate = future; }
     }
 
-    currentFilter.start = startDate.toISOString().slice(0, 10);
-    currentFilter.end = endDate.toISOString().slice(0, 10);
+    const qs = `?startDate=${startDate.toISOString().slice(0, 10)}&endDate=${endDate.toISOString().slice(0, 10)}`;
 
-    const qs = `?startDate=${currentFilter.start}&endDate=${currentFilter.end}`;
-
-    showLoading('Crunching the numbers...');
+    showLoading('Loading reports...');
     try {
       const [trendsRes, popularityRes, performanceRes] = await Promise.all([
         fetch(`${API_BASE}/admin/reports/booking-trends${qs}`, { credentials: 'include' }),
@@ -1153,18 +1881,13 @@ function markCompleteWithRating(id) {
         fetch(`${API_BASE}/admin/reports/stylist-performance${qs}`, { credentials: 'include' })
       ]);
 
-      const trendsJson = await trendsRes.json();
-      const popularityJson = await popularityRes.json();
-      const performanceJson = await performanceRes.json();
+      const trends = await trendsRes.json();
+      const popularity = await popularityRes.json();
+      const performance = await performanceRes.json();
 
-      if (!trendsJson.success || !popularityJson.success || !performanceJson.success) {
-        throw new Error('One or more report requests failed.');
-      }
-
-      renderTrendsChart(trendsJson.data);
-      renderPeakHours(trendsJson.data);
-      renderServicePopularity(popularityJson.data);
-      renderStylistPerformance(performanceJson.data);
+      if (trends.success) renderTrends(trends.data);
+      if (popularity.success) renderPopularity(popularity.data);
+      if (performance.success) renderPerformance(performance.data);
     } catch (err) {
       showToast('Failed to load reports.');
     } finally {
@@ -1172,9 +1895,10 @@ function markCompleteWithRating(id) {
     }
   }
 
-  function renderTrendsChart(trends) {
+  function renderTrends(trends) {
     const dayCounts = new Array(7).fill(0);
-    (trends.bookingsByDay || []).forEach(d => { dayCounts[d._id - 1] = d.count; }); // 1=Sunday..7=Saturday
+    (trends.bookingsByDay || []).forEach(d => { dayCounts[d._id - 1] = d.count; });
+
     if (trendsChart) trendsChart.destroy();
     const ctx = document.getElementById('trendsBarChart').getContext('2d');
     trendsChart = new Chart(ctx, {
@@ -1190,25 +1914,23 @@ function markCompleteWithRating(id) {
         scales: { y: { beginAtZero: true, ticks: { precision: 0 } } }
       }
     });
-  }
 
-  function renderPeakHours(trends) {
     const byHour = trends.bookingsByHour || [];
     const strip = document.getElementById('peakHoursStrip');
     if (!byHour.length) {
-      strip.innerHTML = '<span style="color:#b48aa0;">No hourly data for this period.</span>';
+      strip.innerHTML = '<span style="color:var(--muted);font-size:0.85rem;">No hourly data available.</span>';
       return;
     }
     const top3 = [...byHour].sort((a, b) => b.count - a.count).slice(0, 3);
-    strip.innerHTML = 'Peak hours: ' + top3
-      .map(h => `<span style="display:inline-block;background:#fbe4ec;color:#a3315a;padding:0.2rem 0.6rem;border-radius:1rem;margin-right:0.4rem;">${String(h._id).padStart(2, '0')}:00 (${h.count})</span>`)
-      .join('');
+    strip.innerHTML = '<div class="peak-hours">' + top3.map(h =>
+      `<span class="peak-hour-tag">${String(h._id).padStart(2, '0')}:00 (${h.count})</span>`
+    ).join('') + '</div>';
   }
 
-  function renderServicePopularity(popularity) {
+  function renderPopularity(popularity) {
     const tbody = document.getElementById('servicePopularityBody');
     if (!popularity || !popularity.length) {
-      tbody.innerHTML = '<tr><td colspan="3" style="color:#b48aa0;">No bookings in this period.</td></tr>';
+      tbody.innerHTML = '<tr><td colspan="3" style="color:var(--muted);">No bookings in this period.</td></tr>';
       return;
     }
     tbody.innerHTML = popularity.map(s =>
@@ -1216,10 +1938,10 @@ function markCompleteWithRating(id) {
     ).join('');
   }
 
-  function renderStylistPerformance(performance) {
+  function renderPerformance(performance) {
     const tbody = document.getElementById('stylistTableBody');
     if (!performance || !performance.length) {
-      tbody.innerHTML = '<tr><td colspan="5" style="color:#b48aa0;">No stylist activity in this period.</td></tr>';
+      tbody.innerHTML = '<tr><td colspan="5" style="color:var(--muted);">No stylist activity.</td></tr>';
       return;
     }
     tbody.innerHTML = performance.map(s => {
@@ -1235,117 +1957,68 @@ function markCompleteWithRating(id) {
   }
 
   // ============================================================
-  // VIEW SWITCHING
-  // ============================================================
-  function switchView(viewId) {
-    document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
-    document.getElementById(`${viewId}-view`).classList.add('active');
-    document.querySelectorAll('.nav-item').forEach(nav => nav.classList.remove('active'));
-    document.querySelector(`.nav-item[data-view="${viewId}"]`).classList.add('active');
-    if (viewId === 'reports') updateReports();
-    if (viewId === 'bookings') loadAllBookings();
-  }
-
-  // ============================================================
-  // RENDER SERVICE MANAGER
-  // ============================================================
-  function renderServiceManager() {
-    const container = document.getElementById('servicesContainer');
-    if (!services.length) {
-      container.innerHTML = `<p style="color:#b48aa0;padding:1rem;">No services found. Add one!</p>`;
-      return;
-    }
-    const categories = [...new Map(services.map(s => [s.category, s.category])).values()];
-    let html = '';
-    categories.forEach(cat => {
-      const catServices = services.filter(s => s.category === cat);
-      html += `<div class="category-group"><div class="category-header">${cat}</div>`;
-      catServices.forEach(s => {
-        const sid = s._id || s.id;
-        html += `
-          <div class="service-row" data-id="${sid}">
-            <div class="service-info">
-              <span class="service-name">${escapeHtml(s.name)}</span>
-              <span class="service-duration">(${s.duration} min)</span>
-            </div>
-            <div class="service-price">R${s.price}</div>
-            <div class="service-actions">
-              <button class="edit-service" data-id="${sid}"><i class="fas fa-edit"></i></button>
-              <button class="delete-service" data-id="${sid}"><i class="fas fa-trash-alt"></i></button>
-            </div>
-          </div>
-        `;
-      });
-      html += `</div>`;
-    });
-    container.innerHTML = html;
-    document.querySelectorAll('.edit-service').forEach(btn =>
-      btn.addEventListener('click', (e) => { e.stopPropagation(); openEditServiceModal(btn.dataset.id); })
-    );
-    document.querySelectorAll('.delete-service').forEach(btn =>
-      btn.addEventListener('click', (e) => { e.stopPropagation(); deleteServiceFromDB(btn.dataset.id); })
-    );
-  }
-
-  // ============================================================
-  // SIGN OUT
+  // SIGN OUT — matching customer dashboard
   // ============================================================
   async function signOut() {
     showLoading('Signing out...');
     try {
-      await fetch(`${API_BASE}/auth/logout`, {
-        method: 'POST',
-        credentials: 'include'
-      });
-    } catch (error) {
-      console.warn('Admin logout request failed:', error);
-    }
-
-    localStorage.removeItem('auth_token');
+      await fetch(`${API_BASE}/auth/logout`, { method: 'POST', credentials: 'include' });
+    } catch (e) { /* ignore */ }
     localStorage.removeItem('user');
-    sessionStorage.removeItem('auth_token');
-    sessionStorage.removeItem('user');
+    localStorage.removeItem('auth_token');
+    sessionStorage.clear();
     document.cookie.split(';').forEach(c => {
       document.cookie = c.replace(/^ +/, '').replace(/=.*/, '=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/');
     });
-    history.replaceState(null, '', 'login.html');
     window.location.replace('login.html');
-    // no hideLoading() here — page is navigating away
   }
 
   // ============================================================
   // INIT
   // ============================================================
   document.addEventListener('DOMContentLoaded', async function() {
-    if (!localStorage.getItem('user')) {
+    let user = null;
+    try {
+      const stored = localStorage.getItem('user') || sessionStorage.getItem('user');
+      if (stored) user = JSON.parse(stored);
+    } catch (e) { /* ignore */ }
+
+    if (!user) {
       window.location.replace('login.html');
       return;
     }
 
-    document.querySelectorAll('.nav-item').forEach(nav =>
-      nav.addEventListener('click', () => switchView(nav.getAttribute('data-view')))
-    );
-    document.getElementById('signoutBtn').addEventListener('click', signOut);
+    // Set avatar (single circle, dark pink)
+    const initials = (user.firstName ? user.firstName[0] : '') + (user.lastName ? user.lastName[0] : '');
+    if (initials) document.getElementById('adminAvatar').textContent = initials.toUpperCase();
 
+    // Set greeting
+    const greeting = document.getElementById('greetingName');
+    if (greeting) {
+      const firstName = user.firstName || 'Admin';
+      greeting.textContent = `Hello, ${firstName}`;
+    }
+
+    // Event listeners
     document.getElementById('addServiceBtn').addEventListener('click', () => {
-      document.getElementById('modalTitle').innerText = 'Add Service';
-      document.getElementById('serviceCategory').value = "Nail Treatments";
+      document.getElementById('serviceModalTitle').textContent = 'Add Service';
+      document.getElementById('serviceId').value = '';
       document.getElementById('serviceName').value = '';
       document.getElementById('servicePrice').value = '';
       document.getElementById('serviceDuration').value = '';
-      document.getElementById('serviceId').value = '';
       document.getElementById('serviceModal').classList.add('active');
     });
-    document.getElementById('saveServiceBtn').addEventListener('click', saveServiceToDB);
+    document.getElementById('saveServiceBtn').addEventListener('click', saveService);
     document.getElementById('cancelModalBtn').addEventListener('click', closeServiceModal);
 
     document.getElementById('addStylistBtn').addEventListener('click', () => {
       populateStylistServiceOptions();
       openAddStylistModal();
     });
-    document.getElementById('saveStylistBtn').addEventListener('click', saveStylistToDB);
+    document.getElementById('saveStylistBtn').addEventListener('click', saveStylist);
     document.getElementById('cancelStylistModalBtn').addEventListener('click', closeStylistModal);
 
+    // Close modals on overlay click
     window.addEventListener('click', (e) => {
       if (e.target.classList.contains('modal')) {
         closeServiceModal();
@@ -1353,6 +2026,7 @@ function markCompleteWithRating(id) {
       }
     });
 
+    // Filter bar
     const periodSelect = document.getElementById('reportPeriod');
     const customDiv = document.getElementById('customDateRange');
     periodSelect.addEventListener('change', () => {
@@ -1362,21 +2036,24 @@ function markCompleteWithRating(id) {
       if (periodSelect.value === 'custom') {
         const s = document.getElementById('startDate').value;
         const e = document.getElementById('endDate').value;
-        if (!s || !e) { alert("Select both dates"); return; }
-        if (new Date(s) > new Date(e)) { alert("Start date must be before end date"); return; }
+        if (!s || !e) { showToast('Select both dates.'); return; }
+        if (new Date(s) > new Date(e)) { showToast('Start must be before end.'); return; }
       }
       updateReports();
-      showToast("Analytics updated.");
+      showToast('Analytics updated.');
     });
 
-    await loadServicesFromDB();
-    await loadStylistsFromDB();
-    populateStylistServiceOptions();
-
+    // Set default dates
     const todayStr = new Date().toISOString().slice(0, 10);
-    const thirtyAgo = new Date(); thirtyAgo.setDate(thirtyAgo.getDate() - 30);
+    const thirtyAgo = new Date();
+    thirtyAgo.setDate(thirtyAgo.getDate() - 30);
     document.getElementById('startDate').value = thirtyAgo.toISOString().slice(0, 10);
     document.getElementById('endDate').value = todayStr;
+
+    // Load data
+    await loadServices();
+    await loadStylists();
+    await loadAllBookings();
     updateReports();
   });
 </script>
