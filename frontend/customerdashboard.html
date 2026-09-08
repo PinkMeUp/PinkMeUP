@@ -213,12 +213,8 @@
       justify-content: center;
       transition: color 0.2s;
     }
-    .menu-btn:hover {
-      color: var(--rose);
-    }
-    .menu-btn i {
-      font-size: 1.5rem;
-    }
+    .menu-btn:hover { color: var(--rose); }
+    .menu-btn i { font-size: 1.5rem; }
 
     .brand-wrapper {
       display: flex;
@@ -242,10 +238,7 @@
       color: #000000;
       margin-top: 0.05rem;
     }
-    .header-right {
-      display: flex;
-      align-items: center;
-    }
+    .header-right { display: flex; align-items: center; }
 
     .top-tabs {
       display: flex;
@@ -314,7 +307,7 @@
       padding: 1rem 1.5rem;
       background: var(--bg);
       min-width: 0;
-      padding-bottom: 2rem;
+      padding-bottom: 5rem;
     }
     .view { display: none; animation: fadeIn 0.25s ease; }
     .view.active { display: block; }
@@ -413,12 +406,14 @@
       flex-wrap: wrap;
       gap: 0.5rem;
       transition: 0.2s;
+      cursor: pointer;
     }
-    .appointment-card:hover { border-color: var(--rose-light); }
+    .appointment-card:hover { border-color: var(--rose-light); box-shadow: 0 2px 8px rgba(0,0,0,0.08); }
     .appointment-info {
       display: flex;
       flex-direction: column;
       gap: 0.2rem;
+      flex: 1;
     }
     .appointment-service {
       font-weight: 600;
@@ -875,9 +870,7 @@
       border-top: 1px solid #f0f0f0;
       flex-wrap: wrap;
       gap: 0.5rem;
-      margin-top: 0.8rem;
-      position: sticky;
-      bottom: 0;
+      margin-top: 1.5rem;
       background: var(--bg);
     }
     .step-indicator { font-size: 0.9rem; color: #888; }
@@ -922,18 +915,16 @@
       color: var(--ink);
     }
     .appointments-sub { font-size: 1rem; color: #888; margin-top: 0.1rem; }
-    .appointments-divider { height: 1px; background: var(--border); margin: 0 0 1rem 0; }
 
     .filter-tabs {
       display: flex;
       gap: 0.5rem;
-      margin-bottom: 1rem;
+      margin-bottom: 1.5rem;
       flex-wrap: wrap;
-      padding-bottom: 0.5rem;
     }
     .filter-btn {
       padding: 0.5rem 1.4rem;
-      border-radius: 2rem;
+      border-radius: 0;
       border: none;
       background: transparent;
       font-size: 0.95rem;
@@ -943,14 +934,14 @@
       transition: 0.2s;
       font-family: inherit;
       white-space: nowrap;
+      border-bottom: 3px solid transparent;
       flex: 0 1 auto;
     }
-    .filter-btn:hover { background: var(--rose-pale); color: var(--rose); }
+    .filter-btn:hover { color: var(--rose); }
     .filter-btn.active {
-      background: var(--rose);
-      color: white;
+      color: var(--rose);
       font-weight: 600;
-      box-shadow: 0 2px 8px rgba(212, 63, 107, 0.2);
+      border-bottom-color: var(--rose);
     }
 
     .appointments-list { display: flex; flex-direction: column; gap: 0.6rem; }
@@ -958,20 +949,22 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 0.9rem 0;
-      border-bottom: 1px solid #f0f0f0;
+      padding: 1rem 1.2rem;
+      border: 1px solid var(--border);
+      border-radius: 0.8rem;
       flex-wrap: wrap;
       gap: 0.4rem;
       transition: 0.15s;
+      cursor: pointer;
+      background: white;
     }
-    .appointment-item:hover { background: #fafafa; padding: 0.9rem 0.5rem; margin: 0 -0.5rem; border-radius: 0.5rem; }
-    .appointment-item:last-child { border-bottom: none; }
+    .appointment-item:hover { border-color: var(--rose-light); box-shadow: 0 2px 8px rgba(0,0,0,0.06); }
     .appointment-item-info { display: flex; flex-direction: column; gap: 0.15rem; flex: 1; min-width: 150px; }
     .appointment-item-service { font-weight: 600; font-size: 1.05rem; color: var(--ink); }
     .appointment-item-details { display: flex; gap: 0.8rem; flex-wrap: wrap; font-size: 0.9rem; color: #888; }
     .appointment-item-details span { display: flex; align-items: center; gap: 0.2rem; }
     .appointment-item-status { flex-shrink: 0; }
-    .appointment-item-actions { display: flex; gap: 0.3rem; flex-shrink: 0; }
+    .appointment-item-chevron { flex-shrink: 0; color: #ccc; }
 
     .profile-container { max-width: 500px; margin: 0 auto; padding: 0.5rem 0; }
     .profile-header { text-align: center; padding: 1rem 0 1.2rem 0; }
@@ -1223,7 +1216,7 @@
       .sidebar { width: 280px; left: -300px; }
       .sidebar-username { font-size: 1.2rem; }
       .sidebar-nav-item { font-size: 1.05rem; padding: 0.7rem 0.6rem; }
-      .filter-btn { font-size: 0.85rem; padding: 0.4rem 1rem; }
+      .filter-btn { font-size: 0.85rem; padding: 0.4rem 0.8rem; }
     }
   </style>
 </head>
@@ -1702,7 +1695,7 @@
       <h4>Managing Appointments</h4>
       <p>• View all appointments under "My Appointments".</p>
       <p>• Use filter buttons (All, Upcoming, Past, Cancelled) to sort.</p>
-      <p>• Click icons to view details, reschedule, or cancel.</p>
+      <p>• Click on an appointment to view details and manage it.</p>
     </div>
     <div class="help-card">
       <h4>Contact & Support</h4>
@@ -1814,6 +1807,7 @@
     if (viewId === 'appointments') renderAppointments();
     if (viewId === 'book') { resetWizard(); }
     if (viewId === 'profile') { updateProfileStats(); }
+    document.querySelector('.main').scrollTop = 0;
   }
 
   let currentMonth = new Date().getMonth();
@@ -1887,7 +1881,7 @@
       return;
     }
     el.innerHTML = upcomingAppts.map(a => `
-      <div class="appointment-card">
+      <div class="appointment-card" onclick="openDetailModal('${a.id}')">
         <div class="appointment-info">
           <div class="appointment-service">${a.services.map(s => s.name).join(', ')}</div>
           <div class="appointment-details">
@@ -1897,11 +1891,7 @@
             <span class="badge badge-upcoming">Upcoming</span>
           </div>
         </div>
-        <div class="appointment-actions">
-          <button class="appt-btn" onclick="openDetailModal('${a.id}')"><i class="fas fa-eye"></i> View</button>
-          <button class="appt-btn" onclick="openRescheduleModal('${a.id}')"><i class="fas fa-calendar-alt"></i> Reschedule</button>
-          <button class="appt-btn danger" onclick="cancelAppointment('${a.id}')"><i class="fas fa-times"></i> Cancel</button>
-        </div>
+        <div class="appointment-item-chevron"><i class="fas fa-chevron-right"></i></div>
       </div>
     `).join('');
   }
@@ -1919,7 +1909,7 @@
     const sorted = [...filtered].sort((a, b) => b.date.localeCompare(a.date));
     const statusMap = { upcoming: 'badge-upcoming', past: 'badge-past', cancelled: 'badge-cancelled', pending: 'badge-pending' };
     el.innerHTML = sorted.map(a => `
-      <div class="appointment-item">
+      <div class="appointment-item" onclick="openDetailModal('${a.id}')">
         <div class="appointment-item-info">
           <div class="appointment-item-service">${a.services.map(s => s.name).join(', ')}</div>
           <div class="appointment-item-details">
@@ -1931,13 +1921,7 @@
         <div class="appointment-item-status">
           <span class="badge ${statusMap[a.status]}">${a.status}</span>
         </div>
-        <div class="appointment-item-actions">
-          <button class="appt-btn" onclick="openDetailModal('${a.id}')"><i class="fas fa-eye"></i></button>
-          ${a.status === 'upcoming' ? `
-            <button class="appt-btn" onclick="openRescheduleModal('${a.id}')"><i class="fas fa-calendar-alt"></i></button>
-            <button class="appt-btn danger" onclick="cancelAppointment('${a.id}')"><i class="fas fa-times"></i></button>
-          ` : ''}
-        </div>
+        <div class="appointment-item-chevron"><i class="fas fa-chevron-right"></i></div>
       </div>
     `).join('');
   }
@@ -2090,7 +2074,6 @@
     document.getElementById('wPrev').style.visibility = n === 1 ? 'hidden' : 'visible';
     document.getElementById('wNext').innerHTML = n === 4 ? 'Confirm' : 'Next <i class="fas fa-arrow-right"></i>';
     if (n === 4) buildReview();
-    // Scroll to top of wizard when changing steps
     document.querySelector('.main').scrollTop = 0;
   }
 
@@ -2100,7 +2083,6 @@
     if (wizardStep === 3) { const name = document.getElementById('detName').value.trim(); const email = document.getElementById('detEmail').value.trim(); const phone = document.getElementById('detPhone').value.trim(); if (!name || !email || !phone) { showToast('Please fill in your name, email, and phone number.'); return; } }
     if (wizardStep === 4) { confirmBooking(); return; }
     gotoStep(wizardStep + 1);
-    // Ensure scroll to bottom to see buttons
     setTimeout(() => { const main = document.querySelector('.main'); main.scrollTop = main.scrollHeight; }, 100);
   }
 
@@ -2189,17 +2171,24 @@
     const dur = a.services.reduce((s, sv) => s + sv.duration, 0);
     const statusMap = { upcoming: 'badge-upcoming', past: 'badge-past', cancelled: 'badge-cancelled', pending: 'badge-pending' };
     document.getElementById('modalContent').innerHTML = `
-      <div style="margin-bottom:0.6rem;"><span class="badge ${statusMap[a.status]}">${a.status}</span></div>
+      <div style="margin-bottom:1rem; display: flex; justify-content: space-between; align-items: center;">
+        <span class="badge ${statusMap[a.status]}">${a.status}</span>
+      </div>
       <div class="review-section-title">Appointment Info</div>
       <div class="review-row"><span>Date</span><span>${formatDate(a.date)}</span></div>
       <div class="review-row"><span>Time</span><span>${a.time}</span></div>
       <div class="review-row"><span>Stylist</span><span>${a.stylist}</span></div>
       <div class="review-row"><span>Duration</span><span>~${formatDur(dur)}</span></div>
-      <div class="review-section-title" style="margin-top:0.6rem;">Services Booked</div>
+      <div class="review-section-title" style="margin-top:0.8rem;">Services Booked</div>
       <div class="review-services-list">${a.services.map(sv => `<div class="review-svc-item"><div><div style="font-weight:600;font-size:1rem;">${sv.name}</div><div style="font-size:0.85rem;color:#888;">${sv.duration} min</div></div><span style="font-weight:700;color:var(--rose);">R${sv.price}</span></div>`).join('')}</div>
       <div class="review-total"><span>Total</span><span>R${total.toLocaleString()}</span></div>
-      ${a.notes ? `<div class="review-section-title" style="margin-top:0.6rem;">Notes</div><p style="font-size:0.95rem;color:#888;">${a.notes}</p>` : ''}
-      ${a.status === 'upcoming' ? `<button class="btn-primary" style="margin-top:0.8rem;background:#DC2626;" onclick="cancelAppointment('${a.id}');closeModal()"><i class="fas fa-times"></i> Cancel Appointment</button>` : ''}
+      ${a.notes ? `<div class="review-section-title" style="margin-top:0.8rem;">Notes</div><p style="font-size:0.95rem;color:#888;margin-top:0.3rem;">${a.notes}</p>` : ''}
+      ${a.status === 'upcoming' ? `
+        <div style="margin-top:1.5rem; display: flex; gap: 0.6rem; flex-wrap: wrap;">
+          <button class="btn-primary" style="flex:1; justify-content:center; background: var(--gradient);" onclick="openRescheduleModal('${a.id}');closeModal()"><i class="fas fa-calendar-alt"></i> Reschedule</button>
+          <button class="btn-primary" style="flex:1; justify-content:center; background:#DC2626;" onclick="cancelAppointment('${a.id}');closeModal()"><i class="fas fa-times"></i> Cancel</button>
+        </div>
+      ` : ''}
     `;
     document.getElementById('detailOverlay').classList.add('open');
   }
