@@ -7,7 +7,6 @@
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
   <style>
-    /* ----- ROOT ----- */
     :root {
       --rose: #D43F6B;
       --rose-light: #FFB6C1;
@@ -35,10 +34,9 @@
       overflow: hidden;
       display: flex;
       flex-direction: column;
-      font-size: 16px; /* base font size increased */
+      font-size: 16px;
     }
 
-    /* ----- SIDEBAR ----- */
     .sidebar-overlay {
       display: none;
       position: fixed;
@@ -107,8 +105,8 @@
       gap: 1rem;
       padding: 0.85rem 0.8rem;
       border-radius: 0.6rem;
-      font-size: 1.15rem; /* larger text */
-      font-weight: 400; /* not bold */
+      font-size: 1.15rem;
+      font-weight: 400;
       color: var(--ink);
       cursor: pointer;
       transition: 0.2s;
@@ -160,7 +158,7 @@
       margin-bottom: 0.4rem;
     }
     .sidebar-contact-info {
-      font-size: 0.95rem; /* bigger */
+      font-size: 0.95rem;
       color: #555;
       margin-bottom: 0.4rem;
     }
@@ -190,7 +188,6 @@
       margin-top: 0.3rem;
     }
 
-    /* ----- HEADER ----- */
     .header {
       background: var(--bg);
       padding: 0.8rem 1.5rem 0.5rem 1.5rem;
@@ -250,18 +247,18 @@
       align-items: center;
     }
 
-    /* ----- TOP TABS (Superbalist style) ----- */
     .top-tabs {
       display: flex;
       background: var(--bg);
-      padding: 0.3rem 1.5rem 0 1.5rem;
+      padding: 0 1.5rem;
       flex-shrink: 0;
-      gap: 0.3rem;
+      gap: 0;
       justify-content: space-around;
+      border-bottom: 2px solid #f0f0f0;
     }
     .tab-item {
-      padding: 0.7rem 0.6rem;
-      font-size: 1rem; /* bigger */
+      padding: 0.8rem 0.6rem;
+      font-size: 1rem;
       font-weight: 600;
       color: #888;
       cursor: pointer;
@@ -274,6 +271,8 @@
       font-family: inherit;
       flex: 1;
       text-align: center;
+      position: relative;
+      margin-bottom: -2px;
     }
     .tab-item.active {
       color: var(--rose);
@@ -284,8 +283,23 @@
       font-size: 1.5rem;
       margin-bottom: 0.1rem;
     }
+    .badge-dot {
+      position: absolute;
+      top: 0.3rem;
+      right: 0.5rem;
+      background: var(--rose);
+      color: white;
+      border-radius: 50%;
+      width: 20px;
+      height: 20px;
+      font-size: 0.7rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      line-height: 1;
+    }
 
-    /* ----- APP LAYOUT ----- */
     .app {
       display: flex;
       flex: 1;
@@ -294,14 +308,13 @@
       background: var(--bg);
     }
 
-    /* ----- MAIN CONTENT ----- */
     .main {
       flex: 1;
       overflow-y: auto;
       padding: 1rem 1.5rem;
       background: var(--bg);
       min-width: 0;
-      padding-bottom: 0.5rem;
+      padding-bottom: 2rem;
     }
     .view { display: none; animation: fadeIn 0.25s ease; }
     .view.active { display: block; }
@@ -310,7 +323,6 @@
       to   { opacity: 1; transform: translateY(0); }
     }
 
-    /* ----- OVERVIEW ----- */
     .overview-header {
       display: flex;
       justify-content: space-between;
@@ -357,6 +369,7 @@
       padding: 1rem 1.2rem;
       text-align: center;
       transition: 0.2s;
+      position: relative;
     }
     .stat-card:hover { transform: translateY(-2px); box-shadow: var(--shadow); }
     .stat-number {
@@ -465,7 +478,6 @@
     .empty-state p { font-size: 1rem; margin-bottom: 0.6rem; }
     .empty-state .book-link { color: var(--rose); font-weight: 600; cursor: pointer; }
 
-    /* ----- BOOKING WIZARD ----- */
     .wizard-steps {
       display: flex;
       gap: 0;
@@ -864,6 +876,9 @@
       flex-wrap: wrap;
       gap: 0.5rem;
       margin-top: 0.8rem;
+      position: sticky;
+      bottom: 0;
+      background: var(--bg);
     }
     .step-indicator { font-size: 0.9rem; color: #888; }
 
@@ -898,7 +913,6 @@
     }
     .btn-ghost:hover { border-color: var(--rose); color: var(--rose); }
 
-    /* ----- APPOINTMENTS ----- */
     .appointments-container { max-width: 100%; }
     .appointments-header { padding: 0.5rem 0 0.5rem 0; }
     .appointments-title {
@@ -910,13 +924,11 @@
     .appointments-sub { font-size: 1rem; color: #888; margin-top: 0.1rem; }
     .appointments-divider { height: 1px; background: var(--border); margin: 0 0 1rem 0; }
 
-    /* FILTER BUTTONS - clean style */
     .filter-tabs {
       display: flex;
       gap: 0.5rem;
       margin-bottom: 1rem;
       flex-wrap: wrap;
-      border-bottom: 1px solid var(--border);
       padding-bottom: 0.5rem;
     }
     .filter-btn {
@@ -931,6 +943,7 @@
       transition: 0.2s;
       font-family: inherit;
       white-space: nowrap;
+      flex: 0 1 auto;
     }
     .filter-btn:hover { background: var(--rose-pale); color: var(--rose); }
     .filter-btn.active {
@@ -960,7 +973,6 @@
     .appointment-item-status { flex-shrink: 0; }
     .appointment-item-actions { display: flex; gap: 0.3rem; flex-shrink: 0; }
 
-    /* ----- PROFILE ----- */
     .profile-container { max-width: 500px; margin: 0 auto; padding: 0.5rem 0; }
     .profile-header { text-align: center; padding: 1rem 0 1.2rem 0; }
     .profile-avatar-large {
@@ -1024,7 +1036,6 @@
     .profile-action-btn.danger:hover { background: #FEF2F2; }
     .profile-action-btn.danger:hover .action-icon { color: #DC2626; }
 
-    /* ----- MODAL ----- */
     .overlay {
       display: none;
       position: fixed;
@@ -1075,23 +1086,6 @@
     }
     .modal-close:hover { background: var(--rose); color: white; }
 
-    .icon-btn {
-      width: 30px;
-      height: 30px;
-      border-radius: 50%;
-      border: 1.5px solid var(--border);
-      background: white;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-      font-size: 0.8rem;
-      color: var(--ink);
-      transition: 0.15s;
-    }
-    .icon-btn:hover { border-color: var(--rose); color: var(--rose); }
-    .icon-btn.danger:hover { border-color: #DC2626; color: #DC2626; }
-
     .confirmation-modal { max-width: 500px !important; text-align: center; padding: 2rem 1.5rem !important; }
     .confirmation-icon { font-size: 3.5rem; margin-bottom: 0.3rem; }
     .confirmation-icon i { background: #E6F7F2; border-radius: 50%; padding: 0.8rem; color: var(--success); }
@@ -1135,7 +1129,6 @@
     }
     #toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
 
-    /* HELP MODAL */
     .help-card {
       background: #f9f9f9;
       border-radius: 1rem;
@@ -1171,7 +1164,6 @@
       flex-shrink: 0;
     }
 
-    /* ----- RESPONSIVE ----- */
     @media (max-width: 768px) {
       body { font-size: 15px; }
       .header, .top-tabs, .main { padding-left: 1rem; padding-right: 1rem; }
@@ -1231,6 +1223,7 @@
       .sidebar { width: 280px; left: -300px; }
       .sidebar-username { font-size: 1.2rem; }
       .sidebar-nav-item { font-size: 1.05rem; padding: 0.7rem 0.6rem; }
+      .filter-btn { font-size: 0.85rem; padding: 0.4rem 1rem; }
     }
   </style>
 </head>
@@ -1270,7 +1263,8 @@
     <div class="sidebar-social-label">Connect with us</div>
     <div class="sidebar-contact-info">
       <div><i class="fas fa-phone"></i> 076 769 0102</div>
-      <div style="margin-top:0.2rem;"><i class="fas fa-clock"></i> Mon-Fri: 9am-6pm | Sat: 9am-2pm</div>
+      <div><i class="fas fa-clock"></i> Mon-Fri: 9am-6pm</div>
+      <div style="margin-left: 20px;">Sat: 9am-2pm</div>
     </div>
     <div class="sidebar-social-icons">
       <a href="#" target="_blank"><i class="fab fa-instagram"></i></a>
@@ -1315,10 +1309,9 @@
 </div>
 
 <div class="app">
-  <!-- MAIN CONTENT -->
   <main class="main">
 
-    <!-- ── OVERVIEW ── -->
+    <!-- OVERVIEW -->
     <section id="overview-view" class="view active">
       <div class="overview-header">
         <div>
@@ -1360,7 +1353,7 @@
       </div>
     </section>
 
-    <!-- ── BOOK APPOINTMENT ── -->
+    <!-- BOOK APPOINTMENT -->
     <section id="book-view" class="view">
       <div class="overview-header" style="margin-bottom:0.8rem;">
         <div>
@@ -1376,7 +1369,7 @@
         </div>
         <div class="w-step" id="ws2" onclick="gotoStep(2)">
           <div class="w-step-num">2</div>
-          <span>Date & Time</span>
+          <span>Date, Stylist & Time</span>
         </div>
         <div class="w-step" id="ws3" onclick="gotoStep(3)">
           <div class="w-step-num">3</div>
@@ -1431,6 +1424,10 @@
             </div>
             <input type="hidden" id="apptDate" min="">
           </div>
+          <div class="booking-panel stylist-panel">
+            <div class="panel-label">Choose Stylist</div>
+            <div class="stylist-grid" id="stylistGrid"></div>
+          </div>
           <div class="booking-panel time-panel">
             <div class="panel-label">Available Time Slots</div>
             <div class="time-slots-container">
@@ -1439,14 +1436,6 @@
             <div style="margin-top:0.6rem;font-size:0.9rem;color:#888;">
               <i class="fas fa-info-circle"></i>
               Your session will be approximately <strong id="totalDurLabel">—</strong>
-            </div>
-          </div>
-          <div class="booking-panel stylist-panel">
-            <div class="panel-label">Choose Stylist</div>
-            <div class="stylist-grid" id="stylistGrid"></div>
-            <div style="margin-top:0.6rem;font-size:0.9rem;color:#888;">
-              <i class="fas fa-user-check"></i>
-              Select a stylist for your appointment
             </div>
           </div>
         </div>
@@ -1494,16 +1483,14 @@
       </div>
     </section>
 
-    <!-- ── APPOINTMENTS ── -->
+    <!-- APPOINTMENTS -->
     <section id="appointments-view" class="view">
       <div class="appointments-container">
         <div class="appointments-header">
           <div class="appointments-title">My Appointments</div>
           <div class="appointments-sub">All your bookings in one place</div>
         </div>
-        <div class="appointments-divider"></div>
 
-        <!-- Clean filter buttons -->
         <div class="filter-tabs" id="filterTabs">
           <button class="filter-btn active" data-filter="all">All</button>
           <button class="filter-btn" data-filter="upcoming">Upcoming</button>
@@ -1521,7 +1508,7 @@
       </div>
     </section>
 
-    <!-- ── PROFILE ── -->
+    <!-- PROFILE -->
     <section id="profile-view" class="view">
       <div class="profile-container">
         <div class="profile-header">
@@ -1606,7 +1593,7 @@
   </main>
 </div>
 
-<!-- APPOINTMENT DETAIL MODAL -->
+<!-- DETAIL MODAL -->
 <div class="overlay" id="detailOverlay">
   <div class="modal-box">
     <div class="modal-header">
@@ -1672,7 +1659,7 @@
       </div>
     </div>
     <div class="confirmation-actions">
-      <button class="btn-primary" onclick="downloadInvoice()">
+      <button class="btn-primary" onclick="autoDownloadInvoice()">
         <i class="fas fa-download"></i> Download Invoice
       </button>
       <button class="btn-ghost" onclick="closeConfirmation()">
@@ -1701,7 +1688,7 @@
       </div>
       <div class="help-step">
         <div class="help-step-number">3</div>
-        <p>Pick a date, time slot, and preferred stylist.</p>
+        <p>Pick a date, choose a stylist, then select an available time.</p>
       </div>
       <div class="help-step">
         <div class="help-step-number">4</div>
@@ -1720,7 +1707,8 @@
     <div class="help-card">
       <h4>Contact & Support</h4>
       <p><i class="fas fa-phone"></i> 076 769 0102</p>
-      <p><i class="fas fa-clock"></i> Mon-Fri: 9am-6pm | Sat: 9am-2pm</p>
+      <p><i class="fas fa-clock"></i> Mon-Fri: 9am-6pm</p>
+      <p style="margin-left: 20px;">Sat: 9am-2pm</p>
     </div>
   </div>
 </div>
@@ -1731,31 +1719,17 @@
 <script src="js/auth.js"></script>
 
 <script>
-  // ============================================================
-  // SIDEBAR
-  // ============================================================
   const sidebar = document.getElementById('sidebar');
   const overlay = document.getElementById('sidebarOverlay');
   const menuToggle = document.getElementById('menuToggle');
   const sidebarClose = document.getElementById('sidebarClose');
 
-  function openSidebar() {
-    sidebar.classList.add('open');
-    overlay.classList.add('active');
-  }
-
-  function closeSidebar() {
-    sidebar.classList.remove('open');
-    overlay.classList.remove('active');
-  }
-
+  function openSidebar() { sidebar.classList.add('open'); overlay.classList.add('active'); }
+  function closeSidebar() { sidebar.classList.remove('open'); overlay.classList.remove('active'); }
   if (menuToggle) menuToggle.addEventListener('click', openSidebar);
   if (sidebarClose) sidebarClose.addEventListener('click', closeSidebar);
   if (overlay) overlay.addEventListener('click', closeSidebar);
 
-  // ============================================================
-  // TOP TABS
-  // ============================================================
   document.querySelectorAll('.tab-item').forEach(tab => {
     tab.addEventListener('click', function() {
       const viewId = this.dataset.tab;
@@ -1765,11 +1739,7 @@
     });
   });
 
-  // ============================================================
-  // FILTER BUTTONS
-  // ============================================================
   let currentFilter = 'all';
-
   document.addEventListener('DOMContentLoaded', function() {
     const filterTabs = document.getElementById('filterTabs');
     if (filterTabs) {
@@ -1784,24 +1754,12 @@
     }
   });
 
-  function help() {
-    document.getElementById('helpModal').classList.add('open');
-  }
-
-  function closeHelpModal() {
-    document.getElementById('helpModal').classList.remove('open');
-  }
-  document.getElementById('helpModal').addEventListener('click', e => {
-    if (e.target === e.currentTarget) closeHelpModal();
-  });
-
-  // ============================================================
-  // REST OF JS (unchanged from previous working version)
-  // ============================================================
+  function help() { document.getElementById('helpModal').classList.add('open'); }
+  function closeHelpModal() { document.getElementById('helpModal').classList.remove('open'); }
+  document.getElementById('helpModal').addEventListener('click', e => { if (e.target === e.currentTarget) closeHelpModal(); });
 
   let SERVICES = [];
   let CATEGORIES = [];
-
   async function loadServices() {
     const res = await fetch(`${API_URL}/services?limit=100`, { credentials: 'include' });
     const data = await res.json();
@@ -1811,7 +1769,6 @@
   }
 
   let STYLISTS = [];
-
   async function loadStylists() {
     const res = await fetch(`${API_URL}/stylists?limit=100`, { credentials: 'include' });
     const data = await res.json();
@@ -1824,81 +1781,41 @@
   }
 
   let appointments = [];
-
   async function loadAppointments() {
     try {
       const res = await fetch(`${API_URL}/bookings/my?limit=100`, { credentials: 'include' });
       const data = await res.json();
-      if (!res.ok || !data?.data?.bookings) {
-        appointments = [];
-        return;
-      }
-
+      if (!res.ok || !data?.data?.bookings) { appointments = []; return; }
       const now = new Date();
-
       appointments = data.data.bookings.map(b => {
         let displayStatus;
-        if (b.status === 'cancelled') {
-          displayStatus = 'cancelled';
-        } else if (b.status === 'completed') {
-          displayStatus = 'past';
-        } else {
-          const apptDateTime = new Date(b.date);
-          const [h, m] = (b.startTime || '0:0').split(':').map(Number);
-          apptDateTime.setHours(h, m, 0, 0);
-          displayStatus = apptDateTime >= now ? 'upcoming' : 'past';
-        }
-
+        if (b.status === 'cancelled') displayStatus = 'cancelled';
+        else if (b.status === 'completed') displayStatus = 'past';
+        else { const apptDateTime = new Date(b.date); const [h, m] = (b.startTime || '0:0').split(':').map(Number); apptDateTime.setHours(h, m, 0, 0); displayStatus = apptDateTime >= now ? 'upcoming' : 'past'; }
         const appointmentDate = new Date(b.date);
-        const localDate = !Number.isNaN(appointmentDate.getTime())
-          ? `${appointmentDate.getFullYear()}-${String(appointmentDate.getMonth() + 1).padStart(2, '0')}-${String(appointmentDate.getDate()).padStart(2, '0')}`
-          : String(b.date || '').slice(0, 10);
-
-        return {
-          id: b._id,
-          services: (b.serviceIds || []).map(s => ({ id: s._id, name: s.name, price: s.price, duration: s.duration })),
-          date: localDate,
-          time: b.startTime,
-          stylistId: b.stylistId?._id || b.stylistId || '',
-          stylist: [b.stylistId?.userId?.firstName, b.stylistId?.userId?.lastName].filter(Boolean).join(' ') || 'Stylist',
-          notes: b.notes,
-          status: displayStatus,
-          rawStatus: b.status,
-          canRate: b.status === 'completed'
-        };
+        const localDate = !Number.isNaN(appointmentDate.getTime()) ? `${appointmentDate.getFullYear()}-${String(appointmentDate.getMonth() + 1).padStart(2, '0')}-${String(appointmentDate.getDate()).padStart(2, '0')}` : String(b.date || '').slice(0, 10);
+        return { id: b._id, services: (b.serviceIds || []).map(s => ({ id: s._id, name: s.name, price: s.price, duration: s.duration })), date: localDate, time: b.startTime, stylistId: b.stylistId?._id || b.stylistId || '', stylist: [b.stylistId?.userId?.firstName, b.stylistId?.userId?.lastName].filter(Boolean).join(' ') || 'Stylist', notes: b.notes, status: displayStatus, rawStatus: b.status, canRate: b.status === 'completed' };
       });
-    } catch (error) {
-      console.warn('Could not load appointments:', error);
-      appointments = [];
-    }
+    } catch (error) { console.warn('Could not load appointments:', error); appointments = []; }
   }
 
   let wizardStep = 1;
   let cartIds = [];
   let activeCat = CATEGORIES[0];
-
-  let bookState = {
-    date: "", time: "", stylistId: "", stylist: ""
-  };
-
+  let bookState = { date: "", time: "", stylistId: "", stylist: "" };
   let lastBookingData = null;
 
   function switchView(viewId) {
     document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
     document.getElementById(`${viewId}-view`).classList.add('active');
-
     document.querySelectorAll('.tab-item').forEach(t => t.classList.remove('active'));
     document.querySelector(`.tab-item[data-tab="${viewId}"]`)?.classList.add('active');
-
     if (viewId === 'overview') renderOverview();
     if (viewId === 'appointments') renderAppointments();
     if (viewId === 'book') { resetWizard(); }
     if (viewId === 'profile') { updateProfileStats(); }
   }
 
-  // ============================================================
-  // CALENDAR FUNCTIONS
-  // ============================================================
   let currentMonth = new Date().getMonth();
   let currentYear = new Date().getFullYear();
   let selectedDate = '';
@@ -1907,46 +1824,32 @@
     const monthNames = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
     const el = document.getElementById('currentMonthLabel');
     if (el) el.textContent = `${monthNames[month]}, ${year}`;
-
     const firstDay = new Date(year, month, 1).getDay();
     const daysInMonth = new Date(year, month + 1, 0).getDate();
     const today = new Date();
     const todayStr = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}-${String(today.getDate()).padStart(2, '0')}`;
-
     let html = '';
     let startOffset = firstDay === 0 ? 6 : firstDay - 1;
-
-    for (let i = 0; i < startOffset; i++) {
-      html += '<div class="calendar-day empty"></div>';
-    }
-
+    for (let i = 0; i < startOffset; i++) { html += '<div class="calendar-day empty"></div>'; }
     for (let day = 1; day <= daysInMonth; day++) {
       const dateStr = `${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
       const isPast = dateStr < todayStr;
       const isToday = dateStr === todayStr;
       const isSelected = dateStr === selectedDate;
-
       let classes = 'calendar-day';
       if (isPast) classes += ' past';
       if (isToday) classes += ' today';
       if (isSelected) classes += ' selected';
-
       html += `<div class="${classes}" data-date="${dateStr}" onclick="selectCalendarDate('${dateStr}')">${day}</div>`;
     }
-
     const daysEl = document.getElementById('calendarDays');
     if (daysEl) daysEl.innerHTML = html;
   }
 
   function changeMonth(delta) {
     currentMonth += delta;
-    if (currentMonth > 11) {
-      currentMonth = 0;
-      currentYear++;
-    } else if (currentMonth < 0) {
-      currentMonth = 11;
-      currentYear--;
-    }
+    if (currentMonth > 11) { currentMonth = 0; currentYear++; }
+    else if (currentMonth < 0) { currentMonth = 11; currentYear--; }
     renderCalendar(currentMonth, currentYear);
   }
 
@@ -1965,29 +1868,18 @@
     return `${year}-${month}-${day}`;
   }
 
-  // ============================================================
-  // RENDER FUNCTIONS
-  // ============================================================
-
   function renderOverview() {
     const total = appointments.length;
     const upcoming = appointments.filter(a => a.status === 'upcoming').length;
     const spend = appointments.filter(a => a.status !== 'cancelled').reduce((s, a) => s + a.services.reduce((x, sv) => x + sv.price, 0), 0);
     const svcCount = appointments.filter(a => a.status !== 'cancelled').reduce((s, a) => s + a.services.length, 0);
-
     document.getElementById('statTotal').textContent = total;
     document.getElementById('statUpcoming').textContent = upcoming;
     document.getElementById('statSpend').textContent = `R${spend.toLocaleString()}`;
     document.getElementById('statServices').textContent = svcCount;
-
     const badge = document.getElementById('tabBadge');
-    if (upcoming > 0) {
-      badge.style.display = 'inline-block';
-      badge.textContent = upcoming;
-    } else {
-      badge.style.display = 'none';
-    }
-
+    if (upcoming > 0) { badge.style.display = 'flex'; badge.textContent = upcoming; }
+    else { badge.style.display = 'none'; }
     const upcomingAppts = appointments.filter(a => a.status === 'upcoming');
     const el = document.getElementById('overviewUpcomingBody');
     if (!upcomingAppts.length) {
@@ -2012,33 +1904,20 @@
         </div>
       </div>
     `).join('');
-    bindRowActions();
   }
 
   function renderAppointments() {
     const el = document.getElementById('appointmentsBody');
     let filtered = appointments;
-
-    if (currentFilter === 'upcoming') {
-      filtered = appointments.filter(a => a.status === 'upcoming');
-    } else if (currentFilter === 'past') {
-      filtered = appointments.filter(a => a.status === 'past');
-    } else if (currentFilter === 'cancelled') {
-      filtered = appointments.filter(a => a.status === 'cancelled');
-    }
-
+    if (currentFilter === 'upcoming') filtered = appointments.filter(a => a.status === 'upcoming');
+    else if (currentFilter === 'past') filtered = appointments.filter(a => a.status === 'past');
+    else if (currentFilter === 'cancelled') filtered = appointments.filter(a => a.status === 'cancelled');
     if (!filtered.length) {
-      el.innerHTML = `<div class="empty-state">
-        <i class="fas fa-calendar-times"></i>
-        <p>No ${currentFilter !== 'all' ? currentFilter : ''} appointments found.</p>
-        ${currentFilter === 'all' ? `<span class="book-link" onclick="switchView('book')">Book now</span>` : ''}
-      </div>`;
+      el.innerHTML = `<div class="empty-state"><i class="fas fa-calendar-times"></i><p>No ${currentFilter !== 'all' ? currentFilter : ''} appointments found.</p>${currentFilter === 'all' ? `<span class="book-link" onclick="switchView('book')">Book now</span>` : ''}</div>`;
       return;
     }
-
     const sorted = [...filtered].sort((a, b) => b.date.localeCompare(a.date));
     const statusMap = { upcoming: 'badge-upcoming', past: 'badge-past', cancelled: 'badge-cancelled', pending: 'badge-pending' };
-
     el.innerHTML = sorted.map(a => `
       <div class="appointment-item">
         <div class="appointment-item-info">
@@ -2047,7 +1926,6 @@
             <span><i class="far fa-calendar"></i> ${formatDate(a.date)}</span>
             <span><i class="far fa-clock"></i> ${a.time}</span>
             <span><i class="fas fa-user"></i> ${a.stylist}</span>
-            ${a.canRate ? `<span style="color:var(--rose);font-weight:600;font-size:0.85rem;"><i class="fas fa-star"></i> Rate</span>` : ''}
           </div>
         </div>
         <div class="appointment-item-status">
@@ -2059,32 +1937,10 @@
             <button class="appt-btn" onclick="openRescheduleModal('${a.id}')"><i class="fas fa-calendar-alt"></i></button>
             <button class="appt-btn danger" onclick="cancelAppointment('${a.id}')"><i class="fas fa-times"></i></button>
           ` : ''}
-          ${a.canRate ? `<button class="appt-btn" onclick="rateAppointment('${a.id}')" style="border-color:var(--rose);color:var(--rose);"><i class="fas fa-star"></i></button>` : ''}
         </div>
       </div>
     `).join('');
-    bindRowActions();
   }
-
-  function rateAppointment(id) {
-    showToast('Rating feature coming soon! You can rate your completed appointments.');
-  }
-
-  function bindRowActions() {
-    document.querySelectorAll('[data-view-id]').forEach(btn =>
-      btn.addEventListener('click', () => openDetailModal(btn.dataset.id))
-    );
-    document.querySelectorAll('[data-cancel-id]').forEach(btn =>
-      btn.addEventListener('click', () => cancelAppointment(btn.dataset.cancelId))
-    );
-    document.querySelectorAll('[data-reschedule-id]').forEach(btn =>
-      btn.addEventListener('click', () => openRescheduleModal(btn.dataset.rescheduleId))
-    );
-  }
-
-  // ============================================================
-  // WIZARD FUNCTIONS
-  // ============================================================
 
   function resetWizard() {
     wizardStep = 1;
@@ -2095,23 +1951,19 @@
     renderSvcGrid();
     renderCart();
     gotoStep(1);
-
     const today = getLocalDateString();
     document.getElementById('apptDate').min = today;
     document.getElementById('apptDate').value = '';
-
     const todayDate = new Date();
     currentMonth = todayDate.getMonth();
     currentYear = todayDate.getFullYear();
     selectedDate = '';
     renderCalendar(currentMonth, currentYear);
-
     const apptDateInput = document.getElementById('apptDate');
     if (!apptDateInput.dataset.listenerAttached) {
       apptDateInput.addEventListener('change', refreshTimeSlots);
       apptDateInput.dataset.listenerAttached = 'true';
     }
-
     renderStylistGrid();
     availableSlots = [];
     renderTimeSlotsIntoDOM();
@@ -2119,52 +1971,30 @@
 
   function renderCatNav() {
     const el = document.getElementById('catNav');
-    el.innerHTML = CATEGORIES.map(cat => `
-      <button class="cat-btn ${cat === activeCat ? 'active' : ''}" onclick="setActiveCat('${cat}')">${cat}</button>
-    `).join('');
+    el.innerHTML = CATEGORIES.map(cat => `<button class="cat-btn ${cat === activeCat ? 'active' : ''}" onclick="setActiveCat('${cat}')">${cat}</button>`).join('');
   }
 
-  function setActiveCat(cat) {
-    activeCat = cat;
-    renderCatNav();
-    renderSvcGrid();
-  }
+  function setActiveCat(cat) { activeCat = cat; renderCatNav(); renderSvcGrid(); }
 
   function renderSvcGrid() {
     const svcs = SERVICES.filter(s => s.category === activeCat);
     document.getElementById('svcGrid').innerHTML = svcs.map(s => `
       <div class="svc-card ${cartIds.includes(s.id) ? 'selected' : ''}" onclick="toggleService('${s.id}')">
         <div class="svc-card-name">${s.name}</div>
-        <div class="svc-card-meta">
-          <span class="svc-card-price">R${s.price}</span>
-          <span class="svc-card-dur">${s.duration} min</span>
-        </div>
-      </div>
-    `).join('');
+        <div class="svc-card-meta"><span class="svc-card-price">R${s.price}</span><span class="svc-card-dur">${s.duration} min</span></div>
+      </div>`).join('');
   }
 
   function toggleService(id) {
-    if (cartIds.includes(id)) {
-      cartIds = cartIds.filter(serviceId => serviceId !== id);
-    } else {
-      cartIds.push(id);
-    }
-
-    if (bookState.stylistId && !isStylistEligible(bookState.stylistId)) {
-      bookState.stylistId = '';
-      bookState.stylist = '';
-      bookState.time = '';
-    }
-
+    if (cartIds.includes(id)) { cartIds = cartIds.filter(serviceId => serviceId !== id); }
+    else { cartIds.push(id); }
+    if (bookState.stylistId && !isStylistEligible(bookState.stylistId)) { bookState.stylistId = ''; bookState.stylist = ''; bookState.time = ''; }
     availableSlots = [];
     renderSvcGrid();
     renderCart();
     renderStylistGrid();
     renderTimeSlotsIntoDOM();
-
-    if (cartIds.length && bookState.stylistId && document.getElementById('apptDate')?.value) {
-      refreshTimeSlots();
-    }
+    if (cartIds.length && bookState.stylistId && document.getElementById('apptDate')?.value) { refreshTimeSlots(); }
   }
 
   function isStylistEligible(stylistId) {
@@ -2178,19 +2008,13 @@
 
   function removeFromCart(id) {
     cartIds = cartIds.filter(serviceId => serviceId !== id);
-    if (bookState.stylistId && !isStylistEligible(bookState.stylistId)) {
-      bookState.stylistId = '';
-      bookState.stylist = '';
-      bookState.time = '';
-    }
+    if (bookState.stylistId && !isStylistEligible(bookState.stylistId)) { bookState.stylistId = ''; bookState.stylist = ''; bookState.time = ''; }
     renderSvcGrid();
     renderCart();
     renderStylistGrid();
     availableSlots = [];
     renderTimeSlotsIntoDOM();
-    if (cartIds.length && bookState.stylistId && document.getElementById('apptDate')?.value) {
-      refreshTimeSlots();
-    }
+    if (cartIds.length && bookState.stylistId && document.getElementById('apptDate')?.value) { refreshTimeSlots(); }
   }
 
   function renderCart() {
@@ -2198,32 +2022,15 @@
     const total = items.reduce((s, sv) => s + sv.price, 0);
     const dur = items.reduce((s, sv) => s + sv.duration, 0);
     const count = items.length;
-
     document.getElementById('cartCount').textContent = count;
-
     const container = document.getElementById('cartItems');
     container.querySelectorAll('.cart-chip').forEach(el => el.remove());
-
     let emptyMsg = document.getElementById('cartEmpty');
-    if (!emptyMsg) {
-      emptyMsg = document.createElement('div');
-      emptyMsg.className = 'cart-empty-msg';
-      emptyMsg.id = 'cartEmpty';
-      emptyMsg.textContent = 'Tap a service above to add it here';
-      container.appendChild(emptyMsg);
-    }
-
-    if (count === 0) {
-      emptyMsg.style.display = 'block';
-      document.getElementById('cartSummary').style.display = 'none';
-    } else {
+    if (!emptyMsg) { emptyMsg = document.createElement('div'); emptyMsg.className = 'cart-empty-msg'; emptyMsg.id = 'cartEmpty'; emptyMsg.textContent = 'Tap a service above to add it here'; container.appendChild(emptyMsg); }
+    if (count === 0) { emptyMsg.style.display = 'block'; document.getElementById('cartSummary').style.display = 'none'; }
+    else {
       emptyMsg.style.display = 'none';
-      items.forEach(sv => {
-        const chip = document.createElement('div');
-        chip.className = 'cart-chip';
-        chip.innerHTML = `${sv.name} <button class="cart-chip-remove" onclick="removeFromCart('${sv.id}')"><i class="fas fa-times"></i></button>`;
-        container.appendChild(chip);
-      });
+      items.forEach(sv => { const chip = document.createElement('div'); chip.className = 'cart-chip'; chip.innerHTML = `${sv.name} <button class="cart-chip-remove" onclick="removeFromCart('${sv.id}')"><i class="fas fa-times"></i></button>`; container.appendChild(chip); });
       document.getElementById('cartSummary').style.display = 'flex';
       document.getElementById('cartTotal').textContent = `R${total.toLocaleString()}`;
       document.getElementById('cartDuration').textContent = `~${formatDur(dur)} total`;
@@ -2234,208 +2041,84 @@
   function renderStylistGrid() {
     const grid = document.getElementById('stylistGrid');
     if (!grid) return;
-
     const selectedServices = SERVICES.filter(service => cartIds.includes(service.id));
-    if (!selectedServices.length) {
-      bookState.stylistId = '';
-      bookState.stylist = '';
-      grid.innerHTML = `<div class="empty-state" style="grid-column:1/-1;padding:0.8rem;"><p>Please select at least one service first.</p></div>`;
-      return;
-    }
-
-    const eligibleStylists = STYLISTS.filter(stylist => {
-      if (stylist.isAvailable === false) return false;
-      if (!Array.isArray(stylist.serviceIds) || !stylist.serviceIds.length) return false;
-      return selectedServices.every(service => stylist.serviceIds.includes(service.id));
-    });
-
-    if (bookState.stylistId && !eligibleStylists.some(stylist => stylist.id === bookState.stylistId)) {
-      bookState.stylistId = '';
-      bookState.stylist = '';
-      bookState.time = '';
-      availableSlots = [];
-      renderTimeSlotsIntoDOM();
-    }
-
-    if (!eligibleStylists.length) {
-      grid.innerHTML = `<div class="empty-state" style="grid-column:1/-1;padding:0.8rem;"><i class="fas fa-user-slash"></i><p>No stylists available for selected services.</p></div>`;
-      return;
-    }
-
-    grid.innerHTML = eligibleStylists.map(stylist => {
-      const name = stylist.name || 'Stylist';
-      const initial = name.charAt(0).toUpperCase();
-      return `<button type="button" class="stylist-btn ${bookState.stylistId === stylist.id ? 'selected' : ''}" onclick="selectStylist('${stylist.id}','${name.replace(/'/g, "\\'")}')">
-        <div class="stylist-av">${initial}</div>
-        <div class="stylist-name">${name}</div>
-      </button>`;
-    }).join('');
+    if (!selectedServices.length) { bookState.stylistId = ''; bookState.stylist = ''; grid.innerHTML = `<div class="empty-state" style="grid-column:1/-1;padding:0.8rem;"><p>Please select at least one service first.</p></div>`; return; }
+    const eligibleStylists = STYLISTS.filter(stylist => { if (stylist.isAvailable === false) return false; if (!Array.isArray(stylist.serviceIds) || !stylist.serviceIds.length) return false; return selectedServices.every(service => stylist.serviceIds.includes(service.id)); });
+    if (bookState.stylistId && !eligibleStylists.some(stylist => stylist.id === bookState.stylistId)) { bookState.stylistId = ''; bookState.stylist = ''; bookState.time = ''; availableSlots = []; renderTimeSlotsIntoDOM(); }
+    if (!eligibleStylists.length) { grid.innerHTML = `<div class="empty-state" style="grid-column:1/-1;padding:0.8rem;"><i class="fas fa-user-slash"></i><p>No stylists available for selected services.</p></div>`; return; }
+    grid.innerHTML = eligibleStylists.map(stylist => { const name = stylist.name || 'Stylist'; const initial = name.charAt(0).toUpperCase(); return `<button type="button" class="stylist-btn ${bookState.stylistId === stylist.id ? 'selected' : ''}" onclick="selectStylist('${stylist.id}','${name.replace(/'/g, "\\'")}')"><div class="stylist-av">${initial}</div><div class="stylist-name">${name}</div></button>`; }).join('');
   }
 
-  function selectStylist(id, name) {
-    bookState.stylistId = id;
-    bookState.stylist = name;
-    renderStylistGrid();
-    refreshTimeSlots();
-  }
+  function selectStylist(id, name) { bookState.stylistId = id; bookState.stylist = name; renderStylistGrid(); refreshTimeSlots(); }
 
   let availableSlots = [];
 
   async function loadAvailableSlots() {
     const dateInput = document.getElementById('apptDate');
     const dateVal = dateInput ? dateInput.value : '';
-
     availableSlots = [];
-
-    if (!dateVal || !bookState.stylistId || !cartIds.length) {
-      renderTimeSlotsIntoDOM();
-      return;
-    }
-
-    if (!isStylistEligible(bookState.stylistId)) {
-      bookState.time = '';
-      renderTimeSlotsIntoDOM();
-      showToast('The selected stylist does not provide all selected services.');
-      return;
-    }
-
+    if (!dateVal || !bookState.stylistId || !cartIds.length) { renderTimeSlotsIntoDOM(); return; }
+    if (!isStylistEligible(bookState.stylistId)) { bookState.time = ''; renderTimeSlotsIntoDOM(); showToast('The selected stylist does not provide all selected services.'); return; }
     try {
-      const res = await fetch(
-        `${API_URL}/bookings/availability/time-slots` +
-        `?stylistId=${encodeURIComponent(bookState.stylistId)}` +
-        `&date=${encodeURIComponent(dateVal)}` +
-        `&serviceIds=${encodeURIComponent(cartIds.join(','))}`,
-        { credentials: 'include' }
-      );
+      const res = await fetch(`${API_URL}/bookings/availability/time-slots?stylistId=${encodeURIComponent(bookState.stylistId)}&date=${encodeURIComponent(dateVal)}&serviceIds=${encodeURIComponent(cartIds.join(','))}`, { credentials: 'include' });
       const data = await res.json();
-
-      if (!res.ok) {
-        console.error('Availability request failed:', data.message || data);
-        availableSlots = [];
-        renderTimeSlotsIntoDOM();
-        showToast(data.message || 'Could not load available times.');
-        return;
-      }
-
+      if (!res.ok) { console.error('Availability request failed:', data.message || data); availableSlots = []; renderTimeSlotsIntoDOM(); showToast(data.message || 'Could not load available times.'); return; }
       availableSlots = Array.isArray(data.data?.availableSlots) ? data.data.availableSlots : [];
-
-    } catch (error) {
-      console.error('Could not load available slots:', error);
-      availableSlots = [];
-      showToast('Could not load available times. Please try again.');
-    }
-
-    if (bookState.time && !availableSlots.includes(bookState.time)) {
-      bookState.time = '';
-    }
-
+    } catch (error) { console.error('Could not load available slots:', error); availableSlots = []; showToast('Could not load available times. Please try again.'); }
+    if (bookState.time && !availableSlots.includes(bookState.time)) { bookState.time = ''; }
     renderTimeSlotsIntoDOM();
   }
 
   function renderTimeSlots() {
-    if (!availableSlots.length) {
-      return `<div style="grid-column:1/-1;text-align:center;padding:0.8rem;color:#888;font-size:0.9rem;">
-        ${!document.getElementById('apptDate')?.value ? 'Select a date first.' : !bookState.stylistId ? 'Select a stylist first.' : !cartIds.length ? 'Select at least one service first.' : 'No available times for this date.'}
-      </div>`;
-    }
-    return availableSlots.map(slot => {
-      const selected = bookState.time === slot;
-      return `<button type="button" class="time-slot ${selected ? 'selected' : ''}" onclick="selectTime('${slot}')">${slot}</button>`;
-    }).join('');
+    if (!availableSlots.length) { return `<div style="grid-column:1/-1;text-align:center;padding:0.8rem;color:#888;font-size:0.9rem;">${!document.getElementById('apptDate')?.value ? 'Select a date first.' : !bookState.stylistId ? 'Select a stylist first.' : !cartIds.length ? 'Select at least one service first.' : 'No available times for this date.'}</div>`; }
+    return availableSlots.map(slot => { const selected = bookState.time === slot; return `<button type="button" class="time-slot ${selected ? 'selected' : ''}" onclick="selectTime('${slot}')">${slot}</button>`; }).join('');
   }
 
-  function renderTimeSlotsIntoDOM() {
-    const el = document.getElementById('timeSlots');
-    if (el) el.innerHTML = renderTimeSlots();
-  }
-
-  async function refreshTimeSlots() {
-    bookState.time = '';
-    await loadAvailableSlots();
-    renderTimeSlotsIntoDOM();
-  }
-
-  function selectTime(time) {
-    if (!availableSlots.includes(time)) return;
-    bookState.time = time;
-    renderTimeSlotsIntoDOM();
-  }
+  function renderTimeSlotsIntoDOM() { const el = document.getElementById('timeSlots'); if (el) el.innerHTML = renderTimeSlots(); }
+  async function refreshTimeSlots() { bookState.time = ''; await loadAvailableSlots(); renderTimeSlotsIntoDOM(); }
+  function selectTime(time) { if (!availableSlots.includes(time)) return; bookState.time = time; renderTimeSlotsIntoDOM(); }
 
   function gotoStep(n) {
     wizardStep = n;
     for (let i = 1; i <= 4; i++) {
       const body = document.getElementById(`wbody${i}`);
-      if (body) {
-        if (i === n) {
-          body.classList.remove('hidden');
-        } else {
-          body.classList.add('hidden');
-        }
-      }
+      if (body) { if (i === n) body.classList.remove('hidden'); else body.classList.add('hidden'); }
       const ws = document.getElementById(`ws${i}`);
-      if (ws) {
-        ws.classList.toggle('active', i === n);
-        ws.classList.toggle('done', i < n);
-      }
+      if (ws) { ws.classList.toggle('active', i === n); ws.classList.toggle('done', i < n); }
     }
     document.getElementById('stepInd').textContent = `Step ${n} of 4`;
     document.getElementById('wPrev').style.visibility = n === 1 ? 'hidden' : 'visible';
     document.getElementById('wNext').innerHTML = n === 4 ? 'Confirm' : 'Next <i class="fas fa-arrow-right"></i>';
-
     if (n === 4) buildReview();
+    // Scroll to top of wizard when changing steps
+    document.querySelector('.main').scrollTop = 0;
   }
 
   function wizardNext() {
-    if (wizardStep === 1) {
-      if (!cartIds.length) { showToast('Please select at least one service.'); return; }
-    }
-    if (wizardStep === 2) {
-      if (!document.getElementById('apptDate').value) { showToast('Please pick a date.'); return; }
-      if (!bookState.time) { showToast('Please pick a time slot.'); return; }
-      if (!bookState.stylistId) { showToast('Please choose a stylist.'); return; }
-      bookState.date = document.getElementById('apptDate').value;
-    }
-    if (wizardStep === 3) {
-      const name = document.getElementById('detName').value.trim();
-      const email = document.getElementById('detEmail').value.trim();
-      const phone = document.getElementById('detPhone').value.trim();
-      if (!name || !email || !phone) { showToast('Please fill in your name, email, and phone number.'); return; }
-    }
-    if (wizardStep === 4) {
-      confirmBooking(); return;
-    }
+    if (wizardStep === 1) { if (!cartIds.length) { showToast('Please select at least one service.'); return; } }
+    if (wizardStep === 2) { if (!document.getElementById('apptDate').value) { showToast('Please pick a date.'); return; } if (!bookState.stylistId) { showToast('Please choose a stylist.'); return; } if (!bookState.time) { showToast('Please pick a time slot.'); return; } bookState.date = document.getElementById('apptDate').value; }
+    if (wizardStep === 3) { const name = document.getElementById('detName').value.trim(); const email = document.getElementById('detEmail').value.trim(); const phone = document.getElementById('detPhone').value.trim(); if (!name || !email || !phone) { showToast('Please fill in your name, email, and phone number.'); return; } }
+    if (wizardStep === 4) { confirmBooking(); return; }
     gotoStep(wizardStep + 1);
+    // Ensure scroll to bottom to see buttons
+    setTimeout(() => { const main = document.querySelector('.main'); main.scrollTop = main.scrollHeight; }, 100);
   }
 
-  function wizardPrev() {
-    if (wizardStep > 1) gotoStep(wizardStep - 1);
-  }
+  function wizardPrev() { if (wizardStep > 1) gotoStep(wizardStep - 1); }
 
   function buildReview() {
     const items = SERVICES.filter(s => cartIds.includes(s.id));
     const total = items.reduce((s, sv) => s + sv.price, 0);
     const dur = items.reduce((s, sv) => s + sv.duration, 0);
-
     document.getElementById('reviewCard').innerHTML = `
       <div class="review-section-title">Selected Services</div>
-      <div class="review-services-list">
-        ${items.map(sv => `
-          <div class="review-svc-item">
-            <div>
-              <div style="font-weight:600;font-size:1rem;">${sv.name}</div>
-              <div style="font-size:0.85rem;color:#888;">${sv.duration} min</div>
-            </div>
-            <span style="font-weight:700;color:var(--rose);">R${sv.price}</span>
-          </div>`).join('')}
-      </div>
+      <div class="review-services-list">${items.map(sv => `<div class="review-svc-item"><div><div style="font-weight:600;font-size:1rem;">${sv.name}</div><div style="font-size:0.85rem;color:#888;">${sv.duration} min</div></div><span style="font-weight:700;color:var(--rose);">R${sv.price}</span></div>`).join('')}</div>
       <div class="review-total"><span>Total</span><span>R${total.toLocaleString()}</span></div>
       <div style="margin-top:0.3rem;font-size:0.9rem;color:#888;">Estimated duration: ~${formatDur(dur)}</div>
-
       <div class="review-section-title" style="margin-top:0.8rem;">Appointment Info</div>
       <div class="review-row"><span>Date</span><span>${formatDate(bookState.date)}</span></div>
       <div class="review-row"><span>Time</span><span>${bookState.time}</span></div>
       <div class="review-row"><span>Stylist</span><span>${bookState.stylist}</span></div>
-
       <div class="review-section-title" style="margin-top:0.8rem;">Your Details</div>
       <div class="review-row"><span>Name</span><span>${document.getElementById('detName').value}</span></div>
       <div class="review-row"><span>Phone</span><span>${document.getElementById('detPhone').value}</span></div>
@@ -2445,7 +2128,6 @@
   }
 
   let isBookingSubmitting = false;
-
   function showConfirmation(data) {
     document.getElementById('confirmRef').textContent = data.ref;
     document.getElementById('confirmServices').textContent = data.services;
@@ -2456,164 +2138,49 @@
     document.getElementById('confirmationModal').classList.add('open');
   }
 
-  function closeConfirmation() {
-    document.getElementById('confirmationModal').classList.remove('open');
-    switchView('appointments');
-  }
+  function closeConfirmation() { document.getElementById('confirmationModal').classList.remove('open'); switchView('appointments'); }
 
-  function downloadInvoice() {
+  function autoDownloadInvoice() {
     if (!lastBookingData) return;
-
     const data = lastBookingData;
-    const now = new Date();
-    const dateStr = now.toLocaleDateString('en-ZA', { year: 'numeric', month: 'short', day: 'numeric' });
-    const timeStr = now.toLocaleTimeString('en-ZA', { hour: '2-digit', minute: '2-digit' });
-
-    const invoiceHTML = `
-      <!DOCTYPE html>
-      <html>
-      <head>
-        <meta charset="UTF-8">
-        <title>Invoice ${data.ref}</title>
-        <style>
-          body { font-family: 'DM Sans', Arial, sans-serif; max-width: 600px; margin: 40px auto; padding: 20px; color: #1a1a1a; }
-          .header { text-align: center; border-bottom: 2px solid #D43F6B; padding-bottom: 20px; margin-bottom: 20px; }
-          .header h1 { font-family: 'Cormorant Garamond', serif; font-size: 2rem; color: #D43F6B; margin: 0; }
-          .header p { color: #888; margin: 5px 0 0; }
-          .ref { text-align: center; font-size: 1.2rem; font-weight: 600; margin: 10px 0 20px; color: #D43F6B; }
-          .details { border: 1px solid #e5e5e5; border-radius: 8px; padding: 15px 20px; margin-bottom: 20px; }
-          .row { display: flex; justify-content: space-between; padding: 6px 0; border-bottom: 1px solid #f0f0f0; }
-          .row:last-child { border-bottom: none; }
-          .label { color: #888; }
-          .value { font-weight: 600; }
-          .total { font-size: 1.2rem; color: #D43F6B; font-weight: 700; padding-top: 10px; border-top: 2px solid #D43F6B; margin-top: 10px; }
-          .footer { text-align: center; color: #888; font-size: 0.8rem; margin-top: 30px; border-top: 1px solid #e5e5e5; padding-top: 20px; }
-          @media print { body { margin: 0; padding: 20px; } .no-print { display: none; } }
-        </style>
-      </head>
-      <body>
-        <div class="header">
-          <h1>🌸 PinkMeUp</h1>
-          <p>Book • Glow • Relax</p>
-        </div>
-        <div class="ref">Booking Reference: ${data.ref}</div>
-        <div class="details">
-          <div class="row"><span class="label">Services</span><span class="value">${data.services}</span></div>
-          <div class="row"><span class="label">Date</span><span class="value">${data.date}</span></div>
-          <div class="row"><span class="label">Time</span><span class="value">${data.time}</span></div>
-          <div class="row"><span class="label">Stylist</span><span class="value">${data.stylist}</span></div>
-          <div class="row"><span class="label">Guest Name</span><span class="value">${data.guestName}</span></div>
-          <div class="row"><span class="label">Guest Email</span><span class="value">${data.guestEmail}</span></div>
-          <div class="row"><span class="label">Guest Phone</span><span class="value">${data.guestPhone}</span></div>
-          <div class="row total"><span class="label">Total</span><span class="value">R${data.total.toLocaleString()}</span></div>
-        </div>
-        <div class="footer">
-          <p>Thank you for choosing PinkMeUp!</p>
-          <p>Invoice generated: ${dateStr} at ${timeStr}</p>
-          <p>076 769 0102 • Mon-Fri 9am-6pm | Sat 9am-2pm</p>
-        </div>
-        <div class="no-print" style="text-align:center;margin-top:20px;">
-          <button onclick="window.print()" style="padding:10px 30px;background:#D43F6B;color:white;border:none;border-radius:8px;font-size:16px;cursor:pointer;">Print / Save as PDF</button>
-        </div>
-      </body>
-      </html>
-    `;
-
-    const win = window.open('', '_blank');
-    if (win) {
-      win.document.write(invoiceHTML);
-      win.document.close();
-      win.focus();
-    } else {
-      showToast('Please allow popups to download the invoice.');
-    }
+    const invoiceHTML = `<!DOCTYPE html><html><head><meta charset="UTF-8"><title>Invoice ${data.ref}</title><style>body{font-family:Arial,sans-serif;max-width:600px;margin:40px auto;padding:20px;color:#1a1a1a}.header{text-align:center;border-bottom:2px solid #D43F6B;padding-bottom:20px;margin-bottom:20px}.header h1{color:#D43F6B;margin:0}.header p{color:#888;margin:5px 0 0}.ref{text-align:center;font-size:1.2rem;font-weight:600;margin:10px 0 20px;color:#D43F6B}.details{border:1px solid #e5e5e5;border-radius:8px;padding:15px 20px;margin-bottom:20px}.row{display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid #f0f0f0}.row:last-child{border-bottom:none}.label{color:#888}.value{font-weight:600}.total{font-size:1.2rem;color:#D43F6B;font-weight:700;padding-top:10px;border-top:2px solid #D43F6B;margin-top:10px}.footer{text-align:center;color:#888;font-size:0.8rem;margin-top:30px;border-top:1px solid #e5e5e5;padding-top:20px}</style></head><body><div class="header"><h1>🌸 PinkMeUp</h1><p>Book • Glow • Relax</p></div><div class="ref">Booking Reference: ${data.ref}</div><div class="details"><div class="row"><span class="label">Services</span><span class="value">${data.services}</span></div><div class="row"><span class="label">Date</span><span class="value">${data.date}</span></div><div class="row"><span class="label">Time</span><span class="value">${data.time}</span></div><div class="row"><span class="label">Stylist</span><span class="value">${data.stylist}</span></div><div class="row"><span class="label">Guest Name</span><span class="value">${data.guestName}</span></div><div class="row"><span class="label">Guest Email</span><span class="value">${data.guestEmail}</span></div><div class="row"><span class="label">Guest Phone</span><span class="value">${data.guestPhone}</span></div><div class="row total"><span class="label">Total</span><span class="value">R${data.total.toLocaleString()}</span></div></div><div class="footer"><p>Thank you for choosing PinkMeUp!</p><p>Invoice generated: ${new Date().toLocaleDateString('en-ZA', { year: 'numeric', month: 'short', day: 'numeric' })}</p><p>076 769 0102 • Mon-Fri 9am-6pm | Sat 9am-2pm</p></div></body></html>`;
+    const blob = new Blob([invoiceHTML], { type: 'text/html' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `Invoice-${data.ref}.html`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+    showToast('Invoice downloaded');
   }
 
   async function confirmBooking() {
     if (isBookingSubmitting) return;
-
     const name = document.getElementById('detName').value.trim();
     const email = document.getElementById('detEmail').value.trim();
     const phone = document.getElementById('detPhone').value.trim();
-
-    if (!name || !email || !phone) {
-      showToast('Please fill in your name, email, and phone number.');
-      return;
-    }
-
-    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-      showToast('Please enter a valid email address.');
-      return;
-    }
-
+    if (!name || !email || !phone) { showToast('Please fill in your name, email, and phone number.'); return; }
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { showToast('Please enter a valid email address.'); return; }
     isBookingSubmitting = true;
     const wNextBtn = document.getElementById('wNext');
     wNextBtn.disabled = true;
     wNextBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Booking...';
-
     try {
-      const res = await fetch(`${API_URL}/bookings`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        credentials: 'include',
-        body: JSON.stringify({
-          serviceIds: cartIds,
-          stylistId: bookState.stylistId,
-          date: bookState.date,
-          startTime: bookState.time,
-          notes: document.getElementById('detNotes').value,
-          guestName: name,
-          guestEmail: email,
-          guestPhone: phone
-        })
-      });
+      const res = await fetch(`${API_URL}/bookings`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, credentials: 'include', body: JSON.stringify({ serviceIds: cartIds, stylistId: bookState.stylistId, date: bookState.date, startTime: bookState.time, notes: document.getElementById('detNotes').value, guestName: name, guestEmail: email, guestPhone: phone }) });
       const data = await res.json();
-
-      if (res.status === 409) {
-        showToast('This time slot is no longer available. Please select another time.');
-        gotoStep(2);
-        await refreshTimeSlots();
-        return;
-      }
-
-      if (!res.ok) {
-        showToast(data.message || 'Booking failed.');
-        return;
-      }
-
+      if (res.status === 409) { showToast('This time slot is no longer available. Please select another time.'); gotoStep(2); await refreshTimeSlots(); return; }
+      if (!res.ok) { showToast(data.message || 'Booking failed.'); return; }
       const bookingData = data.data || data;
-      lastBookingData = {
-        ref: bookingData.bookingRef || bookingData._id || 'PMU-' + Date.now().toString().slice(-6),
-        services: SERVICES.filter(s => cartIds.includes(s.id)).map(s => s.name).join(', '),
-        date: formatDate(bookState.date),
-        time: bookState.time,
-        stylist: bookState.stylist,
-        total: SERVICES.filter(s => cartIds.includes(s.id)).reduce((sum, s) => sum + s.price, 0),
-        guestName: name,
-        guestEmail: email,
-        guestPhone: phone,
-        rawData: bookingData
-      };
-
+      lastBookingData = { ref: bookingData.bookingRef || bookingData._id || 'PMU-' + Date.now().toString().slice(-6), services: SERVICES.filter(s => cartIds.includes(s.id)).map(s => s.name).join(', '), date: formatDate(bookState.date), time: bookState.time, stylist: bookState.stylist, total: SERVICES.filter(s => cartIds.includes(s.id)).reduce((sum, s) => sum + s.price, 0), guestName: name, guestEmail: email, guestPhone: phone, rawData: bookingData };
       showConfirmation(lastBookingData);
-
       cartIds = [];
       renderCart();
       await loadAppointments();
-
-    } catch (error) {
-      console.error('Booking error:', error);
-      showToast('Could not create booking. Please try again.');
-    } finally {
-      isBookingSubmitting = false;
-      wNextBtn.disabled = false;
-      wNextBtn.innerHTML = 'Confirm';
-    }
+    } catch (error) { console.error('Booking error:', error); showToast('Could not create booking. Please try again.'); }
+    finally { isBookingSubmitting = false; wNextBtn.disabled = false; wNextBtn.innerHTML = 'Confirm'; }
   }
-
-  // ============================================================
-  // APPOINTMENT CRUD
-  // ============================================================
 
   function openDetailModal(id) {
     const a = appointments.find(x => x.id === id);
@@ -2621,40 +2188,23 @@
     const total = a.services.reduce((s, sv) => s + sv.price, 0);
     const dur = a.services.reduce((s, sv) => s + sv.duration, 0);
     const statusMap = { upcoming: 'badge-upcoming', past: 'badge-past', cancelled: 'badge-cancelled', pending: 'badge-pending' };
-
     document.getElementById('modalContent').innerHTML = `
-      <div style="margin-bottom:0.6rem;">
-        <span class="badge ${statusMap[a.status]}">${a.status}</span>
-      </div>
+      <div style="margin-bottom:0.6rem;"><span class="badge ${statusMap[a.status]}">${a.status}</span></div>
       <div class="review-section-title">Appointment Info</div>
       <div class="review-row"><span>Date</span><span>${formatDate(a.date)}</span></div>
       <div class="review-row"><span>Time</span><span>${a.time}</span></div>
       <div class="review-row"><span>Stylist</span><span>${a.stylist}</span></div>
       <div class="review-row"><span>Duration</span><span>~${formatDur(dur)}</span></div>
-
       <div class="review-section-title" style="margin-top:0.6rem;">Services Booked</div>
-      <div class="review-services-list">
-        ${a.services.map(sv => `
-          <div class="review-svc-item">
-            <div>
-              <div style="font-weight:600;font-size:1rem;">${sv.name}</div>
-              <div style="font-size:0.85rem;color:#888;">${sv.duration} min</div>
-            </div>
-            <span style="font-weight:700;color:var(--rose);">R${sv.price}</span>
-          </div>`).join('')}
-      </div>
+      <div class="review-services-list">${a.services.map(sv => `<div class="review-svc-item"><div><div style="font-weight:600;font-size:1rem;">${sv.name}</div><div style="font-size:0.85rem;color:#888;">${sv.duration} min</div></div><span style="font-weight:700;color:var(--rose);">R${sv.price}</span></div>`).join('')}</div>
       <div class="review-total"><span>Total</span><span>R${total.toLocaleString()}</span></div>
-
       ${a.notes ? `<div class="review-section-title" style="margin-top:0.6rem;">Notes</div><p style="font-size:0.95rem;color:#888;">${a.notes}</p>` : ''}
       ${a.status === 'upcoming' ? `<button class="btn-primary" style="margin-top:0.8rem;background:#DC2626;" onclick="cancelAppointment('${a.id}');closeModal()"><i class="fas fa-times"></i> Cancel Appointment</button>` : ''}
-      ${a.canRate ? `<button class="btn-primary" style="margin-top:0.8rem;background:var(--rose);" onclick="rateAppointment('${a.id}');closeModal()"><i class="fas fa-star"></i> Rate Appointment</button>` : ''}
     `;
     document.getElementById('detailOverlay').classList.add('open');
   }
 
-  function closeModal() {
-    document.getElementById('detailOverlay').classList.remove('open');
-  }
+  function closeModal() { document.getElementById('detailOverlay').classList.remove('open'); }
   document.getElementById('detailOverlay').addEventListener('click', e => { if (e.target === e.currentTarget) closeModal(); });
 
   let rescheduleApptId = null;
@@ -2667,31 +2217,18 @@
     const appointment = appointments.find(a => a.id === id);
     if (!appointment) { showToast('Appointment could not be found.'); return; }
     if (appointment.status !== 'upcoming') { showToast('Only upcoming appointments can be rescheduled.'); return; }
-
     rescheduleApptId = id;
     rescheduleAvailableSlots = [];
     rescheduleSelectedTime = '';
-
     const dateInput = document.getElementById('rescheduleDate');
     dateInput.min = getLocalDateString();
     dateInput.value = '';
     renderRescheduleTimeSlots();
     modal.classList.add('open');
-
-    if (!dateInput.dataset.listenerAttached) {
-      dateInput.addEventListener('change', loadRescheduleSlots);
-      dateInput.dataset.listenerAttached = 'true';
-    }
+    if (!dateInput.dataset.listenerAttached) { dateInput.addEventListener('change', loadRescheduleSlots); dateInput.dataset.listenerAttached = 'true'; }
   }
 
-  function closeRescheduleModal() {
-    document.getElementById('rescheduleModal').classList.remove('open');
-    rescheduleApptId = null;
-    rescheduleAvailableSlots = [];
-    rescheduleSelectedTime = '';
-    document.getElementById('rescheduleDate').value = '';
-    renderRescheduleTimeSlots();
-  }
+  function closeRescheduleModal() { document.getElementById('rescheduleModal').classList.remove('open'); rescheduleApptId = null; rescheduleAvailableSlots = []; rescheduleSelectedTime = ''; document.getElementById('rescheduleDate').value = ''; renderRescheduleTimeSlots(); }
 
   async function loadRescheduleSlots() {
     const dateInput = document.getElementById('rescheduleDate');
@@ -2699,78 +2236,33 @@
     rescheduleAvailableSlots = [];
     rescheduleSelectedTime = '';
     renderRescheduleTimeSlots();
-
-    if (!date) {
-      document.getElementById('rescheduleSlotsMessage').textContent = 'Select a date to view available times.';
-      return;
-    }
-
+    if (!date) { document.getElementById('rescheduleSlotsMessage').textContent = 'Select a date to view available times.'; return; }
     const appointment = appointments.find(a => a.id === rescheduleApptId);
     if (!appointment) { document.getElementById('rescheduleSlotsMessage').textContent = 'Appointment could not be found.'; return; }
     if (!appointment.services || !appointment.services.length) { document.getElementById('rescheduleSlotsMessage').textContent = 'This appointment has no services.'; return; }
-
     const serviceIds = appointment.services.map(service => service.id).filter(Boolean);
     if (!serviceIds.length) { document.getElementById('rescheduleSlotsMessage').textContent = 'Unable to determine the services for this appointment.'; return; }
-
     document.getElementById('rescheduleSlotsMessage').textContent = 'Loading available times...';
-
     try {
-      const res = await fetch(
-        `${API_URL}/bookings/availability/time-slots` +
-        `?stylistId=${encodeURIComponent(appointment.stylistId || '')}` +
-        `&date=${encodeURIComponent(date)}` +
-        `&serviceIds=${encodeURIComponent(serviceIds.join(','))}` +
-        `&excludeAppointmentId=${encodeURIComponent(rescheduleApptId)}`,
-        { credentials: 'include' }
-      );
+      const res = await fetch(`${API_URL}/bookings/availability/time-slots?stylistId=${encodeURIComponent(appointment.stylistId || '')}&date=${encodeURIComponent(date)}&serviceIds=${encodeURIComponent(serviceIds.join(','))}&excludeAppointmentId=${encodeURIComponent(rescheduleApptId)}`, { credentials: 'include' });
       const data = await res.json();
-
-      if (!res.ok) {
-        rescheduleAvailableSlots = [];
-        document.getElementById('rescheduleSlotsMessage').textContent = data.message || 'Could not load available times.';
-        renderRescheduleTimeSlots();
-        return;
-      }
-
+      if (!res.ok) { rescheduleAvailableSlots = []; document.getElementById('rescheduleSlotsMessage').textContent = data.message || 'Could not load available times.'; renderRescheduleTimeSlots(); return; }
       rescheduleAvailableSlots = Array.isArray(data.data?.availableSlots) ? data.data.availableSlots : [];
-
-      if (date === appointment.date && appointment.time && !rescheduleAvailableSlots.includes(appointment.time)) {
-        rescheduleAvailableSlots.push(appointment.time);
-      }
+      if (date === appointment.date && appointment.time && !rescheduleAvailableSlots.includes(appointment.time)) { rescheduleAvailableSlots.push(appointment.time); }
       rescheduleAvailableSlots.sort();
-
-      if (!rescheduleAvailableSlots.length) {
-        document.getElementById('rescheduleSlotsMessage').textContent = 'No available times for this date. Please choose another date.';
-      } else {
-        document.getElementById('rescheduleSlotsMessage').textContent = `${rescheduleAvailableSlots.length} available time slot(s).`;
-      }
+      if (!rescheduleAvailableSlots.length) { document.getElementById('rescheduleSlotsMessage').textContent = 'No available times for this date. Please choose another date.'; }
+      else { document.getElementById('rescheduleSlotsMessage').textContent = `${rescheduleAvailableSlots.length} available time slot(s).`; }
       renderRescheduleTimeSlots();
-
-    } catch (error) {
-      console.error('Could not load reschedule availability:', error);
-      rescheduleAvailableSlots = [];
-      document.getElementById('rescheduleSlotsMessage').textContent = 'Could not load available times. Please try again.';
-      renderRescheduleTimeSlots();
-    }
+    } catch (error) { console.error('Could not load reschedule availability:', error); rescheduleAvailableSlots = []; document.getElementById('rescheduleSlotsMessage').textContent = 'Could not load available times. Please try again.'; renderRescheduleTimeSlots(); }
   }
 
   function renderRescheduleTimeSlots() {
     const container = document.getElementById('rescheduleTimeSlots');
-    if (!rescheduleAvailableSlots.length) {
-      container.innerHTML = `<div style="grid-column:1/-1;text-align:center;padding:0.6rem;color:#888;font-size:0.9rem;">No available times</div>`;
-      return;
-    }
-    container.innerHTML = rescheduleAvailableSlots.map(slot => {
-      const selected = rescheduleSelectedTime === slot;
-      return `<button type="button" class="time-slot ${selected ? 'selected' : ''}" onclick="selectRescheduleTime('${slot}')">${slot}</button>`;
-    }).join('');
+    if (!rescheduleAvailableSlots.length) { container.innerHTML = `<div style="grid-column:1/-1;text-align:center;padding:0.6rem;color:#888;font-size:0.9rem;">No available times</div>`; return; }
+    container.innerHTML = rescheduleAvailableSlots.map(slot => { const selected = rescheduleSelectedTime === slot; return `<button type="button" class="time-slot ${selected ? 'selected' : ''}" onclick="selectRescheduleTime('${slot}')">${slot}</button>`; }).join('');
   }
 
-  function selectRescheduleTime(time) {
-    if (!rescheduleAvailableSlots.includes(time)) return;
-    rescheduleSelectedTime = time;
-    renderRescheduleTimeSlots();
-  }
+  function selectRescheduleTime(time) { if (!rescheduleAvailableSlots.includes(time)) return; rescheduleSelectedTime = time; renderRescheduleTimeSlots(); }
 
   async function confirmReschedule() {
     if (!rescheduleApptId) { showToast('No appointment selected.'); return; }
@@ -2778,76 +2270,41 @@
     const time = rescheduleSelectedTime;
     if (!date) { showToast('Please pick a new date.'); return; }
     if (!time) { showToast('Please select an available time.'); return; }
-
     const confirmButton = document.getElementById('confirmRescheduleBtn');
     if (confirmButton) { confirmButton.disabled = true; confirmButton.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Rescheduling...'; }
-
     try {
-      const res = await fetch(`${API_URL}/bookings/${encodeURIComponent(rescheduleApptId)}/reschedule`, {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
-        credentials: 'include',
-        body: JSON.stringify({ date, startTime: time })
-      });
+      const res = await fetch(`${API_URL}/bookings/${encodeURIComponent(rescheduleApptId)}/reschedule`, { method: 'PUT', headers: { 'Content-Type': 'application/json' }, credentials: 'include', body: JSON.stringify({ date, startTime: time }) });
       const data = await res.json();
-
-      if (res.status === 409) {
-        showToast('That slot is no longer available. Please select another time.');
-        await loadRescheduleSlots();
-        return;
-      }
+      if (res.status === 409) { showToast('That slot is no longer available. Please select another time.'); await loadRescheduleSlots(); return; }
       if (!res.ok) { showToast(data.message || 'Reschedule failed.'); return; }
-
       showToast('Appointment rescheduled successfully.');
       closeRescheduleModal();
       await loadAppointments();
       renderAppointments();
       renderOverview();
-
-    } catch (error) {
-      console.error('Reschedule error:', error);
-      showToast('Could not reschedule the appointment. Please try again.');
-    } finally {
-      if (confirmButton) { confirmButton.disabled = false; confirmButton.innerHTML = '<i class="fas fa-calendar-alt"></i> Confirm New Time'; }
-    }
+    } catch (error) { console.error('Reschedule error:', error); showToast('Could not reschedule the appointment. Please try again.'); }
+    finally { if (confirmButton) { confirmButton.disabled = false; confirmButton.innerHTML = '<i class="fas fa-calendar-alt"></i> Confirm New Time'; } }
   }
 
   async function cancelAppointment(id) {
     const appt = appointments.find(a => a.id === id);
     if (!appt) return;
     if (!confirm(`Cancel your appointment on ${formatDate(appt.date)} at ${appt.time}?`)) return;
-
-    const res = await fetch(`${API_URL}/bookings/${id}/cancel`, {
-      method: 'PUT',
-      headers: { 'Content-Type': 'application/json' },
-      credentials: 'include',
-      body: JSON.stringify({})
-    });
+    const res = await fetch(`${API_URL}/bookings/${id}/cancel`, { method: 'PUT', headers: { 'Content-Type': 'application/json' }, credentials: 'include', body: JSON.stringify({}) });
     if (!res.ok) { showToast('Could not cancel appointment.'); return; }
-
     await loadAppointments();
     renderAppointments();
     renderOverview();
     showToast('Appointment cancelled.');
   }
 
-  // ============================================================
-  // PROFILE FUNCTIONS
-  // ============================================================
-
-  function toggleProfileEdit() {
-    document.getElementById('editProfileModal').classList.add('open');
-  }
-
-  function closeEditProfile() {
-    document.getElementById('editProfileModal').classList.remove('open');
-  }
+  function toggleProfileEdit() { document.getElementById('editProfileModal').classList.add('open'); }
+  function closeEditProfile() { document.getElementById('editProfileModal').classList.remove('open'); }
 
   function updateProfileStats() {
     const total = appointments.length;
     const upcoming = appointments.filter(a => a.status === 'upcoming').length;
     const spend = appointments.filter(a => a.status !== 'cancelled').reduce((s, a) => s + a.services.reduce((x, sv) => x + sv.price, 0), 0);
-
     document.getElementById('profileStatBookings').textContent = total;
     document.getElementById('profileStatUpcoming').textContent = upcoming;
     document.getElementById('profileStatSpent').textContent = `R${spend.toLocaleString()}`;
@@ -2858,19 +2315,9 @@
     if (!name) { showToast('Name cannot be empty.'); return; }
     const [firstName, ...rest] = name.split(' ');
     const lastName = rest.join(' ') || firstName;
-
-    const res = await fetch(`${API_URL}/auth/profile`, {
-      method: 'PUT',
-      headers: { 'Content-Type': 'application/json' },
-      credentials: 'include',
-      body: JSON.stringify({
-        firstName, lastName,
-        phone: document.getElementById('profilePhone').value.trim()
-      })
-    });
+    const res = await fetch(`${API_URL}/auth/profile`, { method: 'PUT', headers: { 'Content-Type': 'application/json' }, credentials: 'include', body: JSON.stringify({ firstName, lastName, phone: document.getElementById('profilePhone').value.trim() }) });
     const data = await res.json();
     if (!res.ok) { showToast(data.message || 'Update failed.'); return; }
-
     const fullName = `${firstName} ${lastName}`;
     document.getElementById('profileFullName').textContent = fullName;
     document.getElementById('sidebarUsername').textContent = fullName;
@@ -2886,60 +2333,28 @@
     return `${parseInt(day)} ${months[parseInt(m) - 1]} ${y}`;
   }
 
-  function formatDur(mins) {
-    if (mins < 60) return `${mins} min`;
-    const h = Math.floor(mins / 60), m = mins % 60;
-    return m ? `${h}h ${m}min` : `${h}h`;
-  }
+  function formatDur(mins) { if (mins < 60) return `${mins} min`; const h = Math.floor(mins / 60), m = mins % 60; return m ? `${h}h ${m}min` : `${h}h`; }
 
   async function signOut() {
-    try {
-      await fetch(`${API_URL}/auth/logout`, { method: 'POST', credentials: 'include' });
-    } catch (error) {
-      console.warn('Logout request failed:', error);
-    }
-
-    localStorage.removeItem('user');
-    localStorage.removeItem('authToken');
-    sessionStorage.removeItem('user');
-    sessionStorage.removeItem('authToken');
-
-    document.cookie.split(';').forEach(cookie => {
-      const name = cookie.split('=')[0].trim();
-      if (name) { document.cookie = `${name}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/`; }
-    });
-
+    try { await fetch(`${API_URL}/auth/logout`, { method: 'POST', credentials: 'include' }); } catch (error) { console.warn('Logout request failed:', error); }
+    localStorage.removeItem('user'); localStorage.removeItem('authToken'); sessionStorage.removeItem('user'); sessionStorage.removeItem('authToken');
+    document.cookie.split(';').forEach(cookie => { const name = cookie.split('=')[0].trim(); if (name) { document.cookie = `${name}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/`; } });
     history.replaceState(null, '', 'login.html');
     showToast('Signed out successfully');
     setTimeout(() => { window.location.replace('login.html'); }, 300);
   }
 
-  function showToast(msg) {
-    const t = document.getElementById('toast');
-    t.textContent = msg;
-    t.classList.add('show');
-    setTimeout(() => t.classList.remove('show'), 2800);
-  }
+  function showToast(msg) { const t = document.getElementById('toast'); t.textContent = msg; t.classList.add('show'); setTimeout(() => t.classList.remove('show'), 2800); }
 
   (async function init() {
     const currentUser = typeof getCurrentUser === 'function' ? getCurrentUser() : null;
-
-    if (!currentUser) {
-      window.location.replace('login.html');
-      return;
-    }
-
+    if (!currentUser) { window.location.replace('login.html'); return; }
     if (currentUser.role && currentUser.role.toLowerCase() !== 'customer') {
-      if (currentUser.role.toLowerCase() === 'admin') {
-        window.location.replace('admindashboard.html');
-      } else if (currentUser.role.toLowerCase() === 'stylist') {
-        window.location.replace('stylistdashboard.html');
-      } else {
-        window.location.replace('login.html');
-      }
+      if (currentUser.role.toLowerCase() === 'admin') { window.location.replace('admindashboard.html'); }
+      else if (currentUser.role.toLowerCase() === 'stylist') { window.location.replace('stylistdashboard.html'); }
+      else { window.location.replace('login.html'); }
       return;
     }
-
     const user = currentUser;
     if (user) {
       const fullName = user.name || user.firstName + ' ' + user.lastName || 'User';
@@ -2953,11 +2368,8 @@
       document.getElementById('profilePhone').value = user.phone || '';
       document.getElementById('profileEmailInput').value = user.email || '';
       const initals = (user.firstName ? user.firstName[0] : '') + (user.lastName ? user.lastName[0] : '');
-      if (initals) {
-        document.getElementById('profileAvatar').textContent = initals;
-      }
+      if (initals) { document.getElementById('profileAvatar').textContent = initals; }
     }
-
     await Promise.all([loadServices(), loadStylists()]);
     await loadAppointments();
     renderOverview();
