@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-  <title>PinkMeUp | My Dashboard</title>
+  <title>PinkMeUp</title>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
   <style>
@@ -20,8 +20,9 @@
       --white: #FFFFFF;
       --success: #2C8F6E;
       --warning: #E07B39;
-      --shadow: 0 -2px 15px rgba(0,0,0,0.06);
+      --shadow: 0 2px 10px rgba(0,0,0,0.05);
       --gradient: linear-gradient(135deg, #FFB6C1 0%, #D43F6B 100%);
+      --grey-icon: #9E9E9E;
     }
 
     * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -34,34 +35,202 @@
       overflow: hidden;
       display: flex;
       flex-direction: column;
+      font-size: 16px; /* base font size increased */
+    }
+
+    /* ----- SIDEBAR ----- */
+    .sidebar-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.4);
+      backdrop-filter: blur(6px);
+      z-index: 999;
+    }
+    .sidebar-overlay.active { display: block; }
+
+    .sidebar {
+      position: fixed;
+      top: 0;
+      left: -320px;
+      width: 320px;
+      height: 100%;
+      background: var(--bg);
+      z-index: 1000;
+      transition: left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      padding: 1.5rem 1.2rem;
+      display: flex;
+      flex-direction: column;
+      box-shadow: 4px 0 30px rgba(0,0,0,0.12);
+    }
+    .sidebar.open { left: 0; }
+
+    .sidebar-close {
+      background: none;
+      border: none;
+      font-size: 1.3rem;
+      color: var(--ink);
+      cursor: pointer;
+      padding: 0.2rem 0;
+      text-align: right;
+      width: 100%;
+    }
+
+    .sidebar-user {
+      padding: 0.3rem 0 0.8rem 0;
+      border-bottom: 2px solid var(--border);
+      margin-bottom: 0.8rem;
+    }
+    .sidebar-greeting {
+      font-size: 0.85rem;
+      color: #888;
+      font-weight: 400;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    .sidebar-username {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--ink);
+      margin-top: 0.1rem;
+    }
+
+    .sidebar-nav {
+      display: flex;
+      flex-direction: column;
+      gap: 0.25rem;
+      flex: 1;
+    }
+    .sidebar-nav-item {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      padding: 0.85rem 0.8rem;
+      border-radius: 0.6rem;
+      font-size: 1.15rem; /* larger text */
+      font-weight: 400; /* not bold */
+      color: var(--ink);
+      cursor: pointer;
+      transition: 0.2s;
+      background: transparent;
+      border: none;
+      font-family: inherit;
+      width: 100%;
+      text-align: left;
+    }
+    .sidebar-nav-item:hover {
+      background: var(--rose-pale);
+      color: var(--rose);
+      transform: translateX(4px);
+    }
+    .sidebar-nav-item i {
+      width: 24px;
+      color: var(--grey-icon);
+      font-size: 1.1rem;
+      transition: color 0.2s;
+      text-align: center;
+    }
+    .sidebar-nav-item:hover i {
+      color: var(--rose);
+    }
+    .sidebar-nav-item.danger {
+      color: #DC2626;
+    }
+    .sidebar-nav-item.danger i {
+      color: var(--grey-icon);
+    }
+    .sidebar-nav-item.danger:hover i {
+      color: #DC2626;
+    }
+    .sidebar-nav-item.danger:hover {
+      background: #FEF2F2;
+    }
+
+    .sidebar-social {
+      padding: 0.8rem 0 0.3rem 0;
+      border-top: 1px solid var(--border);
+      margin-top: auto;
+    }
+    .sidebar-social-label {
+      font-size: 0.8rem;
+      color: #888;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 0.4rem;
+    }
+    .sidebar-contact-info {
+      font-size: 0.95rem; /* bigger */
+      color: #555;
+      margin-bottom: 0.4rem;
+    }
+    .sidebar-contact-info i {
+      width: 20px;
+      color: var(--grey-icon);
+    }
+    .sidebar-social-icons {
+      display: flex;
+      gap: 0.8rem;
+      margin-top: 0.4rem;
+    }
+    .sidebar-social-icons a {
+      color: var(--grey-icon);
+      font-size: 1.2rem;
+      transition: 0.2s;
+      text-decoration: none;
+    }
+    .sidebar-social-icons a:hover {
+      color: var(--rose);
+      transform: scale(1.1);
+    }
+
+    .sidebar-footer-text {
+      font-size: 0.75rem;
+      color: #888;
+      margin-top: 0.3rem;
     }
 
     /* ----- HEADER ----- */
     .header {
       background: var(--bg);
-      padding: 0.8rem 1.5rem;
+      padding: 0.8rem 1.5rem 0.5rem 1.5rem;
       display: flex;
       justify-content: space-between;
       align-items: center;
       flex-shrink: 0;
-      gap: 0.8rem;
-      flex-wrap: wrap;
-      border-bottom: 1px solid var(--border);
     }
-    .brand {
+    .header-left {
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+    }
+    .menu-btn {
+      background: none;
+      border: none;
+      font-size: 1.5rem;
+      color: var(--ink);
+      cursor: pointer;
+      padding: 0.2rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: color 0.2s;
+    }
+    .menu-btn:hover {
+      color: var(--rose);
+    }
+    .menu-btn i {
+      font-size: 1.5rem;
+    }
+
+    .brand-wrapper {
       display: flex;
       flex-direction: column;
       align-items: flex-start;
-      gap: 0.05rem;
-    }
-    .brand-top {
-      display: flex;
-      align-items: baseline;
-      gap: 0.5rem;
     }
     .brand-name {
       font-family: 'Cormorant Garamond', serif;
-      font-size: 1.8rem;
+      font-size: 2.4rem;
       font-weight: 700;
       background: var(--gradient);
       -webkit-background-clip: text;
@@ -70,44 +239,51 @@
       line-height: 1;
     }
     .brand-slogan {
-      font-size: 0.7rem;
+      font-size: 0.8rem;
       font-weight: 400;
-      letter-spacing: 1.5px;
+      letter-spacing: 1.2px;
       color: #000000;
       margin-top: 0.05rem;
     }
     .header-right {
       display: flex;
       align-items: center;
-      gap: 0.8rem;
     }
-    .avatar {
-      width: 36px;
-      height: 36px;
-      border-radius: 50%;
-      background: var(--gradient);
+
+    /* ----- TOP TABS (Superbalist style) ----- */
+    .top-tabs {
       display: flex;
-      align-items: center;
-      justify-content: center;
-      color: white;
-      font-size: 0.85rem;
+      background: var(--bg);
+      padding: 0.3rem 1.5rem 0 1.5rem;
+      flex-shrink: 0;
+      gap: 0.3rem;
+      justify-content: space-around;
+    }
+    .tab-item {
+      padding: 0.7rem 0.6rem;
+      font-size: 1rem; /* bigger */
       font-weight: 600;
-    }
-    .signout-btn {
-      background: transparent;
-      border: none;
-      padding: 0.3rem 0.5rem;
-      font-size: 0.85rem;
-      font-weight: 500;
-      color: var(--ink);
+      color: #888;
       cursor: pointer;
-      transition: 0.2s;
+      border-bottom: 3px solid transparent;
+      transition: 0.15s;
+      background: transparent;
+      border-top: none;
+      border-left: none;
+      border-right: none;
       font-family: inherit;
-      text-decoration: underline;
-      opacity: 0.6;
-      order: -1;
+      flex: 1;
+      text-align: center;
     }
-    .signout-btn:hover { opacity: 1; color: var(--rose); }
+    .tab-item.active {
+      color: var(--rose);
+      border-bottom-color: var(--rose);
+    }
+    .tab-item .tab-icon {
+      display: block;
+      font-size: 1.5rem;
+      margin-bottom: 0.1rem;
+    }
 
     /* ----- APP LAYOUT ----- */
     .app {
@@ -122,74 +298,16 @@
     .main {
       flex: 1;
       overflow-y: auto;
-      padding: 1.5rem 2rem;
+      padding: 1rem 1.5rem;
       background: var(--bg);
       min-width: 0;
-      padding-bottom: 80px;
+      padding-bottom: 0.5rem;
     }
     .view { display: none; animation: fadeIn 0.25s ease; }
     .view.active { display: block; }
     @keyframes fadeIn {
       from { opacity: 0; transform: translateY(8px); }
       to   { opacity: 1; transform: translateY(0); }
-    }
-
-    /* ----- BOTTOM NAVIGATION ----- */
-    .bottom-nav {
-      background: var(--bg);
-      display: flex;
-      justify-content: space-around;
-      align-items: center;
-      padding: 0.6rem 0.5rem 0.8rem;
-      flex-shrink: 0;
-      box-shadow: var(--shadow);
-      z-index: 100;
-      border-top: 1px solid var(--border);
-    }
-    .nav-item {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 0.2rem;
-      padding: 0.4rem 0.8rem;
-      border-radius: 0.8rem;
-      font-size: 0.7rem;
-      font-weight: 500;
-      color: #888;
-      cursor: pointer;
-      transition: 0.18s;
-      background: transparent;
-      border: none;
-      font-family: inherit;
-      min-width: 56px;
-      position: relative;
-    }
-    .nav-item i {
-      font-size: 1.4rem;
-      color: #888;
-      transition: 0.18s;
-    }
-    .nav-item.active {
-      color: var(--rose);
-    }
-    .nav-item.active i {
-      color: var(--rose);
-    }
-    .nav-item:hover:not(.active) {
-      color: var(--ink);
-    }
-    .nav-item:hover:not(.active) i {
-      color: var(--ink);
-    }
-    .nav-item .badge-dot {
-      position: absolute;
-      top: 2px;
-      right: 4px;
-      width: 8px;
-      height: 8px;
-      background: var(--rose);
-      border-radius: 50%;
-      border: 2px solid white;
     }
 
     /* ----- OVERVIEW ----- */
@@ -199,7 +317,7 @@
       align-items: flex-start;
       flex-wrap: wrap;
       gap: 0.8rem;
-      margin-bottom: 1.8rem;
+      margin-bottom: 1.2rem;
     }
     .overview-title {
       font-family: 'Cormorant Garamond', serif;
@@ -208,7 +326,7 @@
       color: var(--ink);
     }
     .overview-sub {
-      font-size: 1rem;
+      font-size: 1.05rem;
       color: #888;
       margin-top: 0.1rem;
     }
@@ -218,7 +336,7 @@
       font-size: 1rem;
       cursor: pointer;
       background: var(--gradient);
-      padding: 0.5rem 1.4rem;
+      padding: 0.6rem 1.5rem;
       border-radius: 2rem;
       transition: 0.2s;
       border: none;
@@ -226,114 +344,92 @@
     }
     .book-now-btn:hover { opacity: 0.85; transform: translateY(-1px); }
 
-    /* Stats Cards */
     .stats-grid {
       display: grid;
       grid-template-columns: repeat(4, 1fr);
-      gap: 1rem;
-      margin-bottom: 1.8rem;
+      gap: 0.8rem;
+      margin-bottom: 1.2rem;
     }
     .stat-card {
       background: var(--white);
       border: 1px solid var(--border);
-      border-radius: 1.2rem;
-      padding: 1.2rem 1.5rem;
-      display: flex;
-      align-items: center;
-      gap: 1rem;
-      transition: transform 0.3s ease, box-shadow 0.3s ease;
-    }
-    .stat-card:hover {
-      transform: translateY(-3px);
-      box-shadow: 0 8px 30px rgba(0,0,0,0.06);
-    }
-    .stat-icon {
-      width: 48px;
-      height: 48px;
       border-radius: 1rem;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 1.2rem;
-      flex-shrink: 0;
+      padding: 1rem 1.2rem;
+      text-align: center;
+      transition: 0.2s;
     }
-    .stat-icon.pink   { background: #FDEEF4; color: var(--rose); }
-    .stat-icon.teal   { background: #E6F7F2; color: var(--success); }
-    .stat-icon.amber  { background: #FEF3E8; color: var(--warning); }
-    .stat-icon.purple { background: #F0EEFF; color: #6B5CE7; }
+    .stat-card:hover { transform: translateY(-2px); box-shadow: var(--shadow); }
     .stat-number {
       font-family: 'Cormorant Garamond', serif;
-      font-size: 2.2rem;
+      font-size: 2rem;
       font-weight: 700;
       color: var(--ink);
       line-height: 1;
     }
-    .stat-label { font-size: 0.85rem; color: #888; margin-top: 0.1rem; }
+    .stat-label { font-size: 0.9rem; color: #888; margin-top: 0.1rem; }
 
-    /* Section Header */
     .section-header {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-bottom: 1rem;
+      margin-bottom: 0.8rem;
     }
     .section-title {
-      font-size: 1.2rem;
+      font-size: 1.3rem;
       font-weight: 700;
       color: var(--ink);
     }
     .view-all-link {
       color: var(--rose);
       font-weight: 500;
-      font-size: 0.95rem;
+      font-size: 1rem;
       cursor: pointer;
       text-decoration: none;
     }
     .view-all-link:hover { text-decoration: underline; }
 
-    /* Appointment Cards (Overview) */
     .appointment-card {
       background: var(--white);
       border: 1px solid var(--border);
-      border-radius: 1.2rem;
-      padding: 1.2rem 1.5rem;
-      margin-bottom: 0.8rem;
+      border-radius: 1rem;
+      padding: 1rem 1.2rem;
+      margin-bottom: 0.6rem;
       display: flex;
       justify-content: space-between;
       align-items: center;
       flex-wrap: wrap;
-      gap: 0.8rem;
+      gap: 0.5rem;
       transition: 0.2s;
     }
     .appointment-card:hover { border-color: var(--rose-light); }
     .appointment-info {
       display: flex;
       flex-direction: column;
-      gap: 0.3rem;
+      gap: 0.2rem;
     }
     .appointment-service {
       font-weight: 600;
-      font-size: 1.1rem;
+      font-size: 1.05rem;
       color: var(--ink);
     }
     .appointment-details {
-      font-size: 0.95rem;
+      font-size: 0.9rem;
       color: #888;
       display: flex;
-      gap: 1.2rem;
+      gap: 0.8rem;
       flex-wrap: wrap;
     }
     .appointment-details span { display: flex; align-items: center; gap: 0.3rem; }
     .appointment-actions {
       display: flex;
-      gap: 0.5rem;
+      gap: 0.3rem;
     }
     .appt-btn {
-      padding: 0.4rem 0.9rem;
+      padding: 0.4rem 0.8rem;
       border-radius: 2rem;
       border: 1.5px solid var(--border);
       background: white;
-      font-size: 0.8rem;
+      font-size: 0.85rem;
       font-weight: 500;
       color: var(--ink);
       cursor: pointer;
@@ -341,7 +437,7 @@
       font-family: inherit;
       display: flex;
       align-items: center;
-      gap: 0.3rem;
+      gap: 0.2rem;
     }
     .appt-btn:hover { border-color: var(--rose); color: var(--rose); }
     .appt-btn.danger:hover { border-color: #DC2626; color: #DC2626; }
@@ -349,46 +445,44 @@
     .badge {
       display: inline-flex;
       align-items: center;
-      padding: 0.2rem 0.8rem;
+      padding: 0.15rem 0.7rem;
       border-radius: 2rem;
       font-size: 0.75rem;
       font-weight: 600;
-      letter-spacing: 0.3px;
+      letter-spacing: 0.2px;
     }
     .badge-upcoming { background: #E6F7F2; color: var(--success); }
     .badge-past     { background: #F5F5F5; color: #888; }
     .badge-cancelled{ background: #FEF2F2; color: #DC2626; }
     .badge-pending  { background: var(--rose-pale); color: var(--rose); }
 
-    /* Empty State */
     .empty-state {
       text-align: center;
-      padding: 2.5rem 1rem;
+      padding: 2rem 1rem;
       color: #888;
     }
-    .empty-state i { font-size: 2.5rem; color: var(--rose-mid); margin-bottom: 0.7rem; display: block; }
-    .empty-state p { font-size: 1rem; margin-bottom: 0.8rem; }
+    .empty-state i { font-size: 2.2rem; color: var(--rose-mid); margin-bottom: 0.5rem; display: block; }
+    .empty-state p { font-size: 1rem; margin-bottom: 0.6rem; }
     .empty-state .book-link { color: var(--rose); font-weight: 600; cursor: pointer; }
-    .empty-state .book-link:hover { text-decoration: underline; }
 
-    /* ----- BOOKING WIZARD - CARDLESS ----- */
+    /* ----- BOOKING WIZARD ----- */
     .wizard-steps {
       display: flex;
       gap: 0;
-      padding: 0.5rem 0 1.5rem 0;
+      padding: 0.5rem 0 1rem 0;
       overflow-x: auto;
       border-bottom: 2px solid #f0f0f0;
-      margin-bottom: 1.5rem;
+      margin-bottom: 1rem;
     }
     .w-step {
       flex: 1;
-      padding: 0.6rem 0.5rem;
+      padding: 0.5rem 0.3rem;
       text-align: center;
-      font-size: 0.85rem;
+      font-size: 0.9rem;
       font-weight: 600;
       color: #888;
       transition: 0.2s;
-      min-width: 70px;
+      min-width: 60px;
       cursor: pointer;
       position: relative;
       border-bottom: 3px solid transparent;
@@ -407,12 +501,12 @@
       border-radius: 50%;
       background: #f0f0f0;
       color: #888;
-      font-size: 0.75rem;
+      font-size: 0.85rem;
       font-weight: 700;
       display: flex;
       align-items: center;
       justify-content: center;
-      margin: 0 auto 0.3rem;
+      margin: 0 auto 0.2rem;
       transition: 0.2s;
     }
     .w-step.active .w-step-num {
@@ -424,44 +518,39 @@
       color: white;
     }
 
-    .wizard-body {
-      padding: 0.5rem 0 1.5rem 0;
-    }
-    .wizard-body.hidden {
-      display: none;
-    }
+    .wizard-body { padding: 0.5rem 0 1rem 0; }
+    .wizard-body.hidden { display: none; }
 
-    /* Service Cards */
-    .services-picker { display: flex; gap: 1.5rem; flex-wrap: wrap; }
+    .services-picker { display: flex; gap: 1rem; flex-wrap: wrap; }
     .service-categories { width: 160px; flex-shrink: 0; }
     .cat-btn {
       display: block;
       width: 100%;
-      padding: 0.6rem 1rem;
-      border-radius: 0.6rem;
+      padding: 0.6rem 0.8rem;
+      border-radius: 0.5rem;
       border: none;
       background: transparent;
       text-align: left;
-      font-size: 0.9rem;
+      font-size: 0.95rem;
       font-weight: 500;
       color: #888;
       cursor: pointer;
       transition: 0.15s;
       font-family: inherit;
-      margin-bottom: 0.2rem;
+      margin-bottom: 0.15rem;
     }
     .cat-btn:hover { background: #f5f5f5; }
     .cat-btn.active { background: var(--rose-pale); color: var(--rose); font-weight: 600; }
-    .services-list-wrap { flex: 1; min-width: 240px; }
+    .services-list-wrap { flex: 1; min-width: 200px; }
     .service-grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 0.8rem;
+      gap: 0.5rem;
     }
     .svc-card {
       border: 1.5px solid var(--border);
-      border-radius: 0.8rem;
-      padding: 0.9rem 1rem;
+      border-radius: 0.6rem;
+      padding: 0.8rem 0.9rem;
       cursor: pointer;
       transition: 0.18s;
       position: relative;
@@ -477,37 +566,36 @@
       font-family: 'Font Awesome 5 Free';
       font-weight: 900;
       position: absolute;
-      top: 0.4rem;
-      right: 0.5rem;
+      top: 0.3rem;
+      right: 0.4rem;
       font-size: 0.7rem;
       color: var(--rose);
     }
-    .svc-card-name { font-size: 0.95rem; font-weight: 600; color: var(--ink); margin-bottom: 0.2rem; }
-    .svc-card-meta { display: flex; gap: 0.6rem; align-items: center; flex-wrap: wrap; }
+    .svc-card-name { font-size: 0.95rem; font-weight: 600; color: var(--ink); margin-bottom: 0.15rem; }
+    .svc-card-meta { display: flex; gap: 0.4rem; align-items: center; flex-wrap: wrap; }
     .svc-card-price { font-size: 0.95rem; font-weight: 700; color: var(--rose); }
-    .svc-card-dur   { font-size: 0.8rem; color: #888; }
+    .svc-card-dur   { font-size: 0.85rem; color: #888; }
 
-    /* Cart */
     .cart-panel {
       background: #f9f9f9;
       border: 1.5px dashed var(--rose-mid);
-      border-radius: 0.8rem;
-      padding: 1rem;
-      margin-top: 1.2rem;
-      min-height: 70px;
+      border-radius: 0.6rem;
+      padding: 0.8rem;
+      margin-top: 1rem;
+      min-height: 60px;
     }
     .cart-panel-title {
       font-size: 0.85rem;
       font-weight: 700;
       text-transform: uppercase;
-      letter-spacing: 0.4px;
+      letter-spacing: 0.3px;
       color: var(--ink);
-      margin-bottom: 0.5rem;
+      margin-bottom: 0.3rem;
       display: flex;
       align-items: center;
       gap: 0.3rem;
     }
-    .cart-items { display: flex; flex-wrap: wrap; gap: 0.4rem; }
+    .cart-items { display: flex; flex-wrap: wrap; gap: 0.3rem; }
     .cart-chip {
       display: flex;
       align-items: center;
@@ -515,7 +603,7 @@
       background: white;
       border: 1px solid var(--rose-mid);
       border-radius: 2rem;
-      padding: 0.25rem 0.4rem 0.25rem 0.8rem;
+      padding: 0.15rem 0.3rem 0.15rem 0.6rem;
       font-size: 0.85rem;
       font-weight: 500;
       color: var(--ink);
@@ -537,7 +625,7 @@
     }
     .cart-chip-remove:hover { background: var(--rose); color: white; }
     .cart-empty-msg {
-      font-size: 0.9rem;
+      font-size: 0.95rem;
       color: #999;
       font-style: italic;
       text-align: center;
@@ -548,8 +636,8 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-top: 0.6rem;
-      padding-top: 0.6rem;
+      margin-top: 0.4rem;
+      padding-top: 0.4rem;
       border-top: 1px solid var(--rose-mid);
       flex-wrap: wrap;
       gap: 0.3rem;
@@ -558,46 +646,41 @@
     .cart-total-val   { font-size: 1.2rem; font-weight: 700; color: var(--rose); }
     .cart-duration    { font-size: 0.85rem; color: #888; }
 
-    /* ----- SCROLLABLE BOOKING LAYOUT - VERTICAL ----- */
     .booking-vertical-wrapper {
       display: flex;
       flex-direction: column;
-      gap: 1.5rem;
+      gap: 1rem;
     }
     .booking-panel {
       background: var(--white);
       border: 1px solid var(--border);
-      border-radius: 1.2rem;
-      padding: 1.5rem;
+      border-radius: 1rem;
+      padding: 1rem;
       width: 100%;
     }
     .panel-label {
-      font-size: 0.85rem;
+      font-size: 0.9rem;
       font-weight: 700;
       text-transform: uppercase;
-      letter-spacing: 0.5px;
+      letter-spacing: 0.3px;
       color: #888;
-      margin-bottom: 1rem;
+      margin-bottom: 0.6rem;
     }
     .month-label {
       font-size: 1.2rem;
       font-weight: 600;
       color: var(--ink);
       text-align: center;
-      margin-bottom: 0.8rem;
-    }
-    .calendar-grid {
-      width: 100%;
+      margin-bottom: 0.6rem;
     }
     .calendar-weekdays {
       display: grid;
       grid-template-columns: repeat(7, 1fr);
       text-align: center;
-      font-size: 0.75rem;
+      font-size: 0.8rem;
       font-weight: 600;
       color: #888;
-      margin-bottom: 0.3rem;
-      padding: 0 0.2rem;
+      margin-bottom: 0.2rem;
     }
     .calendar-days {
       display: grid;
@@ -607,10 +690,10 @@
     }
     .calendar-day {
       padding: 0.5rem 0;
-      font-size: 0.9rem;
+      font-size: 0.95rem;
       font-weight: 500;
       color: var(--ink);
-      border-radius: 0.5rem;
+      border-radius: 0.4rem;
       cursor: pointer;
       transition: 0.15s;
       background: transparent;
@@ -620,107 +703,69 @@
     .calendar-day:hover:not(.empty):not(.selected):not(.past) {
       background: var(--rose-pale);
     }
-    .calendar-day.empty {
-      color: transparent;
-      cursor: default;
-    }
+    .calendar-day.empty { color: transparent; cursor: default; }
     .calendar-day.selected {
       background: var(--rose);
       color: white;
       font-weight: 700;
     }
-    .calendar-day.past {
-      color: #ccc;
-      cursor: not-allowed;
-    }
-    .calendar-day.today {
-      border: 2px solid var(--rose-light);
-    }
+    .calendar-day.past { color: #ccc; cursor: not-allowed; }
+    .calendar-day.today { border: 2px solid var(--rose-light); }
     .date-nav {
       display: flex;
       justify-content: center;
-      gap: 1rem;
-      margin-top: 0.8rem;
+      gap: 0.8rem;
+      margin-top: 0.6rem;
     }
     .date-nav-btn {
-      width: 40px;
-      height: 40px;
+      width: 38px;
+      height: 38px;
       border-radius: 50%;
       border: 1.5px solid var(--border);
       background: white;
       cursor: pointer;
       transition: 0.15s;
       color: var(--ink);
-      font-size: 0.9rem;
+      font-size: 1rem;
       display: flex;
       align-items: center;
       justify-content: center;
     }
-    .date-nav-btn:hover {
-      border-color: var(--rose);
-      color: var(--rose);
-    }
+    .date-nav-btn:hover { border-color: var(--rose); color: var(--rose); }
 
-    /* Time Slots */
-    .time-slots-container {
-      max-height: 320px;
-      overflow-y: auto;
-      padding-right: 0.3rem;
-    }
-    .time-slots-container::-webkit-scrollbar {
-      width: 4px;
-    }
-    .time-slots-container::-webkit-scrollbar-track {
-      background: #f0f0f0;
-      border-radius: 10px;
-    }
-    .time-slots-container::-webkit-scrollbar-thumb {
-      background: var(--rose-mid);
-      border-radius: 10px;
-    }
+    .time-slots-container { max-height: 250px; overflow-y: auto; padding-right: 0.2rem; }
+    .time-slots-container::-webkit-scrollbar { width: 3px; }
+    .time-slots-container::-webkit-scrollbar-track { background: #f0f0f0; border-radius: 10px; }
+    .time-slots-container::-webkit-scrollbar-thumb { background: var(--rose-mid); border-radius: 10px; }
     .time-slots-grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 0.4rem;
+      gap: 0.3rem;
     }
     .time-slot {
       border: 1.5px solid var(--border);
-      border-radius: 0.6rem;
-      padding: 0.5rem 0.3rem;
+      border-radius: 0.5rem;
+      padding: 0.5rem 0.2rem;
       text-align: center;
-      font-size: 0.8rem;
+      font-size: 0.85rem;
       font-weight: 500;
       cursor: pointer;
       transition: 0.15s;
       color: var(--ink);
       background: white;
     }
-    .time-slot:hover:not(.unavailable) {
-      border-color: var(--rose-light);
-      background: var(--rose-pale);
-    }
-    .time-slot.selected {
-      border-color: var(--rose);
-      background: var(--rose-pale);
-      color: var(--rose);
-      font-weight: 700;
-    }
-    .time-slot.unavailable {
-      opacity: 0.35;
-      cursor: not-allowed;
-      border-style: dashed;
-    }
+    .time-slot:hover:not(.unavailable) { border-color: var(--rose-light); background: var(--rose-pale); }
+    .time-slot.selected { border-color: var(--rose); background: var(--rose-pale); color: var(--rose); font-weight: 700; }
+    .time-slot.unavailable { opacity: 0.35; cursor: not-allowed; border-style: dashed; }
 
-    /* Stylist panel */
     .stylist-grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 0.5rem;
-      margin-top: 0;
+      gap: 0.4rem;
     }
     .stylist-btn {
       border: 1.5px solid var(--border);
-      border-radius: 0.8rem;
+      border-radius: 0.6rem;
       padding: 0.6rem 0.3rem;
       text-align: center;
       cursor: pointer;
@@ -728,41 +773,31 @@
       background: white;
       font-family: inherit;
     }
-    .stylist-btn:hover:not(.selected) {
-      border-color: var(--rose-light);
-    }
-    .stylist-btn.selected {
-      border-color: var(--rose);
-      background: var(--rose-pale);
-    }
+    .stylist-btn:hover:not(.selected) { border-color: var(--rose-light); }
+    .stylist-btn.selected { border-color: var(--rose); background: var(--rose-pale); }
     .stylist-av {
-      width: 34px;
-      height: 34px;
+      width: 35px;
+      height: 35px;
       border-radius: 50%;
       background: var(--gradient);
       display: flex;
       align-items: center;
       justify-content: center;
       color: white;
-      font-size: 0.8rem;
+      font-size: 0.85rem;
       font-weight: 700;
-      margin: 0 auto 0.3rem;
+      margin: 0 auto 0.2rem;
     }
-    .stylist-name {
-      font-size: 0.8rem;
-      font-weight: 600;
-      color: var(--ink);
-    }
+    .stylist-name { font-size: 0.85rem; font-weight: 600; color: var(--ink); }
 
-    /* Form */
-    .details-form { max-width: 520px; }
-    .form-group { margin-bottom: 1rem; }
-    .form-label { display: block; font-size: 0.85rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.3px; color: #888; margin-bottom: 0.3rem; }
+    .details-form { max-width: 100%; }
+    .form-group { margin-bottom: 0.9rem; }
+    .form-label { display: block; font-size: 0.85rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.2px; color: #888; margin-bottom: 0.2rem; }
     .form-input, .form-textarea {
       width: 100%;
       padding: 0.8rem 1rem;
       border: 1.5px solid var(--border);
-      border-radius: 0.8rem;
+      border-radius: 0.6rem;
       font-size: 1rem;
       font-family: inherit;
       color: var(--ink);
@@ -770,43 +805,42 @@
       transition: 0.15s;
     }
     .form-input:focus, .form-textarea:focus { outline: none; border-color: var(--rose); }
-    .form-textarea { resize: vertical; min-height: 70px; }
+    .form-textarea { resize: vertical; min-height: 60px; }
 
-    /* Review Card */
     .review-card {
       background: #f9f9f9;
       border: 1px solid var(--border);
-      border-radius: 1.2rem;
-      padding: 1.5rem;
-      max-width: 560px;
+      border-radius: 1rem;
+      padding: 1rem;
+      max-width: 100%;
     }
     .review-section-title {
-      font-size: 0.75rem;
+      font-size: 0.8rem;
       font-weight: 700;
-      letter-spacing: 0.5px;
+      letter-spacing: 0.3px;
       text-transform: uppercase;
       color: #888;
-      margin-bottom: 0.5rem;
-      padding-bottom: 0.3rem;
+      margin-bottom: 0.3rem;
+      padding-bottom: 0.2rem;
       border-bottom: 1px solid var(--border);
     }
     .review-row {
       display: flex;
       justify-content: space-between;
       align-items: flex-start;
-      padding: 0.4rem 0;
+      padding: 0.35rem 0;
       font-size: 0.95rem;
       gap: 0.3rem;
     }
     .review-row span:first-child { color: #888; flex-shrink: 0; }
     .review-row span:last-child  { font-weight: 600; color: var(--ink); text-align: right; }
-    .review-services-list { margin: 0.3rem 0; }
+    .review-services-list { margin: 0.2rem 0; }
     .review-svc-item {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 0.4rem 0;
-      font-size: 0.9rem;
+      padding: 0.35rem 0;
+      font-size: 0.95rem;
       border-bottom: 1px dashed var(--border);
       gap: 0.3rem;
     }
@@ -814,24 +848,24 @@
     .review-total {
       display: flex;
       justify-content: space-between;
-      padding: 0.5rem 0 0;
+      padding: 0.4rem 0 0;
       font-size: 1.1rem;
       font-weight: 700;
       color: var(--rose);
-      margin-top: 0.3rem;
+      margin-top: 0.2rem;
     }
 
     .wizard-nav {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 1rem 0;
+      padding: 0.8rem 0;
       border-top: 1px solid #f0f0f0;
       flex-wrap: wrap;
       gap: 0.5rem;
-      margin-top: 1rem;
+      margin-top: 0.8rem;
     }
-    .step-indicator { font-size: 0.85rem; color: #888; }
+    .step-indicator { font-size: 0.9rem; color: #888; }
 
     .btn-primary {
       background: var(--gradient);
@@ -840,12 +874,12 @@
       padding: 0.7rem 1.8rem;
       border-radius: 2rem;
       font-weight: 600;
-      font-size: 0.95rem;
+      font-size: 1rem;
       cursor: pointer;
       transition: 0.2s;
       display: inline-flex;
       align-items: center;
-      gap: 0.4rem;
+      gap: 0.3rem;
       font-family: inherit;
       white-space: nowrap;
     }
@@ -856,7 +890,7 @@
       color: var(--ink);
       padding: 0.6rem 1.4rem;
       border-radius: 2rem;
-      font-size: 0.9rem;
+      font-size: 0.95rem;
       font-weight: 500;
       cursor: pointer;
       transition: 0.2s;
@@ -864,18 +898,71 @@
     }
     .btn-ghost:hover { border-color: var(--rose); color: var(--rose); }
 
-    /* ----- PROFILE - CARDLESS ----- */
-    .profile-container {
-      max-width: 600px;
-      margin: 0 auto;
-      padding: 0.5rem 0;
+    /* ----- APPOINTMENTS ----- */
+    .appointments-container { max-width: 100%; }
+    .appointments-header { padding: 0.5rem 0 0.5rem 0; }
+    .appointments-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 2rem;
+      font-weight: 600;
+      color: var(--ink);
+    }
+    .appointments-sub { font-size: 1rem; color: #888; margin-top: 0.1rem; }
+    .appointments-divider { height: 1px; background: var(--border); margin: 0 0 1rem 0; }
+
+    /* FILTER BUTTONS - clean style */
+    .filter-tabs {
+      display: flex;
+      gap: 0.5rem;
+      margin-bottom: 1rem;
+      flex-wrap: wrap;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 0.5rem;
+    }
+    .filter-btn {
+      padding: 0.5rem 1.4rem;
+      border-radius: 2rem;
+      border: none;
+      background: transparent;
+      font-size: 0.95rem;
+      font-weight: 500;
+      color: #888;
+      cursor: pointer;
+      transition: 0.2s;
+      font-family: inherit;
+      white-space: nowrap;
+    }
+    .filter-btn:hover { background: var(--rose-pale); color: var(--rose); }
+    .filter-btn.active {
+      background: var(--rose);
+      color: white;
+      font-weight: 600;
+      box-shadow: 0 2px 8px rgba(212, 63, 107, 0.2);
     }
 
-    .profile-header {
-      text-align: center;
-      padding: 1rem 0 1.5rem 0;
+    .appointments-list { display: flex; flex-direction: column; gap: 0.6rem; }
+    .appointment-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0.9rem 0;
+      border-bottom: 1px solid #f0f0f0;
+      flex-wrap: wrap;
+      gap: 0.4rem;
+      transition: 0.15s;
     }
+    .appointment-item:hover { background: #fafafa; padding: 0.9rem 0.5rem; margin: 0 -0.5rem; border-radius: 0.5rem; }
+    .appointment-item:last-child { border-bottom: none; }
+    .appointment-item-info { display: flex; flex-direction: column; gap: 0.15rem; flex: 1; min-width: 150px; }
+    .appointment-item-service { font-weight: 600; font-size: 1.05rem; color: var(--ink); }
+    .appointment-item-details { display: flex; gap: 0.8rem; flex-wrap: wrap; font-size: 0.9rem; color: #888; }
+    .appointment-item-details span { display: flex; align-items: center; gap: 0.2rem; }
+    .appointment-item-status { flex-shrink: 0; }
+    .appointment-item-actions { display: flex; gap: 0.3rem; flex-shrink: 0; }
 
+    /* ----- PROFILE ----- */
+    .profile-container { max-width: 500px; margin: 0 auto; padding: 0.5rem 0; }
+    .profile-header { text-align: center; padding: 1rem 0 1.2rem 0; }
     .profile-avatar-large {
       width: 80px;
       height: 80px;
@@ -885,89 +972,41 @@
       align-items: center;
       justify-content: center;
       font-family: 'Cormorant Garamond', serif;
-      font-size: 2rem;
+      font-size: 2.2rem;
       font-weight: 700;
       color: white;
-      margin: 0 auto 0.5rem;
+      margin: 0 auto 0.4rem;
     }
-
-    .profile-name {
-      font-size: 1.6rem;
-      font-weight: 700;
-      color: var(--ink);
-    }
-
-    .profile-email {
-      font-size: 1rem;
-      color: #888;
-      margin-top: 0.1rem;
-    }
-
+    .profile-name { font-size: 1.6rem; font-weight: 700; color: var(--ink); }
+    .profile-email { font-size: 1rem; color: #888; margin-top: 0.1rem; }
     .profile-member-badge {
       display: inline-flex;
       align-items: center;
-      gap: 0.4rem;
-      color: var(--rose);
-      font-size: 0.85rem;
-      font-weight: 500;
-      margin-top: 0.4rem;
-    }
-
-    .profile-member-badge i {
-      color: var(--rose);
-    }
-
-    .profile-divider {
-      height: 1px;
-      background: var(--border);
-      margin: 0.5rem 0 1rem 0;
-    }
-
-    .profile-details-list {
-      display: flex;
-      flex-direction: column;
       gap: 0.3rem;
-      padding: 0.5rem 0;
+      color: var(--rose);
+      font-size: 0.9rem;
+      font-weight: 500;
+      margin-top: 0.3rem;
     }
-
+    .profile-divider { height: 1px; background: var(--border); margin: 0.5rem 0 0.8rem 0; }
+    .profile-details-list { display: flex; flex-direction: column; gap: 0.2rem; padding: 0.3rem 0; }
     .profile-detail-item {
       display: flex;
       align-items: center;
       padding: 0.6rem 0;
       border-bottom: 1px solid #f5f5f5;
     }
+    .profile-detail-item:last-child { border-bottom: none; }
+    .detail-label { color: #888; font-size: 1rem; flex: 1; }
+    .detail-value { color: var(--ink); font-weight: 600; font-size: 1rem; text-align: right; }
 
-    .profile-detail-item:last-child {
-      border-bottom: none;
-    }
-
-    .detail-label {
-      color: #888;
-      font-size: 0.9rem;
-      flex: 1;
-    }
-
-    .detail-value {
-      color: var(--ink);
-      font-weight: 600;
-      font-size: 0.95rem;
-      text-align: right;
-    }
-
-    /* Profile Actions - Clean List Style with Grey Icons */
-    .profile-actions {
-      display: flex;
-      flex-direction: column;
-      gap: 0.3rem;
-      padding: 0.5rem 0;
-    }
-
+    .profile-actions { display: flex; flex-direction: column; gap: 0.2rem; padding: 0.3rem 0; }
     .profile-action-btn {
       width: 100%;
-      padding: 0.7rem 1rem;
+      padding: 0.8rem 0.9rem;
       background: transparent;
       border: none;
-      font-size: 0.95rem;
+      font-size: 1.05rem;
       font-weight: 500;
       color: var(--ink);
       cursor: pointer;
@@ -975,137 +1014,17 @@
       font-family: inherit;
       display: flex;
       align-items: center;
-      gap: 0.8rem;
+      gap: 0.6rem;
       text-align: left;
-      border-radius: 0.6rem;
+      border-radius: 0.5rem;
     }
+    .profile-action-btn .action-icon { width: 24px; color: #bbb; font-size: 1rem; transition: 0.15s; }
+    .profile-action-btn:hover { background: #f5f5f5; }
+    .profile-action-btn:hover .action-icon { color: var(--rose); }
+    .profile-action-btn.danger:hover { background: #FEF2F2; }
+    .profile-action-btn.danger:hover .action-icon { color: #DC2626; }
 
-    .profile-action-btn .action-icon {
-      width: 28px;
-      height: 28px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: #bbb;
-      font-size: 1rem;
-      transition: 0.15s;
-    }
-
-    .profile-action-btn:hover {
-      background: #f5f5f5;
-      padding-left: 1.2rem;
-    }
-
-    .profile-action-btn:hover .action-icon {
-      color: var(--rose);
-    }
-
-    .profile-action-btn.danger:hover {
-      background: #FEF2F2;
-    }
-
-    .profile-action-btn.danger:hover .action-icon {
-      color: #DC2626;
-    }
-
-    /* ----- APPOINTMENTS - CARDLESS ----- */
-    .appointments-container {
-      max-width: 900px;
-      margin: 0 auto;
-    }
-
-    .appointments-header {
-      padding: 0.5rem 0 0.8rem 0;
-    }
-
-    .appointments-title {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 2rem;
-      font-weight: 600;
-      color: var(--ink);
-    }
-
-    .appointments-sub {
-      font-size: 1rem;
-      color: #888;
-      margin-top: 0.1rem;
-    }
-
-    .appointments-divider {
-      height: 1px;
-      background: var(--border);
-      margin: 0 0 1.5rem 0;
-    }
-
-    .appointments-list {
-      display: flex;
-      flex-direction: column;
-      gap: 0.8rem;
-    }
-
-    .appointment-item {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 1rem 0;
-      border-bottom: 1px solid #f0f0f0;
-      flex-wrap: wrap;
-      gap: 0.5rem;
-      transition: 0.15s;
-    }
-
-    .appointment-item:hover {
-      background: #fafafa;
-      padding-left: 0.5rem;
-      padding-right: 0.5rem;
-      border-radius: 0.6rem;
-      margin-left: -0.5rem;
-      margin-right: -0.5rem;
-    }
-
-    .appointment-item:last-child {
-      border-bottom: none;
-    }
-
-    .appointment-item-info {
-      display: flex;
-      flex-direction: column;
-      gap: 0.2rem;
-      flex: 1;
-      min-width: 180px;
-    }
-
-    .appointment-item-service {
-      font-weight: 600;
-      font-size: 1rem;
-      color: var(--ink);
-    }
-
-    .appointment-item-details {
-      display: flex;
-      gap: 1.2rem;
-      flex-wrap: wrap;
-      font-size: 0.85rem;
-      color: #888;
-    }
-
-    .appointment-item-details span {
-      display: flex;
-      align-items: center;
-      gap: 0.3rem;
-    }
-
-    .appointment-item-status {
-      flex-shrink: 0;
-    }
-
-    .appointment-item-actions {
-      display: flex;
-      gap: 0.4rem;
-      flex-shrink: 0;
-    }
-
-    /* Modal */
+    /* ----- MODAL ----- */
     .overlay {
       display: none;
       position: fixed;
@@ -1120,8 +1039,8 @@
     .overlay.open { display: flex; }
     .modal-box {
       background: white;
-      border-radius: 1.2rem;
-      padding: 2rem;
+      border-radius: 1rem;
+      padding: 1.5rem;
       width: 100%;
       max-width: 480px;
       max-height: 90vh;
@@ -1132,7 +1051,7 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-bottom: 1.2rem;
+      margin-bottom: 1rem;
     }
     .modal-title {
       font-family: 'Cormorant Garamond', serif;
@@ -1141,12 +1060,13 @@
       color: var(--rose);
     }
     .modal-close {
-      width: 32px; height: 32px;
+      width: 35px;
+      height: 35px;
       border-radius: 50%;
       border: none;
       background: var(--border);
       cursor: pointer;
-      font-size: 0.9rem;
+      font-size: 1rem;
       color: #888;
       display: flex;
       align-items: center;
@@ -1172,82 +1092,41 @@
     .icon-btn:hover { border-color: var(--rose); color: var(--rose); }
     .icon-btn.danger:hover { border-color: #DC2626; color: #DC2626; }
 
-    /* ----- CONFIRMATION MODAL ----- */
-    .confirmation-modal {
-      max-width: 500px !important;
-      text-align: center;
-      padding: 2.5rem 2rem !important;
-    }
-    .confirmation-icon {
-      font-size: 4rem;
-      margin-bottom: 0.5rem;
-    }
-    .confirmation-icon i {
-      background: #E6F7F2;
-      border-radius: 50%;
-      padding: 1rem;
-      color: var(--success);
-    }
-    .confirmation-title {
-      font-size: 1.8rem;
-      font-weight: 700;
-      color: var(--ink);
-      margin-bottom: 0.3rem;
-    }
-    .confirmation-sub {
-      font-size: 0.95rem;
-      color: #888;
-      margin-bottom: 1.5rem;
-    }
+    .confirmation-modal { max-width: 500px !important; text-align: center; padding: 2rem 1.5rem !important; }
+    .confirmation-icon { font-size: 3.5rem; margin-bottom: 0.3rem; }
+    .confirmation-icon i { background: #E6F7F2; border-radius: 50%; padding: 0.8rem; color: var(--success); }
+    .confirmation-title { font-size: 1.7rem; font-weight: 700; color: var(--ink); margin-bottom: 0.2rem; }
+    .confirmation-sub { font-size: 1rem; color: #888; margin-bottom: 1rem; }
     .confirmation-details {
       background: #f9f9f9;
-      border-radius: 1rem;
-      padding: 1.2rem 1.5rem;
+      border-radius: 0.8rem;
+      padding: 0.8rem 1rem;
       text-align: left;
-      margin-bottom: 1.5rem;
+      margin-bottom: 1rem;
     }
     .confirmation-row {
       display: flex;
       justify-content: space-between;
-      padding: 0.4rem 0;
-      font-size: 0.9rem;
+      padding: 0.35rem 0;
+      font-size: 0.95rem;
       border-bottom: 1px solid #f0f0f0;
     }
-    .confirmation-row:last-child {
-      border-bottom: none;
-    }
-    .confirmation-label {
-      color: #888;
-      font-weight: 500;
-    }
-    .confirmation-value {
-      color: var(--ink);
-      font-weight: 600;
-      text-align: right;
-    }
-    .confirmation-actions {
-      display: flex;
-      gap: 0.8rem;
-      flex-wrap: wrap;
-      justify-content: center;
-    }
-    .confirmation-actions .btn-primary,
-    .confirmation-actions .btn-ghost {
-      flex: 1;
-      min-width: 140px;
-      justify-content: center;
-    }
+    .confirmation-row:last-child { border-bottom: none; }
+    .confirmation-label { color: #888; font-weight: 500; }
+    .confirmation-value { color: var(--ink); font-weight: 600; text-align: right; }
+    .confirmation-actions { display: flex; gap: 0.6rem; flex-wrap: wrap; justify-content: center; }
+    .confirmation-actions .btn-primary, .confirmation-actions .btn-ghost { flex: 1; min-width: 120px; justify-content: center; }
 
     #toast {
       position: fixed;
-      bottom: 80px;
+      bottom: 20px;
       left: 50%;
       transform: translateX(-50%) translateY(10px);
       background: var(--ink);
       color: white;
-      padding: 0.6rem 1.5rem;
+      padding: 0.6rem 1.4rem;
       border-radius: 2rem;
-      font-size: 0.9rem;
+      font-size: 0.95rem;
       opacity: 0;
       transition: 0.25s;
       pointer-events: none;
@@ -1256,131 +1135,189 @@
     }
     #toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
 
-    /* ----- RESPONSIVE ----- */
-    @media (max-width: 992px) {
-      .stats-grid { grid-template-columns: repeat(2, 1fr); }
+    /* HELP MODAL */
+    .help-card {
+      background: #f9f9f9;
+      border-radius: 1rem;
+      padding: 1.2rem;
+      margin-bottom: 0.8rem;
+    }
+    .help-card h4 {
+      font-size: 1.1rem;
+      color: var(--rose);
+      margin-bottom: 0.4rem;
+    }
+    .help-card p {
+      font-size: 0.95rem;
+      color: #555;
+      margin-bottom: 0.3rem;
+    }
+    .help-step {
+      display: flex;
+      gap: 0.6rem;
+      margin-bottom: 0.4rem;
+    }
+    .help-step-number {
+      width: 26px;
+      height: 26px;
+      border-radius: 50%;
+      background: var(--rose);
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.85rem;
+      font-weight: 700;
+      flex-shrink: 0;
     }
 
+    /* ----- RESPONSIVE ----- */
     @media (max-width: 768px) {
-      .header { padding: 0.6rem 1rem; }
-      .main { padding: 1rem; padding-bottom: 80px; }
-      .overview-title { font-size: 1.8rem; }
-      .overview-sub { font-size: 0.9rem; }
+      body { font-size: 15px; }
+      .header, .top-tabs, .main { padding-left: 1rem; padding-right: 1rem; }
+      .stats-grid { grid-template-columns: repeat(2, 1fr); }
       .service-grid { grid-template-columns: 1fr 1fr; }
       .service-categories { width: 100%; display: flex; flex-wrap: wrap; gap: 0.3rem; }
-      .cat-btn { width: auto; padding: 0.4rem 0.8rem; font-size: 0.85rem; }
+      .cat-btn { width: auto; padding: 0.4rem 0.8rem; font-size: 0.9rem; }
       .services-picker { flex-direction: column; }
-      .wizard-steps { flex-wrap: nowrap; }
-      .w-step { font-size: 0.75rem; padding: 0.6rem 0.3rem; min-width: 50px; }
-      .w-step-num { width: 22px; height: 22px; font-size: 0.6rem; }
-      .stat-card { padding: 0.8rem 1rem; }
-      .stat-icon { width: 36px; height: 36px; font-size: 1rem; }
-      .stat-number { font-size: 1.6rem; }
-      .wizard-body { padding: 0.5rem 0; }
-      .modal-box { padding: 1.2rem; }
-      .review-card { padding: 1rem; }
+      .w-step { font-size: 0.8rem; padding: 0.4rem 0.2rem; min-width: 45px; }
+      .w-step-num { width: 24px; height: 24px; font-size: 0.75rem; }
       .appointment-card { flex-direction: column; align-items: stretch; }
       .appointment-actions { justify-content: flex-start; }
-      .bottom-nav { padding: 0.3rem 0.3rem 0.5rem; }
-      .nav-item { font-size: 0.65rem; padding: 0.3rem 0.6rem; min-width: 48px; }
-      .nav-item i { font-size: 1.2rem; }
-      .booking-panel { padding: 1rem; }
-      .calendar-day { font-size: 0.8rem; padding: 0.4rem 0; }
+      .booking-panel { padding: 0.9rem; }
+      .calendar-day { font-size: 0.85rem; padding: 0.4rem 0; }
       .time-slots-grid { grid-template-columns: 1fr 1fr; }
       .stylist-grid { grid-template-columns: 1fr 1fr; }
-      .confirmation-modal { padding: 1.5rem 1rem !important; }
-      .confirmation-icon { font-size: 3rem; }
-      .confirmation-title { font-size: 1.4rem; }
-      .confirmation-row { font-size: 0.8rem; flex-wrap: wrap; gap: 0.2rem; }
-      .confirmation-value { text-align: left; width: 100%; }
-      .confirmation-actions .btn-primary,
-      .confirmation-actions .btn-ghost { min-width: 100%; }
-      .profile-avatar-large { width: 72px; height: 72px; font-size: 1.8rem; }
-      .profile-name { font-size: 1.4rem; }
       .appointment-item { flex-direction: column; align-items: stretch; }
       .appointment-item-info { min-width: auto; }
-      .appointment-item-details { gap: 0.6rem; font-size: 0.8rem; }
-      .appointment-item-actions { margin-top: 0.3rem; flex-wrap: wrap; }
-      .appt-btn { font-size: 0.75rem; padding: 0.3rem 0.7rem; }
+      .appointment-item-actions { margin-top: 0.2rem; flex-wrap: wrap; }
+      .profile-avatar-large { width: 70px; height: 70px; font-size: 1.8rem; }
+      .profile-name { font-size: 1.4rem; }
+      .brand-name { font-size: 2rem; }
+      .tab-item { font-size: 0.9rem; padding: 0.5rem 0.3rem; }
+      .tab-item .tab-icon { font-size: 1.3rem; }
+      .sidebar { width: 300px; left: -320px; }
+      .sidebar-username { font-size: 1.3rem; }
+      .sidebar-nav-item { font-size: 1.1rem; padding: 0.8rem 0.7rem; }
     }
 
     @media (max-width: 480px) {
-      .header { padding: 0.6rem; }
-      .brand-name { font-size: 1.4rem; }
-      .brand-slogan { font-size: 0.6rem; }
-      .avatar { width: 30px; height: 30px; font-size: 0.7rem; }
-      .signout-btn { font-size: 0.8rem; }
-      .main { padding: 0.6rem; padding-bottom: 80px; }
-      .overview-title { font-size: 1.5rem; }
-      .overview-sub { font-size: 0.8rem; }
-      .stats-grid { grid-template-columns: 1fr 1fr; gap: 0.6rem; }
-      .stat-card { padding: 0.6rem; }
-      .stat-icon { width: 28px; height: 28px; font-size: 0.75rem; border-radius: 0.5rem; }
-      .stat-number { font-size: 1.2rem; }
-      .stat-label { font-size: 0.7rem; }
+      body { font-size: 14px; }
+      .header, .top-tabs, .main { padding-left: 0.8rem; padding-right: 0.8rem; }
+      .stats-grid { grid-template-columns: 1fr 1fr; gap: 0.5rem; }
+      .stat-card { padding: 0.7rem; }
+      .stat-number { font-size: 1.5rem; }
+      .stat-label { font-size: 0.8rem; }
       .service-grid { grid-template-columns: 1fr; }
-      .w-step { font-size: 0.6rem; padding: 0.3rem 0.2rem; }
-      .w-step-num { width: 18px; height: 18px; font-size: 0.5rem; }
-      .form-input, .form-textarea { font-size: 0.9rem; padding: 0.6rem 0.8rem; }
-      .review-row { font-size: 0.85rem; }
-      .review-svc-item { font-size: 0.85rem; }
-      .review-total { font-size: 1rem; }
-      .cart-chip { font-size: 0.75rem; padding: 0.15rem 0.3rem 0.15rem 0.5rem; }
-      .cart-total-val { font-size: 1rem; }
-      .appointment-service { font-size: 1rem; }
-      .appointment-details { font-size: 0.8rem; gap: 0.6rem; }
-      .appt-btn { font-size: 0.75rem; padding: 0.3rem 0.7rem; }
-      .bottom-nav { padding: 0.2rem 0.2rem 0.4rem; }
-      .nav-item { font-size: 0.6rem; padding: 0.2rem 0.4rem; min-width: 40px; }
-      .nav-item i { font-size: 1.1rem; }
-      .booking-panel { padding: 0.8rem; }
-      .calendar-day { font-size: 0.7rem; padding: 0.3rem 0; }
       .time-slots-grid { grid-template-columns: 1fr; }
       .stylist-grid { grid-template-columns: 1fr; }
-      .book-now-btn { font-size: 0.9rem; padding: 0.4rem 1rem; }
-      .section-title { font-size: 1rem; }
-      .view-all-link { font-size: 0.85rem; }
-      .confirmation-modal { padding: 1rem !important; }
-      .confirmation-icon { font-size: 2.5rem; }
-      .confirmation-title { font-size: 1.2rem; }
-      .confirmation-details { padding: 0.8rem 1rem; }
-      .confirmation-row { font-size: 0.75rem; }
-      .profile-avatar-large { width: 64px; height: 64px; font-size: 1.6rem; }
-      .profile-name { font-size: 1.3rem; }
-      .profile-email { font-size: 0.9rem; }
+      .w-step { font-size: 0.7rem; padding: 0.3rem 0.1rem; }
+      .w-step-num { width: 20px; height: 20px; font-size: 0.65rem; }
+      .tab-item { font-size: 0.8rem; padding: 0.4rem 0.2rem; }
+      .tab-item .tab-icon { font-size: 1.2rem; }
+      .appointment-item-details { font-size: 0.8rem; gap: 0.4rem; }
+      .appt-btn { font-size: 0.75rem; padding: 0.3rem 0.6rem; }
+      .confirmation-modal { padding: 1.5rem 1rem !important; }
+      .confirmation-icon { font-size: 2.8rem; }
+      .confirmation-title { font-size: 1.4rem; }
+      .confirmation-row { font-size: 0.85rem; flex-wrap: wrap; gap: 0.1rem; }
+      .confirmation-value { text-align: left; width: 100%; }
       .profile-detail-item { padding: 0.5rem 0; }
-      .detail-label { font-size: 0.85rem; }
-      .detail-value { font-size: 0.85rem; }
-      .profile-action-btn { font-size: 0.9rem; padding: 0.6rem 0.8rem; }
-      .appointments-title { font-size: 1.5rem; }
-      .appointments-sub { font-size: 0.85rem; }
-      .appointment-item-service { font-size: 0.9rem; }
-      .appointment-item-details { font-size: 0.75rem; gap: 0.4rem; }
-      .appt-btn { font-size: 0.7rem; padding: 0.25rem 0.6rem; }
+      .detail-label { font-size: 0.9rem; }
+      .detail-value { font-size: 0.9rem; }
+      .profile-action-btn { font-size: 0.95rem; padding: 0.6rem 0.7rem; }
+      .brand-name { font-size: 1.7rem; }
+      .brand-slogan { font-size: 0.7rem; }
+      .sidebar { width: 280px; left: -300px; }
+      .sidebar-username { font-size: 1.2rem; }
+      .sidebar-nav-item { font-size: 1.05rem; padding: 0.7rem 0.6rem; }
     }
   </style>
 </head>
 <body>
 
+<!-- SIDEBAR OVERLAY -->
+<div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+<!-- SIDEBAR -->
+<div class="sidebar" id="sidebar">
+  <button class="sidebar-close" id="sidebarClose"><i class="fas fa-times"></i></button>
+  <div class="sidebar-user">
+    <div class="sidebar-greeting">Hello</div>
+    <div class="sidebar-username" id="sidebarUsername">Sarah Mokoena</div>
+  </div>
+  <nav class="sidebar-nav">
+    <button class="sidebar-nav-item" onclick="switchView('overview');closeSidebar();">
+      <i class="fas fa-home"></i> Home
+    </button>
+    <button class="sidebar-nav-item" onclick="switchView('book');closeSidebar();">
+      <i class="fas fa-calendar-plus"></i> Book Appointment
+    </button>
+    <button class="sidebar-nav-item" onclick="switchView('appointments');closeSidebar();">
+      <i class="fas fa-list-ul"></i> My Appointments
+    </button>
+    <button class="sidebar-nav-item" onclick="switchView('profile');closeSidebar();">
+      <i class="fas fa-user"></i> Account Details
+    </button>
+    <button class="sidebar-nav-item" onclick="help();closeSidebar();">
+      <i class="fas fa-question-circle"></i> Help
+    </button>
+    <button class="sidebar-nav-item danger" onclick="signOut();closeSidebar();">
+      <i class="fas fa-arrow-left"></i> Sign Out
+    </button>
+  </nav>
+  <div class="sidebar-social">
+    <div class="sidebar-social-label">Connect with us</div>
+    <div class="sidebar-contact-info">
+      <div><i class="fas fa-phone"></i> 076 769 0102</div>
+      <div style="margin-top:0.2rem;"><i class="fas fa-clock"></i> Mon-Fri: 9am-6pm | Sat: 9am-2pm</div>
+    </div>
+    <div class="sidebar-social-icons">
+      <a href="#" target="_blank"><i class="fab fa-instagram"></i></a>
+      <a href="#" target="_blank"><i class="fab fa-facebook"></i></a>
+      <a href="#" target="_blank"><i class="fab fa-tiktok"></i></a>
+    </div>
+  </div>
+  <div class="sidebar-footer-text">Version 1.0.0</div>
+</div>
+
 <!-- HEADER -->
 <header class="header">
-  <div style="display:flex; align-items:center; gap:0.8rem;">
-    <div class="brand">
-      <div class="brand-top">
-        <span class="brand-name">PinkMeUp</span>
-      </div>
+  <div class="header-left">
+    <button class="menu-btn" id="menuToggle"><i class="fas fa-bars"></i></button>
+    <div class="brand-wrapper">
+      <span class="brand-name">PinkMeUp</span>
       <span class="brand-slogan">Book • Glow • Relax</span>
     </div>
   </div>
-  <div class="header-right">
-    <button class="signout-btn" id="signOutBtn">Sign out</button>
-    <div class="avatar" id="headerAvatar">SM</div>
-  </div>
+  <div class="header-right"></div>
 </header>
+
+<!-- TOP TABS -->
+<div class="top-tabs">
+  <button class="tab-item active" data-tab="overview">
+    <span class="tab-icon"><i class="fas fa-home"></i></span>
+    Home
+  </button>
+  <button class="tab-item" data-tab="book">
+    <span class="tab-icon"><i class="fas fa-plus" style="font-weight:300;"></i></span>
+    Book
+  </button>
+  <button class="tab-item" data-tab="appointments">
+    <span class="tab-icon"><i class="fa-regular fa-calendar"></i></span>
+    Appointments
+    <span class="badge-dot" id="tabBadge" style="display:none;"></span>
+  </button>
+  <button class="tab-item" data-tab="profile">
+    <span class="tab-icon"><i class="fa-regular fa-user"></i></span>
+    Profile
+  </button>
+</div>
 
 <div class="app">
   <!-- MAIN CONTENT -->
   <main class="main">
+
     <!-- ── OVERVIEW ── -->
     <section id="overview-view" class="view active">
       <div class="overview-header">
@@ -1391,39 +1328,25 @@
         <button class="book-now-btn" onclick="switchView('book')">Book now</button>
       </div>
 
-      <!-- Stats -->
       <div class="stats-grid">
         <div class="stat-card">
-          <div class="stat-icon pink"><i class="fas fa-calendar-check"></i></div>
-          <div>
-            <div class="stat-number" id="statTotal">0</div>
-            <div class="stat-label">Total Appointments</div>
-          </div>
+          <div class="stat-number" id="statTotal">0</div>
+          <div class="stat-label">Total Appointments</div>
         </div>
         <div class="stat-card">
-          <div class="stat-icon teal"><i class="fas fa-clock"></i></div>
-          <div>
-            <div class="stat-number" id="statUpcoming">0</div>
-            <div class="stat-label">Upcoming</div>
-          </div>
+          <div class="stat-number" id="statUpcoming">0</div>
+          <div class="stat-label">Upcoming</div>
         </div>
         <div class="stat-card">
-          <div class="stat-icon amber"><i class="fas fa-receipt"></i></div>
-          <div>
-            <div class="stat-number" id="statSpend">R0</div>
-            <div class="stat-label">Total Spent</div>
-          </div>
+          <div class="stat-number" id="statSpend">R0</div>
+          <div class="stat-label">Total Spent</div>
         </div>
         <div class="stat-card">
-          <div class="stat-icon purple"><i class="fas fa-hand-sparkles"></i></div>
-          <div>
-            <div class="stat-number" id="statServices">0</div>
-            <div class="stat-label">Services Enjoyed</div>
-          </div>
+          <div class="stat-number" id="statServices">0</div>
+          <div class="stat-label">Services Enjoyed</div>
         </div>
       </div>
 
-      <!-- Upcoming Appointments -->
       <div class="section-header">
         <span class="section-title">Upcoming Appointments</span>
         <span class="view-all-link" onclick="switchView('appointments')">View all →</span>
@@ -1439,14 +1362,13 @@
 
     <!-- ── BOOK APPOINTMENT ── -->
     <section id="book-view" class="view">
-      <div class="overview-header">
+      <div class="overview-header" style="margin-bottom:0.8rem;">
         <div>
-          <div class="overview-title">Book Appointment</div>
-          <div class="overview-sub">Choose your service, date, and time</div>
+          <div class="overview-title" style="font-size:1.8rem;">Book Appointment</div>
+          <div class="overview-sub" style="font-size:0.95rem;">Choose your service, date, and time</div>
         </div>
       </div>
 
-      <!-- Step bar - Cardless -->
       <div class="wizard-steps">
         <div class="w-step active" id="ws1" onclick="gotoStep(1)">
           <div class="w-step-num">1</div>
@@ -1466,7 +1388,6 @@
         </div>
       </div>
 
-      <!-- Step 1: Services -->
       <div class="wizard-body" id="wbody1">
         <div class="services-picker">
           <div class="service-categories" id="catNav"></div>
@@ -1474,12 +1395,11 @@
             <div class="service-grid" id="svcGrid"></div>
           </div>
         </div>
-
         <div class="cart-panel">
           <div class="cart-panel-title">
             <i class="fas fa-shopping-bag"></i>
             Selected Services
-            <span id="cartCount" style="background:var(--rose);color:white;border-radius:2rem;padding:0.1rem 0.5rem;font-size:0.75rem;margin-left:0.3rem;">0</span>
+            <span id="cartCount" style="background:var(--rose);color:white;border-radius:2rem;padding:0.1rem 0.4rem;font-size:0.75rem;margin-left:0.2rem;">0</span>
           </div>
           <div class="cart-items" id="cartItems">
             <div class="cart-empty-msg" id="cartEmpty">Tap a service above to add it here</div>
@@ -1494,63 +1414,47 @@
         </div>
       </div>
 
-      <!-- Step 2: Date & Time -->
       <div class="wizard-body hidden" id="wbody2">
         <div class="booking-vertical-wrapper">
-          
-          <!-- Date Picker -->
           <div class="booking-panel date-panel">
             <div class="panel-label">Pick Appointment Date</div>
             <div class="month-label" id="currentMonthLabel">April, 2031</div>
-            
             <div class="calendar-grid">
               <div class="calendar-weekdays">
                 <span>Mo</span><span>Tu</span><span>We</span><span>Th</span><span>Fr</span><span>Sa</span><span>Su</span>
               </div>
-              <div class="calendar-days" id="calendarDays">
-                <!-- Generated by JS -->
-              </div>
+              <div class="calendar-days" id="calendarDays"></div>
             </div>
-            
             <div class="date-nav">
               <button class="date-nav-btn" onclick="changeMonth(-1)"><i class="fas fa-chevron-left"></i></button>
               <button class="date-nav-btn" onclick="changeMonth(1)"><i class="fas fa-chevron-right"></i></button>
             </div>
-            
             <input type="hidden" id="apptDate" min="">
           </div>
-
-          <!-- Time Slots -->
           <div class="booking-panel time-panel">
             <div class="panel-label">Available Time Slots</div>
-            <div class="time-slots-container" id="timeSlotsContainer">
-              <div class="time-slots-grid" id="timeSlots">
-                <!-- Generated by JS -->
-              </div>
+            <div class="time-slots-container">
+              <div class="time-slots-grid" id="timeSlots"></div>
             </div>
-            <div style="margin-top:0.8rem;font-size:0.85rem;color:#888;">
+            <div style="margin-top:0.6rem;font-size:0.9rem;color:#888;">
               <i class="fas fa-info-circle"></i>
               Your session will be approximately <strong id="totalDurLabel">—</strong>
             </div>
           </div>
-
-          <!-- Stylist -->
           <div class="booking-panel stylist-panel">
             <div class="panel-label">Choose Stylist</div>
             <div class="stylist-grid" id="stylistGrid"></div>
-            <div style="margin-top:0.8rem;font-size:0.85rem;color:#888;">
+            <div style="margin-top:0.6rem;font-size:0.9rem;color:#888;">
               <i class="fas fa-user-check"></i>
               Select a stylist for your appointment
             </div>
           </div>
-
         </div>
       </div>
 
-      <!-- Step 3: Details -->
       <div class="wizard-body hidden" id="wbody3">
         <div class="details-form">
-          <div style="background: var(--rose-pale); padding: 1rem; border-radius: 0.8rem; margin-bottom: 1.2rem; border-left: 4px solid var(--rose);">
+          <div style="background: var(--rose-pale); padding: 0.8rem; border-radius: 0.6rem; margin-bottom: 0.8rem; border-left: 3px solid var(--rose);">
             <p style="font-size: 0.95rem; color: var(--muted);">
               <i class="fas fa-info-circle"></i>
               <strong>Quick Book:</strong> no account needed. Enter your details below and we'll send a confirmation email.
@@ -1569,18 +1473,17 @@
             <input class="form-input" id="detPhone" type="tel" placeholder="e.g. 071 234 5678">
           </div>
           <div class="form-group">
-            <label class="form-label">Special Requests / Notes <span style="font-size:0.7rem;color:#888;text-transform:none;letter-spacing:0;">(optional)</span></label>
+            <label class="form-label">Special Requests <span style="font-size:0.75rem;color:#888;text-transform:none;letter-spacing:0;">(optional)</span></label>
             <textarea class="form-textarea" id="detNotes" placeholder="Allergies, preferences, anything we should know…"></textarea>
           </div>
         </div>
       </div>
 
-      <!-- Step 4: Review -->
       <div class="wizard-body hidden" id="wbody4">
         <div class="review-card" id="reviewCard"></div>
-        <p style="font-size:0.85rem;color:#888;margin-top:1rem;">
+        <p style="font-size:0.9rem;color:#888;margin-top:0.8rem;">
           <i class="fas fa-lock"></i>
-          Your information is kept private and used only for your booking. No payment is taken online — pay in-store on the day.
+          Your information is kept private. No payment is taken online — pay in-store on the day.
         </p>
       </div>
 
@@ -1591,7 +1494,7 @@
       </div>
     </section>
 
-    <!-- ── MY APPOINTMENTS ── -->
+    <!-- ── APPOINTMENTS ── -->
     <section id="appointments-view" class="view">
       <div class="appointments-container">
         <div class="appointments-header">
@@ -1599,6 +1502,15 @@
           <div class="appointments-sub">All your bookings in one place</div>
         </div>
         <div class="appointments-divider"></div>
+
+        <!-- Clean filter buttons -->
+        <div class="filter-tabs" id="filterTabs">
+          <button class="filter-btn active" data-filter="all">All</button>
+          <button class="filter-btn" data-filter="upcoming">Upcoming</button>
+          <button class="filter-btn" data-filter="past">Past</button>
+          <button class="filter-btn" data-filter="cancelled">Cancelled</button>
+        </div>
+
         <div class="appointments-list" id="appointmentsBody">
           <div class="empty-state">
             <i class="fas fa-calendar-times"></i>
@@ -1620,9 +1532,7 @@
             <i class="fas fa-crown"></i> Member since May 2026
           </div>
         </div>
-
         <div class="profile-divider"></div>
-
         <div class="profile-details-list">
           <div class="profile-detail-item">
             <span class="detail-label">Phone</span>
@@ -1645,9 +1555,7 @@
             <span class="detail-value" id="profileStatSpent">R0</span>
           </div>
         </div>
-
         <div class="profile-divider"></div>
-
         <div class="profile-actions">
           <button class="profile-action-btn" onclick="toggleProfileEdit()">
             <span class="action-icon"><i class="fas fa-user-edit"></i></span>
@@ -1662,7 +1570,7 @@
             My Appointments
           </button>
           <button class="profile-action-btn danger" onclick="signOut()">
-            <span class="action-icon"><i class="fas fa-sign-out-alt"></i></span>
+            <span class="action-icon"><i class="fas fa-arrow-left"></i></span>
             Sign Out
           </button>
         </div>
@@ -1684,40 +1592,18 @@
             <div class="form-group" style="margin-bottom:0;">
               <label class="form-label">Email Address</label>
               <input class="form-input" id="profileEmailInput" type="email" readonly title="Email address cannot be changed here">
-              <div style="font-size:0.75rem;color:#888;margin-top:0.25rem;">Email address cannot be changed from this page.</div>
+              <div style="font-size:0.8rem;color:#888;margin-top:0.2rem;">Email address cannot be changed from this page.</div>
             </div>
-            <div style="display:flex;gap:0.8rem;margin-top:1.2rem;flex-wrap:wrap;">
+            <div style="display:flex;gap:0.6rem;margin-top:1rem;flex-wrap:wrap;">
               <button class="btn-primary" onclick="saveProfile();closeEditProfile();" style="flex:1;"><i class="fas fa-save"></i> Save Changes</button>
               <button class="btn-ghost" onclick="closeEditProfile()" style="flex:1;">Cancel</button>
             </div>
           </div>
         </div>
-
       </div>
     </section>
 
   </main>
-
-  <!-- BOTTOM NAVIGATION -->
-  <nav class="bottom-nav">
-    <button class="nav-item active" data-view="overview">
-      <i class="fa-regular fa-house"></i>
-      <span>Home</span>
-    </button>
-    <button class="nav-item" data-view="book">
-      <i class="fas fa-plus" style="font-weight:300;"></i>
-      <span>Book</span>
-    </button>
-    <button class="nav-item" data-view="appointments">
-      <i class="fa-regular fa-calendar"></i>
-      <span>Appointments</span>
-      <span class="badge-dot" id="apptBadge" style="display:none;"></span>
-    </button>
-    <button class="nav-item" data-view="profile">
-      <i class="fa-regular fa-user"></i>
-      <span>Profile</span>
-    </button>
-  </nav>
 </div>
 
 <!-- APPOINTMENT DETAIL MODAL -->
@@ -1744,14 +1630,14 @@
     </div>
     <div class="form-group">
       <label class="form-label">Available times</label>
-      <div class="time-slots" id="rescheduleTimeSlots" style="margin-top:0.4rem;"></div>
-      <div id="rescheduleSlotsMessage" style="font-size:0.85rem;color:#888;margin-top:0.5rem;">Select a date to view available times.</div>
+      <div class="time-slots" id="rescheduleTimeSlots" style="margin-top:0.3rem;"></div>
+      <div id="rescheduleSlotsMessage" style="font-size:0.9rem;color:#888;margin-top:0.4rem;">Select a date to view available times.</div>
     </div>
-    <button class="btn-primary" id="confirmRescheduleBtn" style="margin-top:0.8rem;width:100%;" onclick="confirmReschedule()"><i class="fas fa-calendar-alt"></i> Confirm New Time</button>
+    <button class="btn-primary" id="confirmRescheduleBtn" style="margin-top:0.6rem;width:100%;" onclick="confirmReschedule()"><i class="fas fa-calendar-alt"></i> Confirm New Time</button>
   </div>
 </div>
 
-<!-- BOOKING CONFIRMATION MODAL -->
+<!-- CONFIRMATION MODAL -->
 <div class="overlay" id="confirmationModal">
   <div class="modal-box confirmation-modal">
     <div class="confirmation-icon">
@@ -1759,7 +1645,6 @@
     </div>
     <div class="confirmation-title">Booking Confirmed!</div>
     <div class="confirmation-sub">Your appointment has been successfully booked.</div>
-    
     <div class="confirmation-details">
       <div class="confirmation-row">
         <span class="confirmation-label">Booking Reference</span>
@@ -1786,7 +1671,6 @@
         <span class="confirmation-value" id="confirmGuest">John Doe</span>
       </div>
     </div>
-
     <div class="confirmation-actions">
       <button class="btn-primary" onclick="downloadInvoice()">
         <i class="fas fa-download"></i> Download Invoice
@@ -1798,6 +1682,49 @@
   </div>
 </div>
 
+<!-- HELP MODAL -->
+<div class="overlay" id="helpModal">
+  <div class="modal-box">
+    <div class="modal-header">
+      <div class="modal-title">Help & Navigation Guide</div>
+      <button class="modal-close" onclick="closeHelpModal()"><i class="fas fa-times"></i></button>
+    </div>
+    <div class="help-card">
+      <h4>Booking an Appointment</h4>
+      <div class="help-step">
+        <div class="help-step-number">1</div>
+        <p>Click "Book" in the top menu or "Book Appointment" in the sidebar.</p>
+      </div>
+      <div class="help-step">
+        <div class="help-step-number">2</div>
+        <p>Select your desired services from the categories.</p>
+      </div>
+      <div class="help-step">
+        <div class="help-step-number">3</div>
+        <p>Pick a date, time slot, and preferred stylist.</p>
+      </div>
+      <div class="help-step">
+        <div class="help-step-number">4</div>
+        <p>Enter your contact details and review your booking.</p>
+      </div>
+      <p style="margin-top:0.6rem; color: var(--rose); font-weight:600;">
+        <i class="fas fa-phone"></i> Struggling with online booking or have a query? Call us at 076 769 0102
+      </p>
+    </div>
+    <div class="help-card">
+      <h4>Managing Appointments</h4>
+      <p>• View all appointments under "My Appointments".</p>
+      <p>• Use filter buttons (All, Upcoming, Past, Cancelled) to sort.</p>
+      <p>• Click icons to view details, reschedule, or cancel.</p>
+    </div>
+    <div class="help-card">
+      <h4>Contact & Support</h4>
+      <p><i class="fas fa-phone"></i> 076 769 0102</p>
+      <p><i class="fas fa-clock"></i> Mon-Fri: 9am-6pm | Sat: 9am-2pm</p>
+    </div>
+  </div>
+</div>
+
 <div id="toast"></div>
 
 <script src="js/config.js"></script>
@@ -1805,86 +1732,71 @@
 
 <script>
   // ============================================================
-  // BOTTOM NAVIGATION
+  // SIDEBAR
   // ============================================================
-  document.addEventListener('DOMContentLoaded', function() {
-    const signOutBtn = document.getElementById('signOutBtn');
+  const sidebar = document.getElementById('sidebar');
+  const overlay = document.getElementById('sidebarOverlay');
+  const menuToggle = document.getElementById('menuToggle');
+  const sidebarClose = document.getElementById('sidebarClose');
 
-    document.querySelectorAll('.nav-item').forEach(item => {
-      item.addEventListener('click', function() {
-        const viewId = this.dataset.view;
-        switchView(viewId);
-        document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
-        this.classList.add('active');
-      });
+  function openSidebar() {
+    sidebar.classList.add('open');
+    overlay.classList.add('active');
+  }
+
+  function closeSidebar() {
+    sidebar.classList.remove('open');
+    overlay.classList.remove('active');
+  }
+
+  if (menuToggle) menuToggle.addEventListener('click', openSidebar);
+  if (sidebarClose) sidebarClose.addEventListener('click', closeSidebar);
+  if (overlay) overlay.addEventListener('click', closeSidebar);
+
+  // ============================================================
+  // TOP TABS
+  // ============================================================
+  document.querySelectorAll('.tab-item').forEach(tab => {
+    tab.addEventListener('click', function() {
+      const viewId = this.dataset.tab;
+      switchView(viewId);
+      document.querySelectorAll('.tab-item').forEach(t => t.classList.remove('active'));
+      this.classList.add('active');
     });
-
-    if (signOutBtn) signOutBtn.addEventListener('click', signOut);
   });
 
   // ============================================================
-  // CALENDAR
+  // FILTER BUTTONS
   // ============================================================
-  let currentMonth = new Date().getMonth();
-  let currentYear = new Date().getFullYear();
-  let selectedDate = '';
+  let currentFilter = 'all';
 
-  function renderCalendar(month, year) {
-    const monthNames = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
-    const el = document.getElementById('currentMonthLabel');
-    if (el) el.textContent = `${monthNames[month]}, ${year}`;
-    
-    const firstDay = new Date(year, month, 1).getDay();
-    const daysInMonth = new Date(year, month + 1, 0).getDate();
-    const today = new Date();
-    const todayStr = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}-${String(today.getDate()).padStart(2, '0')}`;
-    
-    let html = '';
-    let startOffset = firstDay === 0 ? 6 : firstDay - 1;
-    
-    for (let i = 0; i < startOffset; i++) {
-      html += '<div class="calendar-day empty"></div>';
+  document.addEventListener('DOMContentLoaded', function() {
+    const filterTabs = document.getElementById('filterTabs');
+    if (filterTabs) {
+      filterTabs.addEventListener('click', function(e) {
+        const btn = e.target.closest('.filter-btn');
+        if (!btn) return;
+        currentFilter = btn.dataset.filter;
+        document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        renderAppointments();
+      });
     }
-    
-    for (let day = 1; day <= daysInMonth; day++) {
-      const dateStr = `${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
-      const isPast = dateStr < todayStr;
-      const isToday = dateStr === todayStr;
-      const isSelected = dateStr === selectedDate;
-      
-      let classes = 'calendar-day';
-      if (isPast) classes += ' past';
-      if (isToday) classes += ' today';
-      if (isSelected) classes += ' selected';
-      
-      html += `<div class="${classes}" data-date="${dateStr}" onclick="selectCalendarDate('${dateStr}')">${day}</div>`;
-    }
-    
-    const daysEl = document.getElementById('calendarDays');
-    if (daysEl) daysEl.innerHTML = html;
+  });
+
+  function help() {
+    document.getElementById('helpModal').classList.add('open');
   }
 
-  function changeMonth(delta) {
-    currentMonth += delta;
-    if (currentMonth > 11) {
-      currentMonth = 0;
-      currentYear++;
-    } else if (currentMonth < 0) {
-      currentMonth = 11;
-      currentYear--;
-    }
-    renderCalendar(currentMonth, currentYear);
+  function closeHelpModal() {
+    document.getElementById('helpModal').classList.remove('open');
   }
-
-  function selectCalendarDate(dateStr) {
-    selectedDate = dateStr;
-    document.getElementById('apptDate').value = dateStr;
-    renderCalendar(currentMonth, currentYear);
-    refreshTimeSlots();
-  }
+  document.getElementById('helpModal').addEventListener('click', e => {
+    if (e.target === e.currentTarget) closeHelpModal();
+  });
 
   // ============================================================
-  // REST OF JS - UNCHANGED
+  // REST OF JS (unchanged from previous working version)
   // ============================================================
 
   let SERVICES = [];
@@ -1914,55 +1826,56 @@
   let appointments = [];
 
   async function loadAppointments() {
-  try {
-    const res = await fetch(`${API_URL}/bookings/my?limit=100`, { credentials: 'include' });
-    const data = await res.json();
-    if (!res.ok || !data?.data?.bookings) {
-      appointments = [];
-      return;
-    }
-
-    const now = new Date();
-
-    appointments = data.data.bookings.map(b => {
-      let displayStatus;
-      if (b.status === 'cancelled') {
-        displayStatus = 'cancelled';
-      } else if (b.status === 'completed') {
-        displayStatus = 'past';
-      } else {
-        const apptDateTime = new Date(b.date);
-        const [h, m] = (b.startTime || '0:0').split(':').map(Number);
-        apptDateTime.setHours(h, m, 0, 0);
-        displayStatus = apptDateTime >= now ? 'upcoming' : 'past';
+    try {
+      const res = await fetch(`${API_URL}/bookings/my?limit=100`, { credentials: 'include' });
+      const data = await res.json();
+      if (!res.ok || !data?.data?.bookings) {
+        appointments = [];
+        return;
       }
 
-      const appointmentDate = new Date(b.date);
-      const localDate = !Number.isNaN(appointmentDate.getTime())
-        ? `${appointmentDate.getFullYear()}-${String(appointmentDate.getMonth() + 1).padStart(2, '0')}-${String(appointmentDate.getDate()).padStart(2, '0')}`
-        : String(b.date || '').slice(0, 10);
+      const now = new Date();
 
-      return {
-        id: b._id,
-        services: (b.serviceIds || []).map(s => ({ id: s._id, name: s.name, price: s.price, duration: s.duration })),
-        date: localDate,
-        time: b.startTime,
-        stylistId: b.stylistId?._id || b.stylistId || '',
-        stylist: [b.stylistId?.userId?.firstName, b.stylistId?.userId?.lastName].filter(Boolean).join(' ') || 'Stylist',
-        notes: b.notes,
-        status: displayStatus,
-        rawStatus: b.status
-      };
-    });
-  } catch (error) {
-    console.warn('Could not load appointments:', error);
-    appointments = [];
+      appointments = data.data.bookings.map(b => {
+        let displayStatus;
+        if (b.status === 'cancelled') {
+          displayStatus = 'cancelled';
+        } else if (b.status === 'completed') {
+          displayStatus = 'past';
+        } else {
+          const apptDateTime = new Date(b.date);
+          const [h, m] = (b.startTime || '0:0').split(':').map(Number);
+          apptDateTime.setHours(h, m, 0, 0);
+          displayStatus = apptDateTime >= now ? 'upcoming' : 'past';
+        }
+
+        const appointmentDate = new Date(b.date);
+        const localDate = !Number.isNaN(appointmentDate.getTime())
+          ? `${appointmentDate.getFullYear()}-${String(appointmentDate.getMonth() + 1).padStart(2, '0')}-${String(appointmentDate.getDate()).padStart(2, '0')}`
+          : String(b.date || '').slice(0, 10);
+
+        return {
+          id: b._id,
+          services: (b.serviceIds || []).map(s => ({ id: s._id, name: s.name, price: s.price, duration: s.duration })),
+          date: localDate,
+          time: b.startTime,
+          stylistId: b.stylistId?._id || b.stylistId || '',
+          stylist: [b.stylistId?.userId?.firstName, b.stylistId?.userId?.lastName].filter(Boolean).join(' ') || 'Stylist',
+          notes: b.notes,
+          status: displayStatus,
+          rawStatus: b.status,
+          canRate: b.status === 'completed'
+        };
+      });
+    } catch (error) {
+      console.warn('Could not load appointments:', error);
+      appointments = [];
+    }
   }
-}
 
   let wizardStep = 1;
-  let cartIds    = [];
-  let activeCat  = CATEGORIES[0];
+  let cartIds = [];
+  let activeCat = CATEGORIES[0];
 
   let bookState = {
     date: "", time: "", stylistId: "", stylist: ""
@@ -1973,28 +1886,104 @@
   function switchView(viewId) {
     document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
     document.getElementById(`${viewId}-view`).classList.add('active');
-    document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
-    document.querySelector(`.nav-item[data-view="${viewId}"]`).classList.add('active');
-    if (viewId === 'overview')      renderOverview();
-    if (viewId === 'appointments')  renderAppointments();
-    if (viewId === 'book')          { resetWizard(); }
-    if (viewId === 'profile')       { updateProfileStats(); }
+
+    document.querySelectorAll('.tab-item').forEach(t => t.classList.remove('active'));
+    document.querySelector(`.tab-item[data-tab="${viewId}"]`)?.classList.add('active');
+
+    if (viewId === 'overview') renderOverview();
+    if (viewId === 'appointments') renderAppointments();
+    if (viewId === 'book') { resetWizard(); }
+    if (viewId === 'profile') { updateProfileStats(); }
   }
 
+  // ============================================================
+  // CALENDAR FUNCTIONS
+  // ============================================================
+  let currentMonth = new Date().getMonth();
+  let currentYear = new Date().getFullYear();
+  let selectedDate = '';
+
+  function renderCalendar(month, year) {
+    const monthNames = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+    const el = document.getElementById('currentMonthLabel');
+    if (el) el.textContent = `${monthNames[month]}, ${year}`;
+
+    const firstDay = new Date(year, month, 1).getDay();
+    const daysInMonth = new Date(year, month + 1, 0).getDate();
+    const today = new Date();
+    const todayStr = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}-${String(today.getDate()).padStart(2, '0')}`;
+
+    let html = '';
+    let startOffset = firstDay === 0 ? 6 : firstDay - 1;
+
+    for (let i = 0; i < startOffset; i++) {
+      html += '<div class="calendar-day empty"></div>';
+    }
+
+    for (let day = 1; day <= daysInMonth; day++) {
+      const dateStr = `${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+      const isPast = dateStr < todayStr;
+      const isToday = dateStr === todayStr;
+      const isSelected = dateStr === selectedDate;
+
+      let classes = 'calendar-day';
+      if (isPast) classes += ' past';
+      if (isToday) classes += ' today';
+      if (isSelected) classes += ' selected';
+
+      html += `<div class="${classes}" data-date="${dateStr}" onclick="selectCalendarDate('${dateStr}')">${day}</div>`;
+    }
+
+    const daysEl = document.getElementById('calendarDays');
+    if (daysEl) daysEl.innerHTML = html;
+  }
+
+  function changeMonth(delta) {
+    currentMonth += delta;
+    if (currentMonth > 11) {
+      currentMonth = 0;
+      currentYear++;
+    } else if (currentMonth < 0) {
+      currentMonth = 11;
+      currentYear--;
+    }
+    renderCalendar(currentMonth, currentYear);
+  }
+
+  function selectCalendarDate(dateStr) {
+    selectedDate = dateStr;
+    document.getElementById('apptDate').value = dateStr;
+    renderCalendar(currentMonth, currentYear);
+    refreshTimeSlots();
+  }
+
+  function getLocalDateString() {
+    const now = new Date();
+    const year = now.getFullYear();
+    const month = String(now.getMonth() + 1).padStart(2, '0');
+    const day = String(now.getDate()).padStart(2, '0');
+    return `${year}-${month}-${day}`;
+  }
+
+  // ============================================================
+  // RENDER FUNCTIONS
+  // ============================================================
+
   function renderOverview() {
-    const total    = appointments.length;
+    const total = appointments.length;
     const upcoming = appointments.filter(a => a.status === 'upcoming').length;
-    const spend    = appointments.filter(a => a.status !== 'cancelled').reduce((s, a) => s + a.services.reduce((x,sv)=>x+sv.price,0), 0);
+    const spend = appointments.filter(a => a.status !== 'cancelled').reduce((s, a) => s + a.services.reduce((x, sv) => x + sv.price, 0), 0);
     const svcCount = appointments.filter(a => a.status !== 'cancelled').reduce((s, a) => s + a.services.length, 0);
 
-    document.getElementById('statTotal').textContent    = total;
-    document.getElementById('statUpcoming').textContent  = upcoming;
-    document.getElementById('statSpend').textContent     = `R${spend.toLocaleString()}`;
-    document.getElementById('statServices').textContent  = svcCount;
+    document.getElementById('statTotal').textContent = total;
+    document.getElementById('statUpcoming').textContent = upcoming;
+    document.getElementById('statSpend').textContent = `R${spend.toLocaleString()}`;
+    document.getElementById('statServices').textContent = svcCount;
 
-    const badge = document.getElementById('apptBadge');
+    const badge = document.getElementById('tabBadge');
     if (upcoming > 0) {
-      badge.style.display = 'block';
+      badge.style.display = 'inline-block';
+      badge.textContent = upcoming;
     } else {
       badge.style.display = 'none';
     }
@@ -2023,22 +2012,33 @@
         </div>
       </div>
     `).join('');
+    bindRowActions();
   }
 
   function renderAppointments() {
     const el = document.getElementById('appointmentsBody');
-    if (!appointments.length) {
+    let filtered = appointments;
+
+    if (currentFilter === 'upcoming') {
+      filtered = appointments.filter(a => a.status === 'upcoming');
+    } else if (currentFilter === 'past') {
+      filtered = appointments.filter(a => a.status === 'past');
+    } else if (currentFilter === 'cancelled') {
+      filtered = appointments.filter(a => a.status === 'cancelled');
+    }
+
+    if (!filtered.length) {
       el.innerHTML = `<div class="empty-state">
         <i class="fas fa-calendar-times"></i>
-        <p>You haven't booked any appointments yet.</p>
-        <span class="book-link" onclick="switchView('book')">Book now</span>
+        <p>No ${currentFilter !== 'all' ? currentFilter : ''} appointments found.</p>
+        ${currentFilter === 'all' ? `<span class="book-link" onclick="switchView('book')">Book now</span>` : ''}
       </div>`;
       return;
     }
-    
-    const sorted = [...appointments].sort((a,b) => b.date.localeCompare(a.date));
-    const statusMap = { upcoming:'badge-upcoming', past:'badge-past', cancelled:'badge-cancelled', pending:'badge-pending' };
-    
+
+    const sorted = [...filtered].sort((a, b) => b.date.localeCompare(a.date));
+    const statusMap = { upcoming: 'badge-upcoming', past: 'badge-past', cancelled: 'badge-cancelled', pending: 'badge-pending' };
+
     el.innerHTML = sorted.map(a => `
       <div class="appointment-item">
         <div class="appointment-item-info">
@@ -2047,6 +2047,7 @@
             <span><i class="far fa-calendar"></i> ${formatDate(a.date)}</span>
             <span><i class="far fa-clock"></i> ${a.time}</span>
             <span><i class="fas fa-user"></i> ${a.stylist}</span>
+            ${a.canRate ? `<span style="color:var(--rose);font-weight:600;font-size:0.85rem;"><i class="fas fa-star"></i> Rate</span>` : ''}
           </div>
         </div>
         <div class="appointment-item-status">
@@ -2058,25 +2059,607 @@
             <button class="appt-btn" onclick="openRescheduleModal('${a.id}')"><i class="fas fa-calendar-alt"></i></button>
             <button class="appt-btn danger" onclick="cancelAppointment('${a.id}')"><i class="fas fa-times"></i></button>
           ` : ''}
+          ${a.canRate ? `<button class="appt-btn" onclick="rateAppointment('${a.id}')" style="border-color:var(--rose);color:var(--rose);"><i class="fas fa-star"></i></button>` : ''}
+        </div>
+      </div>
+    `).join('');
+    bindRowActions();
+  }
+
+  function rateAppointment(id) {
+    showToast('Rating feature coming soon! You can rate your completed appointments.');
+  }
+
+  function bindRowActions() {
+    document.querySelectorAll('[data-view-id]').forEach(btn =>
+      btn.addEventListener('click', () => openDetailModal(btn.dataset.id))
+    );
+    document.querySelectorAll('[data-cancel-id]').forEach(btn =>
+      btn.addEventListener('click', () => cancelAppointment(btn.dataset.cancelId))
+    );
+    document.querySelectorAll('[data-reschedule-id]').forEach(btn =>
+      btn.addEventListener('click', () => openRescheduleModal(btn.dataset.rescheduleId))
+    );
+  }
+
+  // ============================================================
+  // WIZARD FUNCTIONS
+  // ============================================================
+
+  function resetWizard() {
+    wizardStep = 1;
+    cartIds = [];
+    activeCat = CATEGORIES[0] || '';
+    bookState = { date: '', time: '', stylistId: '', stylist: '' };
+    renderCatNav();
+    renderSvcGrid();
+    renderCart();
+    gotoStep(1);
+
+    const today = getLocalDateString();
+    document.getElementById('apptDate').min = today;
+    document.getElementById('apptDate').value = '';
+
+    const todayDate = new Date();
+    currentMonth = todayDate.getMonth();
+    currentYear = todayDate.getFullYear();
+    selectedDate = '';
+    renderCalendar(currentMonth, currentYear);
+
+    const apptDateInput = document.getElementById('apptDate');
+    if (!apptDateInput.dataset.listenerAttached) {
+      apptDateInput.addEventListener('change', refreshTimeSlots);
+      apptDateInput.dataset.listenerAttached = 'true';
+    }
+
+    renderStylistGrid();
+    availableSlots = [];
+    renderTimeSlotsIntoDOM();
+  }
+
+  function renderCatNav() {
+    const el = document.getElementById('catNav');
+    el.innerHTML = CATEGORIES.map(cat => `
+      <button class="cat-btn ${cat === activeCat ? 'active' : ''}" onclick="setActiveCat('${cat}')">${cat}</button>
+    `).join('');
+  }
+
+  function setActiveCat(cat) {
+    activeCat = cat;
+    renderCatNav();
+    renderSvcGrid();
+  }
+
+  function renderSvcGrid() {
+    const svcs = SERVICES.filter(s => s.category === activeCat);
+    document.getElementById('svcGrid').innerHTML = svcs.map(s => `
+      <div class="svc-card ${cartIds.includes(s.id) ? 'selected' : ''}" onclick="toggleService('${s.id}')">
+        <div class="svc-card-name">${s.name}</div>
+        <div class="svc-card-meta">
+          <span class="svc-card-price">R${s.price}</span>
+          <span class="svc-card-dur">${s.duration} min</span>
         </div>
       </div>
     `).join('');
   }
 
-  // ... rest of the JS functions (wizard, booking, etc.) remain unchanged
-  // All functions from the original file work exactly as before
+  function toggleService(id) {
+    if (cartIds.includes(id)) {
+      cartIds = cartIds.filter(serviceId => serviceId !== id);
+    } else {
+      cartIds.push(id);
+    }
+
+    if (bookState.stylistId && !isStylistEligible(bookState.stylistId)) {
+      bookState.stylistId = '';
+      bookState.stylist = '';
+      bookState.time = '';
+    }
+
+    availableSlots = [];
+    renderSvcGrid();
+    renderCart();
+    renderStylistGrid();
+    renderTimeSlotsIntoDOM();
+
+    if (cartIds.length && bookState.stylistId && document.getElementById('apptDate')?.value) {
+      refreshTimeSlots();
+    }
+  }
+
+  function isStylistEligible(stylistId) {
+    const stylist = STYLISTS.find(s => s.id === stylistId && s.isAvailable !== false);
+    if (!stylist) return false;
+    const selectedServices = SERVICES.filter(service => cartIds.includes(service.id));
+    if (!selectedServices.length) return false;
+    if (!Array.isArray(stylist.serviceIds) || !stylist.serviceIds.length) return false;
+    return selectedServices.every(service => stylist.serviceIds.includes(service.id));
+  }
+
+  function removeFromCart(id) {
+    cartIds = cartIds.filter(serviceId => serviceId !== id);
+    if (bookState.stylistId && !isStylistEligible(bookState.stylistId)) {
+      bookState.stylistId = '';
+      bookState.stylist = '';
+      bookState.time = '';
+    }
+    renderSvcGrid();
+    renderCart();
+    renderStylistGrid();
+    availableSlots = [];
+    renderTimeSlotsIntoDOM();
+    if (cartIds.length && bookState.stylistId && document.getElementById('apptDate')?.value) {
+      refreshTimeSlots();
+    }
+  }
+
+  function renderCart() {
+    const items = SERVICES.filter(s => cartIds.includes(s.id));
+    const total = items.reduce((s, sv) => s + sv.price, 0);
+    const dur = items.reduce((s, sv) => s + sv.duration, 0);
+    const count = items.length;
+
+    document.getElementById('cartCount').textContent = count;
+
+    const container = document.getElementById('cartItems');
+    container.querySelectorAll('.cart-chip').forEach(el => el.remove());
+
+    let emptyMsg = document.getElementById('cartEmpty');
+    if (!emptyMsg) {
+      emptyMsg = document.createElement('div');
+      emptyMsg.className = 'cart-empty-msg';
+      emptyMsg.id = 'cartEmpty';
+      emptyMsg.textContent = 'Tap a service above to add it here';
+      container.appendChild(emptyMsg);
+    }
+
+    if (count === 0) {
+      emptyMsg.style.display = 'block';
+      document.getElementById('cartSummary').style.display = 'none';
+    } else {
+      emptyMsg.style.display = 'none';
+      items.forEach(sv => {
+        const chip = document.createElement('div');
+        chip.className = 'cart-chip';
+        chip.innerHTML = `${sv.name} <button class="cart-chip-remove" onclick="removeFromCart('${sv.id}')"><i class="fas fa-times"></i></button>`;
+        container.appendChild(chip);
+      });
+      document.getElementById('cartSummary').style.display = 'flex';
+      document.getElementById('cartTotal').textContent = `R${total.toLocaleString()}`;
+      document.getElementById('cartDuration').textContent = `~${formatDur(dur)} total`;
+      document.getElementById('totalDurLabel').textContent = formatDur(dur);
+    }
+  }
+
+  function renderStylistGrid() {
+    const grid = document.getElementById('stylistGrid');
+    if (!grid) return;
+
+    const selectedServices = SERVICES.filter(service => cartIds.includes(service.id));
+    if (!selectedServices.length) {
+      bookState.stylistId = '';
+      bookState.stylist = '';
+      grid.innerHTML = `<div class="empty-state" style="grid-column:1/-1;padding:0.8rem;"><p>Please select at least one service first.</p></div>`;
+      return;
+    }
+
+    const eligibleStylists = STYLISTS.filter(stylist => {
+      if (stylist.isAvailable === false) return false;
+      if (!Array.isArray(stylist.serviceIds) || !stylist.serviceIds.length) return false;
+      return selectedServices.every(service => stylist.serviceIds.includes(service.id));
+    });
+
+    if (bookState.stylistId && !eligibleStylists.some(stylist => stylist.id === bookState.stylistId)) {
+      bookState.stylistId = '';
+      bookState.stylist = '';
+      bookState.time = '';
+      availableSlots = [];
+      renderTimeSlotsIntoDOM();
+    }
+
+    if (!eligibleStylists.length) {
+      grid.innerHTML = `<div class="empty-state" style="grid-column:1/-1;padding:0.8rem;"><i class="fas fa-user-slash"></i><p>No stylists available for selected services.</p></div>`;
+      return;
+    }
+
+    grid.innerHTML = eligibleStylists.map(stylist => {
+      const name = stylist.name || 'Stylist';
+      const initial = name.charAt(0).toUpperCase();
+      return `<button type="button" class="stylist-btn ${bookState.stylistId === stylist.id ? 'selected' : ''}" onclick="selectStylist('${stylist.id}','${name.replace(/'/g, "\\'")}')">
+        <div class="stylist-av">${initial}</div>
+        <div class="stylist-name">${name}</div>
+      </button>`;
+    }).join('');
+  }
+
+  function selectStylist(id, name) {
+    bookState.stylistId = id;
+    bookState.stylist = name;
+    renderStylistGrid();
+    refreshTimeSlots();
+  }
+
+  let availableSlots = [];
+
+  async function loadAvailableSlots() {
+    const dateInput = document.getElementById('apptDate');
+    const dateVal = dateInput ? dateInput.value : '';
+
+    availableSlots = [];
+
+    if (!dateVal || !bookState.stylistId || !cartIds.length) {
+      renderTimeSlotsIntoDOM();
+      return;
+    }
+
+    if (!isStylistEligible(bookState.stylistId)) {
+      bookState.time = '';
+      renderTimeSlotsIntoDOM();
+      showToast('The selected stylist does not provide all selected services.');
+      return;
+    }
+
+    try {
+      const res = await fetch(
+        `${API_URL}/bookings/availability/time-slots` +
+        `?stylistId=${encodeURIComponent(bookState.stylistId)}` +
+        `&date=${encodeURIComponent(dateVal)}` +
+        `&serviceIds=${encodeURIComponent(cartIds.join(','))}`,
+        { credentials: 'include' }
+      );
+      const data = await res.json();
+
+      if (!res.ok) {
+        console.error('Availability request failed:', data.message || data);
+        availableSlots = [];
+        renderTimeSlotsIntoDOM();
+        showToast(data.message || 'Could not load available times.');
+        return;
+      }
+
+      availableSlots = Array.isArray(data.data?.availableSlots) ? data.data.availableSlots : [];
+
+    } catch (error) {
+      console.error('Could not load available slots:', error);
+      availableSlots = [];
+      showToast('Could not load available times. Please try again.');
+    }
+
+    if (bookState.time && !availableSlots.includes(bookState.time)) {
+      bookState.time = '';
+    }
+
+    renderTimeSlotsIntoDOM();
+  }
+
+  function renderTimeSlots() {
+    if (!availableSlots.length) {
+      return `<div style="grid-column:1/-1;text-align:center;padding:0.8rem;color:#888;font-size:0.9rem;">
+        ${!document.getElementById('apptDate')?.value ? 'Select a date first.' : !bookState.stylistId ? 'Select a stylist first.' : !cartIds.length ? 'Select at least one service first.' : 'No available times for this date.'}
+      </div>`;
+    }
+    return availableSlots.map(slot => {
+      const selected = bookState.time === slot;
+      return `<button type="button" class="time-slot ${selected ? 'selected' : ''}" onclick="selectTime('${slot}')">${slot}</button>`;
+    }).join('');
+  }
+
+  function renderTimeSlotsIntoDOM() {
+    const el = document.getElementById('timeSlots');
+    if (el) el.innerHTML = renderTimeSlots();
+  }
+
+  async function refreshTimeSlots() {
+    bookState.time = '';
+    await loadAvailableSlots();
+    renderTimeSlotsIntoDOM();
+  }
+
+  function selectTime(time) {
+    if (!availableSlots.includes(time)) return;
+    bookState.time = time;
+    renderTimeSlotsIntoDOM();
+  }
+
+  function gotoStep(n) {
+    wizardStep = n;
+    for (let i = 1; i <= 4; i++) {
+      const body = document.getElementById(`wbody${i}`);
+      if (body) {
+        if (i === n) {
+          body.classList.remove('hidden');
+        } else {
+          body.classList.add('hidden');
+        }
+      }
+      const ws = document.getElementById(`ws${i}`);
+      if (ws) {
+        ws.classList.toggle('active', i === n);
+        ws.classList.toggle('done', i < n);
+      }
+    }
+    document.getElementById('stepInd').textContent = `Step ${n} of 4`;
+    document.getElementById('wPrev').style.visibility = n === 1 ? 'hidden' : 'visible';
+    document.getElementById('wNext').innerHTML = n === 4 ? 'Confirm' : 'Next <i class="fas fa-arrow-right"></i>';
+
+    if (n === 4) buildReview();
+  }
+
+  function wizardNext() {
+    if (wizardStep === 1) {
+      if (!cartIds.length) { showToast('Please select at least one service.'); return; }
+    }
+    if (wizardStep === 2) {
+      if (!document.getElementById('apptDate').value) { showToast('Please pick a date.'); return; }
+      if (!bookState.time) { showToast('Please pick a time slot.'); return; }
+      if (!bookState.stylistId) { showToast('Please choose a stylist.'); return; }
+      bookState.date = document.getElementById('apptDate').value;
+    }
+    if (wizardStep === 3) {
+      const name = document.getElementById('detName').value.trim();
+      const email = document.getElementById('detEmail').value.trim();
+      const phone = document.getElementById('detPhone').value.trim();
+      if (!name || !email || !phone) { showToast('Please fill in your name, email, and phone number.'); return; }
+    }
+    if (wizardStep === 4) {
+      confirmBooking(); return;
+    }
+    gotoStep(wizardStep + 1);
+  }
+
+  function wizardPrev() {
+    if (wizardStep > 1) gotoStep(wizardStep - 1);
+  }
+
+  function buildReview() {
+    const items = SERVICES.filter(s => cartIds.includes(s.id));
+    const total = items.reduce((s, sv) => s + sv.price, 0);
+    const dur = items.reduce((s, sv) => s + sv.duration, 0);
+
+    document.getElementById('reviewCard').innerHTML = `
+      <div class="review-section-title">Selected Services</div>
+      <div class="review-services-list">
+        ${items.map(sv => `
+          <div class="review-svc-item">
+            <div>
+              <div style="font-weight:600;font-size:1rem;">${sv.name}</div>
+              <div style="font-size:0.85rem;color:#888;">${sv.duration} min</div>
+            </div>
+            <span style="font-weight:700;color:var(--rose);">R${sv.price}</span>
+          </div>`).join('')}
+      </div>
+      <div class="review-total"><span>Total</span><span>R${total.toLocaleString()}</span></div>
+      <div style="margin-top:0.3rem;font-size:0.9rem;color:#888;">Estimated duration: ~${formatDur(dur)}</div>
+
+      <div class="review-section-title" style="margin-top:0.8rem;">Appointment Info</div>
+      <div class="review-row"><span>Date</span><span>${formatDate(bookState.date)}</span></div>
+      <div class="review-row"><span>Time</span><span>${bookState.time}</span></div>
+      <div class="review-row"><span>Stylist</span><span>${bookState.stylist}</span></div>
+
+      <div class="review-section-title" style="margin-top:0.8rem;">Your Details</div>
+      <div class="review-row"><span>Name</span><span>${document.getElementById('detName').value}</span></div>
+      <div class="review-row"><span>Phone</span><span>${document.getElementById('detPhone').value}</span></div>
+      <div class="review-row"><span>Email</span><span>${document.getElementById('detEmail').value}</span></div>
+      ${document.getElementById('detNotes').value ? `<div class="review-row"><span>Notes</span><span>${document.getElementById('detNotes').value}</span></div>` : ''}
+    `;
+  }
+
+  let isBookingSubmitting = false;
+
+  function showConfirmation(data) {
+    document.getElementById('confirmRef').textContent = data.ref;
+    document.getElementById('confirmServices').textContent = data.services;
+    document.getElementById('confirmDateTime').textContent = `${data.date}, ${data.time}`;
+    document.getElementById('confirmStylist').textContent = data.stylist;
+    document.getElementById('confirmTotal').textContent = `R${data.total.toLocaleString()}`;
+    document.getElementById('confirmGuest').textContent = data.guestName;
+    document.getElementById('confirmationModal').classList.add('open');
+  }
+
+  function closeConfirmation() {
+    document.getElementById('confirmationModal').classList.remove('open');
+    switchView('appointments');
+  }
+
+  function downloadInvoice() {
+    if (!lastBookingData) return;
+
+    const data = lastBookingData;
+    const now = new Date();
+    const dateStr = now.toLocaleDateString('en-ZA', { year: 'numeric', month: 'short', day: 'numeric' });
+    const timeStr = now.toLocaleTimeString('en-ZA', { hour: '2-digit', minute: '2-digit' });
+
+    const invoiceHTML = `
+      <!DOCTYPE html>
+      <html>
+      <head>
+        <meta charset="UTF-8">
+        <title>Invoice ${data.ref}</title>
+        <style>
+          body { font-family: 'DM Sans', Arial, sans-serif; max-width: 600px; margin: 40px auto; padding: 20px; color: #1a1a1a; }
+          .header { text-align: center; border-bottom: 2px solid #D43F6B; padding-bottom: 20px; margin-bottom: 20px; }
+          .header h1 { font-family: 'Cormorant Garamond', serif; font-size: 2rem; color: #D43F6B; margin: 0; }
+          .header p { color: #888; margin: 5px 0 0; }
+          .ref { text-align: center; font-size: 1.2rem; font-weight: 600; margin: 10px 0 20px; color: #D43F6B; }
+          .details { border: 1px solid #e5e5e5; border-radius: 8px; padding: 15px 20px; margin-bottom: 20px; }
+          .row { display: flex; justify-content: space-between; padding: 6px 0; border-bottom: 1px solid #f0f0f0; }
+          .row:last-child { border-bottom: none; }
+          .label { color: #888; }
+          .value { font-weight: 600; }
+          .total { font-size: 1.2rem; color: #D43F6B; font-weight: 700; padding-top: 10px; border-top: 2px solid #D43F6B; margin-top: 10px; }
+          .footer { text-align: center; color: #888; font-size: 0.8rem; margin-top: 30px; border-top: 1px solid #e5e5e5; padding-top: 20px; }
+          @media print { body { margin: 0; padding: 20px; } .no-print { display: none; } }
+        </style>
+      </head>
+      <body>
+        <div class="header">
+          <h1>🌸 PinkMeUp</h1>
+          <p>Book • Glow • Relax</p>
+        </div>
+        <div class="ref">Booking Reference: ${data.ref}</div>
+        <div class="details">
+          <div class="row"><span class="label">Services</span><span class="value">${data.services}</span></div>
+          <div class="row"><span class="label">Date</span><span class="value">${data.date}</span></div>
+          <div class="row"><span class="label">Time</span><span class="value">${data.time}</span></div>
+          <div class="row"><span class="label">Stylist</span><span class="value">${data.stylist}</span></div>
+          <div class="row"><span class="label">Guest Name</span><span class="value">${data.guestName}</span></div>
+          <div class="row"><span class="label">Guest Email</span><span class="value">${data.guestEmail}</span></div>
+          <div class="row"><span class="label">Guest Phone</span><span class="value">${data.guestPhone}</span></div>
+          <div class="row total"><span class="label">Total</span><span class="value">R${data.total.toLocaleString()}</span></div>
+        </div>
+        <div class="footer">
+          <p>Thank you for choosing PinkMeUp!</p>
+          <p>Invoice generated: ${dateStr} at ${timeStr}</p>
+          <p>076 769 0102 • Mon-Fri 9am-6pm | Sat 9am-2pm</p>
+        </div>
+        <div class="no-print" style="text-align:center;margin-top:20px;">
+          <button onclick="window.print()" style="padding:10px 30px;background:#D43F6B;color:white;border:none;border-radius:8px;font-size:16px;cursor:pointer;">Print / Save as PDF</button>
+        </div>
+      </body>
+      </html>
+    `;
+
+    const win = window.open('', '_blank');
+    if (win) {
+      win.document.write(invoiceHTML);
+      win.document.close();
+      win.focus();
+    } else {
+      showToast('Please allow popups to download the invoice.');
+    }
+  }
+
+  async function confirmBooking() {
+    if (isBookingSubmitting) return;
+
+    const name = document.getElementById('detName').value.trim();
+    const email = document.getElementById('detEmail').value.trim();
+    const phone = document.getElementById('detPhone').value.trim();
+
+    if (!name || !email || !phone) {
+      showToast('Please fill in your name, email, and phone number.');
+      return;
+    }
+
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      showToast('Please enter a valid email address.');
+      return;
+    }
+
+    isBookingSubmitting = true;
+    const wNextBtn = document.getElementById('wNext');
+    wNextBtn.disabled = true;
+    wNextBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Booking...';
+
+    try {
+      const res = await fetch(`${API_URL}/bookings`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        credentials: 'include',
+        body: JSON.stringify({
+          serviceIds: cartIds,
+          stylistId: bookState.stylistId,
+          date: bookState.date,
+          startTime: bookState.time,
+          notes: document.getElementById('detNotes').value,
+          guestName: name,
+          guestEmail: email,
+          guestPhone: phone
+        })
+      });
+      const data = await res.json();
+
+      if (res.status === 409) {
+        showToast('This time slot is no longer available. Please select another time.');
+        gotoStep(2);
+        await refreshTimeSlots();
+        return;
+      }
+
+      if (!res.ok) {
+        showToast(data.message || 'Booking failed.');
+        return;
+      }
+
+      const bookingData = data.data || data;
+      lastBookingData = {
+        ref: bookingData.bookingRef || bookingData._id || 'PMU-' + Date.now().toString().slice(-6),
+        services: SERVICES.filter(s => cartIds.includes(s.id)).map(s => s.name).join(', '),
+        date: formatDate(bookState.date),
+        time: bookState.time,
+        stylist: bookState.stylist,
+        total: SERVICES.filter(s => cartIds.includes(s.id)).reduce((sum, s) => sum + s.price, 0),
+        guestName: name,
+        guestEmail: email,
+        guestPhone: phone,
+        rawData: bookingData
+      };
+
+      showConfirmation(lastBookingData);
+
+      cartIds = [];
+      renderCart();
+      await loadAppointments();
+
+    } catch (error) {
+      console.error('Booking error:', error);
+      showToast('Could not create booking. Please try again.');
+    } finally {
+      isBookingSubmitting = false;
+      wNextBtn.disabled = false;
+      wNextBtn.innerHTML = 'Confirm';
+    }
+  }
+
+  // ============================================================
+  // APPOINTMENT CRUD
+  // ============================================================
+
+  function openDetailModal(id) {
+    const a = appointments.find(x => x.id === id);
+    if (!a) return;
+    const total = a.services.reduce((s, sv) => s + sv.price, 0);
+    const dur = a.services.reduce((s, sv) => s + sv.duration, 0);
+    const statusMap = { upcoming: 'badge-upcoming', past: 'badge-past', cancelled: 'badge-cancelled', pending: 'badge-pending' };
+
+    document.getElementById('modalContent').innerHTML = `
+      <div style="margin-bottom:0.6rem;">
+        <span class="badge ${statusMap[a.status]}">${a.status}</span>
+      </div>
+      <div class="review-section-title">Appointment Info</div>
+      <div class="review-row"><span>Date</span><span>${formatDate(a.date)}</span></div>
+      <div class="review-row"><span>Time</span><span>${a.time}</span></div>
+      <div class="review-row"><span>Stylist</span><span>${a.stylist}</span></div>
+      <div class="review-row"><span>Duration</span><span>~${formatDur(dur)}</span></div>
+
+      <div class="review-section-title" style="margin-top:0.6rem;">Services Booked</div>
+      <div class="review-services-list">
+        ${a.services.map(sv => `
+          <div class="review-svc-item">
+            <div>
+              <div style="font-weight:600;font-size:1rem;">${sv.name}</div>
+              <div style="font-size:0.85rem;color:#888;">${sv.duration} min</div>
+            </div>
+            <span style="font-weight:700;color:var(--rose);">R${sv.price}</span>
+          </div>`).join('')}
+      </div>
+      <div class="review-total"><span>Total</span><span>R${total.toLocaleString()}</span></div>
+
+      ${a.notes ? `<div class="review-section-title" style="margin-top:0.6rem;">Notes</div><p style="font-size:0.95rem;color:#888;">${a.notes}</p>` : ''}
+      ${a.status === 'upcoming' ? `<button class="btn-primary" style="margin-top:0.8rem;background:#DC2626;" onclick="cancelAppointment('${a.id}');closeModal()"><i class="fas fa-times"></i> Cancel Appointment</button>` : ''}
+      ${a.canRate ? `<button class="btn-primary" style="margin-top:0.8rem;background:var(--rose);" onclick="rateAppointment('${a.id}');closeModal()"><i class="fas fa-star"></i> Rate Appointment</button>` : ''}
+    `;
+    document.getElementById('detailOverlay').classList.add('open');
+  }
+
+  function closeModal() {
+    document.getElementById('detailOverlay').classList.remove('open');
+  }
+  document.getElementById('detailOverlay').addEventListener('click', e => { if (e.target === e.currentTarget) closeModal(); });
 
   let rescheduleApptId = null;
   let rescheduleAvailableSlots = [];
   let rescheduleSelectedTime = '';
-
-  function getLocalDateString() {
-    const now = new Date();
-    const year = now.getFullYear();
-    const month = String(now.getMonth() + 1).padStart(2, '0');
-    const day = String(now.getDate()).padStart(2, '0');
-    return `${year}-${month}-${day}`;
-  }
 
   function openRescheduleModal(id) {
     const modal = document.getElementById('rescheduleModal');
@@ -2174,7 +2757,7 @@
   function renderRescheduleTimeSlots() {
     const container = document.getElementById('rescheduleTimeSlots');
     if (!rescheduleAvailableSlots.length) {
-      container.innerHTML = `<div style="grid-column:1/-1;text-align:center;padding:0.8rem;color:#888;font-size:0.85rem;">No available times</div>`;
+      container.innerHTML = `<div style="grid-column:1/-1;text-align:center;padding:0.6rem;color:#888;font-size:0.9rem;">No available times</div>`;
       return;
     }
     container.innerHTML = rescheduleAvailableSlots.map(slot => {
@@ -2248,573 +2831,10 @@
     showToast('Appointment cancelled.');
   }
 
-  function openDetailModal(id) {
-    const a = appointments.find(x => x.id === id);
-    if (!a) return;
-    const total = a.services.reduce((s,sv)=>s+sv.price,0);
-    const dur   = a.services.reduce((s,sv)=>s+sv.duration,0);
-    const statusMap = { upcoming:'badge-upcoming', past:'badge-past', cancelled:'badge-cancelled', pending:'badge-pending' };
+  // ============================================================
+  // PROFILE FUNCTIONS
+  // ============================================================
 
-    document.getElementById('modalContent').innerHTML = `
-      <div style="margin-bottom:0.8rem;">
-        <span class="badge ${statusMap[a.status]}">${a.status}</span>
-      </div>
-      <div class="review-section-title">Appointment Info</div>
-      <div class="review-row"><span>Date</span><span>${formatDate(a.date)}</span></div>
-      <div class="review-row"><span>Time</span><span>${a.time}</span></div>
-      <div class="review-row"><span>Stylist</span><span>${a.stylist}</span></div>
-      <div class="review-row"><span>Duration</span><span>~${formatDur(dur)}</span></div>
-
-      <div class="review-section-title" style="margin-top:0.8rem;">Services Booked</div>
-      <div class="review-services-list">
-        ${a.services.map(sv=>`
-          <div class="review-svc-item">
-            <div>
-              <div style="font-weight:600;font-size:0.95rem;">${sv.name}</div>
-              <div style="font-size:0.8rem;color:#888;">${sv.duration} min</div>
-            </div>
-            <span style="font-weight:700;color:var(--rose);">R${sv.price}</span>
-          </div>`).join('')}
-      </div>
-      <div class="review-total"><span>Total</span><span>R${total.toLocaleString()}</span></div>
-
-      ${a.notes ? `<div class="review-section-title" style="margin-top:0.8rem;">Notes</div><p style="font-size:0.95rem;color:#888;">${a.notes}</p>` : ''}
-      ${a.status === 'upcoming' ? `<button class="btn-primary" style="margin-top:1rem;background:#DC2626;" onclick="cancelAppointment('${a.id}');closeModal()"><i class="fas fa-times"></i> Cancel Appointment</button>` : ''}
-    `;
-    document.getElementById('detailOverlay').classList.add('open');
-  }
-
-  function closeModal() {
-    document.getElementById('detailOverlay').classList.remove('open');
-  }
-  document.getElementById('detailOverlay').addEventListener('click', e => { if (e.target === e.currentTarget) closeModal(); });
-
-  function resetWizard() {
-    wizardStep = 1;
-    cartIds    = [];
-    activeCat  = CATEGORIES[0] || '';
-    bookState  = { date: '', time: '', stylistId: '', stylist: '' };
-    renderCatNav();
-    renderSvcGrid();
-    renderCart();
-    gotoStep(1);
-
-    const today = getLocalDateString();
-    document.getElementById('apptDate').min = today;
-    document.getElementById('apptDate').value = '';
-    
-    // Initialize calendar
-    const todayDate = new Date();
-    currentMonth = todayDate.getMonth();
-    currentYear = todayDate.getFullYear();
-    selectedDate = '';
-    renderCalendar(currentMonth, currentYear);
-
-    const apptDateInput = document.getElementById('apptDate');
-    if (!apptDateInput.dataset.listenerAttached) {
-      apptDateInput.addEventListener('change', refreshTimeSlots);
-      apptDateInput.dataset.listenerAttached = 'true';
-    }
-
-    renderStylistGrid();
-    availableSlots = [];
-    renderTimeSlotsIntoDOM();
-  }
-
-  function renderCatNav() {
-    const el = document.getElementById('catNav');
-    el.innerHTML = CATEGORIES.map(cat => `
-      <button class="cat-btn ${cat === activeCat ? 'active' : ''}" onclick="setActiveCat('${cat}')">${cat}</button>
-    `).join('');
-  }
-
-  function setActiveCat(cat) {
-    activeCat = cat;
-    renderCatNav();
-    renderSvcGrid();
-  }
-
-  function renderSvcGrid() {
-    const svcs = SERVICES.filter(s => s.category === activeCat);
-    document.getElementById('svcGrid').innerHTML = svcs.map(s => `
-      <div class="svc-card ${cartIds.includes(s.id) ? 'selected' : ''}" onclick="toggleService('${s.id}')">
-        <div class="svc-card-name">${s.name}</div>
-        <div class="svc-card-meta">
-          <span class="svc-card-price">R${s.price}</span>
-          <span class="svc-card-dur">${s.duration} min</span>
-        </div>
-      </div>
-    `).join('');
-  }
-
-  function toggleService(id) {
-    if (cartIds.includes(id)) {
-      cartIds = cartIds.filter(serviceId => serviceId !== id);
-    } else {
-      cartIds.push(id);
-    }
-
-    if (bookState.stylistId && !isStylistEligible(bookState.stylistId)) {
-      bookState.stylistId = '';
-      bookState.stylist = '';
-      bookState.time = '';
-    }
-
-    availableSlots = [];
-    renderSvcGrid();
-    renderCart();
-    renderStylistGrid();
-    renderTimeSlotsIntoDOM();
-
-    if (cartIds.length && bookState.stylistId && document.getElementById('apptDate')?.value) {
-      refreshTimeSlots();
-    }
-  }
-
-  function isStylistEligible(stylistId) {
-    const stylist = STYLISTS.find(s => s.id === stylistId && s.isAvailable !== false);
-    if (!stylist) return false;
-    const selectedServices = SERVICES.filter(service => cartIds.includes(service.id));
-    if (!selectedServices.length) return false;
-    if (!Array.isArray(stylist.serviceIds) || !stylist.serviceIds.length) return false;
-    return selectedServices.every(service => stylist.serviceIds.includes(service.id));
-  }
-
-  function removeFromCart(id) {
-    cartIds = cartIds.filter(serviceId => serviceId !== id);
-    if (bookState.stylistId && !isStylistEligible(bookState.stylistId)) {
-      bookState.stylistId = '';
-      bookState.stylist = '';
-      bookState.time = '';
-    }
-    renderSvcGrid();
-    renderCart();
-    renderStylistGrid();
-    availableSlots = [];
-    renderTimeSlotsIntoDOM();
-    if (cartIds.length && bookState.stylistId && document.getElementById('apptDate')?.value) {
-      refreshTimeSlots();
-    }
-  }
-
-  function renderCart() {
-    const items = SERVICES.filter(s => cartIds.includes(s.id));
-    const total = items.reduce((s, sv) => s + sv.price, 0);
-    const dur   = items.reduce((s, sv) => s + sv.duration, 0);
-    const count = items.length;
-
-    document.getElementById('cartCount').textContent = count;
-
-    const container = document.getElementById('cartItems');
-    container.querySelectorAll('.cart-chip').forEach(el => el.remove());
-
-    let emptyMsg = document.getElementById('cartEmpty');
-    if (!emptyMsg) {
-      emptyMsg = document.createElement('div');
-      emptyMsg.className = 'cart-empty-msg';
-      emptyMsg.id = 'cartEmpty';
-      emptyMsg.textContent = 'Tap a service above to add it here';
-      container.appendChild(emptyMsg);
-    }
-
-    if (count === 0) {
-      emptyMsg.style.display = 'block';
-      document.getElementById('cartSummary').style.display = 'none';
-    } else {
-      emptyMsg.style.display = 'none';
-      items.forEach(sv => {
-        const chip = document.createElement('div');
-        chip.className = 'cart-chip';
-        chip.innerHTML = `${sv.name} <button class="cart-chip-remove" onclick="removeFromCart('${sv.id}')"><i class="fas fa-times"></i></button>`;
-        container.appendChild(chip);
-      });
-      document.getElementById('cartSummary').style.display = 'flex';
-      document.getElementById('cartTotal').textContent = `R${total.toLocaleString()}`;
-      document.getElementById('cartDuration').textContent = `~${formatDur(dur)} total`;
-      document.getElementById('totalDurLabel').textContent = formatDur(dur);
-    }
-  }
-
-  function renderStylistGrid() {
-    const grid = document.getElementById('stylistGrid');
-    if (!grid) return;
-
-    const selectedServices = SERVICES.filter(service => cartIds.includes(service.id));
-    if (!selectedServices.length) {
-      bookState.stylistId = '';
-      bookState.stylist = '';
-      grid.innerHTML = `<div class="empty-state" style="grid-column:1/-1;padding:1rem;"><p>Please select at least one service first.</p></div>`;
-      return;
-    }
-
-    const eligibleStylists = STYLISTS.filter(stylist => {
-      if (stylist.isAvailable === false) return false;
-      if (!Array.isArray(stylist.serviceIds) || !stylist.serviceIds.length) return false;
-      return selectedServices.every(service => stylist.serviceIds.includes(service.id));
-    });
-
-    if (bookState.stylistId && !eligibleStylists.some(stylist => stylist.id === bookState.stylistId)) {
-      bookState.stylistId = '';
-      bookState.stylist = '';
-      bookState.time = '';
-      availableSlots = [];
-      renderTimeSlotsIntoDOM();
-    }
-
-    if (!eligibleStylists.length) {
-      grid.innerHTML = `<div class="empty-state" style="grid-column:1/-1;padding:1rem;"><i class="fas fa-user-slash"></i><p>No stylists are available for all of the selected services.</p></div>`;
-      return;
-    }
-
-    grid.innerHTML = eligibleStylists.map(stylist => {
-      const name = stylist.name || 'Stylist';
-      const initial = name.charAt(0).toUpperCase();
-      return `<button type="button" class="stylist-btn ${bookState.stylistId === stylist.id ? 'selected' : ''}" onclick="selectStylist('${stylist.id}','${name.replace(/'/g, "\\'")}')">
-        <div class="stylist-av">${initial}</div>
-        <div class="stylist-name">${name}</div>
-      </button>`;
-    }).join('');
-  }
-
-  function selectStylist(id, name) {
-    bookState.stylistId = id;
-    bookState.stylist = name;
-    renderStylistGrid();
-    refreshTimeSlots();
-  }
-
-  let availableSlots = [];
-
-  async function loadAvailableSlots() {
-    const dateInput = document.getElementById('apptDate');
-    const dateVal = dateInput ? dateInput.value : '';
-
-    availableSlots = [];
-
-    if (!dateVal || !bookState.stylistId || !cartIds.length) {
-      renderTimeSlotsIntoDOM();
-      return;
-    }
-
-    if (!isStylistEligible(bookState.stylistId)) {
-      bookState.time = '';
-      renderTimeSlotsIntoDOM();
-      showToast('The selected stylist does not provide all selected services.');
-      return;
-    }
-
-    try {
-      const res = await fetch(
-        `${API_URL}/bookings/availability/time-slots` +
-        `?stylistId=${encodeURIComponent(bookState.stylistId)}` +
-        `&date=${encodeURIComponent(dateVal)}` +
-        `&serviceIds=${encodeURIComponent(cartIds.join(','))}`,
-        { credentials: 'include' }
-      );
-      const data = await res.json();
-
-      if (!res.ok) {
-        console.error('Availability request failed:', data.message || data);
-        availableSlots = [];
-        renderTimeSlotsIntoDOM();
-        showToast(data.message || 'Could not load available times.');
-        return;
-      }
-
-      availableSlots = Array.isArray(data.data?.availableSlots) ? data.data.availableSlots : [];
-
-    } catch (error) {
-      console.error('Could not load available slots:', error);
-      availableSlots = [];
-      showToast('Could not load available times. Please try again.');
-    }
-
-    if (bookState.time && !availableSlots.includes(bookState.time)) {
-      bookState.time = '';
-    }
-
-    renderTimeSlotsIntoDOM();
-  }
-
-  function renderTimeSlots() {
-    if (!availableSlots.length) {
-      return `<div style="grid-column:1/-1;text-align:center;padding:1rem;color:#888;font-size:0.9rem;">
-        ${!document.getElementById('apptDate')?.value ? 'Select a date first.' : !bookState.stylistId ? 'Select a stylist first.' : !cartIds.length ? 'Select at least one service first.' : 'No available times for this date.'}
-      </div>`;
-    }
-    return availableSlots.map(slot => {
-      const selected = bookState.time === slot;
-      return `<button type="button" class="time-slot ${selected ? 'selected' : ''}" onclick="selectTime('${slot}')">${slot}</button>`;
-    }).join('');
-  }
-
-  function renderTimeSlotsIntoDOM() {
-    const el = document.getElementById('timeSlots');
-    if (el) el.innerHTML = renderTimeSlots();
-  }
-
-  async function refreshTimeSlots() {
-    bookState.time = '';
-    await loadAvailableSlots();
-    renderTimeSlotsIntoDOM();
-  }
-
-  function selectTime(time) {
-    if (!availableSlots.includes(time)) return;
-    bookState.time = time;
-    renderTimeSlotsIntoDOM();
-  }
-
-  function gotoStep(n) {
-    wizardStep = n;
-    for (let i=1;i<=4;i++) {
-      const body = document.getElementById(`wbody${i}`);
-      if (body) {
-        if (i === n) {
-          body.classList.remove('hidden');
-        } else {
-          body.classList.add('hidden');
-        }
-      }
-      const ws = document.getElementById(`ws${i}`);
-      if (ws) {
-        ws.classList.toggle('active', i === n);
-        ws.classList.toggle('done', i < n);
-      }
-    }
-    document.getElementById('stepInd').textContent = `Step ${n} of 4`;
-    document.getElementById('wPrev').style.visibility = n === 1 ? 'hidden' : 'visible';
-    document.getElementById('wNext').innerHTML = n === 4 ? '<i class="fas fa-check"></i> Confirm Booking' : 'Next <i class="fas fa-arrow-right"></i>';
-
-    if (n === 4) buildReview();
-  }
-
-  function wizardNext() {
-    if (wizardStep === 1) {
-      if (!cartIds.length) { showToast('Please select at least one service.'); return; }
-    }
-    if (wizardStep === 2) {
-      if (!document.getElementById('apptDate').value) { showToast('Please pick a date.'); return; }
-      if (!bookState.time)    { showToast('Please pick a time slot.'); return; }
-      if (!bookState.stylistId) { showToast('Please choose a stylist.'); return; }
-      bookState.date = document.getElementById('apptDate').value;
-    }
-    if (wizardStep === 3) {
-      const name = document.getElementById('detName').value.trim();
-      const email = document.getElementById('detEmail').value.trim();
-      const phone = document.getElementById('detPhone').value.trim();
-      if (!name || !email || !phone) { showToast('Please fill in your name, email, and phone number.'); return; }
-    }
-    if (wizardStep === 4) {
-      confirmBooking(); return;
-    }
-    gotoStep(wizardStep + 1);
-  }
-
-  function wizardPrev() {
-    if (wizardStep > 1) gotoStep(wizardStep - 1);
-  }
-
-  function buildReview() {
-    const items = SERVICES.filter(s => cartIds.includes(s.id));
-    const total = items.reduce((s,sv)=>s+sv.price,0);
-    const dur   = items.reduce((s,sv)=>s+sv.duration,0);
-
-    document.getElementById('reviewCard').innerHTML = `
-      <div class="review-section-title">Selected Services</div>
-      <div class="review-services-list">
-        ${items.map(sv=>`
-          <div class="review-svc-item">
-            <div>
-              <div style="font-weight:600;font-size:0.95rem;">${sv.name}</div>
-              <div style="font-size:0.8rem;color:#888;">${sv.duration} min</div>
-            </div>
-            <span style="font-weight:700;color:var(--rose);">R${sv.price}</span>
-          </div>`).join('')}
-      </div>
-      <div class="review-total"><span>Total</span><span>R${total.toLocaleString()}</span></div>
-      <div style="margin-top:0.4rem;font-size:0.85rem;color:#888;">Estimated duration: ~${formatDur(dur)}</div>
-
-      <div class="review-section-title" style="margin-top:1.2rem;">Appointment Info</div>
-      <div class="review-row"><span>Date</span><span>${formatDate(bookState.date)}</span></div>
-      <div class="review-row"><span>Time</span><span>${bookState.time}</span></div>
-      <div class="review-row"><span>Stylist</span><span>${bookState.stylist}</span></div>
-
-      <div class="review-section-title" style="margin-top:1.2rem;">Your Details</div>
-      <div class="review-row"><span>Name</span><span>${document.getElementById('detName').value}</span></div>
-      <div class="review-row"><span>Phone</span><span>${document.getElementById('detPhone').value}</span></div>
-      <div class="review-row"><span>Email</span><span>${document.getElementById('detEmail').value}</span></div>
-      ${document.getElementById('detNotes').value ? `<div class="review-row"><span>Notes</span><span>${document.getElementById('detNotes').value}</span></div>` : ''}
-    `;
-  }
-
-  let isBookingSubmitting = false;
-
-  function showConfirmation(data) {
-    document.getElementById('confirmRef').textContent = data.ref;
-    document.getElementById('confirmServices').textContent = data.services;
-    document.getElementById('confirmDateTime').textContent = `${data.date}, ${data.time}`;
-    document.getElementById('confirmStylist').textContent = data.stylist;
-    document.getElementById('confirmTotal').textContent = `R${data.total.toLocaleString()}`;
-    document.getElementById('confirmGuest').textContent = data.guestName;
-    document.getElementById('confirmationModal').classList.add('open');
-  }
-
-  function closeConfirmation() {
-    document.getElementById('confirmationModal').classList.remove('open');
-    switchView('appointments');
-  }
-
-  function downloadInvoice() {
-    if (!lastBookingData) return;
-    
-    const data = lastBookingData;
-    const now = new Date();
-    const dateStr = now.toLocaleDateString('en-ZA', { year: 'numeric', month: 'short', day: 'numeric' });
-    const timeStr = now.toLocaleTimeString('en-ZA', { hour: '2-digit', minute: '2-digit' });
-    
-    const invoiceHTML = `
-      <!DOCTYPE html>
-      <html>
-      <head>
-        <meta charset="UTF-8">
-        <title>Invoice ${data.ref}</title>
-        <style>
-          body { font-family: 'DM Sans', Arial, sans-serif; max-width: 600px; margin: 40px auto; padding: 20px; color: #1a1a1a; }
-          .header { text-align: center; border-bottom: 2px solid #D43F6B; padding-bottom: 20px; margin-bottom: 20px; }
-          .header h1 { font-family: 'Cormorant Garamond', serif; font-size: 2rem; color: #D43F6B; margin: 0; }
-          .header p { color: #888; margin: 5px 0 0; }
-          .ref { text-align: center; font-size: 1.2rem; font-weight: 600; margin: 10px 0 20px; color: #D43F6B; }
-          .details { border: 1px solid #e5e5e5; border-radius: 8px; padding: 15px 20px; margin-bottom: 20px; }
-          .row { display: flex; justify-content: space-between; padding: 6px 0; border-bottom: 1px solid #f0f0f0; }
-          .row:last-child { border-bottom: none; }
-          .label { color: #888; }
-          .value { font-weight: 600; }
-          .total { font-size: 1.2rem; color: #D43F6B; font-weight: 700; padding-top: 10px; border-top: 2px solid #D43F6B; margin-top: 10px; }
-          .footer { text-align: center; color: #888; font-size: 0.8rem; margin-top: 30px; border-top: 1px solid #e5e5e5; padding-top: 20px; }
-        </style>
-      </head>
-      <body>
-        <div class="header">
-          <h1>🌸 PinkMeUp</h1>
-          <p>Book • Glow • Relax</p>
-        </div>
-        <div class="ref">Booking Reference: ${data.ref}</div>
-        <div class="details">
-          <div class="row"><span class="label">Services</span><span class="value">${data.services}</span></div>
-          <div class="row"><span class="label">Date</span><span class="value">${data.date}</span></div>
-          <div class="row"><span class="label">Time</span><span class="value">${data.time}</span></div>
-          <div class="row"><span class="label">Stylist</span><span class="value">${data.stylist}</span></div>
-          <div class="row"><span class="label">Guest Name</span><span class="value">${data.guestName}</span></div>
-          <div class="row"><span class="label">Guest Email</span><span class="value">${data.guestEmail}</span></div>
-          <div class="row"><span class="label">Guest Phone</span><span class="value">${data.guestPhone}</span></div>
-          <div class="row total"><span class="label">Total</span><span class="value">R${data.total.toLocaleString()}</span></div>
-        </div>
-        <div class="footer">
-          <p>Thank you for choosing PinkMeUp!</p>
-          <p>Invoice generated: ${dateStr} at ${timeStr}</p>
-          <p>076 769 0102 • Mon-Fri 9am-5pm</p>
-        </div>
-      </body>
-      </html>
-    `;
-
-    const blob = new Blob([invoiceHTML], { type: 'text/html' });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = `Invoice_${data.ref}.html`;
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-    URL.revokeObjectURL(url);
-    
-    showToast('Invoice downloaded successfully!');
-  }
-
-  async function confirmBooking() {
-    if (isBookingSubmitting) return;
-
-    const name = document.getElementById('detName').value.trim();
-    const email = document.getElementById('detEmail').value.trim();
-    const phone = document.getElementById('detPhone').value.trim();
-
-    if (!name || !email || !phone) {
-      showToast('Please fill in your name, email, and phone number.');
-      return;
-    }
-
-    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-      showToast('Please enter a valid email address.');
-      return;
-    }
-
-    isBookingSubmitting = true;
-    const wNextBtn = document.getElementById('wNext');
-    wNextBtn.disabled = true;
-    wNextBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Booking...';
-
-    try {
-      const res = await fetch(`${API_URL}/bookings`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        credentials: 'include',
-        body: JSON.stringify({
-          serviceIds: cartIds,
-          stylistId: bookState.stylistId,
-          date: bookState.date,
-          startTime: bookState.time,
-          notes: document.getElementById('detNotes').value,
-          guestName: name,
-          guestEmail: email,
-          guestPhone: phone
-        })
-      });
-      const data = await res.json();
-
-      if (res.status === 409) {
-        showToast('This time slot is no longer available. Please select another time.');
-        gotoStep(2);
-        await refreshTimeSlots();
-        return;
-      }
-
-      if (!res.ok) {
-        showToast(data.message || 'Booking failed.');
-        return;
-      }
-
-      const bookingData = data.data || data;
-      lastBookingData = {
-        ref: bookingData.bookingRef || bookingData._id || 'PMU-' + Date.now().toString().slice(-6),
-        services: SERVICES.filter(s => cartIds.includes(s.id)).map(s => s.name).join(', '),
-        date: formatDate(bookState.date),
-        time: bookState.time,
-        stylist: bookState.stylist,
-        total: SERVICES.filter(s => cartIds.includes(s.id)).reduce((sum, s) => sum + s.price, 0),
-        guestName: name,
-        guestEmail: email,
-        guestPhone: phone,
-        rawData: bookingData
-      };
-
-      showConfirmation(lastBookingData);
-
-      cartIds = [];
-      renderCart();
-      await loadAppointments();
-
-    } catch (error) {
-      console.error('Booking error:', error);
-      showToast('Could not create booking. Please try again.');
-    } finally {
-      isBookingSubmitting = false;
-      wNextBtn.disabled = false;
-      wNextBtn.innerHTML = '<i class="fas fa-check"></i> Confirm Booking';
-    }
-  }
-
-  // Profile Functions
   function toggleProfileEdit() {
     document.getElementById('editProfileModal').classList.add('open');
   }
@@ -2826,8 +2846,8 @@
   function updateProfileStats() {
     const total = appointments.length;
     const upcoming = appointments.filter(a => a.status === 'upcoming').length;
-    const spend = appointments.filter(a => a.status !== 'cancelled').reduce((s, a) => s + a.services.reduce((x,sv)=>x+sv.price,0), 0);
-    
+    const spend = appointments.filter(a => a.status !== 'cancelled').reduce((s, a) => s + a.services.reduce((x, sv) => x + sv.price, 0), 0);
+
     document.getElementById('profileStatBookings').textContent = total;
     document.getElementById('profileStatUpcoming').textContent = upcoming;
     document.getElementById('profileStatSpent').textContent = `R${spend.toLocaleString()}`;
@@ -2853,6 +2873,7 @@
 
     const fullName = `${firstName} ${lastName}`;
     document.getElementById('profileFullName').textContent = fullName;
+    document.getElementById('sidebarUsername').textContent = fullName;
     document.getElementById('profileDisplayPhone').textContent = document.getElementById('profilePhone').value.trim() || '+27 82 123 4567';
     document.getElementById('profileName').value = fullName;
     showToast('Profile updated successfully!');
@@ -2860,14 +2881,14 @@
 
   function formatDate(d) {
     if (!d) return '';
-    const [y,m,day] = d.split('-');
-    const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
-    return `${parseInt(day)} ${months[parseInt(m)-1]} ${y}`;
+    const [y, m, day] = d.split('-');
+    const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+    return `${parseInt(day)} ${months[parseInt(m) - 1]} ${y}`;
   }
 
   function formatDur(mins) {
     if (mins < 60) return `${mins} min`;
-    const h = Math.floor(mins/60), m = mins%60;
+    const h = Math.floor(mins / 60), m = mins % 60;
     return m ? `${h}h ${m}min` : `${h}h`;
   }
 
@@ -2901,29 +2922,29 @@
   }
 
   (async function init() {
-   const currentUser = typeof getCurrentUser === 'function' ? getCurrentUser() : null;
+    const currentUser = typeof getCurrentUser === 'function' ? getCurrentUser() : null;
 
-if (!currentUser) {
-  window.location.replace('login.html');
-  return;
-}
+    if (!currentUser) {
+      window.location.replace('login.html');
+      return;
+    }
 
-if (currentUser.role && currentUser.role.toLowerCase() !== 'customer') {
-  if (currentUser.role.toLowerCase() === 'admin') {
-    window.location.replace('admindashboard.html');
-  } else if (currentUser.role.toLowerCase() === 'stylist') {
-    window.location.replace('stylistdashboard.html');
-  } else {
-    window.location.replace('login.html');
-  }
-  return;
-}
+    if (currentUser.role && currentUser.role.toLowerCase() !== 'customer') {
+      if (currentUser.role.toLowerCase() === 'admin') {
+        window.location.replace('admindashboard.html');
+      } else if (currentUser.role.toLowerCase() === 'stylist') {
+        window.location.replace('stylistdashboard.html');
+      } else {
+        window.location.replace('login.html');
+      }
+      return;
+    }
 
     const user = currentUser;
     if (user) {
       const fullName = user.name || user.firstName + ' ' + user.lastName || 'User';
-      const firstName = fullName.split(' ')[0];
       document.getElementById('profileFullName').textContent = fullName;
+      document.getElementById('sidebarUsername').textContent = fullName;
       document.getElementById('profileEmail').textContent = user.email || '';
       document.getElementById('profileDisplayPhone').textContent = user.phone || '+27 82 123 4567';
       document.getElementById('detName').value = fullName;
@@ -2933,7 +2954,6 @@ if (currentUser.role && currentUser.role.toLowerCase() !== 'customer') {
       document.getElementById('profileEmailInput').value = user.email || '';
       const initals = (user.firstName ? user.firstName[0] : '') + (user.lastName ? user.lastName[0] : '');
       if (initals) {
-        document.getElementById('headerAvatar').textContent = initals;
         document.getElementById('profileAvatar').textContent = initals;
       }
     }
