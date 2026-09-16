@@ -184,112 +184,6 @@
     .view-all-link { color: var(--rose); font-weight: 400; font-size: 0.9rem; cursor: pointer; text-decoration: none; letter-spacing: 0.2px; }
     .view-all-link:hover { opacity: 0.7; }
 
-    /* ============ HOME HERO BANNER (NEW) ============ */
-    .hero-banner {
-      position: relative;
-      border-radius: 1.1rem;
-      overflow: hidden;
-      margin-bottom: 1.4rem;
-      min-height: 210px;
-      display: flex;
-      align-items: flex-end;
-      background: var(--gradient);
-      box-shadow: var(--shadow);
-      isolation: isolate;
-    }
-    .hero-media { position: absolute; inset: 0; z-index: 0; }
-    .hero-media img { width: 100%; height: 100%; object-fit: cover; display: block; }
-    .hero-banner::after {
-      content: '';
-      position: absolute; inset: 0; z-index: 1;
-      background: linear-gradient(180deg, rgba(6,8,20,0.10) 0%, rgba(6,8,20,0.55) 55%, rgba(6,8,20,0.90) 100%);
-    }
-    .hero-content { position: relative; z-index: 2; padding: 1.3rem 1.4rem; color: #fff; width: 100%; }
-    .hero-eyebrow {
-      font-size: 0.68rem; letter-spacing: 2px; text-transform: uppercase;
-      font-weight: 600; opacity: 0.85; margin-bottom: 0.35rem;
-    }
-    .hero-heading {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 2rem; font-weight: 600; line-height: 1.08;
-      letter-spacing: 0.3px; text-shadow: 0 2px 14px rgba(0,0,0,0.35);
-    }
-    .hero-text {
-      font-size: 0.92rem; font-weight: 300; opacity: 0.9;
-      margin-top: 0.35rem; max-width: 480px; line-height: 1.5;
-    }
-    .hero-cta {
-      margin-top: 0.85rem;
-      display: inline-flex; align-items: center; gap: 0.5rem;
-      padding: 0.55rem 1.15rem;
-      border-radius: 2rem;
-      border: 1px solid rgba(255,255,255,0.35);
-      background: rgba(255,255,255,0.14);
-      -webkit-backdrop-filter: blur(10px);
-      backdrop-filter: blur(10px);
-      color: #fff; font-family: inherit; font-size: 0.9rem;
-      font-weight: 500; letter-spacing: 0.3px;
-      cursor: pointer; transition: 0.2s;
-    }
-    .hero-cta:hover { background: #fff; color: var(--rose); transform: translateX(3px); border-color: #fff; }
-
-    /* ============ AUTO-SCROLLING CATALOGUE (NEW) ============ */
-    .catalogue-wrap {
-      position: relative;
-      overflow: hidden;
-      margin-bottom: 1.6rem;
-      padding: 0.15rem 0 0.4rem;
-      -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 5%, #000 95%, transparent 100%);
-      mask-image: linear-gradient(90deg, transparent 0, #000 5%, #000 95%, transparent 100%);
-    }
-    .catalogue-track {
-      display: flex;
-      gap: 0.85rem;
-      width: max-content;
-      animation: catalogueScroll 55s linear infinite;
-      will-change: transform;
-    }
-    .catalogue-wrap:hover .catalogue-track,
-    .catalogue-wrap:focus-within .catalogue-track { animation-play-state: paused; }
-    .catalogue-half { display: flex; gap: 0.85rem; }
-    @keyframes catalogueScroll {
-      from { transform: translateX(0); }
-      to   { transform: translateX(-50%); }
-    }
-    @media (prefers-reduced-motion: reduce) {
-      .catalogue-track { animation: none; overflow-x: auto; }
-    }
-    .cat-card {
-      width: 175px; flex: 0 0 175px;
-      border-radius: 0.85rem;
-      overflow: hidden;
-      border: 1px solid var(--border);
-      background: var(--card-bg);
-      cursor: pointer;
-      transition: 0.2s;
-      display: flex; flex-direction: column;
-    }
-    .cat-card:hover { transform: translateY(-3px); border-color: var(--rose); box-shadow: var(--shadow); }
-    .cat-card-img {
-      position: relative;
-      height: 108px;
-      background: var(--gradient);
-      display: flex; align-items: center; justify-content: center;
-      overflow: hidden;
-    }
-    .cat-card-img img { position: relative; z-index: 1; width: 100%; height: 100%; object-fit: cover; display: block; }
-    .cat-card-body { padding: 0.6rem 0.7rem 0.75rem; display: flex; flex-direction: column; gap: 0.15rem; }
-    .cat-card-name {
-      font-size: 0.88rem; font-weight: 500; color: var(--ink);
-      line-height: 1.25;
-      display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
-    }
-    .cat-card-meta { font-size: 0.75rem; color: var(--muted); font-weight: 300; letter-spacing: 0.2px; }
-    .catalogue-empty {
-      font-size: 0.85rem; color: var(--muted); font-weight: 300;
-      padding: 1.5rem 0; text-align: center; width: 100%;
-    }
-
     .appointment-card { background: transparent; border: none; border-bottom: 1px solid var(--border); border-radius: 0; padding: 1rem 0; margin-bottom: 0; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.5rem; transition: 0.2s; cursor: pointer; }
     .appointment-card:hover { padding-left: 0.4rem; padding-right: 0.4rem; margin-left: -0.4rem; margin-right: -0.4rem; }
     .appointment-card:last-child { border-bottom: none; }
@@ -363,103 +257,24 @@
     .wizard-body { padding: 0.5rem 0 1rem 0; }
     .wizard-body.hidden { display: none; }
 
-    .services-picker { display: flex; flex-direction: column; gap: 1rem; }
+    .services-picker { display: flex; gap: 1rem; flex-wrap: wrap; }
     .service-categories { width: 100%; flex-shrink: 0; margin-bottom: 1rem; }
     .category-heading { font-size: 0.95rem; color: var(--ink); margin-bottom: 0.2rem; font-weight: 500; text-transform: uppercase; letter-spacing: 0.5px; }
-    .category-sub { font-size: 0.88rem; color: var(--muted); margin-bottom: 0.9rem; line-height: 1.5; font-weight: 300; }
-
-    /* ============ CATEGORY BUTTONS — emoji + name (UPDATED) ============ */
-    .category-buttons {
-      display: flex;
-      gap: 0.6rem;
-      overflow-x: auto;
-      padding-bottom: 0.5rem;
-      scrollbar-width: thin;
-      scroll-snap-type: x proximity;
-    }
-    .category-buttons::-webkit-scrollbar { height: 3px; }
-    .category-buttons::-webkit-scrollbar-track { background: var(--hover-surface); border-radius: 10px; }
-    .category-buttons::-webkit-scrollbar-thumb { background: var(--rose-mid); border-radius: 10px; }
-
-    .cat-btn {
-      flex: 0 0 auto;
-      display: flex; flex-direction: column; align-items: center; justify-content: center;
-      gap: 0.3rem;
-      min-width: 86px;
-      padding: 0.65rem 0.7rem;
-      border-radius: 0.85rem;
-      border: 1px solid var(--border);
-      background: var(--card-bg);
-      color: var(--ink);
-      cursor: pointer;
-      transition: 0.18s;
-      font-family: inherit;
-      scroll-snap-align: start;
-      text-align: center;
-    }
-    .cat-btn:hover { border-color: var(--rose); background: var(--rose-pale); transform: translateY(-2px); }
-    .cat-btn.active {
-      border-color: var(--rose);
-      background: var(--rose-pale);
-      box-shadow: inset 0 0 0 1px var(--rose);
-    }
-    .cat-btn .cat-emoji { font-size: 1.3rem; line-height: 1; }
-    .cat-btn .cat-name {
-      font-size: 0.78rem; font-weight: 500; letter-spacing: 0.2px;
-      color: var(--muted); white-space: nowrap;
-      transition: color 0.18s;
-    }
-    .cat-btn.active .cat-name { color: var(--rose); font-weight: 600; }
-
-    .services-list-wrap { flex: 1; min-width: 0; }
-
-    /* ============ SERVICE CARDS — with images (UPDATED) ============ */
-    .service-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(158px, 1fr));
-      gap: 0.85rem;
-    }
-    .svc-card {
-      border: 1px solid var(--border);
-      border-radius: 0.9rem;
-      overflow: hidden;
-      cursor: pointer;
-      transition: 0.2s;
-      position: relative;
-      background: var(--card-bg);
-      display: flex; flex-direction: column;
-    }
-    .svc-card:hover { border-color: var(--rose); transform: translateY(-3px); box-shadow: var(--shadow); }
-    .svc-card.selected { border-color: var(--rose); box-shadow: inset 0 0 0 1px var(--rose); }
-    .svc-card.selected::after {
-      content: '✓';
-      position: absolute; top: 0.5rem; right: 0.5rem; z-index: 3;
-      width: 22px; height: 22px; border-radius: 50%;
-      background: var(--rose); color: #fff;
-      display: flex; align-items: center; justify-content: center;
-      font-size: 0.72rem; font-weight: 700; line-height: 1;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.3);
-    }
-    .svc-card-img {
-      position: relative;
-      width: 100%; height: 118px;
-      background: var(--gradient);
-      display: flex; align-items: center; justify-content: center;
-      overflow: hidden;
-    }
-    .svc-card-img .svc-img-fallback {
-      position: absolute; font-size: 2rem; opacity: 0.95;
-      filter: drop-shadow(0 2px 6px rgba(0,0,0,0.25));
-    }
-    .svc-card-img img {
-      position: relative; z-index: 1;
-      width: 100%; height: 100%; object-fit: cover; display: block;
-    }
-    .svc-card-body { padding: 0.7rem 0.8rem 0.85rem; display: flex; flex-direction: column; gap: 0.35rem; }
-    .svc-card-name { font-size: 0.92rem; font-weight: 500; color: var(--ink); line-height: 1.25; }
-    .svc-card-meta { display: flex; gap: 0.5rem; align-items: center; flex-wrap: wrap; }
-    .svc-card-price { font-size: 0.88rem; font-weight: 600; color: var(--rose); }
-    .svc-card-dur { font-size: 0.76rem; color: var(--muted); font-weight: 300; }
+    .category-sub { font-size: 0.88rem; color: var(--muted); margin-bottom: 0.8rem; line-height: 1.5; font-weight: 300; }
+    .category-buttons { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+    .cat-btn { padding: 0.55rem 1.2rem; border-radius: 2rem; border: 1px solid var(--border); background: transparent; text-align: center; font-size: 0.9rem; font-weight: 400; color: var(--ink); cursor: pointer; transition: 0.15s; font-family: inherit; }
+    .cat-btn:hover { border-color: var(--rose); background: var(--rose-pale); }
+    .cat-btn.active { background: var(--rose); color: white; font-weight: 500; border-color: var(--rose); }
+    .services-list-wrap { flex: 1; min-width: 200px; }
+    .service-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem; }
+    .svc-card { border: 1px solid var(--border); border-radius: 0.6rem; padding: 0.8rem 0.9rem; cursor: pointer; transition: 0.18s; position: relative; background: transparent; }
+    .svc-card:hover { border-color: var(--rose); background: var(--rose-pale); }
+    .svc-card.selected { border-color: var(--rose); background: var(--rose-pale); }
+    .svc-card.selected::after { content: '\f00c'; font-family: 'Font Awesome 5 Free'; font-weight: 900; position: absolute; top: 0.3rem; right: 0.4rem; font-size: 0.7rem; color: var(--rose); }
+    .svc-card-name { font-size: 0.95rem; font-weight: 500; color: var(--ink); margin-bottom: 0.15rem; }
+    .svc-card-meta { display: flex; gap: 0.4rem; align-items: center; flex-wrap: wrap; }
+    .svc-card-price { font-size: 0.9rem; font-weight: 600; color: var(--rose); }
+    .svc-card-dur { font-size: 0.8rem; color: var(--muted); font-weight: 300; }
 
     .cart-panel { background: transparent; border: none; border-top: 1px dashed var(--rose-mid); border-radius: 0; padding: 1rem 0 0 0; margin-top: 1rem; min-height: 60px; }
     .cart-panel-title { font-size: 0.75rem; font-weight: 500; text-transform: uppercase; letter-spacing: 0.4px; color: var(--muted); margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.4rem; }
@@ -685,15 +500,10 @@
       body { font-size: 15px; }
       .header, .top-tabs, .main { padding-left: 1rem; padding-right: 1rem; }
       .stats-grid { grid-template-columns: repeat(2, 1fr); }
-      .service-grid { grid-template-columns: repeat(auto-fill, minmax(145px, 1fr)); }
-      .svc-card-img { height: 104px; }
-      .category-buttons { gap: 0.5rem; }
-      .cat-btn { min-width: 76px; padding: 0.55rem 0.55rem; }
-      .cat-btn .cat-emoji { font-size: 1.15rem; }
-      .cat-btn .cat-name { font-size: 0.72rem; }
-      .hero-heading { font-size: 1.6rem; }
-      .hero-banner { min-height: 180px; }
-      .cat-card { width: 155px; flex: 0 0 155px; }
+      .service-grid { grid-template-columns: 1fr 1fr; }
+      .category-buttons { gap: 0.3rem; }
+      .cat-btn { padding: 0.4rem 0.8rem; font-size: 0.85rem; }
+      .services-picker { flex-direction: column; }
       .w-step { font-size: 0.9rem; padding: 0.4rem 0.2rem; min-width: 45px; }
       .w-step-num { width: 22px; height: 22px; font-size: 0.7rem; }
       .appointment-card { flex-direction: column; align-items: stretch; }
@@ -724,23 +534,7 @@
       .stat-card { padding: 0.7rem 0; }
       .stat-number { font-size: 1.5rem; }
       .stat-label { font-size: 0.7rem; }
-      .service-grid { grid-template-columns: 1fr 1fr; gap: 0.6rem; }
-      .svc-card-img { height: 92px; }
-      .svc-card-body { padding: 0.55rem 0.6rem 0.7rem; }
-      .svc-card-name { font-size: 0.85rem; }
-      .svc-card-price { font-size: 0.82rem; }
-      .svc-card-dur { font-size: 0.7rem; }
-      .hero-banner { min-height: 165px; border-radius: 0.9rem; }
-      .hero-content { padding: 1rem 1.05rem; }
-      .hero-heading { font-size: 1.4rem; }
-      .hero-text { font-size: 0.82rem; }
-      .hero-cta { font-size: 0.82rem; padding: 0.45rem 0.95rem; }
-      .cat-card { width: 138px; flex: 0 0 138px; }
-      .cat-card-img { height: 90px; }
-      .cat-card-name { font-size: 0.82rem; }
-      .cat-btn { min-width: 68px; padding: 0.5rem 0.45rem; }
-      .cat-btn .cat-emoji { font-size: 1.05rem; }
-      .cat-btn .cat-name { font-size: 0.68rem; }
+      .service-grid { grid-template-columns: 1fr; }
       .time-slots-grid { grid-template-columns: 1fr; }
       .stylist-grid { grid-template-columns: 1fr; }
       .w-step { font-size: 0.8rem; padding: 0.3rem 0.1rem; }
@@ -835,7 +629,7 @@
 <div class="app">
   <main class="main">
 
-    <!-- ================= OVERVIEW (HOME) ================= -->
+    <!-- OVERVIEW -->
     <section id="overview-view" class="view active">
       <div class="overview-header">
         <div>
@@ -844,39 +638,12 @@
         </div>
         <button class="book-now-btn" onclick="switchView('book')">Book now <i class="fas fa-arrow-right"></i></button>
       </div>
-
-      <!-- HERO BANNER (NEW) -->
-      <div class="hero-banner">
-        <div class="hero-media">
-          <img src="https://images.unsplash.com/photo-1560066984-138dadb4c035?auto=format&fit=crop&w=1400&q=75"
-               alt="PinkMeUp salon" loading="lazy" onerror="this.remove()">
-        </div>
-        <div class="hero-content">
-          <div class="hero-eyebrow">PinkMeUp Studio</div>
-          <div class="hero-heading">Where you come to glow</div>
-          <div class="hero-text">Hair, skin, nails, waxing &amp; more — booked in seconds.</div>
-          <button class="hero-cta" onclick="switchView('book')">Book your visit <i class="fas fa-arrow-right"></i></button>
-        </div>
-      </div>
-
       <div class="stats-grid">
         <div class="stat-card"><div class="stat-number" id="statTotal">0</div><div class="stat-label">Total Appointments</div></div>
         <div class="stat-card"><div class="stat-number" id="statUpcoming">0</div><div class="stat-label">Upcoming</div></div>
         <div class="stat-card"><div class="stat-number" id="statSpend">R0</div><div class="stat-label">Total Spent</div></div>
         <div class="stat-card"><div class="stat-number" id="statServices">0</div><div class="stat-label">Services Enjoyed</div></div>
       </div>
-
-      <!-- AUTO-SCROLLING CATALOGUE (NEW) -->
-      <div class="section-header">
-        <span class="section-title">Our Service Catalogue</span>
-        <span class="view-all-link" onclick="switchView('book')">Book now →</span>
-      </div>
-      <div class="catalogue-wrap">
-        <div class="catalogue-track" id="catalogueTrack">
-          <div class="catalogue-empty">Loading services…</div>
-        </div>
-      </div>
-
       <div class="section-header">
         <span class="section-title">Upcoming Appointments</span>
         <span class="view-all-link" onclick="switchView('appointments')">View all →</span>
@@ -886,7 +653,7 @@
       </div>
     </section>
 
-    <!-- ============ BOOK APPOINTMENT (UNCHANGED) ============ -->
+    <!-- BOOK APPOINTMENT -->
     <section id="book-view" class="view">
       <div class="booking-header">
         <div class="booking-header-title">Book Your Appointment</div>
@@ -974,7 +741,7 @@
       </div>
     </section>
 
-    <!-- ============ APPOINTMENTS (UNCHANGED) ============ -->
+    <!-- APPOINTMENTS -->
     <section id="appointments-view" class="view">
       <div class="appointments-container">
         <div class="appointments-header" id="appointmentsHeader">
@@ -994,7 +761,7 @@
       </div>
     </section>
 
-    <!-- ============ PROFILE (UNCHANGED) ============ -->
+    <!-- PROFILE -->
     <section id="profile-view" class="view">
       <div class="profile-container" id="profileMain">
         <div class="profile-header">
@@ -1194,58 +961,6 @@
   function closeHelpModal() { document.getElementById('helpModal').classList.remove('open'); }
   document.getElementById('helpModal').addEventListener('click', e => { if (e.target === e.currentTarget) closeHelpModal(); });
 
-  // ============================================================
-  // SERVICE IMAGES + EMOJI (NEW — for home + service picker)
-  // ============================================================
-  const IMG = {
-    hair:      'https://images.unsplash.com/photo-1560066984-138dadb4c035?auto=format&fit=crop&w=700&q=70',
-    nails:     'https://images.unsplash.com/photo-1604654894610-df63bc536371?auto=format&fit=crop&w=700&q=70',
-    skincare:  'https://images.unsplash.com/photo-1570172619644-dfd03ed5d881?auto=format&fit=crop&w=700&q=70',
-    makeup:    'https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?auto=format&fit=crop&w=700&q=70',
-    massage:   'https://images.unsplash.com/photo-1544161515-4ab6ce6db874?auto=format&fit=crop&w=700&q=70',
-    waxing:    'https://images.unsplash.com/photo-1519415387722-a1c3bbef716c?auto=format&fit=crop&w=700&q=70',
-    threading: 'https://images.unsplash.com/photo-1583001931096-959e9a1a6223?auto=format&fit=crop&w=700&q=70',
-    lashes:    'https://images.unsplash.com/photo-1512496015851-a90fb38ba796?auto=format&fit=crop&w=700&q=70',
-    spa:       'https://images.unsplash.com/photo-1540555700478-4be289fbecef?auto=format&fit=crop&w=700&q=70'
-  };
-
-  const EMOJI = {
-    hair: '💇', nails: '💅', skincare: '🧖', makeup: '💄',
-    massage: '💆', waxing: '🌿', threading: '🧵', lashes: '👁️', spa: '🌸'
-  };
-
-  function detectKey(text) {
-    const t = String(text || '').toLowerCase();
-    if (/thread|brow/.test(t)) return 'threading';
-    if (/lash/.test(t)) return 'lashes';
-    if (/wax/.test(t)) return 'waxing';
-    if (/nail|manicure|pedicure|gel|acrylic/.test(t)) return 'nails';
-    if (/massage|body scrub|body wrap|deep tissue/.test(t)) return 'massage';
-    if (/makeup|make-up|glam|mua/.test(t)) return 'makeup';
-    if (/skin|facial|face|peel|cleanse|acne|derma|microneedl/.test(t)) return 'skincare';
-    if (/hair|cut|colour|color|blow|style|braid|weave|relax|barber|trim/.test(t)) return 'hair';
-    return 'spa';
-  }
-
-  function serviceImage(svc) {
-    const key = detectKey(`${svc.name || ''} ${svc.category || ''}`);
-    return IMG[key] || IMG.spa;
-  }
-  function categoryEmoji(cat) {
-    return EMOJI[detectKey(cat)] || '✨';
-  }
-  function escHtml(s) {
-    return String(s == null ? '' : s).replace(/[&<>"']/g, c => (
-      { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]
-    ));
-  }
-  function escAttr(s) {
-    return String(s == null ? '' : s).replace(/\\/g, '\\\\').replace(/'/g, "\\'");
-  }
-
-  // ============================================================
-  // DATA LOADING
-  // ============================================================
   let SERVICES = [];
   let CATEGORIES = [];
   async function loadServices() {
@@ -1254,7 +969,6 @@
     SERVICES = data.data.services.map(s => ({ id: s._id, category: s.category, name: s.name, price: s.price, duration: s.duration }));
     CATEGORIES = [...new Set(SERVICES.map(s => s.category))];
     activeCat = CATEGORIES[0];
-    renderCatalogue();
   }
 
   let STYLISTS = [];
@@ -1335,32 +1049,6 @@
   function selectCalendarDate(dateStr) { selectedDate = dateStr; document.getElementById('apptDate').value = dateStr; renderCalendar(currentMonth, currentYear); refreshTimeSlots(); }
   function getLocalDateString() { const now = new Date(); const year = now.getFullYear(); const month = String(now.getMonth() + 1).padStart(2, '0'); const day = String(now.getDate()).padStart(2, '0'); return `${year}-${month}-${day}`; }
 
-  // ============================================================
-  // AUTO-SCROLLING CATALOGUE (NEW)
-  // ============================================================
-  function renderCatalogue() {
-    const track = document.getElementById('catalogueTrack');
-    if (!track) return;
-    if (!SERVICES.length) {
-      track.innerHTML = '<div class="catalogue-empty">No services available right now.</div>';
-      return;
-    }
-    const list = SERVICES.slice(0, 14);
-    const cards = list.map(s => `
-      <div class="cat-card" onclick="switchView('book')" title="${escHtml(s.name)}">
-        <div class="cat-card-img">
-          <span class="svc-img-fallback">${categoryEmoji(s.category)}</span>
-          <img src="${serviceImage(s)}" alt="${escHtml(s.name)}" loading="lazy" onerror="this.remove()">
-        </div>
-        <div class="cat-card-body">
-          <div class="cat-card-name">${escHtml(s.name)}</div>
-          <div class="cat-card-meta">${escHtml(s.category)} · R${s.price}</div>
-        </div>
-      </div>`).join('');
-    // Duplicate the set so the -50% translate loops seamlessly
-    track.innerHTML = `<div class="catalogue-half">${cards}</div><div class="catalogue-half">${cards}</div>`;
-  }
-
   function renderOverview() {
     const total = appointments.length;
     const upcoming = appointments.filter(a => a.status === 'upcoming').length;
@@ -1406,43 +1094,16 @@
     renderStylistGrid(); availableSlots = []; renderTimeSlotsIntoDOM();
   }
 
-  // ---------- CATEGORY NAV (UPDATED: emoji + label) ----------
   function renderCatNav() {
     const el = document.getElementById('catNav');
-    if (!el) return;
-    if (!CATEGORIES.length) { el.innerHTML = ''; return; }
-    el.innerHTML = CATEGORIES.map(cat => `
-      <button type="button" class="cat-btn ${cat === activeCat ? 'active' : ''}" onclick="setActiveCat('${escAttr(cat)}')">
-        <span class="cat-emoji">${categoryEmoji(cat)}</span>
-        <span class="cat-name">${escHtml(cat)}</span>
-      </button>`).join('');
+    el.innerHTML = CATEGORIES.map(cat => `<button class="cat-btn ${cat === activeCat ? 'active' : ''}" onclick="setActiveCat('${cat}')">${cat}</button>`).join('');
   }
 
   function setActiveCat(cat) { activeCat = cat; renderCatNav(); renderSvcGrid(); }
 
-  // ---------- SERVICE GRID (UPDATED: image cards) ----------
   function renderSvcGrid() {
-    const grid = document.getElementById('svcGrid');
-    if (!grid) return;
     const svcs = SERVICES.filter(s => s.category === activeCat);
-    if (!svcs.length) {
-      grid.innerHTML = `<div class="empty-state" style="grid-column:1/-1;"><i class="fas fa-spa"></i><p>No services in this category yet.</p></div>`;
-      return;
-    }
-    grid.innerHTML = svcs.map(s => `
-      <div class="svc-card ${cartIds.includes(s.id) ? 'selected' : ''}" onclick="toggleService('${s.id}')">
-        <div class="svc-card-img">
-          <span class="svc-img-fallback">${categoryEmoji(s.category)}</span>
-          <img src="${serviceImage(s)}" alt="${escHtml(s.name)}" loading="lazy" onerror="this.remove()">
-        </div>
-        <div class="svc-card-body">
-          <div class="svc-card-name">${escHtml(s.name)}</div>
-          <div class="svc-card-meta">
-            <span class="svc-card-price">R${s.price}</span>
-            <span class="svc-card-dur">${s.duration} min</span>
-          </div>
-        </div>
-      </div>`).join('');
+    document.getElementById('svcGrid').innerHTML = svcs.map(s => `<div class="svc-card ${cartIds.includes(s.id) ? 'selected' : ''}" onclick="toggleService('${s.id}')"><div class="svc-card-name">${s.name}</div><div class="svc-card-meta"><span class="svc-card-price">R${s.price}</span><span class="svc-card-dur">${s.duration} min</span></div></div>`).join('');
   }
 
   function toggleService(id) {
@@ -1479,7 +1140,7 @@
     let emptyMsg = document.getElementById('cartEmpty');
     if (!emptyMsg) { emptyMsg = document.createElement('div'); emptyMsg.className = 'cart-empty-msg'; emptyMsg.id = 'cartEmpty'; emptyMsg.textContent = 'Tap a service above to add it here'; container.appendChild(emptyMsg); }
     if (count === 0) { emptyMsg.style.display = 'block'; document.getElementById('cartSummary').style.display = 'none'; }
-    else { emptyMsg.style.display = 'none'; items.forEach(sv => { const chip = document.createElement('div'); chip.className = 'cart-chip'; chip.innerHTML = `${escHtml(sv.name)} <button class="cart-chip-remove" onclick="removeFromCart('${sv.id}')"><i class="fas fa-times"></i></button>`; container.appendChild(chip); }); document.getElementById('cartSummary').style.display = 'flex'; document.getElementById('cartTotal').textContent = `R${total.toLocaleString()}`; document.getElementById('cartDuration').textContent = `~${formatDur(dur)} total`; document.getElementById('totalDurLabel').textContent = formatDur(dur); }
+    else { emptyMsg.style.display = 'none'; items.forEach(sv => { const chip = document.createElement('div'); chip.className = 'cart-chip'; chip.innerHTML = `${sv.name} <button class="cart-chip-remove" onclick="removeFromCart('${sv.id}')"><i class="fas fa-times"></i></button>`; container.appendChild(chip); }); document.getElementById('cartSummary').style.display = 'flex'; document.getElementById('cartTotal').textContent = `R${total.toLocaleString()}`; document.getElementById('cartDuration').textContent = `~${formatDur(dur)} total`; document.getElementById('totalDurLabel').textContent = formatDur(dur); }
   }
 
   function renderStylistGrid() {
@@ -1490,7 +1151,7 @@
     const eligibleStylists = STYLISTS.filter(stylist => { if (stylist.isAvailable === false) return false; if (!Array.isArray(stylist.serviceIds) || !stylist.serviceIds.length) return false; return selectedServices.every(service => stylist.serviceIds.includes(service.id)); });
     if (bookState.stylistId && !eligibleStylists.some(stylist => stylist.id === bookState.stylistId)) { bookState.stylistId = ''; bookState.stylist = ''; bookState.time = ''; availableSlots = []; renderTimeSlotsIntoDOM(); }
     if (!eligibleStylists.length) { grid.innerHTML = `<div class="empty-state" style="grid-column:1/-1;padding:0.8rem;"><i class="fas fa-user-slash"></i><p>No stylists available for selected services.</p></div>`; return; }
-    grid.innerHTML = eligibleStylists.map(stylist => { const name = stylist.name || 'Stylist'; const initial = name.charAt(0).toUpperCase(); return `<button type="button" class="stylist-btn ${bookState.stylistId === stylist.id ? 'selected' : ''}" onclick="selectStylist('${stylist.id}','${escAttr(name)}')"><div class="stylist-av">${initial}</div><div class="stylist-name">${escHtml(name)}</div></button>`; }).join('');
+    grid.innerHTML = eligibleStylists.map(stylist => { const name = stylist.name || 'Stylist'; const initial = name.charAt(0).toUpperCase(); return `<button type="button" class="stylist-btn ${bookState.stylistId === stylist.id ? 'selected' : ''}" onclick="selectStylist('${stylist.id}','${name.replace(/'/g, "\\'")}')"><div class="stylist-av">${initial}</div><div class="stylist-name">${name}</div></button>`; }).join('');
   }
 
   function selectStylist(id, name) { bookState.stylistId = id; bookState.stylist = name; renderStylistGrid(); refreshTimeSlots(); }
@@ -1550,7 +1211,7 @@
     const items = SERVICES.filter(s => cartIds.includes(s.id));
     const total = items.reduce((s, sv) => s + sv.price, 0);
     const dur = items.reduce((s, sv) => s + sv.duration, 0);
-    document.getElementById('reviewCard').innerHTML = `<div class="review-section-title">Selected Services</div><div class="review-services-list">${items.map(sv => `<div class="review-svc-item"><div><div style="font-weight:500;font-size:0.95rem;">${escHtml(sv.name)}</div><div style="font-size:0.8rem;color:var(--muted);font-weight:300;">${sv.duration} min</div></div><span style="font-weight:600;color:var(--rose);">R${sv.price}</span></div>`).join('')}</div><div class="review-total"><span>Total</span><span>R${total.toLocaleString()}</span></div><div style="margin-top:0.3rem;font-size:0.85rem;color:var(--muted);font-weight:300;">Estimated duration: ~${formatDur(dur)}</div><div class="review-section-title" style="margin-top:1rem;">Appointment Info</div><div class="review-row"><span>Date</span><span>${formatDate(bookState.date)}</span></div><div class="review-row"><span>Time</span><span>${bookState.time}</span></div><div class="review-row"><span>Stylist</span><span>${escHtml(bookState.stylist)}</span></div><div class="review-section-title" style="margin-top:1rem;">Your Details</div><div class="review-row"><span>Name</span><span>${escHtml(document.getElementById('detName').value)}</span></div><div class="review-row"><span>Phone</span><span>${escHtml(document.getElementById('detPhone').value)}</span></div><div class="review-row"><span>Email</span><span>${escHtml(document.getElementById('detEmail').value)}</span></div>${document.getElementById('detNotes').value ? `<div class="review-row"><span>Notes</span><span>${escHtml(document.getElementById('detNotes').value)}</span></div>` : ''}`;
+    document.getElementById('reviewCard').innerHTML = `<div class="review-section-title">Selected Services</div><div class="review-services-list">${items.map(sv => `<div class="review-svc-item"><div><div style="font-weight:500;font-size:0.95rem;">${sv.name}</div><div style="font-size:0.8rem;color:var(--muted);font-weight:300;">${sv.duration} min</div></div><span style="font-weight:600;color:var(--rose);">R${sv.price}</span></div>`).join('')}</div><div class="review-total"><span>Total</span><span>R${total.toLocaleString()}</span></div><div style="margin-top:0.3rem;font-size:0.85rem;color:var(--muted);font-weight:300;">Estimated duration: ~${formatDur(dur)}</div><div class="review-section-title" style="margin-top:1rem;">Appointment Info</div><div class="review-row"><span>Date</span><span>${formatDate(bookState.date)}</span></div><div class="review-row"><span>Time</span><span>${bookState.time}</span></div><div class="review-row"><span>Stylist</span><span>${bookState.stylist}</span></div><div class="review-section-title" style="margin-top:1rem;">Your Details</div><div class="review-row"><span>Name</span><span>${document.getElementById('detName').value}</span></div><div class="review-row"><span>Phone</span><span>${document.getElementById('detPhone').value}</span></div><div class="review-row"><span>Email</span><span>${document.getElementById('detEmail').value}</span></div>${document.getElementById('detNotes').value ? `<div class="review-row"><span>Notes</span><span>${document.getElementById('detNotes').value}</span></div>` : ''}`;
   }
 
   let isBookingSubmitting = false;
@@ -1853,7 +1514,6 @@
       if (initals) { document.getElementById('profileAvatar').textContent = initals; }
     }
     await Promise.all([loadServices(), loadStylists()]);
-    renderCatalogue();
     await loadAppointments();
     renderOverview();
     resetWizard();
