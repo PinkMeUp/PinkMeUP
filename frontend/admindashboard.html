@@ -9,9 +9,6 @@
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js" integrity="sha512-GsLlZN/3F2ErC5ifS5QtgpiJtWd43JWSuIgh7mbzZ8zBps+dvLusV+eNQATqgA/HdeKFVgA5v3S/cIrLF7QnIg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
   <style>
-    /* ============================================================
-       ROOT — matching customer dashboard
-       ============================================================ */
     :root {
       --rose: #FF5C8A;
       --rose-light: #FFB6C1;
@@ -34,7 +31,6 @@
       --text-dim: #B8C0CC;
       --hover-surface: rgba(255, 255, 255, 0.06);
     }
-
     body.light {
       --rose: #D43F6B;
       --rose-light: #FFB6C1;
@@ -57,11 +53,8 @@
       --text-dim: #555;
       --hover-surface: rgba(0, 0, 0, 0.04);
     }
-
     * { margin: 0; padding: 0; box-sizing: border-box; }
-
     html, body { height: 100%; }
-
     body {
       font-family: 'DM Sans', sans-serif;
       background: var(--bg-gradient);
@@ -74,10 +67,6 @@
       font-size: 16px;
       transition: background 0.3s ease, color 0.3s ease;
     }
-
-    /* ============================================================
-       HEADER
-       ============================================================ */
     .header {
       background: transparent;
       padding: 0.9rem 1.5rem 0.4rem 1.5rem;
@@ -87,27 +76,21 @@
       flex-shrink: 0;
       gap: 0.8rem;
     }
-
     .header-left { display: flex; align-items: center; gap: 0.8rem; }
-
     .menu-btn {
       display: none;
       background: none;
       border: none;
       font-size: 1.4rem;
-      color: var(--ink);
       cursor: pointer;
       padding: 0.2rem;
       align-items: center;
       justify-content: center;
       transition: color 0.2s;
     }
-    .menu-btn:hover { color: var(--rose); }
     .menu-btn i { color: var(--grey-icon); font-size: 1.4rem; transition: color 0.2s; }
     .menu-btn:hover i { color: var(--rose); }
-
     .brand-wrapper { display: flex; flex-direction: column; align-items: flex-start; }
-
     .brand-name {
       font-family: 'Cormorant Garamond', serif;
       font-size: 2.1rem;
@@ -119,7 +102,6 @@
       line-height: 1;
       letter-spacing: 0.3px;
     }
-
     .brand-slogan {
       font-size: 0.78rem;
       font-weight: 300;
@@ -127,10 +109,6 @@
       color: var(--ink);
       margin-top: 0.15rem;
     }
-
-    /* ============================================================
-       TOP TABS
-       ============================================================ */
     .top-tabs {
       display: flex;
       background: transparent;
@@ -143,7 +121,6 @@
       scrollbar-width: none;
     }
     .top-tabs::-webkit-scrollbar { display: none; }
-
     .top-tabs .tab-item {
       padding: 0.85rem 0.6rem;
       font-size: 0.95rem;
@@ -187,22 +164,13 @@
     }
     .top-tabs .tab-item:hover i,
     .top-tabs .tab-item.active i { color: var(--rose); }
-
     .tab-icon {
       display: block;
       font-size: 1.15rem;
       line-height: 1;
       margin-bottom: 0.1rem;
     }
-
-    /* ============================================================
-       APP LAYOUT
-       ============================================================ */
     .app { display: flex; flex: 1; overflow: hidden; min-height: 0; }
-
-    /* ============================================================
-       SIDEBAR
-       ============================================================ */
     .sidebar-overlay {
       display: none;
       position: fixed;
@@ -212,7 +180,6 @@
       z-index: 998;
     }
     .sidebar-overlay.active { display: block; }
-
     .sidebar {
       width: 280px;
       background: linear-gradient(180deg, #0B1220 0%, #050810 100%);
@@ -228,13 +195,11 @@
     body.light .sidebar {
       background: linear-gradient(180deg, #ffffff 0%, #fdf8fa 100%);
     }
-
     .sidebar-close {
       display: none;
       background: none;
       border: none;
       font-size: 1.3rem;
-      color: var(--ink);
       cursor: pointer;
       padding: 0.2rem 0;
       text-align: right;
@@ -243,13 +208,11 @@
     }
     .sidebar-close:hover { color: var(--rose); }
     .sidebar-close i { color: var(--grey-icon); }
-
     .sidebar-greeting {
       padding: 0.3rem 0 0.9rem 0;
       border-bottom: 1px solid var(--border);
       margin-bottom: 0.8rem;
     }
-
     .greeting-name {
       font-family: 'Cormorant Garamond', serif;
       font-size: 1.5rem;
@@ -261,21 +224,18 @@
       color: transparent;
       line-height: 1.1;
     }
-
     .greeting-sub {
       font-size: 0.85rem;
       font-weight: 300;
       color: var(--muted);
       margin-top: 0.2rem;
     }
-
     .sidebar-nav {
       display: flex;
       flex-direction: column;
       gap: 0.2rem;
       flex: 1;
     }
-
     .sidebar-item {
       display: flex;
       align-items: center;
@@ -307,7 +267,6 @@
       transform: translateX(4px);
     }
     .sidebar-item:hover i { color: var(--rose); }
-
     .sidebar-item.signout-nav { color: #FF6B6B; }
     .sidebar-item.signout-nav i { color: var(--grey-icon); font-size: 0.85rem; }
     .sidebar-item.signout-nav:hover {
@@ -316,7 +275,6 @@
       transform: translateX(4px);
     }
     .sidebar-item.signout-nav:hover i { color: #FF6B6B; }
-
     .sidebar-footer {
       padding: 1.2rem 0 0.3rem 0;
       border-top: 1px solid var(--border);
@@ -341,34 +299,26 @@
       font-size: 0.85rem;
       line-height: 1.5;
     }
-
-    /* ============================================================
-       MAIN
-       ============================================================ */
     .main {
       flex: 1;
       overflow-y: auto;
       padding: 1.4rem 2rem 4rem 2rem;
       min-width: 0;
     }
-
     .view { display: none; animation: fadeIn 0.25s ease; }
     .view.active { display: block; }
-
     @keyframes fadeIn {
       from { opacity: 0; transform: translateY(8px); }
       to { opacity: 1; transform: translateY(0); }
     }
-
     .view-header {
       display: flex;
       justify-content: space-between;
       align-items: flex-start;
       flex-wrap: wrap;
       gap: 1rem;
-      margin-bottom: 1.4rem;
+      margin-bottom: 1.6rem;
     }
-
     .section-title {
       font-family: 'Cormorant Garamond', serif;
       font-size: 2.2rem;
@@ -380,28 +330,22 @@
       background-clip: text;
       color: transparent;
     }
-
     .section-sub {
       font-size: 1rem;
       color: var(--muted);
-      margin-top: 0.5rem;
+      margin-top: 0.6rem;
       font-weight: 300;
-      max-width: 720px;
-      line-height: 1.6;
+      max-width: 820px;
+      line-height: 1.7;
     }
-
     .section-hint {
       font-size: 0.82rem;
       color: var(--muted);
       font-weight: 300;
-      margin-top: 0.4rem;
+      margin-top: 0.5rem;
       opacity: 0.75;
       letter-spacing: 0.2px;
     }
-
-    /* ============================================================
-       BUTTONS — text only, matching customer
-       ============================================================ */
     .btn-primary, .btn-outline, .btn-danger, .btn-download {
       background: none;
       border: none;
@@ -416,40 +360,19 @@
       letter-spacing: 0.2px;
       border-radius: 0;
     }
-
-    .btn-primary {
-      color: var(--rose);
-      font-weight: 500;
-    }
+    .btn-primary { color: var(--rose); font-weight: 500; }
     .btn-primary:hover { opacity: 0.75; transform: translateX(2px); }
     .btn-primary i { font-size: 0.85rem; }
-
-    .btn-outline {
-      color: var(--muted);
-      font-weight: 400;
-    }
+    .btn-outline { color: var(--muted); font-weight: 400; }
     .btn-outline:hover { color: var(--ink); transform: translateX(2px); }
     .btn-outline i { font-size: 0.8rem; }
-
-    .btn-danger {
-      color: var(--danger);
-      font-weight: 400;
-    }
+    .btn-danger { color: var(--danger); font-weight: 400; }
     .btn-danger:hover { opacity: 0.75; transform: translateX(2px); }
     .btn-danger i { font-size: 0.8rem; }
-
-    .btn-download {
-      color: var(--rose);
-      font-weight: 500;
-    }
+    .btn-download { color: var(--rose); font-weight: 500; }
     .btn-download:hover { opacity: 0.75; transform: translateX(2px); }
     .btn-download i { font-size: 0.85rem; }
-
     .btn-sm { font-size: 0.85rem; padding: 0.25rem 0; }
-
-    /* ============================================================
-       TABLES
-       ============================================================ */
     .admin-table {
       width: 100%;
       border-collapse: collapse;
@@ -475,12 +398,10 @@
     }
     .admin-table tr:last-child td { border-bottom: none; }
     .admin-table tr:hover td { background: var(--hover-surface); }
+    .admin-table tr[data-booking-id] { cursor: pointer; }
+    .admin-table tr[data-booking-id]:hover td { background: var(--rose-pale); }
     .admin-table .text-right { text-align: right; }
     .admin-table .text-center { text-align: center; }
-
-    /* ============================================================
-       BADGES
-       ============================================================ */
     .badge {
       display: inline-flex;
       align-items: center;
@@ -500,13 +421,8 @@
     .badge-cancelled { background: rgba(255, 107, 107, 0.15); color: var(--danger); }
     .badge-no_show { background: rgba(167, 139, 250, 0.15); color: #A78BFA; }
     body.light .badge-no_show { background: rgba(124, 58, 237, 0.12); color: #7C3AED; }
-
-    /* ============================================================
-       SERVICE LIST — flat, no cards
-       ============================================================ */
     .category-group { margin-bottom: 1.75rem; }
     .category-group:last-child { margin-bottom: 0; }
-
     .category-header {
       font-size: 0.72rem;
       font-weight: 600;
@@ -517,7 +433,6 @@
       border-left: 2px solid var(--rose);
       margin-bottom: 0.4rem;
     }
-
     .service-row {
       display: flex;
       justify-content: space-between;
@@ -527,10 +442,10 @@
       flex-wrap: wrap;
       gap: 0.5rem;
       transition: 0.15s;
+      cursor: pointer;
     }
     .service-row:last-child { border-bottom: none; }
-    .service-row:hover { padding-left: 0.4rem; padding-right: 0.4rem; }
-
+    .service-row:hover { padding-left: 0.4rem; padding-right: 0.4rem; background: var(--hover-surface); }
     .service-info {
       display: flex;
       flex-wrap: wrap;
@@ -547,7 +462,6 @@
       text-align: right;
       font-size: 0.95rem;
     }
-
     .service-actions { display: flex; gap: 0.6rem; }
     .service-actions button {
       background: none;
@@ -559,16 +473,11 @@
       transition: 0.15s;
     }
     .service-actions button:hover { color: var(--rose); }
-
-    /* ============================================================
-       STYLIST LIST — flat full-width rows
-       ============================================================ */
     .stylist-grid {
       display: flex;
       flex-direction: column;
       gap: 0;
     }
-
     .stylist-card {
       display: block;
       border-bottom: 1px solid var(--border);
@@ -582,12 +491,8 @@
       padding-left: 0.4rem;
       padding-right: 0.4rem;
       background: var(--hover-surface);
-      box-shadow: none;
-      border-radius: 0;
-      transform: none;
     }
     .stylist-card:last-child { border-bottom: none; }
-
     .stylist-card .stylist-name {
       font-family: 'Cormorant Garamond', serif;
       font-size: 1.4rem;
@@ -596,7 +501,6 @@
       margin-bottom: 0.4rem;
       letter-spacing: 0.2px;
     }
-
     .stylist-card .stylist-contact-item {
       font-size: 0.85rem;
       color: var(--muted);
@@ -612,7 +516,6 @@
       color: var(--grey-icon);
       font-size: 0.78rem;
     }
-
     .stylist-card .stylist-status {
       display: inline-flex;
       align-items: center;
@@ -627,7 +530,6 @@
     body.light .stylist-card .stylist-status.active { background: rgba(44, 143, 110, 0.12); }
     .stylist-card .stylist-status.inactive { background: rgba(251, 191, 36, 0.15); color: var(--warning); }
     .stylist-card .stylist-status.disabled { background: var(--hover-surface); color: var(--muted); }
-
     .stylist-status-select {
       padding: 0.25rem 0.7rem !important;
       border-radius: 2rem !important;
@@ -641,7 +543,6 @@
     }
     .stylist-status-select:hover { border-color: var(--rose) !important; }
     .stylist-status-select option { background: var(--bg); color: var(--ink); }
-
     .stylist-card .stylist-rating {
       font-size: 0.85rem;
       color: var(--muted);
@@ -649,7 +550,6 @@
       font-weight: 300;
     }
     .stylist-card .stylist-rating strong { color: var(--ink); font-weight: 500; }
-
     .stylist-card .stylist-services-label {
       font-size: 0.68rem;
       font-weight: 600;
@@ -658,7 +558,6 @@
       letter-spacing: 0.6px;
       margin: 0.7rem 0 0.4rem;
     }
-
     .stylist-card .service-chips {
       display: flex;
       flex-wrap: wrap;
@@ -673,17 +572,12 @@
       font-weight: 400;
       letter-spacing: 0.2px;
     }
-
     .stylist-card .stylist-actions {
       display: flex;
       gap: 1.2rem;
       margin-top: 0.9rem;
       flex-wrap: wrap;
     }
-
-    /* ============================================================
-       FILTER BAR
-       ============================================================ */
     .filter-bar {
       display: flex;
       gap: 1rem;
@@ -719,24 +613,18 @@
       border-bottom-color: var(--rose);
     }
     .filter-bar select option { background: var(--bg); color: var(--ink); }
-
-    /* ============================================================
-       ANALYTICS — flat sections, no cards
-       ============================================================ */
     .analytics-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
       gap: 2rem;
       margin-bottom: 2rem;
     }
-
     .analytics-card {
       background: transparent;
       border: none;
       border-radius: 0;
       padding: 0;
     }
-
     .analytics-card h3 {
       font-size: 1.05rem;
       font-weight: 500;
@@ -749,7 +637,6 @@
       margin-bottom: 0.9rem;
       font-weight: 300;
     }
-
     .chart-container {
       max-height: 260px;
       min-height: 200px;
@@ -757,7 +644,6 @@
       position: relative;
     }
     .chart-container canvas { width: 100% !important; height: 100% !important; }
-
     .peak-hours { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-top: 0.5rem; }
     .peak-hour-tag {
       background: var(--rose-pale);
@@ -769,63 +655,128 @@
     }
 
     /* ============================================================
-       HOME
+       HOME — professional hero
        ============================================================ */
     .home-hero {
-      padding: 2rem 0 2rem 0;
+      padding: 2.2rem 0 2.4rem 0;
       border-bottom: 1px solid var(--border);
       margin-bottom: 2rem;
     }
     .home-hero .home-eyebrow {
       font-size: 0.7rem;
-      letter-spacing: 2px;
+      letter-spacing: 2.4px;
       text-transform: uppercase;
       font-weight: 600;
       color: var(--rose);
-      margin-bottom: 0.5rem;
+      margin-bottom: 0.6rem;
     }
     .home-hero h1 {
       font-family: 'Cormorant Garamond', serif;
-      font-size: 3rem;
+      font-size: 3.2rem;
       font-weight: 500;
       letter-spacing: 0.3px;
-      line-height: 1.1;
+      line-height: 1.05;
       background: var(--gradient);
       -webkit-background-clip: text;
       background-clip: text;
       color: transparent;
-      margin-bottom: 0.8rem;
+      margin-bottom: 1rem;
     }
     .home-hero p {
       font-size: 1.05rem;
       color: var(--muted);
       font-weight: 300;
-      max-width: 640px;
-      line-height: 1.7;
+      max-width: 680px;
+      line-height: 1.75;
+    }
+    .home-hero .home-meta {
+      margin-top: 1.4rem;
+      font-size: 0.82rem;
+      color: var(--muted);
+      letter-spacing: 0.3px;
+      font-weight: 300;
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+    }
+    .home-hero .home-meta i { color: var(--rose); font-size: 0.85rem; }
+
+    /* ============================================================
+       HOME STATS — customer-style, plain with underline
+       ============================================================ */
+    .admin-stats-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 0.8rem;
+      margin-bottom: 2rem;
+    }
+    .admin-stat {
+      background: transparent;
+      border: none;
+      border-bottom: 1px solid var(--border);
+      border-radius: 0;
+      padding: 1rem 0;
+      text-align: left;
+      transition: 0.2s;
+    }
+    .admin-stat:hover { padding-left: 0.4rem; }
+    .admin-stat-number {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 2rem;
+      font-weight: 600;
+      color: var(--ink);
+      line-height: 1;
+    }
+    .admin-stat-label {
+      font-size: 0.8rem;
+      color: var(--muted);
+      margin-top: 0.2rem;
+      font-weight: 300;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .home-section-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.6rem;
+      font-weight: 500;
+      color: var(--ink);
+      letter-spacing: 0.3px;
+      margin-bottom: 0.3rem;
+    }
+    .home-section-sub {
+      font-size: 0.9rem;
+      color: var(--muted);
+      font-weight: 300;
+      margin-bottom: 1.2rem;
+      line-height: 1.6;
+      max-width: 720px;
     }
 
     .home-links {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
       gap: 0;
-      margin-top: 1rem;
+      margin-top: 0.5rem;
       border-top: 1px solid var(--border);
     }
     .home-link {
       display: block;
-      padding: 1.4rem 0;
+      padding: 1.5rem 1.2rem 1.5rem 0;
       border-bottom: 1px solid var(--border);
+      border-right: 1px solid var(--border);
       cursor: pointer;
       transition: 0.2s;
       background: transparent;
-      border-left: none;
-      border-right: none;
       border-top: none;
+      border-left: none;
       font-family: inherit;
       text-align: left;
       width: 100%;
     }
-    .home-link:hover { padding-left: 0.5rem; }
+    .home-link:nth-child(even),
+    .home-link:last-child { border-right: none; }
+    .home-link:hover { padding-left: 0.6rem; background: var(--hover-surface); }
     .home-link .home-link-title {
       font-size: 1.05rem;
       font-weight: 500;
@@ -833,7 +784,7 @@
       display: flex;
       align-items: center;
       gap: 0.6rem;
-      margin-bottom: 0.35rem;
+      margin-bottom: 0.5rem;
     }
     .home-link .home-link-title i {
       color: var(--rose);
@@ -844,8 +795,125 @@
       font-size: 0.88rem;
       color: var(--muted);
       font-weight: 300;
-      line-height: 1.5;
+      line-height: 1.6;
+      max-width: 320px;
     }
+
+    /* ============================================================
+       DETAIL VIEWS — customer-style inline detail
+       ============================================================ */
+    .detail-inline {
+      display: flex;
+      flex-direction: column;
+      gap: 2rem;
+      padding-bottom: 2rem;
+      animation: fadeIn 0.25s ease;
+    }
+    .back-link {
+      background: none;
+      border: none;
+      color: var(--muted);
+      font-family: inherit;
+      font-size: 0.9rem;
+      font-weight: 400;
+      letter-spacing: 0.3px;
+      cursor: pointer;
+      padding: 0;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      align-self: flex-start;
+      transition: 0.2s;
+    }
+    .back-link:hover { color: var(--rose); transform: translateX(-2px); }
+    .detail-hero { display: flex; flex-direction: column; gap: 0.6rem; }
+    .detail-heading {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 2.2rem;
+      font-weight: 500;
+      letter-spacing: 0.3px;
+      line-height: 1.15;
+      background: var(--gradient);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+    .detail-subheading {
+      font-size: 0.95rem;
+      color: var(--muted);
+      font-weight: 300;
+      letter-spacing: 0.2px;
+    }
+    .detail-section { display: flex; flex-direction: column; gap: 0.3rem; }
+    .detail-section-label {
+      font-size: 0.7rem;
+      font-weight: 600;
+      letter-spacing: 0.6px;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 0.5rem;
+    }
+    .detail-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0.75rem 0;
+      border-bottom: 1px solid var(--border);
+      font-size: 0.95rem;
+      font-weight: 300;
+    }
+    .detail-row:last-child { border-bottom: none; }
+    .detail-row span:first-child { color: var(--muted); }
+    .detail-row span:last-child { font-weight: 500; color: var(--ink); text-align: right; }
+    .detail-svc-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0.75rem 0;
+      border-bottom: 1px solid var(--border);
+      gap: 0.5rem;
+    }
+    .detail-svc-item:last-of-type { border-bottom: none; }
+    .detail-svc-name { font-size: 0.95rem; font-weight: 500; color: var(--ink); }
+    .detail-svc-meta { font-size: 0.8rem; color: var(--muted); margin-top: 0.1rem; font-weight: 300; }
+    .detail-svc-price { font-size: 0.95rem; font-weight: 600; color: var(--rose); }
+    .detail-total {
+      display: flex;
+      justify-content: space-between;
+      padding: 1rem 0 0 0;
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: var(--ink);
+      margin-top: 0.3rem;
+      border-top: 1px solid var(--border);
+    }
+    .detail-total span:last-child { color: var(--rose); }
+    .detail-actions { display: flex; flex-direction: column; gap: 0.3rem; padding-top: 0.5rem; }
+    .action-link {
+      background: none;
+      border: none;
+      font-family: inherit;
+      font-size: 1rem;
+      font-weight: 400;
+      color: var(--ink);
+      cursor: pointer;
+      padding: 0.7rem 0;
+      text-align: left;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.7rem;
+      transition: 0.15s;
+      letter-spacing: 0.2px;
+    }
+    .action-link i { width: 20px; color: var(--grey-icon); font-size: 0.9rem; transition: color 0.15s; }
+    .action-link:hover { color: var(--rose); padding-left: 0.4rem; }
+    .action-link:hover i { color: var(--rose); }
+    .action-link.danger { color: var(--danger); }
+    .action-link.danger i { color: var(--grey-icon); }
+    .action-link.danger:hover { color: var(--danger); opacity: 0.8; }
+    .action-link.danger:hover i { color: var(--danger); }
+    .action-link.pink { color: var(--rose); font-weight: 500; }
+    .action-link.pink i { color: var(--rose); }
 
     /* ============================================================
        PROFILE
@@ -855,12 +923,10 @@
       margin: 0 auto;
       padding: 0.5rem 0;
     }
-
     .profile-header {
       text-align: center;
-      padding: 1.5rem 0 1.5rem 0;
+      padding: 1.5rem 0;
     }
-
     .profile-avatar-large {
       width: 90px;
       height: 90px;
@@ -875,7 +941,6 @@
       color: white;
       margin: 0 auto 0.7rem;
     }
-
     .profile-name {
       font-family: 'Cormorant Garamond', serif;
       font-size: 2rem;
@@ -883,14 +948,12 @@
       letter-spacing: 0.3px;
       color: var(--ink);
     }
-
     .profile-email {
       font-size: 0.95rem;
       color: var(--muted);
       margin-top: 0.2rem;
       font-weight: 300;
     }
-
     .profile-role-badge {
       display: inline-flex;
       align-items: center;
@@ -900,19 +963,8 @@
       font-weight: 400;
       margin-top: 0.5rem;
     }
-
-    .profile-divider {
-      height: 1px;
-      background: var(--border);
-      margin: 0.8rem 0;
-    }
-
-    .profile-details-list {
-      display: flex;
-      flex-direction: column;
-      padding: 0.3rem 0;
-    }
-
+    .profile-divider { height: 1px; background: var(--border); margin: 0.8rem 0; }
+    .profile-details-list { display: flex; flex-direction: column; padding: 0.3rem 0; }
     .profile-detail-item {
       display: flex;
       align-items: center;
@@ -920,23 +972,99 @@
       border-bottom: 1px solid var(--border);
     }
     .profile-detail-item:last-child { border-bottom: none; }
-
-    .detail-label {
-      color: var(--muted);
+    .detail-label { color: var(--muted); font-size: 1rem; flex: 1; font-weight: 300; }
+    .detail-value { color: var(--ink); font-weight: 500; font-size: 1rem; text-align: right; }
+    .profile-actions { display: flex; flex-direction: column; gap: 0.1rem; padding: 0.3rem 0; }
+    .profile-action-btn {
+      width: 100%;
+      padding: 0.7rem 0;
+      background: transparent;
+      border: none;
       font-size: 1rem;
-      flex: 1;
-      font-weight: 300;
-    }
-    .detail-value {
+      font-weight: 400;
       color: var(--ink);
-      font-weight: 500;
-      font-size: 1rem;
-      text-align: right;
+      cursor: pointer;
+      transition: 0.15s;
+      font-family: inherit;
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+      text-align: left;
+      letter-spacing: 0.2px;
     }
+    .profile-action-btn .action-icon {
+      width: 22px;
+      color: var(--grey-icon);
+      font-size: 0.95rem;
+      transition: 0.15s;
+      text-align: center;
+    }
+    .profile-action-btn:hover { color: var(--rose); padding-left: 0.4rem; }
+    .profile-action-btn:hover .action-icon { color: var(--rose); }
+    .profile-action-btn.danger:hover { color: var(--danger); }
+    .profile-action-btn.danger:hover .action-icon { color: var(--danger); }
 
-    /* ============================================================
-       MODALS
-       ============================================================ */
+    .edit-profile-inline {
+      display: flex;
+      flex-direction: column;
+      gap: 2rem;
+      padding-bottom: 2rem;
+      max-width: 640px;
+      margin: 0 auto;
+      animation: fadeIn 0.25s ease;
+    }
+    .edit-profile-heading {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 2.2rem;
+      font-weight: 500;
+      letter-spacing: 0.3px;
+      line-height: 1.15;
+      background: var(--gradient);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+    .edit-profile-sub {
+      font-size: 0.95rem;
+      color: var(--muted);
+      font-weight: 300;
+      margin-top: 0.4rem;
+      line-height: 1.6;
+    }
+    .edit-field { display: flex; flex-direction: column; gap: 0.4rem; }
+    .edit-field-label {
+      font-size: 0.7rem;
+      font-weight: 600;
+      letter-spacing: 0.6px;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+    .edit-field input {
+      background: transparent;
+      border: none;
+      border-bottom: 1px solid var(--border);
+      padding: 0.7rem 0;
+      font-size: 1.1rem;
+      color: var(--ink);
+      width: 100%;
+      font-family: inherit;
+      font-weight: 300;
+      letter-spacing: 0.2px;
+      transition: all 0.25s ease;
+      border-radius: 0;
+    }
+    .edit-field input:focus { outline: none; border-bottom-color: var(--rose); }
+    .edit-field input:read-only { color: var(--muted); cursor: not-allowed; pointer-events: none; user-select: none; }
+    .edit-field input::placeholder { color: var(--muted); opacity: 0.4; }
+    .edit-note {
+      font-size: 0.75rem;
+      color: var(--muted);
+      font-weight: 300;
+      margin-top: 0.2rem;
+      opacity: 0.7;
+    }
+    .edit-actions { display: flex; gap: 2rem; padding-top: 0.5rem; flex-wrap: wrap; }
+
     .modal {
       display: none;
       position: fixed;
@@ -949,7 +1077,6 @@
       padding: 1rem;
     }
     .modal.active { display: flex; }
-
     .modal-content {
       background: var(--bg);
       border: 1px solid var(--border);
@@ -963,7 +1090,6 @@
       box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6);
     }
     body.light .modal-content { box-shadow: 0 20px 60px rgba(0, 0, 0, 0.12); }
-
     .modal-content h3 {
       font-family: 'Cormorant Garamond', serif;
       font-size: 1.6rem;
@@ -972,7 +1098,6 @@
       letter-spacing: 0.3px;
       margin-bottom: 1.5rem;
     }
-
     .modal-content label {
       display: block;
       font-size: 0.7rem;
@@ -983,7 +1108,6 @@
       margin-bottom: 0.3rem;
       margin-top: 1rem;
     }
-
     .modal-content input,
     .modal-content select {
       width: 100%;
@@ -999,13 +1123,9 @@
       font-weight: 300;
     }
     .modal-content input:focus,
-    .modal-content select:focus {
-      outline: none;
-      border-bottom-color: var(--rose);
-    }
+    .modal-content select:focus { outline: none; border-bottom-color: var(--rose); }
     .modal-content input::placeholder { color: var(--muted); opacity: 0.5; }
     .modal-content select option { background: var(--bg); color: var(--ink); }
-
     .modal-content select[multiple] {
       border: 1px solid var(--border);
       border-radius: 0.6rem;
@@ -1013,15 +1133,11 @@
       min-height: 140px;
       margin-top: 0.3rem;
     }
-    .modal-content select[multiple] option {
-      padding: 0.35rem 0.5rem;
-      border-radius: 0.3rem;
-    }
+    .modal-content select[multiple] option { padding: 0.35rem 0.5rem; border-radius: 0.3rem; }
     .modal-content select[multiple] option:checked {
       background: var(--rose-pale) linear-gradient(var(--rose-pale), var(--rose-pale));
       color: var(--rose);
     }
-
     .modal-footer {
       display: flex;
       gap: 1.5rem;
@@ -1029,10 +1145,6 @@
       margin-top: 1.8rem;
       flex-wrap: wrap;
     }
-
-    /* ============================================================
-       TOAST + LOADING
-       ============================================================ */
     #toast {
       position: fixed;
       bottom: 20px;
@@ -1053,7 +1165,6 @@
       font-weight: 400;
     }
     #toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
-
     #loadingOverlay {
       display: none;
       position: fixed;
@@ -1068,7 +1179,6 @@
     }
     body.light #loadingOverlay { background: rgba(255, 255, 255, 0.8); }
     #loadingOverlay.show { display: flex; }
-
     .spinner {
       width: 40px;
       height: 40px;
@@ -1079,10 +1189,6 @@
     }
     @keyframes spin { to { transform: rotate(360deg); } }
     #loadingOverlayText { font-size: 0.9rem; color: var(--muted); font-weight: 500; }
-
-    /* ============================================================
-       HELP CONTENT
-       ============================================================ */
     .help-card {
       background: transparent;
       border: none;
@@ -1107,13 +1213,10 @@
     }
     .help-card p:last-child { margin-bottom: 0; }
 
-    /* ============================================================
-       RESPONSIVE
-       ============================================================ */
     @media (max-width: 900px) {
       .analytics-grid { grid-template-columns: 1fr; gap: 1.5rem; }
+      .admin-stats-grid { grid-template-columns: repeat(2, 1fr); }
     }
-
     @media (max-width: 768px) {
       body { font-size: 15px; }
       .header { padding: 0.7rem 1rem 0.3rem; }
@@ -1123,11 +1226,12 @@
       .main { padding: 1rem 1rem 3rem 1rem; }
       .section-title { font-size: 1.8rem; }
       .section-sub { font-size: 0.92rem; }
-      .home-hero h1 { font-size: 2rem; }
-
+      .home-hero h1 { font-size: 2.2rem; }
+      .home-hero p { font-size: 0.95rem; }
+      .home-section-title { font-size: 1.35rem; }
+      .home-link { border-right: none; }
       .menu-btn { display: flex; }
       .sidebar-close { display: block; }
-
       .sidebar {
         position: fixed;
         top: 0;
@@ -1140,18 +1244,16 @@
       }
       body.light .sidebar { box-shadow: 4px 0 30px rgba(0, 0, 0, 0.1); }
       .sidebar.open { transform: translateX(0); }
-
       .filter-bar { flex-direction: column; align-items: stretch; }
       .filter-bar > * { width: 100%; }
-
       .service-row { flex-direction: column; align-items: flex-start; }
       .service-price { text-align: left; width: 100%; }
       .service-actions { width: 100%; justify-content: flex-end; }
-
       .admin-table { font-size: 0.82rem; }
       .admin-table th, .admin-table td { padding: 0.55rem 0.5rem; }
+      .detail-heading { font-size: 1.8rem; }
+      .edit-profile-heading { font-size: 1.8rem; }
     }
-
     @media (max-width: 480px) {
       body { font-size: 14px; }
       .header { padding: 0.6rem 0.8rem 0.3rem; }
@@ -1159,20 +1261,23 @@
       .top-tabs .tab-item { font-size: 0.72rem; padding: 0.6rem 0.3rem; min-width: 68px; }
       .top-tabs .tab-item i { font-size: 0.9rem; }
       .main { padding: 0.8rem 0.8rem 3rem 0.8rem; }
-
       .brand-name { font-size: 1.55rem; }
       .brand-slogan { font-size: 0.68rem; }
-
       .section-title { font-size: 1.5rem; }
       .section-sub { font-size: 0.85rem; }
-      .home-hero h1 { font-size: 1.7rem; }
-      .home-hero p { font-size: 0.92rem; }
-
+      .home-hero h1 { font-size: 1.9rem; }
+      .home-hero p { font-size: 0.88rem; }
+      .home-section-title { font-size: 1.2rem; }
+      .admin-stats-grid { grid-template-columns: 1fr 1fr; gap: 0.5rem; }
+      .admin-stat { padding: 0.7rem 0; }
+      .admin-stat-number { font-size: 1.5rem; }
+      .admin-stat-label { font-size: 0.7rem; }
       .admin-table { font-size: 0.72rem; }
       .admin-table th, .admin-table td { padding: 0.4rem 0.4rem; }
-
       .modal-content { padding: 1.5rem 1.1rem; }
       .sidebar { width: 260px; }
+      .detail-heading { font-size: 1.5rem; }
+      .edit-profile-heading { font-size: 1.5rem; }
     }
   </style>
 </head>
@@ -1256,34 +1361,53 @@
     <!-- ==================== HOME ==================== -->
     <section id="home-view" class="view active">
       <div class="home-hero">
-        <div class="home-eyebrow">Admin Panel</div>
+        <div class="home-eyebrow">Administrator Console</div>
         <h1>Welcome back to PinkMeUp</h1>
-        <p>Your central hub for managing services, stylists, bookings, and salon performance. Everything you need to keep PinkMeUp running smoothly — all in one place.</p>
-      </div>
-
-      <div class="view-header" style="margin-bottom:0.5rem;">
-        <div>
-          <div class="section-title" style="font-size:1.5rem;">Quick Actions</div>
-          <div class="section-hint">Jump straight to the area you want to manage.</div>
+        <p>Your central command centre for managing services, overseeing stylists, reviewing bookings, and tracking salon performance. Use the dashboard below to jump straight into any area you need to manage, or explore the analytics to see how PinkMeUp is performing.</p>
+        <div class="home-meta">
+          <i class="fas fa-shield-alt"></i>
+          <span>You are signed in as an administrator</span>
         </div>
       </div>
+
+      <div class="admin-stats-grid">
+        <div class="admin-stat">
+          <div class="admin-stat-number" id="homeStatServices">0</div>
+          <div class="admin-stat-label">Services Offered</div>
+        </div>
+        <div class="admin-stat">
+          <div class="admin-stat-number" id="homeStatStylists">0</div>
+          <div class="admin-stat-label">Stylists On Roster</div>
+        </div>
+        <div class="admin-stat">
+          <div class="admin-stat-number" id="homeStatBookings">0</div>
+          <div class="admin-stat-label">Total Bookings</div>
+        </div>
+        <div class="admin-stat">
+          <div class="admin-stat-number" id="homeStatThisMonth">0</div>
+          <div class="admin-stat-label">Booked This Month</div>
+        </div>
+      </div>
+
+      <h2 class="home-section-title">Quick Access</h2>
+      <p class="home-section-sub">Jump straight into any area of your salon management. Each section gives you full control over the day-to-day operations of PinkMeUp.</p>
 
       <div class="home-links">
         <button class="home-link nav-item" data-view="services">
           <div class="home-link-title"><i class="fas fa-concierge-bell"></i> Manage Services</div>
-          <div class="home-link-desc">Add, edit, or archive the services your salon offers.</div>
+          <div class="home-link-desc">Add new services, update pricing, and organise your offerings by category.</div>
         </button>
         <button class="home-link nav-item" data-view="stylists">
           <div class="home-link-title"><i class="fas fa-users"></i> Manage Stylists</div>
-          <div class="home-link-desc">View stylist profiles, assign specialties, and manage status.</div>
+          <div class="home-link-desc">View stylist profiles, assign specialties, and manage their availability status.</div>
         </button>
         <button class="home-link nav-item" data-view="bookings">
           <div class="home-link-title"><i class="fas fa-calendar-check"></i> Manage Bookings</div>
-          <div class="home-link-desc">Review appointments and update their statuses.</div>
+          <div class="home-link-desc">Review appointments, view customer details, and update booking statuses.</div>
         </button>
         <button class="home-link nav-item" data-view="reports">
           <div class="home-link-title"><i class="fas fa-chart-line"></i> View Analytics</div>
-          <div class="home-link-desc">Booking trends, popular services, and stylist performance.</div>
+          <div class="home-link-desc">Track booking trends, discover popular services, and measure stylist performance.</div>
         </button>
       </div>
     </section>
@@ -1293,12 +1417,13 @@
       <div class="view-header">
         <div>
           <div class="section-title">Manage Services</div>
-          <div class="section-sub">Add new services, update pricing, and organise your salon's offerings by category.</div>
-          <div class="section-hint"><i class="fas fa-hand-pointer"></i> Use the edit icon to update a service or the trash icon to archive it.</div>
+          <div class="section-sub">Your salon's service menu is what customers see when they book with PinkMeUp. Add new services with their category, price, and duration, keep existing ones up to date, and archive anything you no longer offer. Everything is organised by category so the menu stays clean and easy to browse.</div>
+          <div class="section-hint"><i class="fas fa-hand-pointer"></i> Click any service to view its full details and manage it.</div>
         </div>
         <button class="btn-primary" id="addServiceBtn"><i class="fas fa-plus"></i> New Service</button>
       </div>
       <div id="servicesContainer"></div>
+      <div id="serviceDetail" style="display:none;"></div>
     </section>
 
     <!-- ==================== STYLISTS ==================== -->
@@ -1306,12 +1431,13 @@
       <div class="view-header">
         <div>
           <div class="section-title">Manage Stylists</div>
-          <div class="section-sub">Add new stylists, assign their service specialties, and control their availability status.</div>
-          <div class="section-hint"><i class="fas fa-hand-pointer"></i> Tap any stylist to edit their profile and services.</div>
+          <div class="section-sub">Your stylists are the heart of PinkMeUp. Add new team members, assign the services they specialise in, and manage their availability so customers always see accurate options. Each stylist's status — Active, Inactive, or Disabled — controls whether they appear for bookings.</div>
+          <div class="section-hint"><i class="fas fa-hand-pointer"></i> Click any stylist to open their full profile and manage them.</div>
         </div>
         <button class="btn-primary" id="addStylistBtn"><i class="fas fa-plus"></i> New Stylist</button>
       </div>
       <div id="stylistsContainer" class="stylist-grid"></div>
+      <div id="stylistDetail" style="display:none;"></div>
     </section>
 
     <!-- ==================== BOOKINGS ==================== -->
@@ -1319,8 +1445,8 @@
       <div class="view-header">
         <div>
           <div class="section-title">Manage Bookings</div>
-          <div class="section-sub">Review all appointments, mark them as complete, or flag no-shows.</div>
-          <div class="section-hint"><i class="fas fa-info-circle"></i> Completed and cancelled bookings cannot be modified.</div>
+          <div class="section-sub">Every appointment booked at your salon lands here. From this list you can see the customer, requested services, assigned stylist, and current status at a glance. Open any booking to view the full details and take action — mark it as complete when the customer has been served, or flag it as a no-show if they didn't arrive. Completed and cancelled bookings are locked to preserve the record.</div>
+          <div class="section-hint"><i class="fas fa-hand-pointer"></i> Click any booking to view it in full.</div>
         </div>
       </div>
       <table class="admin-table" id="bookingsTable">
@@ -1336,6 +1462,7 @@
         </thead>
         <tbody id="bookingsTableBody"></tbody>
       </table>
+      <div id="bookingDetail" style="display:none;"></div>
     </section>
 
     <!-- ==================== ANALYTICS ==================== -->
@@ -1343,8 +1470,7 @@
       <div class="view-header">
         <div>
           <div class="section-title">Analytics</div>
-          <div class="section-sub">Booking trends, most requested services, and stylist performance for the selected period.</div>
-          <div class="section-hint"><i class="fas fa-info-circle"></i> Adjust the period filter below to explore different date ranges.</div>
+          <div class="section-sub">This dashboard gives you a complete picture of how PinkMeUp is performing over the selected period. Track booking patterns across the week to understand your busiest days, discover which services your customers request most often, and monitor each stylist's completion rate and average customer rating. Use the period filter below to compare different time frames, and download the full report as a PDF whenever you need to review or share the numbers.</div>
         </div>
         <button class="btn-download" id="downloadReportBtn"><i class="fas fa-file-pdf"></i> Download PDF</button>
       </div>
@@ -1401,7 +1527,7 @@
 
     <!-- ==================== PROFILE ==================== -->
     <section id="profile-view" class="view">
-      <div class="profile-container">
+      <div class="profile-container" id="adminProfileMain">
         <div class="profile-header">
           <div class="profile-avatar-large" id="adminAvatar">AD</div>
           <div class="profile-name" id="adminProfileName">Admin</div>
@@ -1428,13 +1554,49 @@
           </div>
         </div>
         <div class="profile-divider"></div>
-        <div style="display:flex; gap:1.5rem; flex-wrap:wrap; padding-top:0.5rem;">
-          <button class="btn-primary" onclick="document.getElementById('helpModal').classList.add('active')">
-            <i class="fas fa-question-circle"></i> Help &amp; Support
+        <div class="profile-actions">
+          <button class="profile-action-btn" onclick="toggleAdminProfileEdit()">
+            <span class="action-icon"><i class="fas fa-user-edit"></i></span> Edit Profile
           </button>
-          <button class="btn-outline" id="profileSignOut">
-            <i class="fas fa-arrow-left"></i> Sign Out
+          <button class="profile-action-btn" onclick="document.getElementById('helpModal').classList.add('active')">
+            <span class="action-icon"><i class="fas fa-question-circle"></i></span> Help &amp; Support
           </button>
+          <button class="profile-action-btn danger" id="profileSignOut">
+            <span class="action-icon"><i class="fas fa-arrow-left"></i></span> Sign Out
+          </button>
+        </div>
+      </div>
+
+      <!-- INLINE EDIT PROFILE -->
+      <div class="edit-profile-inline" id="adminProfileEdit" style="display:none;">
+        <button class="back-link" onclick="closeAdminProfileEdit()">
+          <i class="fas fa-arrow-left"></i> Back
+        </button>
+
+        <div>
+          <div class="edit-profile-heading">Edit Profile</div>
+          <div class="edit-profile-sub">Keep your details up to date so your account stays accurate and we can reach you if needed.</div>
+        </div>
+
+        <div class="edit-field">
+          <label class="edit-field-label">Full Name</label>
+          <input type="text" id="adminProfileNameInput" placeholder="Your full name">
+        </div>
+
+        <div class="edit-field">
+          <label class="edit-field-label">Phone Number</label>
+          <input type="tel" id="adminProfilePhoneInput" placeholder="+27 82 123 4567">
+        </div>
+
+        <div class="edit-field">
+          <label class="edit-field-label">Email Address</label>
+          <input type="email" id="adminProfileEmailInput" readonly onkeydown="return false;" onpaste="return false;" oninput="return false;">
+          <div class="edit-note">Email address cannot be changed from this page.</div>
+        </div>
+
+        <div class="edit-actions">
+          <button class="btn-primary" onclick="saveAdminProfile()">Save Changes <i class="fas fa-arrow-right"></i></button>
+          <button class="btn-outline" onclick="closeAdminProfileEdit()">Cancel</button>
         </div>
       </div>
     </section>
@@ -1501,16 +1663,16 @@
     <div class="help-card">
       <h4>Managing Services</h4>
       <p>Click <strong>New Service</strong> to add a service with its category, price, and duration.</p>
-      <p>Use the edit icon to update an existing service, or the trash icon to archive it from the customer view.</p>
+      <p>Click any service row to open its full details, where you can edit or archive it.</p>
     </div>
     <div class="help-card">
       <h4>Managing Stylists</h4>
       <p>Click <strong>New Stylist</strong> to add a stylist and assign their service specialties.</p>
-      <p>Change a stylist's status directly from their row: Active, Inactive (on leave), or Disabled.</p>
+      <p>Click any stylist to open their profile, manage their services, or change their status.</p>
     </div>
     <div class="help-card">
       <h4>Bookings &amp; Analytics</h4>
-      <p>Mark appointments as complete or flag no-shows from the Bookings tab.</p>
+      <p>Click any booking to view its full details and mark it complete or as a no-show.</p>
       <p>Analytics can be filtered by period and exported as a PDF report.</p>
     </div>
     <div class="help-card">
@@ -1524,9 +1686,6 @@
   </div>
 </div>
 
-<!-- ============================================================
-     TOAST + LOADING
-     ============================================================ -->
 <div id="toast"></div>
 
 <div id="loadingOverlay">
@@ -1535,7 +1694,7 @@
 </div>
 
 <!-- ============================================================
-     THEME TOGGLE — small self-contained script
+     THEME TOGGLE
      ============================================================ -->
 <script>
   function applyAdminTheme(theme) {
@@ -1564,7 +1723,7 @@
 </script>
 
 <!-- ============================================================
-     MAIN LOGIC — original, minus the rating prompt
+     MAIN LOGIC
      ============================================================ -->
 <script>
   const API_BASE = window.API_URL || 'https://pinkmeup-api.onrender.com/api/v1';
@@ -1585,19 +1744,23 @@
     t.classList.add('show');
     setTimeout(() => t.classList.remove('show'), 2800);
   }
-
   function showLoading(msg = 'Loading...') {
     document.getElementById('loadingOverlayText').textContent = msg;
     document.getElementById('loadingOverlay').classList.add('show');
   }
-
   function hideLoading() {
     document.getElementById('loadingOverlay').classList.remove('show');
   }
-
   function getServiceName(id) {
     const s = services.find(s => s._id === id || s.id === id);
     return s ? s.name : 'Unknown';
+  }
+  function formatDateLong(d) {
+    if (!d) return '';
+    const date = new Date(d);
+    if (isNaN(date)) return d;
+    const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+    return `${date.getDate()} ${months[date.getMonth()]} ${date.getFullYear()}`;
   }
 
   document.addEventListener('DOMContentLoaded', function() {
@@ -1629,6 +1792,32 @@
     window.addEventListener('resize', function() {
       if (window.innerWidth > 768) closeSidebar();
     });
+
+    // Delegated clicks for detail views
+    const bookingsBody = document.getElementById('bookingsTableBody');
+    if (bookingsBody) {
+      bookingsBody.addEventListener('click', (e) => {
+        if (e.target.closest('button')) return;
+        const row = e.target.closest('tr[data-booking-id]');
+        if (row) openBookingDetail(row.dataset.bookingId);
+      });
+    }
+    const stylistsContainer = document.getElementById('stylistsContainer');
+    if (stylistsContainer) {
+      stylistsContainer.addEventListener('click', (e) => {
+        if (e.target.closest('button') || e.target.closest('select')) return;
+        const card = e.target.closest('.stylist-card[data-stylist-id]');
+        if (card) openStylistDetail(card.dataset.stylistId);
+      });
+    }
+    const servicesContainer = document.getElementById('servicesContainer');
+    if (servicesContainer) {
+      servicesContainer.addEventListener('click', (e) => {
+        if (e.target.closest('button')) return;
+        const row = e.target.closest('.service-row[data-service-id]');
+        if (row) openServiceDetail(row.dataset.serviceId);
+      });
+    }
   });
 
   function downloadPDFReport() {
@@ -1710,6 +1899,9 @@
     document.querySelector('.main').scrollTop = 0;
   }
 
+  // ============================================================
+  // SERVICES
+  // ============================================================
   async function loadServices() {
     try {
       const res = await fetch(`${API_BASE}/services?limit=100`, { credentials: 'include' });
@@ -1718,6 +1910,7 @@
         services = data.data.services || [];
         renderServices();
         populateStylistServiceOptions();
+        updateHomeStats();
       }
     } catch (err) { showToast('Failed to load services.'); }
   }
@@ -1736,7 +1929,7 @@
       catServices.forEach(s => {
         const sid = s._id || s.id;
         html += `
-          <div class="service-row">
+          <div class="service-row" data-service-id="${sid}">
             <div class="service-info">
               <span class="service-name">${escapeHtml(s.name)}</span>
               <span class="service-duration">${s.duration} min</span>
@@ -1795,7 +1988,6 @@
       showToast('Please fill all fields correctly.');
       return;
     }
-
     const method = editId ? 'PUT' : 'POST';
     const url = editId ? `${API_BASE}/services/${editId}` : `${API_BASE}/services`;
 
@@ -1824,6 +2016,7 @@
       const data = await res.json();
       if (!res.ok) { showToast(data.message || 'Failed to archive.'); return; }
       await loadServices();
+      closeServiceDetail();
       showToast('Service archived.');
     } catch (err) { showToast('Error archiving service.'); }
     finally { hideLoading(); }
@@ -1833,6 +2026,59 @@
     document.getElementById('serviceModal').classList.remove('active');
   }
 
+  function openServiceDetail(id) {
+    const svc = services.find(s => s._id === id || s.id === id);
+    if (!svc) return;
+    document.getElementById('servicesContainer').style.display = 'none';
+    const detail = document.getElementById('serviceDetail');
+    detail.style.display = 'block';
+    detail.innerHTML = `
+      <div class="detail-inline">
+        <button class="back-link" onclick="closeServiceDetail()">
+          <i class="fas fa-arrow-left"></i> Back to all services
+        </button>
+
+        <div class="detail-hero">
+          <div><span class="badge badge-confirmed">${escapeHtml(svc.category)}</span></div>
+          <div class="detail-heading">${escapeHtml(svc.name)}</div>
+          <div class="detail-subheading">Service offering details and management</div>
+        </div>
+
+        <div class="detail-section">
+          <div class="detail-section-label">Service Details</div>
+          <div class="detail-row"><span>Category</span><span>${escapeHtml(svc.category)}</span></div>
+          <div class="detail-row"><span>Price</span><span>R${svc.price}</span></div>
+          <div class="detail-row"><span>Duration</span><span>${svc.duration} min</span></div>
+        </div>
+
+        <div class="detail-section">
+          <div class="detail-section-label">Actions</div>
+          <div class="detail-actions">
+            <button class="action-link" onclick="openEditServiceModal('${svc._id || svc.id}')">
+              <i class="fas fa-edit"></i> Edit service details
+            </button>
+            <button class="action-link danger" onclick="deleteService('${svc._id || svc.id}')">
+              <i class="fas fa-trash-alt"></i> Archive this service
+            </button>
+            <button class="action-link pink" onclick="closeServiceDetail()">
+              <i class="fas fa-arrow-left"></i> Back to all services
+            </button>
+          </div>
+        </div>
+      </div>
+    `;
+    document.querySelector('.main').scrollTop = 0;
+  }
+
+  function closeServiceDetail() {
+    document.getElementById('servicesContainer').style.display = '';
+    document.getElementById('serviceDetail').style.display = 'none';
+    document.querySelector('.main').scrollTop = 0;
+  }
+
+  // ============================================================
+  // STYLISTS
+  // ============================================================
   async function loadStylists() {
     try {
       const res = await fetch(`${API_BASE}/stylists?limit=100`, { credentials: 'include' });
@@ -1849,6 +2095,7 @@
           rating: st.rating || 0
         }));
         renderStylists();
+        updateHomeStats();
       }
     } catch (err) { showToast('Failed to load stylists.'); }
   }
@@ -1868,7 +2115,7 @@
       const serviceNames = st.serviceIds.map(id => getServiceName(id)).filter(Boolean);
 
       return `
-        <div class="stylist-card">
+        <div class="stylist-card" data-stylist-id="${st.id}">
           <div class="stylist-name">${escapeHtml(st.name)}</div>
           <div>
             <span class="stylist-contact-item"><i class="fas fa-envelope"></i> ${escapeHtml(st.email || 'N/A')}</span>
@@ -1899,10 +2146,10 @@
       sel.addEventListener('change', function() { updateStylistStatus(this.dataset.id, this.value); });
     });
     document.querySelectorAll('.edit-stylist').forEach(btn =>
-      btn.addEventListener('click', () => openEditStylistModal(btn.dataset.id))
+      btn.addEventListener('click', (e) => { e.stopPropagation(); openEditStylistModal(btn.dataset.id); })
     );
     document.querySelectorAll('.delete-stylist').forEach(btn =>
-      btn.addEventListener('click', () => deleteStylist(btn.dataset.id))
+      btn.addEventListener('click', (e) => { e.stopPropagation(); deleteStylist(btn.dataset.id); })
     );
   }
 
@@ -2014,6 +2261,7 @@
       const data = await res.json();
       if (!res.ok) { showToast(data.message || 'Failed to delete.'); return; }
       await loadStylists();
+      closeStylistDetail();
       showToast('Stylist deleted.');
     } catch (err) { showToast('Error deleting stylist.'); }
     finally { hideLoading(); }
@@ -2023,6 +2271,75 @@
     document.getElementById('stylistModal').classList.remove('active');
   }
 
+  function openStylistDetail(id) {
+    const st = stylists.find(s => s.id === id);
+    if (!st) return;
+    let currentStatus = 'active';
+    if (!st.isActive) currentStatus = 'disabled';
+    else if (!st.isAvailable) currentStatus = 'inactive';
+    const statusLabel = currentStatus === 'active' ? 'Active' : (currentStatus === 'inactive' ? 'Inactive' : 'Disabled');
+    const serviceNames = st.serviceIds.map(sid => getServiceName(sid)).filter(Boolean);
+
+    document.getElementById('stylistsContainer').style.display = 'none';
+    const detail = document.getElementById('stylistDetail');
+    detail.style.display = 'block';
+    detail.innerHTML = `
+      <div class="detail-inline">
+        <button class="back-link" onclick="closeStylistDetail()">
+          <i class="fas fa-arrow-left"></i> Back to all stylists
+        </button>
+
+        <div class="detail-hero">
+          <div><span class="badge badge-${currentStatus === 'active' ? 'completed' : (currentStatus === 'inactive' ? 'pending' : 'cancelled')}">${statusLabel}</span></div>
+          <div class="detail-heading">${escapeHtml(st.name)}</div>
+          <div class="detail-subheading">${escapeHtml(st.email || 'No email on file')} • ${escapeHtml(st.phone || 'No phone on file')}</div>
+        </div>
+
+        <div class="detail-section">
+          <div class="detail-section-label">Stylist Details</div>
+          <div class="detail-row"><span>Full Name</span><span>${escapeHtml(st.name)}</span></div>
+          <div class="detail-row"><span>Email</span><span>${escapeHtml(st.email || '—')}</span></div>
+          <div class="detail-row"><span>Phone</span><span>${escapeHtml(st.phone || '—')}</span></div>
+          <div class="detail-row"><span>Status</span><span>${statusLabel}</span></div>
+          <div class="detail-row"><span>Average Rating</span><span>${Number(st.rating).toFixed(1)} / 5</span></div>
+          <div class="detail-row"><span>Services Offered</span><span>${serviceNames.length}</span></div>
+        </div>
+
+        <div class="detail-section">
+          <div class="detail-section-label">Services Offered</div>
+          ${serviceNames.length
+            ? serviceNames.map(n => `<div class="detail-row"><span>${escapeHtml(n)}</span><span></span></div>`).join('')
+            : '<p style="color:var(--muted);font-weight:300;font-size:0.9rem;">No services assigned yet.</p>'}
+        </div>
+
+        <div class="detail-section">
+          <div class="detail-section-label">Actions</div>
+          <div class="detail-actions">
+            <button class="action-link" onclick="openEditStylistModal('${st.id}')">
+              <i class="fas fa-edit"></i> Edit stylist profile
+            </button>
+            <button class="action-link danger" onclick="deleteStylist('${st.id}')">
+              <i class="fas fa-trash"></i> Delete this stylist
+            </button>
+            <button class="action-link pink" onclick="closeStylistDetail()">
+              <i class="fas fa-arrow-left"></i> Back to all stylists
+            </button>
+          </div>
+        </div>
+      </div>
+    `;
+    document.querySelector('.main').scrollTop = 0;
+  }
+
+  function closeStylistDetail() {
+    document.getElementById('stylistsContainer').style.display = '';
+    document.getElementById('stylistDetail').style.display = 'none';
+    document.querySelector('.main').scrollTop = 0;
+  }
+
+  // ============================================================
+  // BOOKINGS
+  // ============================================================
   async function loadAllBookings() {
     showLoading('Loading bookings...');
     try {
@@ -2031,6 +2348,7 @@
       if (!res.ok) { showToast(data.message || 'Failed to load bookings.'); return; }
       allBookings = data.data.bookings || [];
       renderBookings();
+      updateHomeStats();
     } catch (err) { showToast('Error loading bookings.'); }
     finally { hideLoading(); }
   }
@@ -2048,13 +2366,13 @@
       const stylistName = b.stylistId?.userId ? `${b.stylistId.userId.firstName || ''} ${b.stylistId.userId.lastName || ''}`.trim() || 'Stylist' : 'Stylist';
       const canAct = !['completed', 'cancelled', 'no_show'].includes(b.status);
 
-      return `<tr>
+      return `<tr data-booking-id="${b._id}">
         <td>${dateStr}<br><span style="color:var(--muted);font-size:0.75rem;">${b.startTime}</span></td>
         <td>${escapeHtml(customer)}</td>
         <td>${escapeHtml(serviceNames)}</td>
         <td>${escapeHtml(stylistName)}</td>
         <td><span class="badge badge-${b.status}">${b.status}</span></td>
-        <td>
+        <td onclick="event.stopPropagation();">
           ${canAct ? `
             <button class="btn-outline btn-sm mark-complete" data-id="${b._id}">Complete</button>
             <button class="btn-danger btn-sm mark-noshow" data-id="${b._id}">No-show</button>
@@ -2064,14 +2382,13 @@
     }).join('');
 
     document.querySelectorAll('.mark-complete').forEach(btn =>
-      btn.addEventListener('click', () => markComplete(btn.dataset.id))
+      btn.addEventListener('click', (e) => { e.stopPropagation(); markComplete(btn.dataset.id); })
     );
     document.querySelectorAll('.mark-noshow').forEach(btn =>
-      btn.addEventListener('click', () => setBookingStatus(btn.dataset.id, 'no_show'))
+      btn.addEventListener('click', (e) => { e.stopPropagation(); setBookingStatus(btn.dataset.id, 'no_show'); })
     );
   }
 
-  /* Admin no longer rates appointments — completes directly. */
   function markComplete(id) {
     setBookingStatus(id, 'completed');
   }
@@ -2092,10 +2409,109 @@
       showToast('Booking updated.');
       await loadAllBookings();
       if (document.getElementById('reports-view').classList.contains('active')) updateReports();
+      // If detail view was open, refresh it
+      if (document.getElementById('bookingDetail').style.display === 'block') {
+        openBookingDetail(id);
+      }
     } catch (err) { showToast('Error updating booking.'); }
     finally { hideLoading(); }
   }
 
+  function openBookingDetail(id) {
+    const b = allBookings.find(x => x._id === id);
+    if (!b) return;
+
+    const customer = b.customerId ? `${b.customerId.firstName || ''} ${b.customerId.lastName || ''}`.trim() : 'Guest';
+    const customerEmail = b.customerId?.email || b.guestEmail || '—';
+    const customerPhone = b.customerId?.phone || b.guestPhone || '—';
+    const stylist = b.stylistId?.userId ? `${b.stylistId.userId.firstName || ''} ${b.stylistId.userId.lastName || ''}`.trim() : 'Stylist';
+    const services = b.serviceIds || [];
+    const total = services.reduce((s, sv) => s + (sv.price || 0), 0);
+    const dur = services.reduce((s, sv) => s + (sv.duration || 0), 0);
+    const canAct = !['completed', 'cancelled', 'no_show'].includes(b.status);
+
+    const servicesHTML = services.map(sv => `
+      <div class="detail-svc-item">
+        <div>
+          <div class="detail-svc-name">${escapeHtml(sv.name)}</div>
+          <div class="detail-svc-meta">${sv.duration || 0} min</div>
+        </div>
+        <div class="detail-svc-price">R${sv.price || 0}</div>
+      </div>
+    `).join('');
+
+    document.getElementById('bookingsTable').style.display = 'none';
+    const detail = document.getElementById('bookingDetail');
+    detail.style.display = 'block';
+    detail.innerHTML = `
+      <div class="detail-inline">
+        <button class="back-link" onclick="closeBookingDetail()">
+          <i class="fas fa-arrow-left"></i> Back to all bookings
+        </button>
+
+        <div class="detail-hero">
+          <div><span class="badge badge-${b.status}">${b.status}</span></div>
+          <div class="detail-heading">${services.map(s => escapeHtml(s.name)).join(', ') || 'Booking'}</div>
+          <div class="detail-subheading">${formatDateLong(b.date)} at ${b.startTime} • with ${escapeHtml(stylist)}</div>
+        </div>
+
+        <div class="detail-section">
+          <div class="detail-section-label">Appointment Details</div>
+          <div class="detail-row"><span>Date</span><span>${formatDateLong(b.date)}</span></div>
+          <div class="detail-row"><span>Time</span><span>${b.startTime}</span></div>
+          <div class="detail-row"><span>Stylist</span><span>${escapeHtml(stylist)}</span></div>
+          <div class="detail-row"><span>Total duration</span><span>~${dur} min</span></div>
+        </div>
+
+        <div class="detail-section">
+          <div class="detail-section-label">Customer</div>
+          <div class="detail-row"><span>Name</span><span>${escapeHtml(customer)}</span></div>
+          <div class="detail-row"><span>Email</span><span>${escapeHtml(customerEmail)}</span></div>
+          <div class="detail-row"><span>Phone</span><span>${escapeHtml(customerPhone)}</span></div>
+        </div>
+
+        <div class="detail-section">
+          <div class="detail-section-label">Services Booked</div>
+          ${servicesHTML || '<p style="color:var(--muted);font-weight:300;font-size:0.9rem;">No services attached.</p>'}
+          <div class="detail-total"><span>Total</span><span>R${total.toLocaleString()}</span></div>
+        </div>
+
+        ${b.notes ? `
+        <div class="detail-section">
+          <div class="detail-section-label">Notes</div>
+          <p style="font-size:0.9rem;color:var(--muted);font-weight:300;line-height:1.6;">${escapeHtml(b.notes)}</p>
+        </div>` : ''}
+
+        <div class="detail-section">
+          <div class="detail-section-label">Actions</div>
+          <div class="detail-actions">
+            ${canAct ? `
+              <button class="action-link" onclick="markComplete('${b._id}')">
+                <i class="fas fa-check"></i> Mark as completed
+              </button>
+              <button class="action-link danger" onclick="setBookingStatus('${b._id}', 'no_show')">
+                <i class="fas fa-user-slash"></i> Flag as no-show
+              </button>
+            ` : ''}
+            <button class="action-link pink" onclick="closeBookingDetail()">
+              <i class="fas fa-arrow-left"></i> Back to all bookings
+            </button>
+          </div>
+        </div>
+      </div>
+    `;
+    document.querySelector('.main').scrollTop = 0;
+  }
+
+  function closeBookingDetail() {
+    document.getElementById('bookingsTable').style.display = '';
+    document.getElementById('bookingDetail').style.display = 'none';
+    document.querySelector('.main').scrollTop = 0;
+  }
+
+  // ============================================================
+  // ANALYTICS
+  // ============================================================
   async function updateReports() {
     const period = document.getElementById('reportPeriod').value;
     let startDate, endDate, today = new Date();
@@ -2197,6 +2613,94 @@
     }).join('');
   }
 
+  // ============================================================
+  // ADMIN PROFILE EDIT
+  // ============================================================
+  function toggleAdminProfileEdit() {
+    document.getElementById('adminProfileMain').style.display = 'none';
+    document.getElementById('adminProfileEdit').style.display = 'flex';
+    document.querySelector('.main').scrollTop = 0;
+  }
+
+  function closeAdminProfileEdit() {
+    document.getElementById('adminProfileEdit').style.display = 'none';
+    document.getElementById('adminProfileMain').style.display = 'block';
+    document.querySelector('.main').scrollTop = 0;
+  }
+
+  async function saveAdminProfile() {
+    const name = document.getElementById('adminProfileNameInput').value.trim();
+    if (!name) { showToast('Name cannot be empty.'); return; }
+    const [firstName, ...rest] = name.split(' ');
+    const lastName = rest.join(' ') || firstName;
+    const phone = document.getElementById('adminProfilePhoneInput').value.trim();
+
+    showLoading('Saving...');
+    try {
+      const res = await fetch(`${API_BASE}/auth/profile`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        credentials: 'include',
+        body: JSON.stringify({ firstName, lastName, phone })
+      });
+      const data = await res.json();
+      if (!res.ok) { showToast(data.message || 'Update failed.'); return; }
+
+      const fullName = `${firstName} ${lastName}`.trim();
+
+      // Update UI
+      document.getElementById('adminProfileName').textContent = fullName;
+      document.getElementById('adminProfileFullName').textContent = fullName;
+      document.getElementById('adminProfilePhone').textContent = phone || '—';
+      document.getElementById('greetingName').textContent = `Hello, ${firstName}`;
+      const initials = (firstName[0] || '') + (lastName[0] || '');
+      if (initials) document.getElementById('adminAvatar').textContent = initials.toUpperCase();
+
+      // Update stored user
+      try {
+        const stored = localStorage.getItem('user') || sessionStorage.getItem('user');
+        if (stored) {
+          const u = JSON.parse(stored);
+          u.firstName = firstName;
+          u.lastName = lastName;
+          u.phone = phone;
+          const target = localStorage.getItem('user') ? localStorage : sessionStorage;
+          target.setItem('user', JSON.stringify(u));
+        }
+      } catch (e) {}
+
+      closeAdminProfileEdit();
+      showToast('Profile updated successfully!');
+    } catch (err) {
+      showToast('Error saving profile.');
+    } finally {
+      hideLoading();
+    }
+  }
+
+  // ============================================================
+  // HOME STATS
+  // ============================================================
+  function updateHomeStats() {
+    const sEl = document.getElementById('homeStatServices');
+    const stEl = document.getElementById('homeStatStylists');
+    const bEl = document.getElementById('homeStatBookings');
+    const mEl = document.getElementById('homeStatThisMonth');
+    if (!sEl) return;
+    sEl.textContent = services.length;
+    stEl.textContent = stylists.length;
+    bEl.textContent = allBookings.length;
+    const now = new Date();
+    const thisMonth = allBookings.filter(b => {
+      const d = new Date(b.date);
+      return d.getMonth() === now.getMonth() && d.getFullYear() === now.getFullYear();
+    }).length;
+    mEl.textContent = thisMonth;
+  }
+
+  // ============================================================
+  // SIGN OUT
+  // ============================================================
   async function signOut() {
     showLoading('Signing out...');
     try { await fetch(`${API_BASE}/auth/logout`, { method: 'POST', credentials: 'include' }); } catch (e) {}
@@ -2209,6 +2713,9 @@
     window.location.replace('login.html');
   }
 
+  // ============================================================
+  // INIT
+  // ============================================================
   document.addEventListener('DOMContentLoaded', async function() {
     let user = null;
     try {
@@ -2234,11 +2741,17 @@
     const pEmail = document.getElementById('adminProfileEmail');
     const pFullEmail = document.getElementById('adminProfileFullEmail');
     const pPhone = document.getElementById('adminProfilePhone');
+    const pNameInput = document.getElementById('adminProfileNameInput');
+    const pPhoneInput = document.getElementById('adminProfilePhoneInput');
+    const pEmailInput = document.getElementById('adminProfileEmailInput');
     if (pName) pName.textContent = fullName;
     if (pFullName) pFullName.textContent = fullName;
     if (pEmail) pEmail.textContent = user.email || '—';
     if (pFullEmail) pFullEmail.textContent = user.email || '—';
     if (pPhone) pPhone.textContent = user.phone || '—';
+    if (pNameInput) pNameInput.value = fullName;
+    if (pPhoneInput) pPhoneInput.value = user.phone || '';
+    if (pEmailInput) pEmailInput.value = user.email || '';
 
     document.getElementById('addServiceBtn').addEventListener('click', () => {
       document.getElementById('serviceModalTitle').textContent = 'Add Service';
@@ -2292,6 +2805,7 @@
     await loadStylists();
     await loadAllBookings();
     updateReports();
+    updateHomeStats();
   });
 </script>
 </body>
