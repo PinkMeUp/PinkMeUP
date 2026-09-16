@@ -5,332 +5,358 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
   <title>PinkMeUp · Admin Panel</title>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js" integrity="sha512-GsLlZN/3F2ErC5ifS5QtgpiJtWd43JWSuIgh7mbzZ8zBps+dvLusV+eNQATqgA/HdeKFVgA5v3S/cIrLF7QnIg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
   <style>
-    /* ----- ROOT — matching customer dashboard ----- */
+    /* ============================================================
+       ROOT — matching customer dashboard
+       ============================================================ */
     :root {
+      --rose: #FF5C8A;
+      --rose-light: #FFB6C1;
+      --rose-pale: rgba(255, 92, 138, 0.12);
+      --rose-mid: rgba(255, 92, 138, 0.3);
+      --ink: #F5F7FA;
+      --muted: #B8C0CC;
+      --border: rgba(255, 255, 255, 0.1);
+      --bg: #0A0E1A;
+      --bg-gradient: linear-gradient(180deg, #0B1220 0%, #060814 50%, #000000 100%);
+      --white: #0F1524;
+      --card-bg: rgba(20, 28, 46, 0.7);
+      --input-bg: #0E1526;
+      --success: #4ADE80;
+      --warning: #FBBF24;
+      --danger: #FF6B6B;
+      --shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+      --gradient: linear-gradient(135deg, #FFB6C1 0%, #D43F6B 100%);
+      --grey-icon: #7A8496;
+      --text-dim: #B8C0CC;
+      --hover-surface: rgba(255, 255, 255, 0.06);
+    }
+
+    body.light {
       --rose: #D43F6B;
       --rose-light: #FFB6C1;
-      --rose-pale: #FFF0F5;
-      --rose-mid: #F5C6D8;
+      --rose-pale: rgba(212, 63, 107, 0.06);
+      --rose-mid: rgba(212, 63, 107, 0.25);
       --ink: #1a1a1a;
-      --muted: #2c2c2c;
-      --border: #ddd;
+      --muted: #6B5560;
+      --border: #e8e0e5;
       --bg: #ffffff;
-      --white: #FFFFFF;
+      --bg-gradient: linear-gradient(180deg, #ffffff 0%, #fdf8fa 60%, #faf3f6 100%);
+      --white: #ffffff;
+      --card-bg: #ffffff;
+      --input-bg: #ffffff;
       --success: #2C8F6E;
       --warning: #E07B39;
       --danger: #DC2626;
+      --shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+      --gradient: linear-gradient(135deg, #FFB6C1 0%, #D43F6B 100%);
+      --grey-icon: #888;
+      --text-dim: #555;
+      --hover-surface: rgba(0, 0, 0, 0.04);
     }
 
     * { margin: 0; padding: 0; box-sizing: border-box; }
 
+    html, body { height: 100%; }
+
     body {
       font-family: 'DM Sans', sans-serif;
-      background: var(--bg);
+      background: var(--bg-gradient);
+      background-attachment: fixed;
       color: var(--ink);
       height: 100vh;
       overflow: hidden;
       display: flex;
       flex-direction: column;
+      font-size: 16px;
+      transition: background 0.3s ease, color 0.3s ease;
     }
 
-    /* ----- HEADER — matching customer dashboard ----- */
+    /* ============================================================
+       HEADER
+       ============================================================ */
     .header {
-      background: var(--white);
-      border-bottom: 1px solid var(--border);
-      padding: 1rem 1.5rem;
+      background: transparent;
+      padding: 0.9rem 1.5rem 0.4rem 1.5rem;
       display: flex;
       justify-content: space-between;
       align-items: center;
       flex-shrink: 0;
       gap: 0.8rem;
-      flex-wrap: wrap;
     }
 
-    .brand {
-      display: flex;
-      flex-direction: column;
-      align-items: flex-start;
-      gap: 0.1rem;
-    }
+    .header-left { display: flex; align-items: center; gap: 0.8rem; }
 
-    .brand-top {
-      display: flex;
-      align-items: baseline;
-      gap: 0.5rem;
-    }
-
-    .brand-name {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 1.8rem;
-      font-weight: 700;
-      background: linear-gradient(135deg, var(--rose), var(--rose-light));
-      -webkit-background-clip: text;
-      background-clip: text;
-      color: transparent;
-      line-height: 1;
-    }
-
-    .brand-slogan {
-      font-size: 0.7rem;
-      font-weight: 400;
-      letter-spacing: 1.2px;
-      color: #000000;
-      margin-top: 0.05rem;
-    }
-
-    .header-right {
-      display: flex;
-      align-items: center;
-      gap: 0.8rem;
-    }
-
-    .user-pill {
-      display: flex;
-      align-items: center;
-      gap: 0.6rem;
-      background: var(--rose-pale);
-      padding: 0.4rem 1rem 0.4rem 0.6rem;
-      border-radius: 2rem;
-    }
-
-    .avatar {
-      width: 32px;
-      height: 32px;
-      border-radius: 50%;
-      background: var(--rose);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: white;
-      font-size: 0.8rem;
-      font-weight: 600;
-    }
-
-    .user-name {
-      font-size: 0.9rem;
-      font-weight: 600;
-      color: var(--ink);
-    }
-
-    .signout-btn {
-      background: transparent;
-      border: 1.5px solid var(--border);
-      padding: 0.4rem 1rem;
-      border-radius: 2rem;
-      font-size: 0.85rem;
-      font-weight: 500;
-      color: var(--ink);
-      cursor: pointer;
-      transition: 0.2s;
-      font-family: inherit;
-      display: inline-flex;
-      align-items: center;
-      gap: 0.4rem;
-    }
-
-    .signout-btn i {
-      font-size: 0.7rem;
-      color: var(--muted);
-    }
-
-    .signout-btn:hover { border-color: var(--rose); color: var(--rose); }
-    .signout-btn:hover i { color: var(--rose); }
-
-    /* ----- MENU TOGGLE — matching customer dashboard ----- */
-    .menu-toggle {
-      display: none;
-      background: none;
-      border: none;
-      font-size: 1.6rem;
-      color: var(--ink);
-      cursor: pointer;
-      padding: 0.2rem;
-    }
-
-    .sidebar-close {
+    .menu-btn {
       display: none;
       background: none;
       border: none;
       font-size: 1.4rem;
       color: var(--ink);
       cursor: pointer;
-      padding: 0.8rem 1.5rem;
-      text-align: right;
-      width: 100%;
+      padding: 0.2rem;
+      align-items: center;
+      justify-content: center;
+      transition: color 0.2s;
+    }
+    .menu-btn:hover { color: var(--rose); }
+    .menu-btn i { color: var(--grey-icon); font-size: 1.4rem; transition: color 0.2s; }
+    .menu-btn:hover i { color: var(--rose); }
+
+    .brand-wrapper { display: flex; flex-direction: column; align-items: flex-start; }
+
+    .brand-name {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 2.1rem;
+      font-weight: 700;
+      background: var(--gradient);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      line-height: 1;
+      letter-spacing: 0.3px;
     }
 
+    .brand-slogan {
+      font-size: 0.78rem;
+      font-weight: 300;
+      letter-spacing: 1.2px;
+      color: var(--ink);
+      margin-top: 0.15rem;
+    }
+
+    /* ============================================================
+       TOP TABS
+       ============================================================ */
+    .top-tabs {
+      display: flex;
+      background: transparent;
+      padding: 0 1.5rem;
+      flex-shrink: 0;
+      gap: 0;
+      justify-content: space-around;
+      border-bottom: 1px solid var(--border);
+      overflow-x: auto;
+      scrollbar-width: none;
+    }
+    .top-tabs::-webkit-scrollbar { display: none; }
+
+    .top-tabs .tab-item {
+      padding: 0.85rem 0.6rem;
+      font-size: 0.95rem;
+      font-weight: 400;
+      color: var(--ink);
+      cursor: pointer;
+      border-bottom: 2px solid transparent;
+      transition: 0.15s;
+      background: transparent;
+      border-top: none;
+      border-left: none;
+      border-right: none;
+      font-family: inherit;
+      flex: 1 0 auto;
+      min-width: 92px;
+      text-align: center;
+      position: relative;
+      margin-bottom: -1px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.15rem;
+      letter-spacing: 0.2px;
+    }
+    .top-tabs .tab-item.active {
+      color: var(--rose);
+      border-bottom-color: var(--rose);
+      background: transparent;
+      transform: none;
+    }
+    .top-tabs .tab-item:hover {
+      color: var(--rose);
+      background: transparent;
+      transform: none;
+    }
+    .top-tabs .tab-item i {
+      color: var(--grey-icon);
+      font-size: 1.15rem;
+      width: auto;
+      transition: color 0.2s;
+    }
+    .top-tabs .tab-item:hover i,
+    .top-tabs .tab-item.active i { color: var(--rose); }
+
+    .tab-icon {
+      display: block;
+      font-size: 1.15rem;
+      line-height: 1;
+      margin-bottom: 0.1rem;
+    }
+
+    /* ============================================================
+       APP LAYOUT
+       ============================================================ */
+    .app { display: flex; flex: 1; overflow: hidden; min-height: 0; }
+
+    /* ============================================================
+       SIDEBAR
+       ============================================================ */
     .sidebar-overlay {
       display: none;
       position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: rgba(0,0,0,0.3);
+      inset: 0;
+      background: rgba(0, 0, 0, 0.65);
+      backdrop-filter: blur(6px);
       z-index: 998;
     }
-
     .sidebar-overlay.active { display: block; }
 
-    /* ----- APP LAYOUT ----- */
-    .app {
-      display: flex;
-      flex: 1;
-      overflow: hidden;
-    }
-
-    /* ----- SIDEBAR — matching customer dashboard ----- */
     .sidebar {
-      width: 250px;
-      background: var(--white);
+      width: 280px;
+      background: linear-gradient(180deg, #0B1220 0%, #050810 100%);
       border-right: 1px solid var(--border);
       display: flex;
       flex-direction: column;
       flex-shrink: 0;
-      transition: transform 0.3s ease;
+      transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), background 0.3s ease;
       z-index: 999;
-      padding: 1.2rem 0.8rem 1rem;
+      padding: 1.5rem 1.2rem;
+      overflow-y: auto;
+    }
+    body.light .sidebar {
+      background: linear-gradient(180deg, #ffffff 0%, #fdf8fa 100%);
     }
 
+    .sidebar-close {
+      display: none;
+      background: none;
+      border: none;
+      font-size: 1.3rem;
+      color: var(--ink);
+      cursor: pointer;
+      padding: 0.2rem 0;
+      text-align: right;
+      width: 100%;
+      transition: color 0.2s;
+    }
+    .sidebar-close:hover { color: var(--rose); }
+    .sidebar-close i { color: var(--grey-icon); }
+
     .sidebar-greeting {
-      padding: 0.5rem 0.8rem 1.2rem 0.8rem;
+      padding: 0.3rem 0 0.9rem 0;
       border-bottom: 1px solid var(--border);
       margin-bottom: 0.8rem;
     }
 
     .greeting-name {
-      font-size: 1.2rem;
-      font-weight: 400;
-      color: var(--ink);
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.5rem;
+      font-weight: 600;
+      letter-spacing: 0.3px;
+      background: var(--gradient);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      line-height: 1.1;
     }
 
     .greeting-sub {
-      font-size: 0.9rem;
+      font-size: 0.85rem;
       font-weight: 300;
       color: var(--muted);
-      margin-top: 0.1rem;
+      margin-top: 0.2rem;
     }
 
-    .nav {
-      padding: 0.2rem 0;
+    .sidebar-nav {
       display: flex;
       flex-direction: column;
       gap: 0.2rem;
       flex: 1;
     }
 
-    .nav-item {
+    .sidebar-item {
       display: flex;
       align-items: center;
-      gap: 0.9rem;
-      padding: 0.6rem 1rem;
-      border-radius: 0.8rem;
-      font-size: 0.95rem;
+      gap: 1rem;
+      padding: 0.85rem 0.9rem;
+      border-radius: 0.6rem;
+      font-size: 1.05rem;
       font-weight: 300;
+      letter-spacing: 0.2px;
       color: var(--ink);
       cursor: pointer;
-      transition: 0.18s;
+      transition: 0.2s;
+      background: transparent;
+      border: none;
+      font-family: inherit;
+      width: 100%;
+      text-align: left;
     }
-
-    .nav-item i {
+    .sidebar-item i {
       width: 24px;
-      font-size: 1rem;
-      color: var(--ink);
-      font-weight: 300;
-      opacity: 0.8;
+      color: var(--grey-icon);
+      font-size: 1.05rem;
+      transition: color 0.2s;
+      text-align: center;
     }
-
-    .nav-item.active {
+    .sidebar-item:hover {
+      color: var(--rose);
       background: var(--rose-pale);
-      color: var(--ink);
+      transform: translateX(4px);
     }
+    .sidebar-item:hover i { color: var(--rose); }
 
-    .nav-item.active i {
-      color: var(--rose);
-      opacity: 1;
+    .sidebar-item.signout-nav { color: #FF6B6B; }
+    .sidebar-item.signout-nav i { color: var(--grey-icon); font-size: 0.85rem; }
+    .sidebar-item.signout-nav:hover {
+      background: rgba(255, 107, 107, 0.12);
+      color: #FF6B6B;
+      transform: translateX(4px);
     }
+    .sidebar-item.signout-nav:hover i { color: #FF6B6B; }
 
-    .nav-item:hover:not(.active) {
-      background: #f5f5f5;
-    }
-
-    .nav-item.signout-nav {
-      margin-top: 0.1rem;
-      border-top: none;
-      border-radius: 0.8rem;
-      padding: 0.6rem 1rem;
-      font-weight: 300;
-      display: flex;
-      align-items: center;
-      gap: 0.9rem;
-    }
-
-    .nav-item.signout-nav i {
-      color: var(--ink);
-      opacity: 0.8;
-      font-size: 0.8rem;
-    }
-
-    .nav-item.signout-nav:hover {
-      background: #f5f5f5;
-    }
-
-    /* ----- SIDEBAR FOOTER — with Hours + IT Support (no emojis) ----- */
     .sidebar-footer {
-      padding: 1rem 0.8rem 0.2rem;
+      padding: 1.2rem 0 0.3rem 0;
       border-top: 1px solid var(--border);
-      font-size: 0.9rem;
-      font-weight: 300;
-      color: var(--ink);
-    }
-
-    .sidebar-footer p {
-      margin-bottom: 0.3rem;
-    }
-
-    .sidebar-footer strong {
-      color: var(--rose);
-      font-weight: 400;
-    }
-
-    .sidebar-footer .support-line {
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
+      margin-top: 1rem;
       font-size: 0.85rem;
-      color: var(--ink);
+      font-weight: 300;
+      color: var(--text-dim);
+    }
+    .sidebar-footer strong {
+      display: block;
+      font-size: 0.68rem;
+      color: var(--muted);
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.7px;
+      margin-bottom: 0.4rem;
+      margin-top: 0.85rem;
+    }
+    .sidebar-footer strong:first-child { margin-top: 0; }
+    .sidebar-footer p {
+      margin-bottom: 0.2rem;
+      font-size: 0.85rem;
+      line-height: 1.5;
     }
 
-    .sidebar-footer .support-line i {
-      width: 18px;
-      color: var(--rose);
-      font-size: 0.8rem;
-    }
-
-    /* ----- MAIN ----- */
+    /* ============================================================
+       MAIN
+       ============================================================ */
     .main {
       flex: 1;
       overflow-y: auto;
-      padding: 1.8rem 2rem;
-      background: var(--bg);
+      padding: 1.4rem 2rem 4rem 2rem;
       min-width: 0;
     }
 
-    .view {
-      display: none;
-      animation: fadeIn 0.22s ease;
-    }
-
-    .view.active {
-      display: block;
-    }
+    .view { display: none; animation: fadeIn 0.25s ease; }
+    .view.active { display: block; }
 
     @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(6px); }
+      from { opacity: 0; transform: translateY(8px); }
       to { opacity: 1; transform: translateY(0); }
     }
 
@@ -339,309 +365,252 @@
       justify-content: space-between;
       align-items: flex-start;
       flex-wrap: wrap;
-      gap: 0.8rem;
-      margin-bottom: 1.8rem;
+      gap: 1rem;
+      margin-bottom: 1.4rem;
     }
 
     .section-title {
       font-family: 'Cormorant Garamond', serif;
-      font-size: 2rem;
-      font-weight: 600;
-      color: var(--ink);
+      font-size: 2.2rem;
+      font-weight: 500;
+      letter-spacing: 0.3px;
+      line-height: 1.15;
+      background: var(--gradient);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
     }
 
     .section-sub {
-      font-size: 0.95rem;
+      font-size: 1rem;
       color: var(--muted);
-      margin-top: 0.1rem;
+      margin-top: 0.5rem;
+      font-weight: 300;
+      max-width: 720px;
+      line-height: 1.6;
     }
 
-    /* ----- BUTTONS — matching customer dashboard ----- */
-    .btn-primary {
-      background: var(--rose);
+    .section-hint {
+      font-size: 0.82rem;
+      color: var(--muted);
+      font-weight: 300;
+      margin-top: 0.4rem;
+      opacity: 0.75;
+      letter-spacing: 0.2px;
+    }
+
+    /* ============================================================
+       BUTTONS — text only, matching customer
+       ============================================================ */
+    .btn-primary, .btn-outline, .btn-danger, .btn-download {
+      background: none;
       border: none;
-      color: white;
-      padding: 0.6rem 1.6rem;
-      border-radius: 2rem;
-      font-weight: 600;
-      font-size: 0.9rem;
+      padding: 0.35rem 0;
+      font-family: inherit;
+      font-size: 0.95rem;
       cursor: pointer;
-      transition: 0.2s;
       display: inline-flex;
       align-items: center;
-      gap: 0.4rem;
-      font-family: inherit;
-      white-space: nowrap;
+      gap: 0.45rem;
+      transition: 0.2s;
+      letter-spacing: 0.2px;
+      border-radius: 0;
     }
 
-    .btn-primary:hover {
-      background: #b83b5e;
-      transform: translateY(-1px);
+    .btn-primary {
+      color: var(--rose);
+      font-weight: 500;
     }
+    .btn-primary:hover { opacity: 0.75; transform: translateX(2px); }
+    .btn-primary i { font-size: 0.85rem; }
 
     .btn-outline {
-      background: transparent;
-      border: 1.5px solid var(--border);
-      color: var(--ink);
-      padding: 0.5rem 1.2rem;
-      border-radius: 2rem;
-      font-size: 0.85rem;
-      font-weight: 500;
-      cursor: pointer;
-      transition: 0.2s;
-      font-family: inherit;
+      color: var(--muted);
+      font-weight: 400;
     }
-
-    .btn-outline:hover {
-      border-color: var(--rose);
-      color: var(--rose);
-    }
+    .btn-outline:hover { color: var(--ink); transform: translateX(2px); }
+    .btn-outline i { font-size: 0.8rem; }
 
     .btn-danger {
-      background: var(--danger);
-      border: none;
-      color: white;
-      padding: 0.35rem 0.9rem;
-      border-radius: 2rem;
-      font-size: 0.75rem;
-      font-weight: 600;
-      cursor: pointer;
-      transition: 0.2s;
-      font-family: inherit;
+      color: var(--danger);
+      font-weight: 400;
     }
+    .btn-danger:hover { opacity: 0.75; transform: translateX(2px); }
+    .btn-danger i { font-size: 0.8rem; }
 
-    .btn-danger:hover {
-      background: #b91c1c;
+    .btn-download {
+      color: var(--rose);
+      font-weight: 500;
     }
+    .btn-download:hover { opacity: 0.75; transform: translateX(2px); }
+    .btn-download i { font-size: 0.85rem; }
 
-    .btn-sm {
-      padding: 0.25rem 0.6rem;
-      font-size: 0.7rem;
-    }
+    .btn-sm { font-size: 0.85rem; padding: 0.25rem 0; }
 
-    /* ----- CARDS — matching customer dashboard ----- */
-    .card {
-      background: var(--white);
-      border: 1px solid var(--border);
-      border-radius: 1.2rem;
-      overflow: hidden;
-    }
-
-    .card-head {
-      padding: 1rem 1.2rem;
-      border-bottom: 1px solid var(--border);
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 0.5rem;
-      flex-wrap: wrap;
-    }
-
-    .card-head-title {
-      font-size: 1rem;
-      font-weight: 700;
-      color: var(--ink);
-    }
-
-    .card-body {
-      padding: 1.2rem;
-      overflow-x: auto;
-    }
-
-    /* ----- TABLES — matching customer dashboard with better alignment ----- */
+    /* ============================================================
+       TABLES
+       ============================================================ */
     .admin-table {
       width: 100%;
       border-collapse: collapse;
-      font-size: 0.9rem;
+      font-size: 0.92rem;
     }
-
     .admin-table th {
-      padding: 0.7rem 0.8rem;
-      font-size: 0.75rem;
-      font-weight: 700;
-      letter-spacing: 0.4px;
+      padding: 0.8rem 0.9rem;
+      font-size: 0.7rem;
+      font-weight: 600;
+      letter-spacing: 0.6px;
       text-transform: uppercase;
       color: var(--muted);
-      background: #f9f9f9;
+      background: transparent;
       border-bottom: 1px solid var(--border);
       text-align: left;
     }
-
     .admin-table td {
-      padding: 0.7rem 0.8rem;
-      border-bottom: 1px solid #eee;
+      padding: 0.9rem 0.9rem;
+      border-bottom: 1px solid var(--border);
       vertical-align: middle;
-      text-align: left;
+      color: var(--ink);
+      font-weight: 300;
     }
+    .admin-table tr:last-child td { border-bottom: none; }
+    .admin-table tr:hover td { background: var(--hover-surface); }
+    .admin-table .text-right { text-align: right; }
+    .admin-table .text-center { text-align: center; }
 
-    .admin-table tr:last-child td {
-      border-bottom: none;
-    }
-
-    .admin-table tr:hover td {
-      background: #fafafa;
-    }
-
-    .admin-table .text-right {
-      text-align: right;
-    }
-
-    .admin-table .text-center {
-      text-align: center;
-    }
-
-    /* ----- BADGES — matching customer dashboard ----- */
+    /* ============================================================
+       BADGES
+       ============================================================ */
     .badge {
       display: inline-flex;
       align-items: center;
       gap: 0.2rem;
-      padding: 0.2rem 0.8rem;
+      padding: 0.2rem 0.75rem;
       border-radius: 2rem;
       font-size: 0.7rem;
-      font-weight: 600;
-      letter-spacing: 0.3px;
+      font-weight: 500;
+      letter-spacing: 0.2px;
       text-transform: capitalize;
     }
+    .badge-completed { background: rgba(74, 222, 128, 0.15); color: var(--success); }
+    body.light .badge-completed { background: rgba(44, 143, 110, 0.12); }
+    .badge-confirmed { background: rgba(96, 165, 250, 0.15); color: #60A5FA; }
+    body.light .badge-confirmed { background: rgba(37, 99, 235, 0.12); color: #2563EB; }
+    .badge-pending { background: rgba(251, 191, 36, 0.15); color: var(--warning); }
+    .badge-cancelled { background: rgba(255, 107, 107, 0.15); color: var(--danger); }
+    .badge-no_show { background: rgba(167, 139, 250, 0.15); color: #A78BFA; }
+    body.light .badge-no_show { background: rgba(124, 58, 237, 0.12); color: #7C3AED; }
 
-    .badge-completed {
-      background: #E6F7F2;
-      color: var(--success);
-    }
-
-    .badge-confirmed {
-      background: #E8F0FE;
-      color: #2563EB;
-    }
-
-    .badge-pending {
-      background: #FFF7E0;
-      color: #B7791F;
-    }
-
-    .badge-cancelled {
-      background: #FDE8E8;
-      color: var(--danger);
-    }
-
-    .badge-no_show {
-      background: #F3E8FF;
-      color: #7C3AED;
-    }
-
-    /* ----- SERVICE ROWS ----- */
-    .category-group {
-      margin-bottom: 1rem;
-    }
+    /* ============================================================
+       SERVICE LIST — flat, no cards
+       ============================================================ */
+    .category-group { margin-bottom: 1.75rem; }
+    .category-group:last-child { margin-bottom: 0; }
 
     .category-header {
-      font-weight: 700;
-      font-size: 0.9rem;
+      font-size: 0.72rem;
+      font-weight: 600;
       color: var(--rose);
-      padding: 0.2rem 0;
+      text-transform: uppercase;
+      letter-spacing: 0.7px;
+      padding: 0.2rem 0 0.5rem 0.7rem;
+      border-left: 2px solid var(--rose);
       margin-bottom: 0.4rem;
-      border-left: 3px solid var(--rose-light);
-      padding-left: 0.6rem;
     }
 
     .service-row {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 0.5rem 0;
-      border-bottom: 1px solid #eee;
+      padding: 0.85rem 0;
+      border-bottom: 1px solid var(--border);
       flex-wrap: wrap;
-      gap: 0.3rem;
+      gap: 0.5rem;
+      transition: 0.15s;
     }
-
-    .service-row:last-child {
-      border-bottom: none;
-    }
+    .service-row:last-child { border-bottom: none; }
+    .service-row:hover { padding-left: 0.4rem; padding-right: 0.4rem; }
 
     .service-info {
       display: flex;
       flex-wrap: wrap;
-      gap: 0.4rem;
+      gap: 0.75rem;
       align-items: center;
       flex: 1;
     }
-
-    .service-name {
-      font-weight: 500;
-      font-size: 0.9rem;
-    }
-
-    .service-duration {
-      font-size: 0.75rem;
-      color: var(--muted);
-    }
-
+    .service-name { font-weight: 500; font-size: 1rem; color: var(--ink); }
+    .service-duration { font-size: 0.8rem; color: var(--muted); font-weight: 300; }
     .service-price {
-      font-weight: 600;
-      color: var(--ink);
-      min-width: 60px;
+      font-weight: 500;
+      color: var(--rose);
+      min-width: 70px;
       text-align: right;
-      font-size: 0.9rem;
+      font-size: 0.95rem;
     }
 
-    .service-actions {
-      display: flex;
-      gap: 0.3rem;
-    }
-
+    .service-actions { display: flex; gap: 0.6rem; }
     .service-actions button {
       background: none;
       border: none;
       cursor: pointer;
-      color: var(--muted);
-      padding: 0.2rem;
-      font-size: 0.9rem;
+      color: var(--grey-icon);
+      padding: 0.3rem 0.4rem;
+      font-size: 0.95rem;
       transition: 0.15s;
     }
+    .service-actions button:hover { color: var(--rose); }
 
-    .service-actions button:hover {
-      color: var(--rose);
-    }
-
-    /* ----- STYLIST CARDS — cleaner, more presentable ----- */
+    /* ============================================================
+       STYLIST LIST — flat full-width rows
+       ============================================================ */
     .stylist-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-      gap: 1rem;
-      margin-top: 0.8rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0;
     }
 
     .stylist-card {
-      background: var(--white);
-      border: 1px solid var(--border);
-      border-radius: 1.2rem;
-      padding: 1.2rem 1.2rem 1rem;
-      transition: box-shadow 0.2s;
+      display: block;
+      border-bottom: 1px solid var(--border);
+      padding: 1.1rem 0;
+      transition: 0.15s;
+      background: transparent;
+      border-radius: 0;
+      cursor: pointer;
     }
-
     .stylist-card:hover {
-      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.05);
+      padding-left: 0.4rem;
+      padding-right: 0.4rem;
+      background: var(--hover-surface);
+      box-shadow: none;
+      border-radius: 0;
+      transform: none;
     }
+    .stylist-card:last-child { border-bottom: none; }
 
     .stylist-card .stylist-name {
-      font-size: 1.05rem;
-      font-weight: 700;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.4rem;
+      font-weight: 500;
       color: var(--ink);
-      margin-bottom: 0.1rem;
+      margin-bottom: 0.4rem;
+      letter-spacing: 0.2px;
     }
 
     .stylist-card .stylist-contact-item {
-      font-size: 0.8rem;
+      font-size: 0.85rem;
       color: var(--muted);
       padding: 0.1rem 0;
-      display: flex;
+      display: inline-flex;
       align-items: center;
-      gap: 0.4rem;
+      gap: 0.5rem;
+      font-weight: 300;
+      margin-right: 1.2rem;
     }
-
     .stylist-card .stylist-contact-item i {
-      width: 18px;
-      color: var(--rose);
-      font-size: 0.8rem;
+      width: 16px;
+      color: var(--grey-icon);
+      font-size: 0.78rem;
     }
 
     .stylist-card .stylist-status {
@@ -649,271 +618,430 @@
       align-items: center;
       gap: 0.3rem;
       font-size: 0.7rem;
-      font-weight: 600;
-      padding: 0.15rem 0.7rem;
+      font-weight: 500;
+      padding: 0.2rem 0.75rem;
       border-radius: 2rem;
-      margin: 0.4rem 0;
+      letter-spacing: 0.2px;
     }
+    .stylist-card .stylist-status.active { background: rgba(74, 222, 128, 0.15); color: var(--success); }
+    body.light .stylist-card .stylist-status.active { background: rgba(44, 143, 110, 0.12); }
+    .stylist-card .stylist-status.inactive { background: rgba(251, 191, 36, 0.15); color: var(--warning); }
+    .stylist-card .stylist-status.disabled { background: var(--hover-surface); color: var(--muted); }
 
-    .stylist-card .stylist-status.active {
-      background: #E6F7F2;
-      color: var(--success);
+    .stylist-status-select {
+      padding: 0.25rem 0.7rem !important;
+      border-radius: 2rem !important;
+      border: 1px solid var(--border) !important;
+      font-size: 0.7rem !important;
+      font-family: inherit !important;
+      background: transparent !important;
+      color: var(--muted) !important;
+      cursor: pointer !important;
+      transition: 0.15s !important;
     }
-
-    .stylist-card .stylist-status.inactive {
-      background: #FEF3E8;
-      color: var(--warning);
-    }
-
-    .stylist-card .stylist-status.disabled {
-      background: #f5f5f5;
-      color: #888;
-    }
+    .stylist-status-select:hover { border-color: var(--rose) !important; }
+    .stylist-status-select option { background: var(--bg); color: var(--ink); }
 
     .stylist-card .stylist-rating {
-      font-size: 0.8rem;
+      font-size: 0.85rem;
       color: var(--muted);
+      margin-top: 0.4rem;
+      font-weight: 300;
     }
-
-    .stylist-card .stylist-rating strong {
-      color: var(--ink);
-    }
+    .stylist-card .stylist-rating strong { color: var(--ink); font-weight: 500; }
 
     .stylist-card .stylist-services-label {
-      font-size: 0.7rem;
+      font-size: 0.68rem;
       font-weight: 600;
       color: var(--muted);
       text-transform: uppercase;
-      letter-spacing: 0.3px;
-      margin: 0.5rem 0 0.2rem;
+      letter-spacing: 0.6px;
+      margin: 0.7rem 0 0.4rem;
     }
 
     .stylist-card .service-chips {
       display: flex;
       flex-wrap: wrap;
-      gap: 0.3rem;
+      gap: 0.35rem;
     }
-
     .stylist-card .chip {
       background: var(--rose-pale);
       color: var(--rose);
-      padding: 0.15rem 0.7rem;
+      padding: 0.2rem 0.7rem;
       border-radius: 2rem;
-      font-size: 0.7rem;
-      font-weight: 500;
+      font-size: 0.72rem;
+      font-weight: 400;
+      letter-spacing: 0.2px;
     }
 
     .stylist-card .stylist-actions {
       display: flex;
-      gap: 0.4rem;
-      margin-top: 0.8rem;
+      gap: 1.2rem;
+      margin-top: 0.9rem;
       flex-wrap: wrap;
     }
 
-    /* ----- FILTER BAR ----- */
+    /* ============================================================
+       FILTER BAR
+       ============================================================ */
     .filter-bar {
       display: flex;
-      gap: 0.8rem;
+      gap: 1rem;
       flex-wrap: wrap;
       align-items: center;
-      background: var(--white);
-      padding: 0.8rem 1.2rem;
-      border-radius: 1.2rem;
-      border: 1px solid var(--border);
-      margin-bottom: 1.2rem;
+      padding: 0 0 1.2rem 0;
+      margin-bottom: 1.4rem;
+      border-bottom: 1px solid var(--border);
     }
-
     .filter-bar label {
-      font-size: 0.85rem;
+      font-size: 0.7rem;
       font-weight: 600;
       color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.6px;
     }
-
     .filter-bar select,
     .filter-bar input {
-      padding: 0.4rem 0.8rem;
-      border-radius: 2rem;
-      border: 1px solid var(--border);
-      background: var(--white);
-      font-size: 0.85rem;
+      padding: 0.5rem 0;
+      border: none;
+      border-bottom: 1px solid var(--border);
+      border-radius: 0;
+      background: transparent;
+      font-size: 0.95rem;
       font-family: inherit;
       color: var(--ink);
+      transition: 0.2s;
+      font-weight: 300;
     }
-
     .filter-bar select:focus,
     .filter-bar input:focus {
       outline: none;
-      border-color: var(--rose);
+      border-bottom-color: var(--rose);
     }
+    .filter-bar select option { background: var(--bg); color: var(--ink); }
 
-    /* ----- ANALYTICS CARDS ----- */
+    /* ============================================================
+       ANALYTICS — flat sections, no cards
+       ============================================================ */
     .analytics-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
-      gap: 1rem;
-      margin-bottom: 1.2rem;
+      grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
+      gap: 2rem;
+      margin-bottom: 2rem;
     }
 
     .analytics-card {
-      background: var(--white);
-      border: 1px solid var(--border);
-      border-radius: 1.2rem;
-      padding: 1.2rem;
+      background: transparent;
+      border: none;
+      border-radius: 0;
+      padding: 0;
     }
 
     .analytics-card h3 {
-      font-size: 1rem;
-      font-weight: 700;
+      font-size: 1.05rem;
+      font-weight: 500;
       color: var(--ink);
-      margin-bottom: 0.1rem;
+      margin-bottom: 0.2rem;
     }
-
-    .analytics-card p {
+    .analytics-card > p {
       font-size: 0.85rem;
       color: var(--muted);
-      margin-bottom: 0.8rem;
+      margin-bottom: 0.9rem;
+      font-weight: 300;
     }
 
     .chart-container {
       max-height: 260px;
       min-height: 200px;
-      margin-bottom: 0.8rem;
+      margin-bottom: 0.9rem;
       position: relative;
     }
+    .chart-container canvas { width: 100% !important; height: 100% !important; }
 
-    .chart-container canvas {
-      width: 100% !important;
-      height: 100% !important;
-    }
-
-    .peak-hours {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 0.4rem;
-      margin-top: 0.4rem;
-    }
-
+    .peak-hours { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-top: 0.5rem; }
     .peak-hour-tag {
-      background: #FDF3F7;
-      color: #a3315a;
-      padding: 0.2rem 0.7rem;
+      background: var(--rose-pale);
+      color: var(--rose);
+      padding: 0.25rem 0.7rem;
       border-radius: 2rem;
-      font-size: 0.8rem;
+      font-size: 0.78rem;
       font-weight: 500;
     }
 
-    /* ----- DOWNLOAD BUTTON ----- */
-    .btn-download {
-      background: transparent;
-      border: 1.5px solid var(--rose);
+    /* ============================================================
+       HOME
+       ============================================================ */
+    .home-hero {
+      padding: 2rem 0 2rem 0;
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 2rem;
+    }
+    .home-hero .home-eyebrow {
+      font-size: 0.7rem;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      font-weight: 600;
       color: var(--rose);
-      padding: 0.5rem 1.2rem;
-      border-radius: 2rem;
-      font-size: 0.85rem;
+      margin-bottom: 0.5rem;
+    }
+    .home-hero h1 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 3rem;
       font-weight: 500;
+      letter-spacing: 0.3px;
+      line-height: 1.1;
+      background: var(--gradient);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      margin-bottom: 0.8rem;
+    }
+    .home-hero p {
+      font-size: 1.05rem;
+      color: var(--muted);
+      font-weight: 300;
+      max-width: 640px;
+      line-height: 1.7;
+    }
+
+    .home-links {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 0;
+      margin-top: 1rem;
+      border-top: 1px solid var(--border);
+    }
+    .home-link {
+      display: block;
+      padding: 1.4rem 0;
+      border-bottom: 1px solid var(--border);
       cursor: pointer;
       transition: 0.2s;
+      background: transparent;
+      border-left: none;
+      border-right: none;
+      border-top: none;
       font-family: inherit;
+      text-align: left;
+      width: 100%;
+    }
+    .home-link:hover { padding-left: 0.5rem; }
+    .home-link .home-link-title {
+      font-size: 1.05rem;
+      font-weight: 500;
+      color: var(--ink);
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      margin-bottom: 0.35rem;
+    }
+    .home-link .home-link-title i {
+      color: var(--rose);
+      font-size: 1rem;
+      width: 20px;
+    }
+    .home-link .home-link-desc {
+      font-size: 0.88rem;
+      color: var(--muted);
+      font-weight: 300;
+      line-height: 1.5;
+    }
+
+    /* ============================================================
+       PROFILE
+       ============================================================ */
+    .profile-container {
+      max-width: 640px;
+      margin: 0 auto;
+      padding: 0.5rem 0;
+    }
+
+    .profile-header {
+      text-align: center;
+      padding: 1.5rem 0 1.5rem 0;
+    }
+
+    .profile-avatar-large {
+      width: 90px;
+      height: 90px;
+      border-radius: 50%;
+      background: var(--gradient);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 2.4rem;
+      font-weight: 600;
+      color: white;
+      margin: 0 auto 0.7rem;
+    }
+
+    .profile-name {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 2rem;
+      font-weight: 500;
+      letter-spacing: 0.3px;
+      color: var(--ink);
+    }
+
+    .profile-email {
+      font-size: 0.95rem;
+      color: var(--muted);
+      margin-top: 0.2rem;
+      font-weight: 300;
+    }
+
+    .profile-role-badge {
       display: inline-flex;
       align-items: center;
-      gap: 0.4rem;
+      gap: 0.35rem;
+      color: var(--rose);
+      font-size: 0.85rem;
+      font-weight: 400;
+      margin-top: 0.5rem;
     }
 
-    .btn-download:hover {
-      background: var(--rose);
-      color: white;
+    .profile-divider {
+      height: 1px;
+      background: var(--border);
+      margin: 0.8rem 0;
     }
 
-    /* ----- MODALS ----- */
+    .profile-details-list {
+      display: flex;
+      flex-direction: column;
+      padding: 0.3rem 0;
+    }
+
+    .profile-detail-item {
+      display: flex;
+      align-items: center;
+      padding: 1rem 0;
+      border-bottom: 1px solid var(--border);
+    }
+    .profile-detail-item:last-child { border-bottom: none; }
+
+    .detail-label {
+      color: var(--muted);
+      font-size: 1rem;
+      flex: 1;
+      font-weight: 300;
+    }
+    .detail-value {
+      color: var(--ink);
+      font-weight: 500;
+      font-size: 1rem;
+      text-align: right;
+    }
+
+    /* ============================================================
+       MODALS
+       ============================================================ */
     .modal {
       display: none;
       position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: rgba(0, 0, 0, 0.4);
-      backdrop-filter: blur(2px);
+      inset: 0;
+      background: rgba(0, 0, 0, 0.75);
+      backdrop-filter: blur(6px);
       align-items: center;
       justify-content: center;
-      z-index: 1000;
+      z-index: 2000;
       padding: 1rem;
     }
-
-    .modal.active {
-      display: flex;
-    }
+    .modal.active { display: flex; }
 
     .modal-content {
-      background: var(--white);
-      border-radius: 1.2rem;
-      width: 520px;
-      max-width: 100%;
-      padding: 1.8rem;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 1rem;
+      width: 100%;
+      max-width: 520px;
+      padding: 2rem 1.5rem;
       max-height: 90vh;
       overflow-y: auto;
       animation: fadeIn 0.2s ease;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6);
     }
+    body.light .modal-content { box-shadow: 0 20px 60px rgba(0, 0, 0, 0.12); }
 
     .modal-content h3 {
       font-family: 'Cormorant Garamond', serif;
       font-size: 1.6rem;
-      font-weight: 600;
-      color: var(--rose);
-      margin-bottom: 1.2rem;
+      font-weight: 500;
+      color: var(--ink);
+      letter-spacing: 0.3px;
+      margin-bottom: 1.5rem;
     }
 
     .modal-content label {
       display: block;
-      font-size: 0.8rem;
-      font-weight: 700;
+      font-size: 0.7rem;
+      font-weight: 600;
       text-transform: uppercase;
-      letter-spacing: 0.3px;
+      letter-spacing: 0.6px;
       color: var(--muted);
-      margin-bottom: 0.2rem;
-      margin-top: 0.6rem;
+      margin-bottom: 0.3rem;
+      margin-top: 1rem;
     }
 
     .modal-content input,
     .modal-content select {
       width: 100%;
-      padding: 0.7rem 1rem;
-      border: 1.5px solid var(--border);
-      border-radius: 0.8rem;
-      font-size: 0.95rem;
+      padding: 0.7rem 0;
+      border: none;
+      border-bottom: 1px solid var(--border);
+      border-radius: 0;
+      font-size: 1rem;
       font-family: inherit;
       color: var(--ink);
-      background: var(--white);
-      transition: 0.15s;
+      background: transparent;
+      transition: 0.2s;
+      font-weight: 300;
     }
-
     .modal-content input:focus,
     .modal-content select:focus {
       outline: none;
-      border-color: var(--rose);
+      border-bottom-color: var(--rose);
     }
+    .modal-content input::placeholder { color: var(--muted); opacity: 0.5; }
+    .modal-content select option { background: var(--bg); color: var(--ink); }
 
     .modal-content select[multiple] {
-      height: 120px;
+      border: 1px solid var(--border);
+      border-radius: 0.6rem;
+      padding: 0.6rem;
+      min-height: 140px;
+      margin-top: 0.3rem;
+    }
+    .modal-content select[multiple] option {
+      padding: 0.35rem 0.5rem;
+      border-radius: 0.3rem;
+    }
+    .modal-content select[multiple] option:checked {
+      background: var(--rose-pale) linear-gradient(var(--rose-pale), var(--rose-pale));
+      color: var(--rose);
     }
 
     .modal-footer {
       display: flex;
-      gap: 0.8rem;
+      gap: 1.5rem;
       justify-content: flex-end;
-      margin-top: 1.2rem;
+      margin-top: 1.8rem;
       flex-wrap: wrap;
     }
 
-    /* ----- TOAST ----- */
+    /* ============================================================
+       TOAST + LOADING
+       ============================================================ */
     #toast {
       position: fixed;
       bottom: 20px;
       left: 50%;
       transform: translateX(-50%) translateY(10px);
-      background: var(--ink);
-      color: white;
-      padding: 0.6rem 1.5rem;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      color: var(--ink);
+      padding: 0.6rem 1.4rem;
       border-radius: 2rem;
       font-size: 0.9rem;
       opacity: 0;
@@ -921,30 +1049,25 @@
       pointer-events: none;
       z-index: 3000;
       white-space: nowrap;
+      box-shadow: var(--shadow);
+      font-weight: 400;
     }
+    #toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
 
-    #toast.show {
-      opacity: 1;
-      transform: translateX(-50%) translateY(0);
-    }
-
-    /* ----- LOADING ----- */
     #loadingOverlay {
       display: none;
       position: fixed;
       inset: 0;
-      background: rgba(255, 255, 255, 0.8);
-      backdrop-filter: blur(2px);
+      background: rgba(10, 14, 26, 0.8);
+      backdrop-filter: blur(6px);
       z-index: 9999;
       align-items: center;
       justify-content: center;
       flex-direction: column;
-      gap: 0.8rem;
+      gap: 1rem;
     }
-
-    #loadingOverlay.show {
-      display: flex;
-    }
+    body.light #loadingOverlay { background: rgba(255, 255, 255, 0.8); }
+    #loadingOverlay.show { display: flex; }
 
     .spinner {
       width: 40px;
@@ -954,43 +1077,55 @@
       border-radius: 50%;
       animation: spin 0.8s linear infinite;
     }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    #loadingOverlayText { font-size: 0.9rem; color: var(--muted); font-weight: 500; }
 
-    @keyframes spin {
-      to { transform: rotate(360deg); }
+    /* ============================================================
+       HELP CONTENT
+       ============================================================ */
+    .help-card {
+      background: transparent;
+      border: none;
+      border-bottom: 1px solid var(--border);
+      padding: 1.2rem 0;
     }
-
-    #loadingOverlayText {
+    .help-card:last-child { border-bottom: none; }
+    .help-card h4 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.2rem;
+      font-weight: 500;
+      color: var(--rose);
+      margin-bottom: 0.5rem;
+      letter-spacing: 0.3px;
+    }
+    .help-card p {
       font-size: 0.9rem;
-      color: var(--muted);
-      font-weight: 600;
+      color: var(--text-dim);
+      margin-bottom: 0.3rem;
+      font-weight: 300;
+      line-height: 1.6;
+    }
+    .help-card p:last-child { margin-bottom: 0; }
+
+    /* ============================================================
+       RESPONSIVE
+       ============================================================ */
+    @media (max-width: 900px) {
+      .analytics-grid { grid-template-columns: 1fr; gap: 1.5rem; }
     }
 
-    .empty-state {
-      text-align: center;
-      padding: 2.5rem 1rem;
-      color: var(--muted);
-    }
-
-    .empty-state i {
-      font-size: 2.5rem;
-      color: var(--rose-mid);
-      margin-bottom: 0.7rem;
-      display: block;
-    }
-
-    .empty-state p {
-      font-size: 0.95rem;
-      margin-bottom: 0.8rem;
-    }
-
-    /* PDF hidden elements for download */
-    #pdfContent {
-      display: none;
-    }
-
-    /* ----- RESPONSIVE — matching customer dashboard ----- */
     @media (max-width: 768px) {
-      .menu-toggle { display: block; }
+      body { font-size: 15px; }
+      .header { padding: 0.7rem 1rem 0.3rem; }
+      .top-tabs { padding: 0 1rem; }
+      .top-tabs .tab-item { font-size: 0.8rem; padding: 0.7rem 0.4rem; min-width: 78px; }
+      .top-tabs .tab-item i { font-size: 1rem; }
+      .main { padding: 1rem 1rem 3rem 1rem; }
+      .section-title { font-size: 1.8rem; }
+      .section-sub { font-size: 0.92rem; }
+      .home-hero h1 { font-size: 2rem; }
+
+      .menu-btn { display: flex; }
       .sidebar-close { display: block; }
 
       .sidebar {
@@ -998,197 +1133,220 @@
         top: 0;
         left: 0;
         width: 280px;
-        height: 100vh;
+        height: 100%;
         transform: translateX(-100%);
-        box-shadow: 2px 0 12px rgba(0,0,0,0.1);
-        z-index: 999;
         border-right: none;
+        box-shadow: 4px 0 30px rgba(0, 0, 0, 0.6);
       }
-
+      body.light .sidebar { box-shadow: 4px 0 30px rgba(0, 0, 0, 0.1); }
       .sidebar.open { transform: translateX(0); }
 
-      .header { padding: 0.6rem 1rem; }
-      .main { padding: 1rem; }
-      .section-title { font-size: 1.6rem; }
-
-      .analytics-grid { grid-template-columns: 1fr; }
-      .stylist-grid { grid-template-columns: 1fr 1fr; }
-
-      .filter-bar {
-        flex-direction: column;
-        align-items: stretch;
-      }
-
+      .filter-bar { flex-direction: column; align-items: stretch; }
       .filter-bar > * { width: 100%; }
 
-      .service-row {
-        flex-direction: column;
-        align-items: flex-start;
-      }
+      .service-row { flex-direction: column; align-items: flex-start; }
+      .service-price { text-align: left; width: 100%; }
+      .service-actions { width: 100%; justify-content: flex-end; }
 
-      .service-price {
-        text-align: left;
-        width: 100%;
-      }
-
-      .service-actions {
-        width: 100%;
-        justify-content: flex-end;
-      }
-
-      .admin-table { font-size: 0.8rem; }
-      .admin-table th,
-      .admin-table td { padding: 0.4rem 0.5rem; }
+      .admin-table { font-size: 0.82rem; }
+      .admin-table th, .admin-table td { padding: 0.55rem 0.5rem; }
     }
 
     @media (max-width: 480px) {
-      .header { padding: 0.4rem 0.6rem; }
-      .brand-name { font-size: 1.2rem; }
-      .brand-slogan { font-size: 0.6rem; }
+      body { font-size: 14px; }
+      .header { padding: 0.6rem 0.8rem 0.3rem; }
+      .top-tabs { padding: 0 0.8rem; }
+      .top-tabs .tab-item { font-size: 0.72rem; padding: 0.6rem 0.3rem; min-width: 68px; }
+      .top-tabs .tab-item i { font-size: 0.9rem; }
+      .main { padding: 0.8rem 0.8rem 3rem 0.8rem; }
 
-      .user-pill { padding: 0.2rem 0.6rem 0.2rem 0.3rem; }
-      .avatar { width: 24px; height: 24px; font-size: 0.6rem; }
-      .user-name { font-size: 0.7rem; }
-      .signout-btn { font-size: 0.7rem; padding: 0.25rem 0.7rem; }
+      .brand-name { font-size: 1.55rem; }
+      .brand-slogan { font-size: 0.68rem; }
 
-      .main { padding: 0.6rem; }
-      .section-title { font-size: 1.3rem; }
-      .section-sub { font-size: 0.8rem; }
+      .section-title { font-size: 1.5rem; }
+      .section-sub { font-size: 0.85rem; }
+      .home-hero h1 { font-size: 1.7rem; }
+      .home-hero p { font-size: 0.92rem; }
 
-      .btn-primary { font-size: 0.8rem; padding: 0.4rem 1rem; }
-      .btn-outline { font-size: 0.8rem; padding: 0.35rem 0.9rem; }
+      .admin-table { font-size: 0.72rem; }
+      .admin-table th, .admin-table td { padding: 0.4rem 0.4rem; }
 
-      .stylist-grid { grid-template-columns: 1fr; }
-      .analytics-grid { grid-template-columns: 1fr; }
-
-      .admin-table { font-size: 0.7rem; }
-      .admin-table th,
-      .admin-table td { padding: 0.3rem 0.4rem; }
-
-      .modal-content { padding: 1rem; margin: 0.5rem; }
-      .sidebar { width: 240px; }
+      .modal-content { padding: 1.5rem 1.1rem; }
+      .sidebar { width: 260px; }
     }
   </style>
 </head>
 <body>
 
-<!-- ===== HEADER — matching customer dashboard ===== -->
+<!-- ============================================================
+     HEADER
+     ============================================================ -->
 <header class="header">
-  <div style="display:flex; align-items:center; gap:0.8rem;">
-    <button class="menu-toggle" id="menuToggle"><i class="fas fa-bars"></i></button>
-    <div class="brand">
-      <div class="brand-top">
-        <span class="brand-name">PinkMeUp Admin</span>
-      </div>
+  <div class="header-left">
+    <button class="menu-btn" id="menuToggle"><i class="fas fa-bars"></i></button>
+    <div class="brand-wrapper">
+      <span class="brand-name">PinkMeUp Admin</span>
       <span class="brand-slogan">Manage · Analyze · Grow</span>
     </div>
   </div>
-  <div class="header-right">
-    <div class="user-pill">
-      <div class="avatar" id="adminAvatar">AD</div>
-    </div>
-    <button class="signout-btn" id="signoutBtn"><i class="fas fa-arrow-left"></i> Sign out</button>
-  </div>
 </header>
 
-<!-- ===== APP ===== -->
+<!-- ============================================================
+     TOP TABS
+     ============================================================ -->
+<div class="top-tabs">
+  <button class="tab-item nav-item active" data-view="home">
+    <span class="tab-icon"><i class="fas fa-home"></i></span> Home
+  </button>
+  <button class="tab-item nav-item" data-view="services">
+    <span class="tab-icon"><i class="fas fa-concierge-bell"></i></span> Services
+  </button>
+  <button class="tab-item nav-item" data-view="stylists">
+    <span class="tab-icon"><i class="fas fa-users"></i></span> Stylists
+  </button>
+  <button class="tab-item nav-item" data-view="bookings">
+    <span class="tab-icon"><i class="fas fa-calendar-check"></i></span> Bookings
+  </button>
+  <button class="tab-item nav-item" data-view="reports">
+    <span class="tab-icon"><i class="fas fa-chart-line"></i></span> Analytics
+  </button>
+  <button class="tab-item nav-item" data-view="profile">
+    <span class="tab-icon"><i class="fas fa-user"></i></span> Profile
+  </button>
+</div>
+
+<!-- ============================================================
+     APP
+     ============================================================ -->
 <div class="app">
   <div class="sidebar-overlay" id="sidebarOverlay"></div>
 
-  <!-- SIDEBAR — matching customer dashboard -->
   <aside class="sidebar" id="sidebar">
-    <div class="sidebar-close" id="sidebarClose"><i class="fas fa-times"></i></div>
+    <button class="sidebar-close" id="sidebarClose"><i class="fas fa-times"></i></button>
 
     <div class="sidebar-greeting">
       <div class="greeting-name" id="greetingName">Hello, Admin</div>
       <div class="greeting-sub">Manage your salon operations</div>
     </div>
 
-    <nav class="nav">
-      <div class="nav-item active" data-view="services"><i class="fas fa-concierge-bell"></i> Services</div>
-      <div class="nav-item" data-view="stylists"><i class="fas fa-users"></i> Stylists</div>
-      <div class="nav-item" data-view="bookings"><i class="fas fa-calendar-check"></i> Bookings</div>
-      <div class="nav-item" data-view="reports"><i class="fas fa-chart-line"></i> Analytics</div>
-      <div class="nav-item signout-nav" id="sidebarSignOut"><i class="fas fa-arrow-left"></i> Sign out</div>
+    <nav class="sidebar-nav">
+      <button class="sidebar-item" onclick="document.getElementById('helpModal').classList.add('active')">
+        <i class="fas fa-question-circle"></i> Help
+      </button>
+      <button class="sidebar-item" id="themeToggleBtn" onclick="toggleTheme()">
+        <i class="fas fa-moon" id="themeIcon"></i> <span id="themeLabel">Light Mode</span>
+      </button>
+      <button class="sidebar-item signout-nav" id="sidebarSignOut">
+        <i class="fas fa-arrow-left"></i> Sign Out
+      </button>
     </nav>
 
-    <!-- SIDEBAR FOOTER — Hours (no Sunday) + IT Support (no emojis) -->
     <div class="sidebar-footer">
-      <p><strong>Hours</strong></p>
+      <strong>Hours</strong>
       <p>Mon–Fri: 9am – 5pm</p>
       <p>Sat: 9am – 2pm</p>
-      <br>
-      <p><strong>IT Support</strong></p>
-      <div class="support-line">072 536 9347</div>
-      <div class="support-line">nexgentechs@salon.com</div>
+      <strong>IT Support</strong>
+      <p>072 536 9347</p>
+      <p>nexgentechs@salon.com</p>
     </div>
   </aside>
 
-  <!-- MAIN -->
   <main class="main">
-    <!-- SERVICES -->
-    <section id="services-view" class="view active">
-      <div class="view-header">
-        <div>
-          <div class="section-title">Manage Services</div>
-          <div class="section-sub">Add, edit, or archive services offered at your salon</div>
-        </div>
-        <button class="btn-primary" id="addServiceBtn"><i class="fas fa-plus"></i> New Service</button>
+
+    <!-- ==================== HOME ==================== -->
+    <section id="home-view" class="view active">
+      <div class="home-hero">
+        <div class="home-eyebrow">Admin Panel</div>
+        <h1>Welcome back to PinkMeUp</h1>
+        <p>Your central hub for managing services, stylists, bookings, and salon performance. Everything you need to keep PinkMeUp running smoothly — all in one place.</p>
       </div>
-      <div class="card">
-        <div class="card-body" id="servicesContainer"></div>
+
+      <div class="view-header" style="margin-bottom:0.5rem;">
+        <div>
+          <div class="section-title" style="font-size:1.5rem;">Quick Actions</div>
+          <div class="section-hint">Jump straight to the area you want to manage.</div>
+        </div>
+      </div>
+
+      <div class="home-links">
+        <button class="home-link nav-item" data-view="services">
+          <div class="home-link-title"><i class="fas fa-concierge-bell"></i> Manage Services</div>
+          <div class="home-link-desc">Add, edit, or archive the services your salon offers.</div>
+        </button>
+        <button class="home-link nav-item" data-view="stylists">
+          <div class="home-link-title"><i class="fas fa-users"></i> Manage Stylists</div>
+          <div class="home-link-desc">View stylist profiles, assign specialties, and manage status.</div>
+        </button>
+        <button class="home-link nav-item" data-view="bookings">
+          <div class="home-link-title"><i class="fas fa-calendar-check"></i> Manage Bookings</div>
+          <div class="home-link-desc">Review appointments and update their statuses.</div>
+        </button>
+        <button class="home-link nav-item" data-view="reports">
+          <div class="home-link-title"><i class="fas fa-chart-line"></i> View Analytics</div>
+          <div class="home-link-desc">Booking trends, popular services, and stylist performance.</div>
+        </button>
       </div>
     </section>
 
-    <!-- STYLISTS -->
+    <!-- ==================== SERVICES ==================== -->
+    <section id="services-view" class="view">
+      <div class="view-header">
+        <div>
+          <div class="section-title">Manage Services</div>
+          <div class="section-sub">Add new services, update pricing, and organise your salon's offerings by category.</div>
+          <div class="section-hint"><i class="fas fa-hand-pointer"></i> Use the edit icon to update a service or the trash icon to archive it.</div>
+        </div>
+        <button class="btn-primary" id="addServiceBtn"><i class="fas fa-plus"></i> New Service</button>
+      </div>
+      <div id="servicesContainer"></div>
+    </section>
+
+    <!-- ==================== STYLISTS ==================== -->
     <section id="stylists-view" class="view">
       <div class="view-header">
         <div>
           <div class="section-title">Manage Stylists</div>
-          <div class="section-sub">Add stylists and assign their service specialties</div>
+          <div class="section-sub">Add new stylists, assign their service specialties, and control their availability status.</div>
+          <div class="section-hint"><i class="fas fa-hand-pointer"></i> Tap any stylist to edit their profile and services.</div>
         </div>
         <button class="btn-primary" id="addStylistBtn"><i class="fas fa-plus"></i> New Stylist</button>
       </div>
       <div id="stylistsContainer" class="stylist-grid"></div>
     </section>
 
-    <!-- BOOKINGS -->
+    <!-- ==================== BOOKINGS ==================== -->
     <section id="bookings-view" class="view">
       <div class="view-header">
         <div>
           <div class="section-title">Manage Bookings</div>
-          <div class="section-sub">Review and update appointment statuses</div>
+          <div class="section-sub">Review all appointments, mark them as complete, or flag no-shows.</div>
+          <div class="section-hint"><i class="fas fa-info-circle"></i> Completed and cancelled bookings cannot be modified.</div>
         </div>
       </div>
-      <div class="card">
-        <div class="card-body">
-          <table class="admin-table" id="bookingsTable">
-            <thead>
-              <tr>
-                <th>Date &amp; Time</th>
-                <th>Customer</th>
-                <th>Services</th>
-                <th>Stylist</th>
-                <th>Status</th>
-                <th>Actions</th>
-              </tr>
-            </thead>
-            <tbody id="bookingsTableBody"></tbody>
-          </table>
-        </div>
-      </div>
+      <table class="admin-table" id="bookingsTable">
+        <thead>
+          <tr>
+            <th>Date &amp; Time</th>
+            <th>Customer</th>
+            <th>Services</th>
+            <th>Stylist</th>
+            <th>Status</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody id="bookingsTableBody"></tbody>
+      </table>
     </section>
 
-    <!-- ANALYTICS -->
+    <!-- ==================== ANALYTICS ==================== -->
     <section id="reports-view" class="view">
       <div class="view-header">
         <div>
           <div class="section-title">Analytics</div>
-          <div class="section-sub">Booking insights and stylist performance</div>
+          <div class="section-sub">Booking trends, most requested services, and stylist performance for the selected period.</div>
+          <div class="section-hint"><i class="fas fa-info-circle"></i> Adjust the period filter below to explore different date ranges.</div>
         </div>
-        <div style="display:flex; gap:0.6rem; flex-wrap:wrap;">
-          <button class="btn-download" id="downloadReportBtn"><i class="fas fa-file-pdf"></i> Download PDF</button>
-        </div>
+        <button class="btn-download" id="downloadReportBtn"><i class="fas fa-file-pdf"></i> Download PDF</button>
       </div>
 
       <div class="filter-bar">
@@ -1199,12 +1357,12 @@
           <option value="lastYear">Last 12 months</option>
           <option value="custom">Custom range</option>
         </select>
-        <div id="customDateRange" style="display:none; display:flex; gap:0.4rem; align-items:center; flex-wrap:wrap;">
+        <div id="customDateRange" style="display:none; display:flex; gap:0.6rem; align-items:center; flex-wrap:wrap;">
           <input type="date" id="startDate" />
-          <span style="font-size:0.85rem;color:var(--muted);">to</span>
+          <span style="font-size:0.85rem;color:var(--muted);font-weight:300;">to</span>
           <input type="date" id="endDate" />
         </div>
-        <button class="btn-outline" id="applyFilterBtn">Apply</button>
+        <button class="btn-outline" id="applyFilterBtn"><i class="fas fa-sync-alt"></i> Apply</button>
       </div>
 
       <div id="analyticsContent">
@@ -1220,7 +1378,7 @@
 
           <div class="analytics-card">
             <h3>Popular Services</h3>
-            <p>Most requested services</p>
+            <p>Most requested services in the selected period</p>
             <table class="admin-table" id="servicePopularityTable">
               <thead><tr><th>Service</th><th>Category</th><th class="text-right">Bookings</th></tr></thead>
               <tbody id="servicePopularityBody"></tbody>
@@ -1230,7 +1388,7 @@
 
         <div class="analytics-card" style="margin-top:0;">
           <h3>Stylist Performance</h3>
-          <p>Completion rates and average ratings</p>
+          <p>Completion rates and average ratings per stylist</p>
           <table class="admin-table" id="stylistTable">
             <thead>
               <tr><th>Stylist</th><th class="text-right">Assigned</th><th class="text-right">Completed</th><th class="text-right">Rate</th><th class="text-right">Rating</th></tr>
@@ -1240,10 +1398,53 @@
         </div>
       </div>
     </section>
+
+    <!-- ==================== PROFILE ==================== -->
+    <section id="profile-view" class="view">
+      <div class="profile-container">
+        <div class="profile-header">
+          <div class="profile-avatar-large" id="adminAvatar">AD</div>
+          <div class="profile-name" id="adminProfileName">Admin</div>
+          <div class="profile-email" id="adminProfileEmail">admin@pinkmeup.com</div>
+          <div class="profile-role-badge"><i class="fas fa-crown"></i> Administrator</div>
+        </div>
+        <div class="profile-divider"></div>
+        <div class="profile-details-list">
+          <div class="profile-detail-item">
+            <span class="detail-label">Full Name</span>
+            <span class="detail-value" id="adminProfileFullName">—</span>
+          </div>
+          <div class="profile-detail-item">
+            <span class="detail-label">Email Address</span>
+            <span class="detail-value" id="adminProfileFullEmail">—</span>
+          </div>
+          <div class="profile-detail-item">
+            <span class="detail-label">Phone</span>
+            <span class="detail-value" id="adminProfilePhone">—</span>
+          </div>
+          <div class="profile-detail-item">
+            <span class="detail-label">Role</span>
+            <span class="detail-value">Administrator</span>
+          </div>
+        </div>
+        <div class="profile-divider"></div>
+        <div style="display:flex; gap:1.5rem; flex-wrap:wrap; padding-top:0.5rem;">
+          <button class="btn-primary" onclick="document.getElementById('helpModal').classList.add('active')">
+            <i class="fas fa-question-circle"></i> Help &amp; Support
+          </button>
+          <button class="btn-outline" id="profileSignOut">
+            <i class="fas fa-arrow-left"></i> Sign Out
+          </button>
+        </div>
+      </div>
+    </section>
+
   </main>
 </div>
 
-<!-- ===== MODALS ===== -->
+<!-- ============================================================
+     MODALS
+     ============================================================ -->
 <div id="serviceModal" class="modal">
   <div class="modal-content">
     <h3 id="serviceModalTitle">Add Service</h3>
@@ -1269,7 +1470,6 @@
   </div>
 </div>
 
-<!-- ===== UPDATED STYLIST MODAL WITH STATUS ===== -->
 <div id="stylistModal" class="modal">
   <div class="modal-content">
     <h3 id="stylistModalTitle">Add Stylist</h3>
@@ -1295,19 +1495,78 @@
   </div>
 </div>
 
-<!-- ===== TOAST ===== -->
+<div id="helpModal" class="modal">
+  <div class="modal-content">
+    <h3>Help &amp; Support</h3>
+    <div class="help-card">
+      <h4>Managing Services</h4>
+      <p>Click <strong>New Service</strong> to add a service with its category, price, and duration.</p>
+      <p>Use the edit icon to update an existing service, or the trash icon to archive it from the customer view.</p>
+    </div>
+    <div class="help-card">
+      <h4>Managing Stylists</h4>
+      <p>Click <strong>New Stylist</strong> to add a stylist and assign their service specialties.</p>
+      <p>Change a stylist's status directly from their row: Active, Inactive (on leave), or Disabled.</p>
+    </div>
+    <div class="help-card">
+      <h4>Bookings &amp; Analytics</h4>
+      <p>Mark appointments as complete or flag no-shows from the Bookings tab.</p>
+      <p>Analytics can be filtered by period and exported as a PDF report.</p>
+    </div>
+    <div class="help-card">
+      <h4>IT Support</h4>
+      <p><i class="fas fa-phone" style="width:18px;color:var(--rose);"></i> 072 536 9347</p>
+      <p><i class="fas fa-envelope" style="width:18px;color:var(--rose);"></i> nexgentechs@salon.com</p>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-primary" onclick="document.getElementById('helpModal').classList.remove('active')">Close</button>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================
+     TOAST + LOADING
+     ============================================================ -->
 <div id="toast"></div>
 
-<!-- ===== LOADING OVERLAY ===== -->
 <div id="loadingOverlay">
   <div class="spinner"></div>
   <div id="loadingOverlayText">Loading...</div>
 </div>
 
+<!-- ============================================================
+     THEME TOGGLE — small self-contained script
+     ============================================================ -->
 <script>
-  // ============================================================
-  // CONFIG
-  // ============================================================
+  function applyAdminTheme(theme) {
+    const icon = document.getElementById('themeIcon');
+    const label = document.getElementById('themeLabel');
+    if (theme === 'light') {
+      document.body.classList.add('light');
+      if (icon) icon.className = 'fas fa-sun';
+      if (label) label.textContent = 'Dark Mode';
+    } else {
+      document.body.classList.remove('light');
+      if (icon) icon.className = 'fas fa-moon';
+      if (label) label.textContent = 'Light Mode';
+    }
+  }
+  function toggleTheme() {
+    const isLight = document.body.classList.toggle('light');
+    const theme = isLight ? 'light' : 'dark';
+    try { localStorage.setItem('pmu-admin-theme', theme); } catch (e) {}
+    applyAdminTheme(theme);
+  }
+  try {
+    const saved = localStorage.getItem('pmu-admin-theme');
+    if (saved) applyAdminTheme(saved);
+  } catch (e) {}
+</script>
+
+<!-- ============================================================
+     MAIN LOGIC — original, minus the rating prompt
+     ============================================================ -->
+<script>
   const API_BASE = window.API_URL || 'https://pinkmeup-api.onrender.com/api/v1';
   let services = [];
   let stylists = [];
@@ -1315,9 +1574,6 @@
   let trendsChart = null;
   const DAY_LABELS = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 
-  // ============================================================
-  // HELPERS
-  // ============================================================
   function escapeHtml(str) {
     if (!str) return '';
     return str.replace(/[&<>]/g, m => m === '&' ? '&amp;' : (m === '<' ? '&lt;' : '&gt;'));
@@ -1344,38 +1600,24 @@
     return s ? s.name : 'Unknown';
   }
 
-  // ============================================================
-  // SIDEBAR TOGGLE — matching customer dashboard
-  // ============================================================
   document.addEventListener('DOMContentLoaded', function() {
     const sidebar = document.getElementById('sidebar');
     const overlay = document.getElementById('sidebarOverlay');
     const menuToggle = document.getElementById('menuToggle');
     const sidebarClose = document.getElementById('sidebarClose');
-    const signOutBtn = document.getElementById('signoutBtn');
     const sidebarSignOut = document.getElementById('sidebarSignOut');
+    const profileSignOut = document.getElementById('profileSignOut');
     const downloadBtn = document.getElementById('downloadReportBtn');
 
-    function openSidebar() {
-      sidebar.classList.add('open');
-      overlay.classList.add('active');
-    }
-
-    function closeSidebar() {
-      sidebar.classList.remove('open');
-      overlay.classList.remove('active');
-    }
+    function openSidebar() { sidebar.classList.add('open'); overlay.classList.add('active'); }
+    function closeSidebar() { sidebar.classList.remove('open'); overlay.classList.remove('active'); }
 
     if (menuToggle) menuToggle.addEventListener('click', openSidebar);
     if (sidebarClose) sidebarClose.addEventListener('click', closeSidebar);
     if (overlay) overlay.addEventListener('click', closeSidebar);
-    if (signOutBtn) signOutBtn.addEventListener('click', signOut);
     if (sidebarSignOut) sidebarSignOut.addEventListener('click', signOut);
-
-    // Download Report button - generates PDF
-    if (downloadBtn) {
-      downloadBtn.addEventListener('click', downloadPDFReport);
-    }
+    if (profileSignOut) profileSignOut.addEventListener('click', signOut);
+    if (downloadBtn) downloadBtn.addEventListener('click', downloadPDFReport);
 
     document.querySelectorAll('.nav-item:not(.signout-nav)').forEach(item => {
       item.addEventListener('click', function() {
@@ -1389,25 +1631,14 @@
     });
   });
 
-  // ============================================================
-  // PDF DOWNLOAD — exports entire analytics page as PDF
-  // ============================================================
   function downloadPDFReport() {
     showLoading('Generating PDF...');
-
-    // Wait for chart to render
     setTimeout(() => {
       const element = document.getElementById('analyticsContent');
-      const header = document.querySelector('.view-header');
-
-      // Clone the content for PDF
       const clone = element.cloneNode(true);
-
-      // Get the current period text
       const period = document.getElementById('reportPeriod');
       const periodText = period.options[period.selectedIndex].text;
 
-      // Create wrapper with header info
       const wrapper = document.createElement('div');
       wrapper.style.padding = '20px';
       wrapper.style.background = 'white';
@@ -1432,7 +1663,6 @@
       wrapper.appendChild(subtitle);
       wrapper.appendChild(clone);
 
-      // Fix chart containers in clone
       const chartCanvas = clone.querySelector('#trendsBarChart');
       if (chartCanvas) {
         const originalCanvas = document.getElementById('trendsBarChart');
@@ -1444,50 +1674,28 @@
         chartCanvas.parentNode.replaceChild(img, chartCanvas);
       }
 
-      // Clean up table alignments
       clone.querySelectorAll('.admin-table th, .admin-table td').forEach(el => {
         el.style.padding = '6px 10px';
         el.style.textAlign = 'left';
+        el.style.color = '#333';
+        el.style.borderBottom = '1px solid #eee';
       });
 
       const options = {
         margin: [10, 10, 10, 10],
         filename: `PinkMeUp_Report_${new Date().toISOString().slice(0, 10)}.pdf`,
         image: { type: 'jpeg', quality: 0.98 },
-        html2canvas: {
-          scale: 2,
-          useCORS: true,
-          letterRendering: true,
-          scrollY: 0,
-          windowHeight: element.scrollHeight + 100
-        },
-        jsPDF: {
-          unit: 'mm',
-          format: 'a4',
-          orientation: 'portrait'
-        },
+        html2canvas: { scale: 2, useCORS: true, letterRendering: true, scrollY: 0, windowHeight: element.scrollHeight + 100 },
+        jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
         pagebreak: { mode: ['avoid-all', 'css', 'legacy'] }
       };
 
-      html2pdf()
-        .set(options)
-        .from(wrapper)
-        .save()
-        .then(() => {
-          hideLoading();
-          showToast('PDF downloaded successfully!');
-        })
-        .catch(err => {
-          hideLoading();
-          console.error('PDF generation error:', err);
-          showToast('Failed to generate PDF. Please try again.');
-        });
+      html2pdf().set(options).from(wrapper).save()
+        .then(() => { hideLoading(); showToast('PDF downloaded successfully!'); })
+        .catch(err => { hideLoading(); console.error('PDF generation error:', err); showToast('Failed to generate PDF. Please try again.'); });
     }, 800);
   }
 
-  // ============================================================
-  // VIEW SWITCHING
-  // ============================================================
   function switchView(viewId) {
     document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
     const target = document.getElementById(`${viewId}-view`);
@@ -1499,11 +1707,9 @@
 
     if (viewId === 'reports') updateReports();
     if (viewId === 'bookings') loadAllBookings();
+    document.querySelector('.main').scrollTop = 0;
   }
 
-  // ============================================================
-  // SERVICES
-  // ============================================================
   async function loadServices() {
     try {
       const res = await fetch(`${API_BASE}/services?limit=100`, { credentials: 'include' });
@@ -1513,9 +1719,7 @@
         renderServices();
         populateStylistServiceOptions();
       }
-    } catch (err) {
-      showToast('Failed to load services.');
-    }
+    } catch (err) { showToast('Failed to load services.'); }
   }
 
   function renderServices() {
@@ -1608,11 +1812,8 @@
       await loadServices();
       closeServiceModal();
       showToast('Service saved.');
-    } catch (err) {
-      showToast('Error saving service.');
-    } finally {
-      hideLoading();
-    }
+    } catch (err) { showToast('Error saving service.'); }
+    finally { hideLoading(); }
   }
 
   async function deleteService(id) {
@@ -1624,20 +1825,14 @@
       if (!res.ok) { showToast(data.message || 'Failed to archive.'); return; }
       await loadServices();
       showToast('Service archived.');
-    } catch (err) {
-      showToast('Error archiving service.');
-    } finally {
-      hideLoading();
-    }
+    } catch (err) { showToast('Error archiving service.'); }
+    finally { hideLoading(); }
   }
 
   function closeServiceModal() {
     document.getElementById('serviceModal').classList.remove('active');
   }
 
-  // ============================================================
-  // STYLISTS — UPDATED WITH STATUS MANAGEMENT (cleaner design)
-  // ============================================================
   async function loadStylists() {
     try {
       const res = await fetch(`${API_BASE}/stylists?limit=100`, { credentials: 'include' });
@@ -1655,9 +1850,7 @@
         }));
         renderStylists();
       }
-    } catch (err) {
-      showToast('Failed to load stylists.');
-    }
+    } catch (err) { showToast('Failed to load stylists.'); }
   }
 
   function renderStylists() {
@@ -1667,49 +1860,44 @@
       return;
     }
     container.innerHTML = stylists.map(st => {
-      // Determine current status
       let currentStatus = 'active';
       if (!st.isActive) currentStatus = 'disabled';
       else if (!st.isAvailable) currentStatus = 'inactive';
-      
+
       const statusLabel = currentStatus === 'active' ? 'Active' : (currentStatus === 'inactive' ? 'Inactive' : 'Disabled');
       const serviceNames = st.serviceIds.map(id => getServiceName(id)).filter(Boolean);
 
       return `
         <div class="stylist-card">
           <div class="stylist-name">${escapeHtml(st.name)}</div>
-          <div class="stylist-contact-item"><i class="fas fa-envelope"></i> ${escapeHtml(st.email || 'N/A')}</div>
-          <div class="stylist-contact-item"><i class="fas fa-phone"></i> ${escapeHtml(st.phone || 'N/A')}</div>
-          
-          <div style="margin: 0.5rem 0 0.3rem; display:flex; align-items:center; gap:0.8rem; flex-wrap:wrap;">
-            <div class="stylist-status ${currentStatus}">● ${statusLabel}</div>
-            <select class="stylist-status-select" data-id="${st.id}" style="padding:0.2rem 0.5rem; border-radius:2rem; border:1px solid var(--border); font-size:0.7rem; font-family:inherit; background:white; cursor:pointer; color:var(--muted);">
+          <div>
+            <span class="stylist-contact-item"><i class="fas fa-envelope"></i> ${escapeHtml(st.email || 'N/A')}</span>
+            <span class="stylist-contact-item"><i class="fas fa-phone"></i> ${escapeHtml(st.phone || 'N/A')}</span>
+          </div>
+          <div style="margin: 0.7rem 0 0.3rem; display:flex; align-items:center; gap:1rem; flex-wrap:wrap;">
+            <div class="stylist-status ${currentStatus}">${statusLabel}</div>
+            <select class="stylist-status-select" data-id="${st.id}">
               <option value="active" ${currentStatus === 'active' ? 'selected' : ''}>Change to Active</option>
               <option value="inactive" ${currentStatus === 'inactive' ? 'selected' : ''}>Change to Inactive</option>
               <option value="disabled" ${currentStatus === 'disabled' ? 'selected' : ''}>Change to Disabled</option>
             </select>
           </div>
-          
-          <div class="stylist-rating"><strong>★ ${Number(st.rating).toFixed(1)}</strong> / 5 average rating</div>
+          <div class="stylist-rating"><strong>${Number(st.rating).toFixed(1)}</strong> / 5 average rating</div>
           <div class="stylist-services-label">Services Offered</div>
           <div class="service-chips">
             ${serviceNames.length ? serviceNames.map(n => `<span class="chip">${escapeHtml(n)}</span>`).join('') : '<span style="font-size:0.8rem;color:var(--muted);">No services assigned</span>'}
           </div>
           <div class="stylist-actions">
-            <button class="btn-outline btn-sm edit-stylist" data-id="${st.id}"><i class="fas fa-edit"></i> Edit</button>
+            <button class="btn-primary btn-sm edit-stylist" data-id="${st.id}"><i class="fas fa-edit"></i> Edit</button>
             <button class="btn-danger btn-sm delete-stylist" data-id="${st.id}"><i class="fas fa-trash"></i> Delete</button>
           </div>
         </div>
       `;
     }).join('');
 
-    // Bind status change events
     document.querySelectorAll('.stylist-status-select').forEach(sel => {
-      sel.addEventListener('change', function() {
-        updateStylistStatus(this.dataset.id, this.value);
-      });
+      sel.addEventListener('change', function() { updateStylistStatus(this.dataset.id, this.value); });
     });
-
     document.querySelectorAll('.edit-stylist').forEach(btn =>
       btn.addEventListener('click', () => openEditStylistModal(btn.dataset.id))
     );
@@ -1723,14 +1911,8 @@
     try {
       let isAvailable = true;
       let isActive = true;
-      
-      if (status === 'inactive') {
-        isAvailable = false;
-        isActive = true;
-      } else if (status === 'disabled') {
-        isAvailable = false;
-        isActive = false;
-      }
+      if (status === 'inactive') { isAvailable = false; isActive = true; }
+      else if (status === 'disabled') { isAvailable = false; isActive = false; }
 
       const res = await fetch(`${API_BASE}/stylists/${id}`, {
         method: 'PUT',
@@ -1742,12 +1924,8 @@
       if (!res.ok) { showToast(data.message || 'Failed to update status.'); return; }
       await loadStylists();
       showToast(`Stylist marked as ${status}.`);
-    } catch (err) {
-      console.error('Status update error:', err);
-      showToast('Error updating stylist status.');
-    } finally {
-      hideLoading();
-    }
+    } catch (err) { console.error('Status update error:', err); showToast('Error updating stylist status.'); }
+    finally { hideLoading(); }
   }
 
   function openAddStylistModal() {
@@ -1764,24 +1942,18 @@
   function openEditStylistModal(id) {
     const st = stylists.find(s => s.id === id);
     if (!st) return;
-    
-    // Determine current status
     let currentStatus = 'active';
     if (!st.isActive) currentStatus = 'disabled';
     else if (!st.isAvailable) currentStatus = 'inactive';
-    
+
     document.getElementById('stylistModalTitle').textContent = 'Edit Stylist';
     document.getElementById('stylistName').value = st.name;
     document.getElementById('stylistEmail').value = st.email || '';
     document.getElementById('stylistPhone').value = st.phone || '';
     document.getElementById('stylistStatus').value = currentStatus;
     document.getElementById('stylistId').value = st.id;
-    
     const select = document.getElementById('stylistServices');
-    Array.from(select.options).forEach(opt => {
-      opt.selected = st.serviceIds.includes(opt.value);
-    });
-    
+    Array.from(select.options).forEach(opt => { opt.selected = st.serviceIds.includes(opt.value); });
     document.getElementById('stylistModal').classList.add('active');
   }
 
@@ -1794,71 +1966,35 @@
     const specialties = Array.from(select.selectedOptions).map(opt => opt.value);
     const editId = document.getElementById('stylistId').value;
 
-    if (!name || !email || !phone) {
-      showToast('All fields are required.');
-      return;
-    }
+    if (!name || !email || !phone) { showToast('All fields are required.'); return; }
     const [firstName, ...lastNameParts] = name.split(' ');
     const lastName = lastNameParts.join(' ') || '';
-    if (!lastName) {
-      showToast('Please enter both first and last name.');
-      return;
-    }
-    if (!/^\+?[0-9\s\-()]{7,25}$/.test(phone)) {
-      showToast('Please enter a valid phone number.');
-      return;
-    }
+    if (!lastName) { showToast('Please enter both first and last name.'); return; }
+    if (!/^\+?[0-9\s\-()]{7,25}$/.test(phone)) { showToast('Please enter a valid phone number.'); return; }
 
-    // Map status to fields
     let isAvailable = true;
     let isActive = true;
-    if (status === 'inactive') {
-      isAvailable = false;
-      isActive = true;
-    } else if (status === 'disabled') {
-      isAvailable = false;
-      isActive = false;
-    }
+    if (status === 'inactive') { isAvailable = false; isActive = true; }
+    else if (status === 'disabled') { isAvailable = false; isActive = false; }
 
     showLoading(editId ? 'Saving...' : 'Creating...');
     try {
       if (editId) {
-        // Update stylist
         const res = await fetch(`${API_BASE}/stylists/${editId}`, {
           method: 'PUT',
           headers: { 'Content-Type': 'application/json' },
           credentials: 'include',
-          body: JSON.stringify({ 
-            serviceIds: specialties,
-            isAvailable: isAvailable
-          })
+          body: JSON.stringify({ serviceIds: specialties, isAvailable })
         });
         const data = await res.json();
         if (!res.ok) { showToast(data.message || 'Failed to update.'); return; }
-        
-        // Also update the user's isActive status
-        // This requires the stylist to have a userId
-        if (stylists.find(s => s.id === editId)?.id) {
-          // Find the user ID from the stylist data
-          // The backend will handle this if you have a combined endpoint
-        }
       } else {
-        // Create new stylist
         const password = 'Stylist@123';
         const res = await fetch(`${API_BASE}/admin/stylists`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           credentials: 'include',
-          body: JSON.stringify({ 
-            firstName, 
-            lastName, 
-            email, 
-            password, 
-            phone, 
-            serviceIds: specialties,
-            isAvailable: isAvailable,
-            isActive: isActive
-          })
+          body: JSON.stringify({ firstName, lastName, email, password, phone, serviceIds: specialties, isAvailable, isActive })
         });
         const data = await res.json();
         if (!res.ok) { showToast(data.message || 'Failed to create stylist.'); return; }
@@ -1866,12 +2002,8 @@
       await loadStylists();
       closeStylistModal();
       showToast('Stylist saved.');
-    } catch (err) {
-      console.error('Save error:', err);
-      showToast('Error saving stylist.');
-    } finally {
-      hideLoading();
-    }
+    } catch (err) { console.error('Save error:', err); showToast('Error saving stylist.'); }
+    finally { hideLoading(); }
   }
 
   async function deleteStylist(id) {
@@ -1883,20 +2015,14 @@
       if (!res.ok) { showToast(data.message || 'Failed to delete.'); return; }
       await loadStylists();
       showToast('Stylist deleted.');
-    } catch (err) {
-      showToast('Error deleting stylist.');
-    } finally {
-      hideLoading();
-    }
+    } catch (err) { showToast('Error deleting stylist.'); }
+    finally { hideLoading(); }
   }
 
   function closeStylistModal() {
     document.getElementById('stylistModal').classList.remove('active');
   }
 
-  // ============================================================
-  // BOOKINGS
-  // ============================================================
   async function loadAllBookings() {
     showLoading('Loading bookings...');
     try {
@@ -1905,11 +2031,8 @@
       if (!res.ok) { showToast(data.message || 'Failed to load bookings.'); return; }
       allBookings = data.data.bookings || [];
       renderBookings();
-    } catch (err) {
-      showToast('Error loading bookings.');
-    } finally {
-      hideLoading();
-    }
+    } catch (err) { showToast('Error loading bookings.'); }
+    finally { hideLoading(); }
   }
 
   function renderBookings() {
@@ -1948,15 +2071,9 @@
     );
   }
 
+  /* Admin no longer rates appointments — completes directly. */
   function markComplete(id) {
-    const rating = prompt('Rate this appointment (1–5):');
-    if (rating === null) return;
-    const num = Number(rating);
-    if (!Number.isFinite(num) || num < 1 || num > 5) {
-      showToast('Please enter a rating between 1 and 5.');
-      return;
-    }
-    setBookingStatus(id, 'completed', num);
+    setBookingStatus(id, 'completed');
   }
 
   async function setBookingStatus(id, status, rating) {
@@ -1975,16 +2092,10 @@
       showToast('Booking updated.');
       await loadAllBookings();
       if (document.getElementById('reports-view').classList.contains('active')) updateReports();
-    } catch (err) {
-      showToast('Error updating booking.');
-    } finally {
-      hideLoading();
-    }
+    } catch (err) { showToast('Error updating booking.'); }
+    finally { hideLoading(); }
   }
 
-  // ============================================================
-  // REPORTS / ANALYTICS
-  // ============================================================
   async function updateReports() {
     const period = document.getElementById('reportPeriod').value;
     let startDate, endDate, today = new Date();
@@ -2017,11 +2128,8 @@
       if (trends.success) renderTrends(trends.data);
       if (popularity.success) renderPopularity(popularity.data);
       if (performance.success) renderPerformance(performance.data);
-    } catch (err) {
-      showToast('Failed to load reports.');
-    } finally {
-      hideLoading();
-    }
+    } catch (err) { showToast('Failed to load reports.'); }
+    finally { hideLoading(); }
   }
 
   function renderTrends(trends) {
@@ -2030,6 +2138,7 @@
 
     if (trendsChart) trendsChart.destroy();
     const ctx = document.getElementById('trendsBarChart').getContext('2d');
+    const isLight = document.body.classList.contains('light');
     trendsChart = new Chart(ctx, {
       type: 'bar',
       data: {
@@ -2040,7 +2149,10 @@
         responsive: true,
         maintainAspectRatio: false,
         plugins: { legend: { display: false } },
-        scales: { y: { beginAtZero: true, ticks: { precision: 0 } } }
+        scales: {
+          y: { beginAtZero: true, ticks: { precision: 0, color: isLight ? '#666' : '#B8C0CC' }, grid: { color: isLight ? '#eee' : 'rgba(255,255,255,0.06)' } },
+          x: { ticks: { color: isLight ? '#666' : '#B8C0CC' }, grid: { display: false } }
+        }
       }
     });
 
@@ -2063,7 +2175,7 @@
       return;
     }
     tbody.innerHTML = popularity.map(s =>
-      `<tr><td><strong>${escapeHtml(s.serviceName)}</strong></td><td>${escapeHtml(s.category)}</td><td class="text-right">${s.bookingsCount}</td></tr>`
+      `<tr><td><strong style="font-weight:500;">${escapeHtml(s.serviceName)}</strong></td><td>${escapeHtml(s.category)}</td><td class="text-right">${s.bookingsCount}</td></tr>`
     ).join('');
   }
 
@@ -2076,7 +2188,7 @@
     tbody.innerHTML = performance.map(s => {
       const rate = s.totalAssigned ? Math.round((s.completedBookings / s.totalAssigned) * 100) : 0;
       return `<tr>
-        <td><strong>${escapeHtml(s.stylistName)}</strong></td>
+        <td><strong style="font-weight:500;">${escapeHtml(s.stylistName)}</strong></td>
         <td class="text-right">${s.totalAssigned}</td>
         <td class="text-right">${s.completedBookings}</td>
         <td class="text-right">${rate}%</td>
@@ -2085,14 +2197,9 @@
     }).join('');
   }
 
-  // ============================================================
-  // SIGN OUT — matching customer dashboard
-  // ============================================================
   async function signOut() {
     showLoading('Signing out...');
-    try {
-      await fetch(`${API_BASE}/auth/logout`, { method: 'POST', credentials: 'include' });
-    } catch (e) { /* ignore */ }
+    try { await fetch(`${API_BASE}/auth/logout`, { method: 'POST', credentials: 'include' }); } catch (e) {}
     localStorage.removeItem('user');
     localStorage.removeItem('auth_token');
     sessionStorage.clear();
@@ -2102,33 +2209,37 @@
     window.location.replace('login.html');
   }
 
-  // ============================================================
-  // INIT
-  // ============================================================
   document.addEventListener('DOMContentLoaded', async function() {
     let user = null;
     try {
       const stored = localStorage.getItem('user') || sessionStorage.getItem('user');
       if (stored) user = JSON.parse(stored);
-    } catch (e) { /* ignore */ }
+    } catch (e) {}
 
-    if (!user) {
-      window.location.replace('login.html');
-      return;
-    }
+    if (!user) { window.location.replace('login.html'); return; }
 
-    // Set avatar (single circle, dark pink)
     const initials = (user.firstName ? user.firstName[0] : '') + (user.lastName ? user.lastName[0] : '');
     if (initials) document.getElementById('adminAvatar').textContent = initials.toUpperCase();
 
-    // Set greeting
     const greeting = document.getElementById('greetingName');
     if (greeting) {
       const firstName = user.firstName || 'Admin';
       greeting.textContent = `Hello, ${firstName}`;
     }
 
-    // Event listeners
+    // Populate admin profile
+    const fullName = `${user.firstName || ''} ${user.lastName || ''}`.trim() || 'Administrator';
+    const pName = document.getElementById('adminProfileName');
+    const pFullName = document.getElementById('adminProfileFullName');
+    const pEmail = document.getElementById('adminProfileEmail');
+    const pFullEmail = document.getElementById('adminProfileFullEmail');
+    const pPhone = document.getElementById('adminProfilePhone');
+    if (pName) pName.textContent = fullName;
+    if (pFullName) pFullName.textContent = fullName;
+    if (pEmail) pEmail.textContent = user.email || '—';
+    if (pFullEmail) pFullEmail.textContent = user.email || '—';
+    if (pPhone) pPhone.textContent = user.phone || '—';
+
     document.getElementById('addServiceBtn').addEventListener('click', () => {
       document.getElementById('serviceModalTitle').textContent = 'Add Service';
       document.getElementById('serviceId').value = '';
@@ -2147,15 +2258,14 @@
     document.getElementById('saveStylistBtn').addEventListener('click', saveStylist);
     document.getElementById('cancelStylistModalBtn').addEventListener('click', closeStylistModal);
 
-    // Close modals on overlay click
     window.addEventListener('click', (e) => {
       if (e.target.classList.contains('modal')) {
         closeServiceModal();
         closeStylistModal();
+        e.target.classList.remove('active');
       }
     });
 
-    // Filter bar
     const periodSelect = document.getElementById('reportPeriod');
     const customDiv = document.getElementById('customDateRange');
     periodSelect.addEventListener('change', () => {
@@ -2172,14 +2282,12 @@
       showToast('Analytics updated.');
     });
 
-    // Set default dates
     const todayStr = new Date().toISOString().slice(0, 10);
     const thirtyAgo = new Date();
     thirtyAgo.setDate(thirtyAgo.getDate() - 30);
     document.getElementById('startDate').value = thirtyAgo.toISOString().slice(0, 10);
     document.getElementById('endDate').value = todayStr;
 
-    // Load data
     await loadServices();
     await loadStylists();
     await loadAllBookings();
