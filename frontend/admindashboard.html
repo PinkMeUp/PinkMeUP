@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
   <title>PinkMeUp · Admin Panel</title>
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=DM+Sans:wght@300;400;500;600;700&family=Great+Vibes&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js" integrity="sha512-GsLlZN/3F2ErC5ifS5QtgpiJtWd43JWSuIgh7mbzZ8zBps+dvLusV+eNQATqgA/HdeKFVgA5v3S/cIrLF7QnIg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
@@ -67,6 +67,12 @@
       font-size: 16px;
       transition: background 0.3s ease, color 0.3s ease;
     }
+    .main::-webkit-scrollbar { width: 8px; }
+    .main::-webkit-scrollbar-track { background: transparent; }
+    .main::-webkit-scrollbar-thumb { background: var(--rose-mid); border-radius: 10px; }
+    .main::-webkit-scrollbar-thumb:hover { background: var(--rose); }
+
+    /* ---------- HEADER ---------- */
     .header {
       background: transparent;
       padding: 0.9rem 1.5rem 0.4rem 1.5rem;
@@ -75,6 +81,8 @@
       align-items: center;
       flex-shrink: 0;
       gap: 0.8rem;
+      position: relative;
+      z-index: 100;
     }
     .header-left { display: flex; align-items: center; gap: 0.8rem; }
     .menu-btn {
@@ -109,6 +117,8 @@
       color: var(--ink);
       margin-top: 0.15rem;
     }
+
+    /* ---------- TOP TABS ---------- */
     .top-tabs {
       display: flex;
       background: transparent;
@@ -119,6 +129,8 @@
       border-bottom: 1px solid var(--border);
       overflow-x: auto;
       scrollbar-width: none;
+      position: relative;
+      z-index: 100;
     }
     .top-tabs::-webkit-scrollbar { display: none; }
     .top-tabs .tab-item {
@@ -145,26 +157,30 @@
       gap: 0.15rem;
       letter-spacing: 0.2px;
     }
-    .top-tabs .tab-item.active {
-      color: var(--rose);
-      border-bottom-color: var(--rose);
-    }
+    .top-tabs .tab-item.active { color: var(--rose); border-bottom-color: var(--rose); }
     .top-tabs .tab-item:hover { color: var(--rose); }
-    .top-tabs .tab-item i {
-      color: var(--grey-icon);
-      font-size: 1.15rem;
-      width: auto;
-      transition: color 0.2s;
-    }
+    .top-tabs .tab-item i { color: var(--grey-icon); font-size: 1.15rem; width: auto; transition: color 0.2s; }
     .top-tabs .tab-item:hover i,
     .top-tabs .tab-item.active i { color: var(--rose); }
-    .tab-icon {
-      display: block;
-      font-size: 1.15rem;
-      line-height: 1;
-      margin-bottom: 0.1rem;
+    .tab-icon { display: block; font-size: 1.15rem; line-height: 1; margin-bottom: 0.1rem; }
+
+    /* ---------- SCROLL PROGRESS ---------- */
+    .scroll-progress {
+      position: absolute;
+      top: 0;
+      left: 0;
+      height: 2px;
+      width: 0%;
+      background: linear-gradient(90deg, transparent, var(--rose), var(--rose-light), var(--rose), transparent);
+      z-index: 1000;
+      pointer-events: none;
+      transition: width 0.1s linear;
+      box-shadow: 0 0 12px rgba(255, 92, 138, 0.6);
     }
-    .app { display: flex; flex: 1; overflow: hidden; min-height: 0; }
+
+    /* ---------- APP LAYOUT ---------- */
+    .app { display: flex; flex: 1; overflow: hidden; min-height: 0; position: relative; }
+
     .sidebar-overlay {
       display: none;
       position: fixed;
@@ -226,18 +242,8 @@
       color: transparent;
       line-height: 1.1;
     }
-    .greeting-sub {
-      font-size: 0.85rem;
-      font-weight: 300;
-      color: var(--muted);
-      margin-top: 0.2rem;
-    }
-    .sidebar-nav {
-      display: flex;
-      flex-direction: column;
-      gap: 0.2rem;
-      flex: 1;
-    }
+    .greeting-sub { font-size: 0.85rem; font-weight: 300; color: var(--muted); margin-top: 0.2rem; }
+    .sidebar-nav { display: flex; flex-direction: column; gap: 0.2rem; flex: 1; }
     .sidebar-item {
       display: flex;
       align-items: center;
@@ -256,26 +262,12 @@
       width: 100%;
       text-align: left;
     }
-    .sidebar-item i {
-      width: 24px;
-      color: var(--grey-icon);
-      font-size: 1.05rem;
-      transition: color 0.2s;
-      text-align: center;
-    }
-    .sidebar-item:hover {
-      color: var(--rose);
-      background: var(--rose-pale);
-      transform: translateX(4px);
-    }
+    .sidebar-item i { width: 24px; color: var(--grey-icon); font-size: 1.05rem; transition: color 0.2s; text-align: center; }
+    .sidebar-item:hover { color: var(--rose); background: var(--rose-pale); transform: translateX(4px); }
     .sidebar-item:hover i { color: var(--rose); }
     .sidebar-item.signout-nav { color: #FF6B6B; }
     .sidebar-item.signout-nav i { color: var(--grey-icon); font-size: 0.85rem; }
-    .sidebar-item.signout-nav:hover {
-      background: rgba(255, 107, 107, 0.12);
-      color: #FF6B6B;
-      transform: translateX(4px);
-    }
+    .sidebar-item.signout-nav:hover { background: rgba(255, 107, 107, 0.12); color: #FF6B6B; transform: translateX(4px); }
     .sidebar-item.signout-nav:hover i { color: #FF6B6B; }
     .sidebar-footer {
       padding: 1.2rem 0 0.3rem 0;
@@ -296,17 +288,16 @@
       margin-top: 0.85rem;
     }
     .sidebar-footer strong:first-child { margin-top: 0; }
-    .sidebar-footer p {
-      margin-bottom: 0.2rem;
-      font-size: 0.85rem;
-      line-height: 1.5;
-      word-break: break-word;
-    }
+    .sidebar-footer p { margin-bottom: 0.2rem; font-size: 0.85rem; line-height: 1.5; word-break: break-word; }
+
+    /* ---------- MAIN ---------- */
     .main {
       flex: 1;
       overflow-y: auto;
       padding: 1.4rem 2rem 4rem 2rem;
       min-width: 0;
+      position: relative;
+      scroll-behavior: smooth;
     }
     .view { display: none; animation: fadeIn 0.25s ease; }
     .view.active { display: block; }
@@ -333,6 +324,7 @@
       background-clip: text;
       color: transparent;
     }
+    .section-title--compact { font-size: 1.7rem; }
     .section-sub {
       font-size: 1rem;
       color: var(--muted);
@@ -341,6 +333,7 @@
       max-width: 820px;
       line-height: 1.7;
     }
+    .section-sub--compact { font-size: 0.9rem; margin-top: 0.4rem; }
     .section-hint {
       font-size: 0.82rem;
       color: var(--muted);
@@ -349,6 +342,8 @@
       opacity: 0.75;
       letter-spacing: 0.2px;
     }
+
+    /* ---------- BUTTONS ---------- */
     .btn-primary, .btn-outline, .btn-danger, .btn-download {
       background: none;
       border: none;
@@ -377,35 +372,42 @@
     .btn-download i { font-size: 0.85rem; }
     .btn-sm { font-size: 0.85rem; padding: 0.25rem 0; }
 
+    /* ---------- TABLES ---------- */
     .admin-table {
       width: 100%;
       border-collapse: collapse;
       font-size: 0.92rem;
     }
-    .admin-table th {
-      padding: 0.8rem 0.9rem;
-      font-size: 0.7rem;
-      font-weight: 600;
-      letter-spacing: 0.6px;
+    .admin-table thead th {
+      padding: 1.05rem 1rem;
+      font-size: 0.78rem;
+      font-weight: 700;
+      letter-spacing: 1.1px;
       text-transform: uppercase;
-      color: var(--muted);
-      background: transparent;
+      color: var(--ink);
+      background: var(--hover-surface);
       border-bottom: 1px solid var(--border);
+      border-top: 1px solid var(--border);
       text-align: left;
+      white-space: nowrap;
     }
+    .admin-table thead th:first-child { border-left: 1px solid var(--border); border-top-left-radius: 0.6rem; }
+    .admin-table thead th:last-child { border-right: 1px solid var(--border); border-top-right-radius: 0.6rem; }
     .admin-table td {
-      padding: 0.9rem 0.9rem;
+      padding: 0.95rem 1rem;
       border-bottom: 1px solid var(--border);
       vertical-align: middle;
       color: var(--ink);
       font-weight: 300;
     }
-    .admin-table tr:last-child td { border-bottom: none; }
-    .admin-table tr:hover td { background: var(--hover-surface); }
+    .admin-table tbody tr:last-child td { border-bottom: none; }
+    .admin-table tbody tr:hover td { background: var(--hover-surface); }
     .admin-table tr[data-booking-id] { cursor: pointer; }
     .admin-table tr[data-booking-id]:hover td { background: var(--rose-pale); }
     .admin-table .text-right { text-align: right; }
     .admin-table .text-center { text-align: center; }
+
+    /* ---------- BADGES ---------- */
     .badge {
       display: inline-flex;
       align-items: center;
@@ -426,9 +428,7 @@
     .badge-no_show { background: rgba(167, 139, 250, 0.15); color: #A78BFA; }
     body.light .badge-no_show { background: rgba(124, 58, 237, 0.12); color: #7C3AED; }
 
-    /* ============================================================
-       SERVICES
-       ============================================================ */
+    /* ---------- SERVICES ---------- */
     .services-category { margin-bottom: 2.4rem; }
     .services-category:last-child { margin-bottom: 0; }
     .services-category-head {
@@ -471,17 +471,8 @@
       gap: 0.55rem;
       backdrop-filter: blur(6px);
     }
-    .service-card:hover {
-      border-color: var(--rose-mid);
-      transform: translateY(-2px);
-      box-shadow: var(--shadow);
-    }
-    .service-card-head {
-      display: flex;
-      align-items: flex-start;
-      justify-content: space-between;
-      gap: 0.6rem;
-    }
+    .service-card:hover { border-color: var(--rose-mid); transform: translateY(-2px); box-shadow: var(--shadow); }
+    .service-card-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 0.6rem; }
     .service-card-name {
       font-family: 'Cormorant Garamond', serif;
       font-size: 1.2rem;
@@ -491,33 +482,14 @@
       flex: 1;
       letter-spacing: 0.2px;
     }
-    .service-card-menu {
-      display: flex;
-      gap: 0.15rem;
-      opacity: 0.55;
-      transition: 0.15s;
-      flex-shrink: 0;
-    }
+    .service-card-menu { display: flex; gap: 0.15rem; opacity: 0.55; transition: 0.15s; flex-shrink: 0; }
     .service-card:hover .service-card-menu { opacity: 1; }
     .service-card-menu button {
-      background: none;
-      border: none;
-      cursor: pointer;
-      color: var(--grey-icon);
-      padding: 0.3rem;
-      font-size: 0.85rem;
-      border-radius: 0.35rem;
-      transition: 0.15s;
+      background: none; border: none; cursor: pointer; color: var(--grey-icon);
+      padding: 0.3rem; font-size: 0.85rem; border-radius: 0.35rem; transition: 0.15s;
     }
     .service-card-menu button:hover { color: var(--rose); background: var(--rose-pale); }
-    .service-card-meta {
-      display: flex;
-      align-items: center;
-      gap: 0.85rem;
-      font-size: 0.8rem;
-      color: var(--muted);
-      font-weight: 300;
-    }
+    .service-card-meta { display: flex; align-items: center; gap: 0.85rem; font-size: 0.8rem; color: var(--muted); font-weight: 300; }
     .service-card-meta span { display: inline-flex; align-items: center; gap: 0.3rem; }
     .service-card-meta i { color: var(--grey-icon); font-size: 0.72rem; }
     .service-card-price {
@@ -532,12 +504,10 @@
       letter-spacing: 0.2px;
     }
 
-    /* ============================================================
-       STYLISTS
-       ============================================================ */
+    /* ---------- STYLISTS ---------- */
     .stylist-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(270px, 1fr));
+      grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
       gap: 1rem;
     }
     .stylist-card {
@@ -545,8 +515,7 @@
       flex-direction: column;
       align-items: center;
       text-align: center;
-      gap: 0.65rem;
-      padding: 1.6rem 1.3rem 1.3rem;
+      padding: 1.8rem 1.4rem 1.4rem;
       border: 1px solid var(--border);
       border-radius: 1.2rem;
       background: var(--card-bg);
@@ -555,14 +524,10 @@
       backdrop-filter: blur(6px);
       position: relative;
     }
-    .stylist-card:hover {
-      border-color: var(--rose-mid);
-      transform: translateY(-3px);
-      box-shadow: var(--shadow);
-    }
+    .stylist-card:hover { border-color: var(--rose-mid); transform: translateY(-3px); box-shadow: var(--shadow); }
     .stylist-avatar-circle {
-      width: 76px;
-      height: 76px;
+      width: 78px;
+      height: 78px;
       border-radius: 50%;
       background: var(--gradient);
       display: flex;
@@ -570,73 +535,70 @@
       justify-content: center;
       color: white;
       font-family: 'Cormorant Garamond', serif;
-      font-size: 1.85rem;
+      font-size: 1.9rem;
       font-weight: 600;
       letter-spacing: 0.5px;
-      box-shadow: 0 4px 14px rgba(212, 63, 107, 0.25);
+      box-shadow: 0 6px 20px rgba(212, 63, 107, 0.28);
+      margin-bottom: 0.9rem;
     }
     .stylist-name {
       font-family: 'Cormorant Garamond', serif;
-      font-size: 1.35rem;
+      font-size: 1.4rem;
       font-weight: 500;
       color: var(--ink);
       letter-spacing: 0.2px;
-      margin: 0;
       line-height: 1.15;
+      margin-bottom: 0.35rem;
     }
-    .stylist-status {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.3rem;
-      font-size: 0.65rem;
-      font-weight: 600;
-      padding: 0.2rem 0.7rem;
-      border-radius: 2rem;
-      text-transform: uppercase;
-      letter-spacing: 0.4px;
-    }
-    .stylist-status.active { background: rgba(74, 222, 128, 0.15); color: var(--success); }
-    body.light .stylist-status.active { background: rgba(44, 143, 110, 0.12); }
-    .stylist-status.inactive { background: rgba(251, 191, 36, 0.15); color: var(--warning); }
-    .stylist-status.disabled { background: var(--hover-surface); color: var(--muted); }
     .stylist-mini-info {
       display: flex;
       flex-direction: column;
-      gap: 0.35rem;
-      padding: 0.75rem 0;
+      align-items: center;
+      gap: 0.3rem;
+      padding-bottom: 0.85rem;
+      margin-bottom: 0.85rem;
       width: 100%;
-      border-top: 1px solid var(--border);
       border-bottom: 1px solid var(--border);
     }
     .stylist-mini-line {
       display: flex;
       align-items: center;
-      justify-content: center;
-      gap: 0.5rem;
-      font-size: 0.8rem;
+      gap: 0.45rem;
+      font-size: 0.82rem;
       color: var(--muted);
       font-weight: 300;
       white-space: nowrap;
       overflow: hidden;
       max-width: 100%;
+      letter-spacing: 0.1px;
     }
-    .stylist-mini-line i {
-      color: var(--grey-icon);
-      font-size: 0.72rem;
-      width: 14px;
-      flex-shrink: 0;
+    .stylist-mini-line i { color: var(--grey-icon); font-size: 0.72rem; width: 14px; flex-shrink: 0; }
+    .stylist-mini-line span { overflow: hidden; text-overflow: ellipsis; }
+    .stylist-status {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.3rem;
+      font-size: 0.64rem;
+      font-weight: 600;
+      padding: 0.22rem 0.75rem;
+      border-radius: 2rem;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 0.6rem;
     }
-    .stylist-mini-line span {
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
+    .stylist-status.active { background: rgba(74, 222, 128, 0.15); color: var(--success); }
+    body.light .stylist-status.active { background: rgba(44, 143, 110, 0.12); }
+    .stylist-status.inactive { background: rgba(251, 191, 36, 0.15); color: var(--warning); }
+    .stylist-status.disabled { background: var(--hover-surface); color: var(--muted); }
     .stylist-rating {
       display: flex;
       align-items: center;
+      justify-content: center;
       gap: 0.4rem;
-      font-size: 0.8rem;
+      font-size: 0.82rem;
       color: var(--muted);
       font-weight: 300;
+      margin-bottom: 0.7rem;
     }
     .stylist-rating i { color: #FFB800; font-size: 0.78rem; }
     .stylist-rating strong { color: var(--ink); font-weight: 600; }
@@ -646,19 +608,13 @@
       color: var(--muted);
       text-transform: uppercase;
       letter-spacing: 0.7px;
-      margin-top: 0.15rem;
+      margin-bottom: 0.5rem;
     }
-    .service-chips {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 0.3rem;
-      justify-content: center;
-      min-height: 22px;
-    }
+    .service-chips { display: flex; flex-wrap: wrap; gap: 0.3rem; justify-content: center; min-height: 22px; }
     .chip {
       background: var(--rose-pale);
       color: var(--rose);
-      padding: 0.15rem 0.6rem;
+      padding: 0.18rem 0.65rem;
       border-radius: 2rem;
       font-size: 0.68rem;
       font-weight: 400;
@@ -668,151 +624,674 @@
       background: transparent;
       border: 1px dashed var(--rose-mid);
       color: var(--rose);
-      padding: 0.15rem 0.55rem;
+      padding: 0.18rem 0.6rem;
       border-radius: 2rem;
       font-size: 0.68rem;
       font-weight: 400;
     }
-    .chip-empty {
-      font-size: 0.72rem;
-      color: var(--muted);
-      font-style: italic;
-      font-weight: 300;
-    }
+    .chip-empty { font-size: 0.72rem; color: var(--muted); font-style: italic; font-weight: 300; }
 
-    /* ============================================================
-       FILTER BAR
-       ============================================================ */
+    /* ---------- ANALYTICS ---------- */
     .filter-bar {
       display: flex;
       justify-content: space-between;
       align-items: flex-end;
       gap: 1.5rem;
       flex-wrap: wrap;
-      padding: 0 0 1.2rem 0;
-      margin-bottom: 1.8rem;
-      border-bottom: 1px solid var(--border);
+      padding: 1.1rem 1.3rem;
+      margin-bottom: 2rem;
+      border: 1px solid var(--border);
+      border-radius: 0.9rem;
+      background: var(--card-bg);
+      backdrop-filter: blur(6px);
     }
     .filter-bar-left {
       display: flex;
-      gap: 1rem;
+      gap: 1.4rem;
       flex-wrap: wrap;
-      align-items: center;
+      align-items: flex-end;
     }
-    .filter-bar label {
-      font-size: 0.7rem;
+    .filter-group { display: flex; flex-direction: column; gap: 0.35rem; }
+    .filter-group label {
+      font-size: 0.62rem;
       font-weight: 600;
       color: var(--muted);
       text-transform: uppercase;
-      letter-spacing: 0.6px;
+      letter-spacing: 1px;
     }
     .filter-bar select,
     .filter-bar input {
-      padding: 0.5rem 0;
-      border: none;
-      border-bottom: 1px solid var(--border);
-      border-radius: 0;
+      padding: 0.5rem 0.85rem;
+      border: 1px solid var(--border);
+      border-radius: 0.5rem;
       background: transparent;
-      font-size: 0.95rem;
+      font-size: 0.9rem;
       font-family: inherit;
       color: var(--ink);
       transition: 0.2s;
       font-weight: 300;
+      min-width: 140px;
     }
     .filter-bar select:focus,
-    .filter-bar input:focus { outline: none; border-bottom-color: var(--rose); }
-    .filter-bar select option { background: var(--bg); color: var(--ink); }
-
-    /* ============================================================
-       ANALYTICS
-       ============================================================ */
-    .analytics-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
-      gap: 2rem;
-      margin-bottom: 2rem;
+    .filter-bar input:focus {
+      outline: none;
+      border-color: var(--rose);
+      box-shadow: 0 0 0 3px var(--rose-pale);
     }
-    .analytics-card { background: transparent; border: none; border-radius: 0; padding: 0; }
-    .analytics-card h3 { font-size: 1.05rem; font-weight: 500; color: var(--ink); margin-bottom: 0.2rem; }
-    .analytics-card > p { font-size: 0.85rem; color: var(--muted); margin-bottom: 0.9rem; font-weight: 300; }
-    .chart-container { max-height: 260px; min-height: 200px; margin-bottom: 0.9rem; position: relative; }
+    .filter-bar select option { background: var(--bg); color: var(--ink); }
+    .filter-date-range { display: none; gap: 0.6rem; align-items: flex-end; flex-wrap: wrap; }
+    .filter-date-range.active { display: flex; }
+    .filter-date-sep {
+      color: var(--muted);
+      font-weight: 300;
+      font-size: 0.85rem;
+      padding-bottom: 0.6rem;
+    }
+    .filter-bar-actions { display: flex; gap: 1rem; align-items: center; flex-wrap: wrap; }
+    .btn-apply {
+      background: var(--gradient);
+      border: none;
+      color: white;
+      padding: 0.55rem 1.35rem;
+      border-radius: 2rem;
+      font-size: 0.88rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: 0.2s;
+      font-family: inherit;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      letter-spacing: 0.3px;
+    }
+    .btn-apply:hover { opacity: 0.9; transform: translateY(-1px); }
+    .btn-apply i { font-size: 0.8rem; }
+
+    .analytics-panel {
+      border: 1px solid var(--border);
+      border-radius: 1rem;
+      padding: 1.6rem 1.7rem;
+      background: var(--card-bg);
+      backdrop-filter: blur(6px);
+      margin-bottom: 1.5rem;
+      position: relative;
+      overflow: hidden;
+    }
+    .analytics-panel::after {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0; height: 1px;
+      background: linear-gradient(90deg, transparent, var(--rose-mid), transparent);
+      opacity: 0.6;
+    }
+    .analytics-panel-head {
+      margin-bottom: 1.4rem;
+      padding-bottom: 1rem;
+      border-bottom: 1px solid var(--border);
+    }
+    .analytics-panel-head h3 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.4rem;
+      font-weight: 500;
+      color: var(--ink);
+      margin-bottom: 0.3rem;
+      letter-spacing: 0.2px;
+    }
+    .analytics-panel-head p {
+      font-size: 0.82rem;
+      color: var(--muted);
+      font-weight: 300;
+      letter-spacing: 0.2px;
+    }
+    .analytics-dual {
+      display: grid;
+      grid-template-columns: 1.15fr 1fr;
+      gap: 2rem;
+    }
+    .analytics-dual-col { min-width: 0; }
+    .analytics-col-label {
+      font-size: 0.65rem;
+      font-weight: 700;
+      letter-spacing: 1.4px;
+      text-transform: uppercase;
+      color: var(--rose);
+      margin-bottom: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .analytics-col-label::before {
+      content: '';
+      width: 14px;
+      height: 1px;
+      background: var(--rose);
+    }
+    .chart-container {
+      max-height: 280px;
+      min-height: 220px;
+      margin-bottom: 1rem;
+      position: relative;
+    }
     .chart-container canvas { width: 100% !important; height: 100% !important; }
     .peak-hours { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-top: 0.5rem; }
+    .peak-hours-label {
+      font-size: 0.62rem;
+      font-weight: 600;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.9px;
+      margin-bottom: 0.5rem;
+      margin-top: 0.6rem;
+    }
     .peak-hour-tag {
       background: var(--rose-pale);
       color: var(--rose);
-      padding: 0.25rem 0.7rem;
+      padding: 0.28rem 0.75rem;
       border-radius: 2rem;
       font-size: 0.78rem;
       font-weight: 500;
     }
+    .popularity-list { display: flex; flex-direction: column; gap: 0.15rem; }
+    .popularity-item {
+      display: grid;
+      grid-template-columns: 34px 1fr auto;
+      gap: 0.9rem;
+      align-items: center;
+      padding: 0.75rem 0;
+      border-bottom: 1px dashed var(--border);
+      transition: 0.2s;
+    }
+    .popularity-item:last-child { border-bottom: none; }
+    .popularity-item:hover { padding-left: 0.4rem; }
+    .popularity-rank {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1rem;
+      font-weight: 600;
+      color: var(--rose);
+      opacity: 0.85;
+      font-variant-numeric: tabular-nums;
+    }
+    .popularity-info { min-width: 0; }
+    .popularity-name {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.05rem;
+      font-weight: 500;
+      color: var(--ink);
+      line-height: 1.2;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .popularity-meta {
+      font-size: 0.72rem;
+      color: var(--muted);
+      font-weight: 300;
+      letter-spacing: 0.2px;
+      margin-bottom: 0.35rem;
+    }
+    .popularity-bar {
+      height: 3px;
+      background: var(--hover-surface);
+      border-radius: 10px;
+      overflow: hidden;
+      position: relative;
+    }
+    .popularity-bar span {
+      display: block;
+      height: 100%;
+      background: var(--gradient);
+      border-radius: 10px;
+      transition: width 0.9s cubic-bezier(0.4, 0, 0.2, 1);
+      box-shadow: 0 0 10px rgba(255, 92, 138, 0.4);
+    }
+    .popularity-count {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.35rem;
+      font-weight: 600;
+      color: var(--rose);
+      text-align: right;
+      min-width: 40px;
+      font-variant-numeric: tabular-nums;
+    }
+    .performance-board {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 0.9rem;
+    }
+    .performance-card {
+      display: grid;
+      grid-template-columns: auto auto 1fr;
+      align-items: center;
+      gap: 0.9rem;
+      padding: 1rem 1.1rem;
+      border: 1px solid var(--border);
+      border-radius: 0.9rem;
+      background: var(--card-bg);
+      transition: 0.22s;
+      position: relative;
+      overflow: hidden;
+    }
+    .performance-card::before {
+      content: '';
+      position: absolute;
+      left: 0; top: 0; bottom: 0;
+      width: 2px;
+      background: var(--gradient);
+      opacity: 0.7;
+    }
+    .performance-card:hover {
+      border-color: var(--rose-mid);
+      transform: translateY(-2px);
+      box-shadow: var(--shadow);
+    }
+    .performance-rank {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1rem;
+      font-weight: 600;
+      color: var(--rose);
+      letter-spacing: 1.5px;
+      opacity: 0.85;
+      font-variant-numeric: tabular-nums;
+      min-width: 26px;
+    }
+    .performance-avatar {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: var(--gradient);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: white;
+      letter-spacing: 0.3px;
+      box-shadow: 0 3px 12px rgba(212, 63, 107, 0.25);
+      flex-shrink: 0;
+    }
+    .performance-body { min-width: 0; }
+    .performance-name {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.1rem;
+      font-weight: 500;
+      color: var(--ink);
+      line-height: 1.15;
+      margin-bottom: 0.3rem;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .performance-stats {
+      display: flex;
+      gap: 0.9rem;
+      flex-wrap: wrap;
+      font-size: 0.72rem;
+      color: var(--muted);
+      font-weight: 300;
+      margin-bottom: 0.45rem;
+    }
+    .performance-stats span { display: inline-flex; align-items: center; gap: 0.25rem; }
+    .performance-stats strong { color: var(--ink); font-weight: 600; }
+    .performance-stats i { color: #FFB800; font-size: 0.65rem; }
+    .performance-bar {
+      height: 3px;
+      background: var(--hover-surface);
+      border-radius: 10px;
+      overflow: hidden;
+      margin-bottom: 0.35rem;
+    }
+    .performance-bar span {
+      display: block;
+      height: 100%;
+      background: var(--gradient);
+      border-radius: 10px;
+      transition: width 0.9s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .performance-rate {
+      font-size: 0.62rem;
+      font-weight: 600;
+      letter-spacing: 0.8px;
+      text-transform: uppercase;
+      color: var(--rose);
+    }
 
     /* ============================================================
-       ✦ LUXURY HOME ✦
+       ✦ LUXURY HOME — CINEMATIC ✦
        ============================================================ */
+    .lux-ticker {
+      position: relative;
+      overflow: hidden;
+      margin: 0 -2rem 2rem;
+      padding: 0.7rem 0;
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      background: linear-gradient(90deg, transparent 0%, var(--rose-pale) 50%, transparent 100%);
+      -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 8%, #000 92%, transparent 100%);
+      mask-image: linear-gradient(90deg, transparent 0, #000 8%, #000 92%, transparent 100%);
+    }
+    .lux-ticker-track {
+      display: inline-flex;
+      gap: 3rem;
+      white-space: nowrap;
+      animation: luxTicker 45s linear infinite;
+      will-change: transform;
+    }
+    .lux-ticker:hover .lux-ticker-track { animation-play-state: paused; }
+    @keyframes luxTicker { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+    .lux-ticker-item {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.7rem;
+      font-size: 0.72rem;
+      letter-spacing: 2.4px;
+      text-transform: uppercase;
+      font-weight: 600;
+      color: var(--muted);
+    }
+    .lux-ticker-item i { color: var(--rose); font-size: 0.65rem; animation: luxTickerIcon 2.6s ease-in-out infinite; }
+    .lux-ticker-item:nth-child(2n) i { animation-delay: 0.8s; }
+    .lux-ticker-item:nth-child(3n) i { animation-delay: 1.6s; }
+    @keyframes luxTickerIcon {
+      0%, 100% { transform: scale(1); opacity: 1; }
+      50% { transform: scale(1.25); opacity: 0.7; }
+    }
+    .lux-ticker-item strong { color: var(--ink); font-weight: 600; letter-spacing: 1.4px; }
+
+    /* HERO */
     .lux-hero {
       position: relative;
       overflow: hidden;
-      padding: 3.2rem 2.4rem 2.6rem;
+      padding: 4.5rem 2.4rem 3.5rem;
       margin: 0 -2rem 3rem;
       border-bottom: 1px solid var(--border);
       isolation: isolate;
-      background:
-        radial-gradient(ellipse at 15% 0%, rgba(255, 92, 138, 0.16), transparent 60%),
-        radial-gradient(ellipse at 90% 100%, rgba(212, 63, 107, 0.12), transparent 55%);
+      min-height: 560px;
+      display: flex;
+      align-items: center;
+      background: #0A0E1A;
     }
-    body.light .lux-hero {
+    body.light .lux-hero { background: #1a1a1a; }
+    .lux-hero-photo-wrap {
+      position: absolute;
+      inset: -10% 0;
+      z-index: 0;
+      overflow: hidden;
+    }
+    .lux-hero-photo {
+      position: absolute;
+      inset: 0;
+      background-size: cover;
+      background-position: center;
+      opacity: 0;
+      transform: scale(1.15);
+      animation: luxHeroReveal 2.6s 0.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+      will-change: opacity, transform;
+    }
+    @keyframes luxHeroReveal {
+      to { opacity: 0.36; transform: scale(1.06); }
+    }
+    body.light .lux-hero-photo { animation: luxHeroRevealLight 2.6s 0.2s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+    @keyframes luxHeroRevealLight {
+      to { opacity: 0.24; transform: scale(1.06); }
+    }
+    .lux-hero-photo.live-drift {
+      animation: luxHeroReveal 2.6s 0.2s cubic-bezier(0.16, 1, 0.3, 1) forwards,
+                 luxHeroKen 30s 2.8s ease-in-out infinite alternate;
+    }
+    body.light .lux-hero-photo.live-drift {
+      animation: luxHeroRevealLight 2.6s 0.2s cubic-bezier(0.16, 1, 0.3, 1) forwards,
+                 luxHeroKen 30s 2.8s ease-in-out infinite alternate;
+    }
+    @keyframes luxHeroKen {
+      0% { transform: scale(1.06) translate(0, 0); }
+      50% { transform: scale(1.16) translate(-2%, -1.5%); }
+      100% { transform: scale(1.1) translate(1.5%, 1%); }
+    }
+    .lux-hero-veil {
+      position: absolute;
+      inset: 0;
+      z-index: 1;
       background:
-        radial-gradient(ellipse at 15% 0%, rgba(255, 182, 193, 0.4), transparent 60%),
-        radial-gradient(ellipse at 90% 100%, rgba(212, 63, 107, 0.07), transparent 55%);
+        radial-gradient(ellipse at 15% 0%, rgba(255, 92, 138, 0.26), transparent 60%),
+        radial-gradient(ellipse at 90% 100%, rgba(212, 63, 107, 0.22), transparent 55%),
+        linear-gradient(180deg, rgba(6, 8, 20, 0.6) 0%, rgba(6, 8, 20, 0.82) 55%, rgba(6, 8, 20, 0.97) 100%);
+      pointer-events: none;
+      animation: luxVeilIn 2s 0.4s ease-out both;
+    }
+    body.light .lux-hero-veil {
+      background:
+        radial-gradient(ellipse at 15% 0%, rgba(255, 92, 138, 0.24), transparent 60%),
+        radial-gradient(ellipse at 90% 100%, rgba(212, 63, 107, 0.18), transparent 55%),
+        linear-gradient(180deg, rgba(20, 10, 15, 0.55) 0%, rgba(20, 10, 15, 0.78) 55%, rgba(20, 10, 15, 0.94) 100%);
+    }
+    @keyframes luxVeilIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+    .lux-hero-grid {
+      position: absolute;
+      inset: 0;
+      z-index: 2;
+      background-image: radial-gradient(circle, rgba(255, 182, 193, 0.24) 1px, transparent 1.6px);
+      background-size: 30px 30px;
+      mask-image: radial-gradient(ellipse at 40% 45%, #000 15%, transparent 72%);
+      -webkit-mask-image: radial-gradient(ellipse at 40% 45%, #000 15%, transparent 72%);
+      pointer-events: none;
+      animation: luxDotsDrift 55s linear infinite;
+      opacity: 0;
+      animation: luxDotsDrift 55s linear infinite, luxDotsIn 2s 0.6s forwards;
+    }
+    @keyframes luxDotsIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+    @keyframes luxDotsDrift {
+      from { background-position: 0 0; }
+      to { background-position: 60px 30px; }
     }
     .lux-orb {
       position: absolute;
       border-radius: 50%;
-      filter: blur(70px);
-      opacity: 0.5;
+      filter: blur(80px);
+      opacity: 0;
       pointer-events: none;
-      z-index: 0;
-      animation: luxFloat 16s ease-in-out infinite;
+      z-index: 2;
+      animation: luxOrbIn 2.4s 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards,
+                 luxFloat 18s ease-in-out infinite;
+    }
+    @keyframes luxOrbIn {
+      from { opacity: 0; transform: scale(0.4); }
+      to { opacity: 0.5; transform: scale(1); }
     }
     .lux-orb-1 {
-      width: 340px; height: 340px;
+      width: 380px; height: 380px;
       background: radial-gradient(circle, #FF5C8A, transparent 70%);
-      top: -140px; left: -90px;
+      top: -160px; left: -100px;
     }
     .lux-orb-2 {
-      width: 280px; height: 280px;
+      width: 320px; height: 320px;
       background: radial-gradient(circle, #D43F6B, transparent 70%);
-      bottom: -120px; right: 6%;
-      animation-delay: -6s;
-      opacity: 0.38;
+      bottom: -140px; right: 8%;
+      animation-delay: -7s, 0s;
+      opacity: 0;
     }
+    @keyframes luxOrbIn2 {
+      from { opacity: 0; transform: scale(0.4); }
+      to { opacity: 0.4; transform: scale(1); }
+    }
+    .lux-orb-2 { animation: luxOrbIn2 2.4s 1s cubic-bezier(0.16, 1, 0.3, 1) forwards, luxFloat 20s ease-in-out infinite; }
     .lux-orb-3 {
-      width: 220px; height: 220px;
+      width: 260px; height: 260px;
       background: radial-gradient(circle, #FFB6C1, transparent 70%);
-      top: 35%; right: 24%;
-      animation-delay: -10s;
-      opacity: 0.28;
+      top: 40%; right: 22%;
+      animation-delay: -12s, 0s;
     }
-    body.light .lux-orb { opacity: 0.32; }
-    body.light .lux-orb-2 { opacity: 0.2; }
-    body.light .lux-orb-3 { opacity: 0.18; }
+    @keyframes luxOrbIn3 {
+      from { opacity: 0; transform: scale(0.4); }
+      to { opacity: 0.3; transform: scale(1); }
+    }
+    .lux-orb-3 { animation: luxOrbIn3 2.4s 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards, luxFloat 22s ease-in-out infinite; }
+    body.light .lux-orb-1 { animation-name: luxOrbInLight, luxFloat; }
+    body.light .lux-orb-2 { animation-name: luxOrbIn2Light, luxFloat; }
+    body.light .lux-orb-3 { animation-name: luxOrbIn3Light, luxFloat; }
+    @keyframes luxOrbInLight { from { opacity: 0; } to { opacity: 0.28; } }
+    @keyframes luxOrbIn2Light { from { opacity: 0; } to { opacity: 0.2; } }
+    @keyframes luxOrbIn3Light { from { opacity: 0; } to { opacity: 0.18; } }
     @keyframes luxFloat {
       0%, 100% { transform: translate(0, 0) scale(1); }
-      33% { transform: translate(28px, -22px) scale(1.08); }
-      66% { transform: translate(-22px, 24px) scale(0.94); }
+      33% { transform: translate(30px, -24px) scale(1.08); }
+      66% { transform: translate(-24px, 26px) scale(0.94); }
     }
-    .lux-hero-inner { position: relative; z-index: 2; max-width: 900px; }
+
+    /* Cursor glow inside hero */
+    .lux-cursor-glow {
+      position: absolute;
+      width: 420px;
+      height: 420px;
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 3;
+      background: radial-gradient(circle, rgba(255, 92, 138, 0.14) 0%, transparent 65%);
+      filter: blur(30px);
+      transform: translate(-50%, -50%);
+      opacity: 0;
+      transition: opacity 0.8s ease;
+      will-change: left, top;
+    }
+    .lux-hero:hover .lux-cursor-glow { opacity: 1; }
+
+    /* Sparkles */
+    .lux-sparkles { position: absolute; inset: 0; z-index: 3; pointer-events: none; }
+    .lux-sparkle {
+      position: absolute;
+      width: 4px;
+      height: 4px;
+      background: var(--rose-light);
+      border-radius: 50%;
+      box-shadow: 0 0 14px 3px rgba(255, 182, 193, 0.7);
+      opacity: 0;
+      animation: luxSparkle 5s ease-in-out infinite;
+    }
+    .lux-sparkle:nth-child(1) { top: 22%; left: 12%; animation-delay: 2s; }
+    .lux-sparkle:nth-child(2) { top: 62%; left: 78%; animation-delay: 3.3s; width: 3px; height: 3px; }
+    .lux-sparkle:nth-child(3) { top: 38%; left: 88%; animation-delay: 4.6s; width: 5px; height: 5px; }
+    .lux-sparkle:nth-child(4) { top: 78%; left: 32%; animation-delay: 5.4s; width: 3px; height: 3px; }
+    .lux-sparkle:nth-child(5) { top: 15%; left: 62%; animation-delay: 6.2s; }
+    .lux-sparkle:nth-child(6) { top: 50%; left: 8%; animation-delay: 7.1s; width: 3px; height: 3px; }
+    .lux-sparkle:nth-child(7) { top: 82%; left: 58%; animation-delay: 8.3s; }
+    @keyframes luxSparkle {
+      0%, 100% { opacity: 0; transform: scale(0.4); }
+      50% { opacity: 1; transform: scale(1.3); }
+    }
+
+    /* ROSE PETALS — falling */
+    .lux-petals {
+      position: absolute;
+      inset: 0;
+      z-index: 3;
+      pointer-events: none;
+      overflow: hidden;
+    }
+    .lux-petal {
+      position: absolute;
+      top: -8%;
+      width: 14px;
+      height: 14px;
+      background: radial-gradient(circle at 30% 30%, #FFD5DD 0%, #FF8EB0 45%, #D43F6B 100%);
+      border-radius: 50% 0 50% 0;
+      opacity: 0;
+      filter: blur(0.3px);
+      box-shadow: 0 0 8px rgba(255, 92, 138, 0.4);
+      animation: petalFall 16s linear infinite;
+      will-change: transform, opacity;
+    }
+    .lux-petal:nth-child(1) { left: 4%; animation-delay: 0s; animation-duration: 17s; }
+    .lux-petal:nth-child(2) { left: 12%; animation-delay: 2.3s; animation-duration: 21s; width: 11px; height: 11px; }
+    .lux-petal:nth-child(3) { left: 20%; animation-delay: 4.8s; animation-duration: 19s; }
+    .lux-petal:nth-child(4) { left: 28%; animation-delay: 1.5s; animation-duration: 23s; width: 16px; height: 16px; }
+    .lux-petal:nth-child(5) { left: 36%; animation-delay: 6.2s; animation-duration: 18s; width: 12px; height: 12px; }
+    .lux-petal:nth-child(6) { left: 44%; animation-delay: 3.1s; animation-duration: 20s; }
+    .lux-petal:nth-child(7) { left: 52%; animation-delay: 7.6s; animation-duration: 17s; width: 13px; height: 13px; }
+    .lux-petal:nth-child(8) { left: 60%; animation-delay: 5.4s; animation-duration: 22s; width: 10px; height: 10px; }
+    .lux-petal:nth-child(9) { left: 68%; animation-delay: 2.9s; animation-duration: 19s; }
+    .lux-petal:nth-child(10) { left: 76%; animation-delay: 8.1s; animation-duration: 21s; width: 15px; height: 15px; }
+    .lux-petal:nth-child(11) { left: 84%; animation-delay: 4.2s; animation-duration: 18s; }
+    .lux-petal:nth-child(12) { left: 92%; animation-delay: 6.8s; animation-duration: 20s; width: 12px; height: 12px; }
+    @keyframes petalFall {
+      0% { transform: translate(0, -20px) rotate(0deg) scale(0.9); opacity: 0; }
+      8% { opacity: 0.85; }
+      25% { transform: translate(-24px, 24vh) rotate(180deg) scale(1.05); }
+      50% { transform: translate(28px, 55vh) rotate(360deg) scale(1); }
+      75% { transform: translate(-20px, 82vh) rotate(540deg) scale(0.95); }
+      92% { opacity: 0.6; }
+      100% { transform: translate(14px, 110vh) rotate(720deg) scale(0.85); opacity: 0; }
+    }
+    body.light .lux-petal {
+      background: radial-gradient(circle at 30% 30%, #FFE5EC 0%, #FFA8C0 45%, #D43F6B 100%);
+      opacity: 0.7;
+      box-shadow: 0 0 8px rgba(212, 63, 107, 0.35);
+    }
+
+    .lux-hero-inner { position: relative; z-index: 4; max-width: 980px; width: 100%; }
+
+    /* Dedication line */
+    .lux-hero-dedication {
+      display: inline-flex;
+      align-items: center;
+      gap: 1rem;
+      margin-bottom: 1.8rem;
+      opacity: 0;
+      animation: luxHeadingIn 1.4s 1.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+    .lux-dedication-line {
+      width: 42px;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--rose-light));
+      transform-origin: right;
+      animation: luxLineGrow 1.2s 1.6s cubic-bezier(0.16, 1, 0.3, 1) both;
+    }
+    .lux-dedication-line:last-child {
+      background: linear-gradient(90deg, var(--rose-light), transparent);
+      transform-origin: left;
+    }
+    @keyframes luxLineGrow {
+      from { transform: scaleX(0); }
+      to { transform: scaleX(1); }
+    }
+    .lux-dedication-text {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 0.95rem;
+      font-style: italic;
+      font-weight: 400;
+      color: rgba(255, 255, 255, 0.85);
+      letter-spacing: 0.6px;
+      text-shadow: 0 2px 12px rgba(0, 0, 0, 0.6);
+    }
+    .lux-dedication-text em {
+      font-style: italic;
+      font-weight: 600;
+      background: linear-gradient(135deg, #FFD5DD 0%, #FF5C8A 60%, #D43F6B 100%);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      letter-spacing: 1px;
+      padding: 0 0.15rem;
+    }
+
     .lux-hero-eyebrow {
       display: inline-flex;
       align-items: center;
       gap: 0.6rem;
       font-size: 0.68rem;
-      letter-spacing: 2.8px;
+      letter-spacing: 3px;
       text-transform: uppercase;
       font-weight: 600;
-      color: var(--rose);
+      color: var(--rose-light);
       margin-bottom: 1.4rem;
+      text-shadow: 0 1px 12px rgba(0, 0, 0, 0.6);
+      opacity: 0;
+      animation: luxHeadingIn 1.2s 1.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
     }
     .lux-dot {
       width: 6px; height: 6px; border-radius: 50%;
@@ -821,128 +1300,336 @@
     }
     @keyframes luxPulse {
       0% { box-shadow: 0 0 0 0 rgba(255, 92, 138, 0.55); }
-      70% { box-shadow: 0 0 0 14px rgba(255, 92, 138, 0); }
+      70% { box-shadow: 0 0 0 16px rgba(255, 92, 138, 0); }
       100% { box-shadow: 0 0 0 0 rgba(255, 92, 138, 0); }
     }
     .lux-hero-heading {
       font-family: 'Cormorant Garamond', serif;
-      font-size: clamp(2.6rem, 5.2vw, 4.5rem);
+      font-size: clamp(3rem, 6.2vw, 5.4rem);
       font-weight: 400;
-      letter-spacing: -0.5px;
-      line-height: 1.02;
-      color: var(--ink);
-      margin-bottom: 1.3rem;
+      letter-spacing: -0.8px;
+      line-height: 0.98;
+      color: #ffffff;
+      margin-bottom: 1.6rem;
+      text-shadow: 0 4px 24px rgba(0, 0, 0, 0.5);
+      opacity: 0;
+      animation: luxHeadingIn 1.4s 1.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+    @keyframes luxHeadingIn {
+      from { opacity: 0; transform: translateY(24px); letter-spacing: -2px; }
+      to { opacity: 1; transform: translateY(0); letter-spacing: -0.8px; }
     }
     .lux-hero-heading-accent {
       font-style: italic;
-      background: var(--gradient);
+      background: linear-gradient(135deg, #FFD5DD 0%, #FF5C8A 35%, #FFD5DD 50%, #FF5C8A 65%, #D43F6B 100%);
+      background-size: 220% 100%;
       -webkit-background-clip: text;
       background-clip: text;
       color: transparent;
       font-weight: 500;
+      text-shadow: none;
+      animation: luxShimmer 8s ease-in-out infinite;
+    }
+    @keyframes luxShimmer {
+      0%, 100% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
     }
     .lux-hero-lead {
-      font-size: 1.02rem;
-      color: var(--muted);
+      font-size: 1.05rem;
+      color: rgba(255, 255, 255, 0.85);
       font-weight: 300;
-      line-height: 1.75;
+      line-height: 1.85;
       max-width: 640px;
-      margin-bottom: 2rem;
+      margin-bottom: 2.4rem;
+      text-shadow: 0 2px 14px rgba(0, 0, 0, 0.6);
+      opacity: 0;
+      animation: luxHeadingIn 1.2s 2.1s cubic-bezier(0.16, 1, 0.3, 1) forwards;
     }
     .lux-hero-meta {
       display: flex;
       align-items: center;
       flex-wrap: wrap;
-      padding-top: 1.5rem;
-      border-top: 1px solid var(--border);
+      padding-top: 1.6rem;
+      border-top: 1px solid rgba(255, 255, 255, 0.12);
+      opacity: 0;
+      animation: luxHeadingIn 1.2s 2.35s cubic-bezier(0.16, 1, 0.3, 1) forwards;
     }
     .lux-meta-item {
-      padding: 0 1.6rem;
+      padding: 0 1.8rem;
       display: flex;
       flex-direction: column;
-      gap: 0.28rem;
+      gap: 0.3rem;
     }
     .lux-meta-item:first-child { padding-left: 0; }
     .lux-meta-label {
       font-size: 0.6rem;
-      letter-spacing: 1.9px;
+      letter-spacing: 2px;
       text-transform: uppercase;
       font-weight: 600;
-      color: var(--muted);
+      color: rgba(255, 255, 255, 0.55);
     }
     .lux-meta-value {
       font-family: 'Cormorant Garamond', serif;
-      font-size: 1.15rem;
+      font-size: 1.2rem;
       font-weight: 500;
-      color: var(--ink);
+      color: #ffffff;
       letter-spacing: 0.3px;
       font-variant-numeric: tabular-nums;
     }
-    .lux-meta-divider {
-      width: 1px;
-      height: 34px;
-      background: var(--border);
+    .lux-meta-divider { width: 1px; height: 36px; background: rgba(255, 255, 255, 0.14); }
+
+    /* Live studio status pill */
+    .lux-status-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.4rem 0.9rem;
+      border-radius: 2rem;
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.14);
+      backdrop-filter: blur(10px);
+      margin-bottom: 1.8rem;
+      opacity: 0;
+      animation: luxHeadingIn 1.2s 1.35s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+    .lux-status-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--success);
+      box-shadow: 0 0 12px 2px rgba(74, 222, 128, 0.7);
+      animation: luxStatusPulse 2s ease-in-out infinite;
+    }
+    .lux-status-dot.closed {
+      background: var(--danger);
+      box-shadow: 0 0 12px 2px rgba(255, 107, 107, 0.6);
+    }
+    @keyframes luxStatusPulse {
+      0%, 100% { transform: scale(1); opacity: 1; }
+      50% { transform: scale(1.25); opacity: 0.7; }
+    }
+    .lux-status-text {
+      font-size: 0.72rem;
+      font-weight: 600;
+      letter-spacing: 1.6px;
+      text-transform: uppercase;
+      color: rgba(255, 255, 255, 0.9);
+    }
+    .lux-status-detail {
+      font-size: 0.72rem;
+      color: rgba(255, 255, 255, 0.55);
+      font-weight: 300;
+      letter-spacing: 0.4px;
     }
 
+    /* STATS — floating */
     .lux-stats {
       display: grid;
       grid-template-columns: repeat(4, 1fr);
-      margin-bottom: 3.5rem;
-      border-top: 1px solid var(--border);
-      border-bottom: 1px solid var(--border);
+      gap: 2rem;
+      padding: 2rem 0 4rem;
+      margin-bottom: 2rem;
+      position: relative;
+    }
+    .lux-stats::before {
+      content: '';
+      position: absolute;
+      left: 10%;
+      right: 10%;
+      top: 50%;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--rose-mid), transparent);
+      opacity: 0.25;
+      z-index: 0;
+      pointer-events: none;
     }
     .lux-stat {
       position: relative;
-      padding: 1.9rem 1.7rem;
-      border-right: 1px solid var(--border);
-      overflow: hidden;
-      transition: 0.35s;
+      z-index: 1;
+      text-align: left;
+      transition: 0.4s;
       cursor: default;
     }
-    .lux-stat:last-child { border-right: none; }
-    .lux-stat::before {
-      content: '';
-      position: absolute;
-      left: 0; bottom: 0;
-      width: 0; height: 2px;
-      background: var(--gradient);
-      transition: width 0.55s cubic-bezier(0.4, 0, 0.2, 1);
-    }
-    .lux-stat:hover::before { width: 100%; }
-    .lux-stat:hover { background: var(--hover-surface); }
     .lux-stat-index {
-      font-size: 0.6rem;
-      letter-spacing: 2.2px;
-      font-weight: 600;
-      color: var(--muted);
-      margin-bottom: 0.9rem;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 0.85rem;
+      font-weight: 500;
+      letter-spacing: 3px;
+      color: var(--rose);
+      margin-bottom: 1.2rem;
+      opacity: 0.85;
       font-variant-numeric: tabular-nums;
+      transition: 0.4s;
     }
     .lux-stat-number {
       font-family: 'Cormorant Garamond', serif;
-      font-size: 3.2rem;
-      font-weight: 500;
-      line-height: 1;
+      font-size: clamp(3rem, 5.5vw, 4.6rem);
+      font-weight: 400;
+      line-height: 0.92;
+      letter-spacing: -0.03em;
       color: var(--ink);
-      letter-spacing: -0.02em;
-      margin-bottom: 0.5rem;
+      margin-bottom: 0.7rem;
       font-variant-numeric: tabular-nums;
-      transition: color 0.3s;
+      transition: 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      display: inline-block;
+      position: relative;
+    }
+    .lux-stat-number::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(100deg, transparent 40%, rgba(255, 182, 193, 0.35) 50%, transparent 60%);
+      background-size: 200% 100%;
+      -webkit-background-clip: text;
+      background-clip: text;
+      opacity: 0;
+      pointer-events: none;
+      animation: luxShimmerOnce 1.6s ease-out;
+    }
+    @keyframes luxShimmerOnce {
+      0% { background-position: 200% 0; opacity: 1; }
+      100% { background-position: -100% 0; opacity: 0; }
     }
     .lux-stat:hover .lux-stat-number {
       background: var(--gradient);
       -webkit-background-clip: text;
       background-clip: text;
       color: transparent;
+      transform: translateY(-4px) scale(1.02);
+      letter-spacing: -0.05em;
     }
+    .lux-stat:hover .lux-stat-index { letter-spacing: 4px; }
     .lux-stat-label {
-      font-size: 0.72rem;
-      letter-spacing: 0.4px;
-      color: var(--muted);
-      font-weight: 400;
+      font-size: 0.7rem;
       text-transform: uppercase;
+      letter-spacing: 1.6px;
+      color: var(--muted);
+      font-weight: 500;
+      line-height: 1.5;
+      max-width: 160px;
     }
 
+    /* ============================================================
+       FOUNDER'S NOTE
+       ============================================================ */
+    .lux-note {
+      position: relative;
+      margin: 0 0 4rem;
+      padding: 3.5rem 3rem 3rem;
+      border-radius: 1.4rem;
+      overflow: hidden;
+      isolation: isolate;
+      text-align: center;
+      background:
+        radial-gradient(ellipse at 50% 0%, rgba(255, 92, 138, 0.14), transparent 65%),
+        radial-gradient(ellipse at 50% 100%, rgba(212, 63, 107, 0.1), transparent 60%);
+      border: 1px solid var(--border);
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity 1s ease, transform 1s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .lux-note.revealed {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    body.light .lux-note {
+      background:
+        radial-gradient(ellipse at 50% 0%, rgba(255, 182, 193, 0.5), transparent 65%),
+        radial-gradient(ellipse at 50% 100%, rgba(212, 63, 107, 0.08), transparent 60%);
+    }
+    .lux-note::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image: radial-gradient(circle, rgba(255, 182, 193, 0.14) 1px, transparent 1.5px);
+      background-size: 26px 26px;
+      opacity: 0.5;
+      mask-image: radial-gradient(ellipse at center, #000 30%, transparent 75%);
+      -webkit-mask-image: radial-gradient(ellipse at center, #000 30%, transparent 75%);
+      pointer-events: none;
+    }
+    .lux-note::after {
+      content: '';
+      position: absolute;
+      inset: -20%;
+      background: radial-gradient(ellipse at center, rgba(255, 92, 138, 0.08), transparent 60%);
+      pointer-events: none;
+      animation: luxBreathe 8s ease-in-out infinite;
+    }
+    @keyframes luxBreathe {
+      0%, 100% { transform: scale(1); opacity: 0.6; }
+      50% { transform: scale(1.08); opacity: 1; }
+    }
+    .lux-note-mark {
+      position: relative;
+      z-index: 1;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 5rem;
+      font-weight: 400;
+      line-height: 0.6;
+      color: var(--rose);
+      opacity: 0.7;
+      margin-bottom: 0.8rem;
+      display: inline-block;
+    }
+    .lux-note-text {
+      position: relative;
+      z-index: 1;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(1.3rem, 2.4vw, 1.85rem);
+      font-style: italic;
+      font-weight: 400;
+      line-height: 1.55;
+      color: var(--ink);
+      letter-spacing: 0.2px;
+      max-width: 720px;
+      margin: 0 auto 2rem;
+    }
+    .lux-note-text em {
+      font-style: italic;
+      font-weight: 500;
+      background: var(--gradient);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+    .lux-note-signature {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.35rem;
+    }
+    .lux-signature-line {
+      width: 48px;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--rose-mid), transparent);
+      margin-bottom: 0.6rem;
+    }
+    .lux-signature-name {
+      font-family: 'Great Vibes', cursive;
+      font-size: 2.8rem;
+      font-weight: 400;
+      line-height: 1;
+      background: var(--gradient);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      padding: 0 0.5rem;
+      letter-spacing: 0;
+    }
+    .lux-signature-role {
+      font-size: 0.62rem;
+      font-weight: 600;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 2.6px;
+    }
+
+    /* ============================================================
+       DIRECT YOUR SALON — compact chips
+       ============================================================ */
     .lux-section { margin-bottom: 3.5rem; }
     .lux-section:last-child { margin-bottom: 1rem; }
     .lux-section-head {
@@ -950,12 +1637,16 @@
       justify-content: space-between;
       align-items: flex-end;
       gap: 2rem;
-      margin-bottom: 2rem;
+      margin-bottom: 1.6rem;
       flex-wrap: wrap;
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.9s ease, transform 0.9s cubic-bezier(0.16, 1, 0.3, 1);
     }
+    .lux-section-head.revealed { opacity: 1; transform: translateY(0); }
     .lux-section-eyebrow {
       font-size: 0.62rem;
-      letter-spacing: 2.6px;
+      letter-spacing: 2.8px;
       text-transform: uppercase;
       font-weight: 600;
       color: var(--rose);
@@ -963,166 +1654,400 @@
     }
     .lux-section-title {
       font-family: 'Cormorant Garamond', serif;
-      font-size: clamp(1.8rem, 3vw, 2.4rem);
+      font-size: clamp(1.6rem, 2.6vw, 2.2rem);
       font-weight: 500;
       color: var(--ink);
       letter-spacing: -0.3px;
       line-height: 1.1;
     }
     .lux-section-desc {
-      font-size: 0.88rem;
+      font-size: 0.85rem;
       color: var(--muted);
       font-weight: 300;
-      line-height: 1.65;
-      max-width: 400px;
+      line-height: 1.6;
+      max-width: 380px;
       text-align: right;
     }
 
-    .lux-tiles {
+    /* Section divider — soft rose hairline */
+    .lux-divider {
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--rose-mid), transparent);
+      opacity: 0.35;
+      margin: 3.5rem 0;
+      position: relative;
+    }
+    .lux-divider::after {
+      content: '✦';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: var(--bg);
+      color: var(--rose);
+      font-size: 0.85rem;
+      padding: 0 0.9rem;
+      letter-spacing: 0.3em;
+      opacity: 0.7;
+    }
+    body.light .lux-divider::after { background: #ffffff; }
+
+    .lux-chips {
       display: grid;
       grid-template-columns: repeat(4, 1fr);
-      gap: 1rem;
+      gap: 0.8rem;
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.9s 0.15s ease, transform 0.9s 0.15s cubic-bezier(0.16, 1, 0.3, 1);
     }
-    .lux-tile {
-      position: relative;
-      background: var(--card-bg);
-      border: 1px solid var(--border);
-      border-radius: 1rem;
-      padding: 1.6rem 1.4rem 1.5rem;
-      text-align: left;
-      cursor: pointer;
-      overflow: hidden;
+    .lux-chips.revealed { opacity: 1; transform: translateY(0); }
+    .lux-chip {
       display: flex;
-      flex-direction: column;
-      gap: 1rem;
-      min-height: 250px;
-      transition: 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      align-items: center;
+      gap: 0.85rem;
+      padding: 1rem 1.1rem;
+      border: 1px solid var(--border);
+      border-radius: 2rem;
+      background: var(--card-bg);
+      cursor: pointer;
+      transition: 0.35s cubic-bezier(0.4, 0, 0.2, 1);
       font-family: inherit;
+      color: inherit;
+      text-align: left;
+      position: relative;
+      overflow: hidden;
       backdrop-filter: blur(6px);
     }
-    .lux-tile::before {
+    .lux-chip::before {
       content: '';
       position: absolute;
       inset: 0;
-      background: radial-gradient(circle at var(--x, 50%) var(--y, 50%), rgba(255, 92, 138, 0.16), transparent 62%);
+      background: linear-gradient(90deg, var(--rose-pale), transparent 80%);
       opacity: 0;
       transition: opacity 0.4s;
       pointer-events: none;
     }
-    .lux-tile:hover::before { opacity: 1; }
-    .lux-tile:hover {
+    .lux-chip:hover::before { opacity: 1; }
+    .lux-chip:hover {
       border-color: var(--rose-mid);
-      transform: translateY(-4px);
-      box-shadow: 0 22px 55px -22px rgba(255, 92, 138, 0.28);
+      transform: translateY(-2px);
+      box-shadow: 0 12px 30px -12px rgba(255, 92, 138, 0.35);
     }
-    .lux-tile-number {
+    .lux-chip-num {
       font-family: 'Cormorant Garamond', serif;
-      font-size: 0.9rem;
-      font-weight: 500;
-      color: var(--muted);
-      letter-spacing: 2.5px;
-      opacity: 0.75;
-      font-variant-numeric: tabular-nums;
-    }
-    .lux-tile-icon {
-      width: 46px; height: 46px;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      background: var(--rose-pale);
-      color: var(--rose);
       font-size: 1.05rem;
-      transition: 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-      border: 1px solid transparent;
+      font-weight: 600;
+      color: var(--rose);
+      letter-spacing: 2px;
+      opacity: 0.85;
+      flex-shrink: 0;
+      transition: 0.4s;
     }
-    .lux-tile:hover .lux-tile-icon {
+    .lux-chip:hover .lux-chip-num {
       background: var(--gradient);
-      color: white;
-      transform: scale(1.06) rotate(-4deg);
-      box-shadow: 0 10px 26px -8px rgba(255, 92, 138, 0.55);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      letter-spacing: 2.6px;
     }
-    .lux-tile-body { flex: 1; display: flex; flex-direction: column; gap: 0.4rem; }
-    .lux-tile-title {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 1.55rem;
-      font-weight: 500;
+    .lux-chip-label {
+      flex: 1;
+      font-size: 0.92rem;
+      font-weight: 400;
       color: var(--ink);
-      letter-spacing: 0.2px;
-      line-height: 1.15;
+      letter-spacing: 0.3px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
-    .lux-tile-desc {
-      font-size: 0.85rem;
-      color: var(--muted);
-      font-weight: 300;
-      line-height: 1.55;
-    }
-    .lux-tile-arrow {
-      position: absolute;
-      bottom: 1.4rem;
-      right: 1.4rem;
-      width: 34px; height: 34px;
+    .lux-chip-arrow {
+      width: 26px;
+      height: 26px;
       border-radius: 50%;
       border: 1px solid var(--border);
       display: flex;
       align-items: center;
       justify-content: center;
       color: var(--muted);
-      font-size: 0.75rem;
-      transition: 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      font-size: 0.7rem;
+      transition: 0.4s;
+      flex-shrink: 0;
     }
-    .lux-tile:hover .lux-tile-arrow {
-      background: var(--rose);
-      border-color: var(--rose);
+    .lux-chip:hover .lux-chip-arrow {
+      background: var(--gradient);
+      border-color: transparent;
       color: white;
-      transform: translateX(4px);
+      transform: translateX(3px) rotate(-15deg);
     }
 
-    .lux-feed { display: flex; flex-direction: column; }
-    .lux-feed-row {
+    /* ============================================================
+       ✦ STUDIO GALLERY — 3D tilt + ken burns ✦
+       ============================================================ */
+    .studio-grid {
       display: grid;
-      grid-template-columns: 110px 1.1fr 1.4fr 1fr auto;
-      gap: 1.3rem;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1.1rem;
+      perspective: 1400px;
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.9s 0.2s ease, transform 0.9s 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .studio-grid.revealed { opacity: 1; transform: translateY(0); }
+    .studio-item {
+      position: relative;
+      border-radius: 1.1rem;
+      overflow: hidden;
+      cursor: pointer;
+      aspect-ratio: 4 / 5;
+      transition: box-shadow 0.5s ease;
+      isolation: isolate;
+      transform-style: preserve-3d;
+      will-change: transform;
+      animation: studioFloat 9s ease-in-out infinite;
+    }
+    .studio-item:nth-child(1) { animation-delay: 0s; }
+    .studio-item:nth-child(2) { animation-delay: -2.2s; }
+    .studio-item:nth-child(3) { animation-delay: -4.4s; }
+    .studio-item:nth-child(4) { animation-delay: -6.6s; }
+    @keyframes studioFloat {
+      0%, 100% { translate: 0 0; }
+      50% { translate: 0 -6px; }
+    }
+    .studio-item:hover {
+      animation-play-state: paused;
+      box-shadow: 0 34px 70px -22px rgba(255, 92, 138, 0.4);
+    }
+    .studio-image {
+      position: absolute;
+      inset: -6%;
+      background-size: cover;
+      background-position: center;
+      animation: studioKen 24s ease-in-out infinite alternate;
+      will-change: transform;
+    }
+    .studio-item:nth-child(2) .studio-image { animation-duration: 28s; animation-delay: -6s; }
+    .studio-item:nth-child(3) .studio-image { animation-duration: 22s; animation-delay: -12s; }
+    .studio-item:nth-child(4) .studio-image { animation-duration: 26s; animation-delay: -18s; }
+    @keyframes studioKen {
+      0% { transform: scale(1.02) translate(0%, 0%); }
+      50% { transform: scale(1.12) translate(-2.5%, -2%); }
+      100% { transform: scale(1.06) translate(2%, 2.5%); }
+    }
+    .studio-item:hover .studio-image {
+      animation-play-state: paused;
+      transform: scale(1.16) translate(0, 0);
+      transition: transform 1.2s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .studio-item::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(180deg, transparent 30%, rgba(0, 0, 0, 0.5) 62%, rgba(0, 0, 0, 0.94) 100%);
+      pointer-events: none;
+      z-index: 1;
+    }
+    .studio-item::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      z-index: 2;
+      background: radial-gradient(circle at 50% 100%, rgba(255, 92, 138, 0.32), transparent 55%);
+      opacity: 0;
+      transition: opacity 0.6s;
+      pointer-events: none;
+    }
+    .studio-item:hover::before { opacity: 1; }
+    .studio-caption {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      padding: 1.5rem 1.4rem;
+      z-index: 3;
+      color: white;
+      transform: translateY(6px);
+      transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .studio-item:hover .studio-caption { transform: translateY(0); }
+    .studio-cat {
+      font-size: 0.58rem;
+      letter-spacing: 2.4px;
+      text-transform: uppercase;
+      font-weight: 700;
+      color: var(--rose-light);
+      margin-bottom: 0.4rem;
+    }
+    .studio-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.25rem;
+      font-weight: 500;
+      color: white;
+      letter-spacing: 0.2px;
+      line-height: 1.2;
+      text-shadow: 0 2px 12px rgba(0, 0, 0, 0.6);
+      margin-bottom: 0.25rem;
+    }
+    .studio-sub {
+      font-size: 0.72rem;
+      color: rgba(255, 255, 255, 0.7);
+      font-weight: 300;
+      letter-spacing: 0.3px;
+      line-height: 1.5;
+      opacity: 0;
+      max-height: 0;
+      overflow: hidden;
+      transition: opacity 0.5s, max-height 0.5s;
+    }
+    .studio-item:hover .studio-sub {
+      opacity: 1;
+      max-height: 40px;
+    }
+
+    /* ============================================================
+       SALON PULSE — timeline
+       ============================================================ */
+    .lux-pulse {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      padding: 0.5rem 0 1rem;
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.9s 0.25s ease, transform 0.9s 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .lux-pulse.revealed { opacity: 1; transform: translateY(0); }
+    .pulse-item {
+      position: relative;
+      display: grid;
+      grid-template-columns: 100px 24px 56px 1fr auto;
       align-items: center;
-      padding: 1.1rem 0;
-      border-bottom: 1px solid var(--border);
-      transition: 0.25s;
+      gap: 1.1rem;
+      padding: 1.1rem 0.75rem 1.1rem 0;
+      transition: 0.3s;
+      border-radius: 0.6rem;
     }
-    .lux-feed-row:last-child { border-bottom: none; }
-    .lux-feed-row:hover {
-      padding-left: 0.6rem;
-      padding-right: 0.6rem;
+    .pulse-item:hover {
       background: var(--hover-surface);
-      border-radius: 0.5rem;
+      padding-left: 0.75rem;
     }
-    .lux-feed-time {
+    .pulse-time {
+      display: flex;
+      flex-direction: column;
+      gap: 0.2rem;
+      text-align: right;
+    }
+    .pulse-time-main {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.15rem;
+      font-weight: 600;
+      color: var(--ink);
+      letter-spacing: 0.3px;
+      font-variant-numeric: tabular-nums;
+      line-height: 1;
+    }
+    .pulse-time-sub {
+      font-size: 0.62rem;
+      font-weight: 600;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 1.1px;
+    }
+    .pulse-rail {
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      align-self: stretch;
+    }
+    .pulse-rail::before {
+      content: '';
+      position: absolute;
+      top: -0.55rem;
+      bottom: -0.55rem;
+      left: 50%;
+      width: 1px;
+      background: linear-gradient(180deg, transparent, var(--border) 30%, var(--border) 70%, transparent);
+      transform: translateX(-50%);
+      z-index: 0;
+    }
+    .pulse-item:first-child .pulse-rail::before { top: 50%; }
+    .pulse-item:last-child .pulse-rail::before { bottom: 50%; }
+    .pulse-dot {
+      position: relative;
+      z-index: 1;
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: var(--gradient);
+      box-shadow: 0 0 0 3px var(--bg), 0 0 0 4px var(--rose-mid);
+      transition: 0.3s;
+    }
+    .pulse-item:hover .pulse-dot {
+      transform: scale(1.35);
+      animation: pulseDotBeat 1.6s ease-in-out infinite;
+    }
+    @keyframes pulseDotBeat {
+      0%, 100% { box-shadow: 0 0 0 3px var(--bg), 0 0 0 5px var(--rose), 0 0 18px 2px rgba(255, 92, 138, 0.6); }
+      50% { box-shadow: 0 0 0 3px var(--bg), 0 0 0 8px rgba(255, 92, 138, 0.25), 0 0 24px 4px rgba(255, 92, 138, 0.7); }
+    }
+    .pulse-avatar {
+      width: 46px;
+      height: 46px;
+      border-radius: 50%;
+      background: var(--gradient);
+      display: flex;
+      align-items: center;
+      justify-content: center;
       font-family: 'Cormorant Garamond', serif;
       font-size: 1.05rem;
+      font-weight: 600;
+      color: white;
+      letter-spacing: 0.4px;
+      box-shadow: 0 4px 14px rgba(212, 63, 107, 0.25);
+      transition: 0.3s;
+    }
+    .pulse-item:hover .pulse-avatar {
+      transform: scale(1.08);
+      box-shadow: 0 6px 20px rgba(212, 63, 107, 0.4);
+    }
+    .pulse-body { min-width: 0; }
+    .pulse-customer {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.15rem;
       font-weight: 500;
       color: var(--ink);
       letter-spacing: 0.2px;
-    }
-    .lux-feed-time small {
-      display: block;
-      font-size: 0.65rem;
-      font-family: 'DM Sans', sans-serif;
-      color: var(--muted);
-      font-weight: 500;
-      letter-spacing: 0.7px;
-      text-transform: uppercase;
-      margin-top: 0.18rem;
-    }
-    .lux-feed-cell {
-      font-size: 0.88rem;
-      color: var(--ink);
-      font-weight: 400;
+      line-height: 1.15;
+      margin-bottom: 0.2rem;
+      white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
-      white-space: nowrap;
     }
-    .lux-feed-cell.dim { color: var(--muted); font-weight: 300; }
+    .pulse-services {
+      font-size: 0.82rem;
+      color: var(--muted);
+      font-weight: 300;
+      letter-spacing: 0.2px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .pulse-stylist {
+      font-size: 0.72rem;
+      color: var(--muted);
+      font-weight: 400;
+      font-style: italic;
+      margin-top: 0.15rem;
+      letter-spacing: 0.2px;
+    }
+    .pulse-stylist::before {
+      content: '· ';
+      color: var(--rose);
+      font-style: normal;
+    }
+    .pulse-status { flex-shrink: 0; }
     .lux-feed-empty {
-      padding: 2.5rem 0;
+      padding: 3rem 0;
       text-align: center;
       color: var(--muted);
       font-weight: 300;
@@ -1130,22 +2055,21 @@
       letter-spacing: 0.3px;
     }
 
-    /* ============================================================
-       DETAIL VIEWS
-       ============================================================ */
+    /* ---------- DETAIL VIEWS ---------- */
     .detail-inline {
       display: flex;
       flex-direction: column;
-      gap: 2rem;
+      gap: 2.2rem;
       padding-bottom: 2rem;
       animation: fadeIn 0.25s ease;
+      max-width: 900px;
     }
     .back-link {
       background: none;
       border: none;
       color: var(--muted);
       font-family: inherit;
-      font-size: 0.9rem;
+      font-size: 0.88rem;
       font-weight: 400;
       letter-spacing: 0.3px;
       cursor: pointer;
@@ -1157,133 +2081,155 @@
       transition: 0.2s;
     }
     .back-link:hover { color: var(--rose); transform: translateX(-2px); }
-    .detail-hero { display: flex; flex-direction: column; gap: 0.6rem; }
+    .detail-hero { display: flex; flex-direction: column; gap: 0.7rem; padding-bottom: 1.6rem; border-bottom: 1px solid var(--border); }
     .detail-heading {
       font-family: 'Cormorant Garamond', serif;
-      font-size: 2.2rem;
+      font-size: 2.4rem;
       font-weight: 500;
-      letter-spacing: 0.3px;
-      line-height: 1.15;
+      letter-spacing: 0.2px;
+      line-height: 1.12;
       background: var(--gradient);
       -webkit-background-clip: text;
       background-clip: text;
       color: transparent;
     }
-    .detail-subheading { font-size: 0.95rem; color: var(--muted); font-weight: 300; letter-spacing: 0.2px; }
+    .detail-subheading {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.95rem;
+      color: var(--muted);
+      font-weight: 300;
+      letter-spacing: 0.2px;
+      line-height: 1.55;
+    }
     .detail-section { display: flex; flex-direction: column; gap: 0.3rem; }
     .detail-section-label {
-      font-size: 0.7rem;
-      font-weight: 600;
-      letter-spacing: 0.6px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.68rem;
+      font-weight: 700;
+      letter-spacing: 1.2px;
       text-transform: uppercase;
-      color: var(--muted);
-      margin-bottom: 0.5rem;
+      color: var(--rose);
+      margin-bottom: 0.55rem;
     }
     .detail-row {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 0.75rem 0;
+      padding: 0.8rem 0;
       border-bottom: 1px solid var(--border);
+      font-family: 'DM Sans', sans-serif;
       font-size: 0.95rem;
       font-weight: 300;
       gap: 1rem;
     }
     .detail-row:last-child { border-bottom: none; }
-    .detail-row span:first-child { color: var(--muted); flex-shrink: 0; }
-    .detail-row span:last-child { font-weight: 500; color: var(--ink); text-align: right; }
+    .detail-row span:first-child { color: var(--muted); flex-shrink: 0; font-weight: 300; letter-spacing: 0.2px; }
+    .detail-row span:last-child { font-weight: 500; color: var(--ink); text-align: right; letter-spacing: 0.1px; }
     .detail-svc-item {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 0.75rem 0;
+      padding: 0.85rem 0;
       border-bottom: 1px solid var(--border);
       gap: 0.5rem;
+      font-family: 'DM Sans', sans-serif;
     }
     .detail-svc-item:last-of-type { border-bottom: none; }
-    .detail-svc-name { font-size: 0.95rem; font-weight: 500; color: var(--ink); }
-    .detail-svc-meta { font-size: 0.8rem; color: var(--muted); margin-top: 0.1rem; font-weight: 300; }
-    .detail-svc-price { font-size: 0.95rem; font-weight: 600; color: var(--rose); }
+    .detail-svc-name { font-size: 0.95rem; font-weight: 500; color: var(--ink); letter-spacing: 0.1px; }
+    .detail-svc-meta { font-size: 0.8rem; color: var(--muted); margin-top: 0.15rem; font-weight: 300; letter-spacing: 0.1px; }
+    .detail-svc-price { font-family: 'Cormorant Garamond', serif; font-size: 1.05rem; font-weight: 600; color: var(--rose); }
     .detail-total {
       display: flex;
       justify-content: space-between;
-      padding: 1rem 0 0 0;
-      font-size: 1.1rem;
+      padding: 1.1rem 0 0 0;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 1.05rem;
       font-weight: 600;
       color: var(--ink);
-      margin-top: 0.3rem;
+      margin-top: 0.4rem;
       border-top: 1px solid var(--border);
+      letter-spacing: 0.2px;
     }
-    .detail-total span:last-child { color: var(--rose); }
-    .detail-actions { display: flex; flex-direction: column; gap: 0.3rem; padding-top: 0.5rem; }
+    .detail-total span:last-child { color: var(--rose); font-family: 'Cormorant Garamond', serif; font-size: 1.35rem; }
+    .detail-actions { display: flex; flex-direction: column; gap: 0.4rem; padding-top: 0.5rem; }
     .action-link {
       background: none;
       border: none;
-      font-family: inherit;
-      font-size: 1rem;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.95rem;
       font-weight: 400;
       color: var(--ink);
       cursor: pointer;
-      padding: 0.7rem 0;
+      padding: 0.75rem 0;
       text-align: left;
       display: inline-flex;
       align-items: center;
-      gap: 0.7rem;
+      gap: 0.75rem;
       transition: 0.15s;
       letter-spacing: 0.2px;
     }
-    .action-link i { width: 20px; color: var(--grey-icon); font-size: 0.9rem; transition: color 0.15s; }
+    .action-link i { width: 20px; color: var(--grey-icon); font-size: 0.9rem; transition: color 0.15s; text-align: center; }
     .action-link:hover { color: var(--rose); padding-left: 0.4rem; }
     .action-link:hover i { color: var(--rose); }
     .action-link.danger { color: var(--danger); }
     .action-link.danger i { color: var(--grey-icon); }
-    .action-link.danger:hover { color: var(--danger); opacity: 0.8; }
+    .action-link.danger:hover { color: var(--danger); opacity: 0.85; }
     .action-link.danger:hover i { color: var(--danger); }
     .action-link.pink { color: var(--rose); font-weight: 500; }
     .action-link.pink i { color: var(--rose); }
-
-    /* ============================================================
-       PROFILE
-       ============================================================ */
-    .profile-container { max-width: 640px; margin: 0 auto; padding: 0.5rem 0; }
-    .profile-header { text-align: center; padding: 1.5rem 0; }
-    .profile-avatar-large {
-      width: 90px;
-      height: 90px;
+    .detail-hero-panel {
+      display: flex;
+      align-items: center;
+      gap: 1.6rem;
+      padding: 1.8rem 0 1.6rem;
+      border-bottom: 1px solid var(--border);
+      flex-wrap: wrap;
+    }
+    .detail-hero-avatar {
+      width: 84px;
+      height: 84px;
       border-radius: 50%;
       background: var(--gradient);
       display: flex;
       align-items: center;
       justify-content: center;
       font-family: 'Cormorant Garamond', serif;
-      font-size: 2.4rem;
+      font-size: 2rem;
       font-weight: 600;
       color: white;
+      letter-spacing: 0.5px;
+      box-shadow: 0 6px 20px rgba(212, 63, 107, 0.3);
+      flex-shrink: 0;
+    }
+    .detail-hero-body { flex: 1; min-width: 220px; }
+    .detail-hero-badges { display: flex; gap: 0.5rem; flex-wrap: wrap; margin-bottom: 0.6rem; }
+
+    /* ---------- PROFILE ---------- */
+    .profile-container { max-width: 640px; margin: 0 auto; padding: 0.5rem 0; }
+    .profile-header { text-align: center; padding: 1.5rem 0; }
+    .profile-avatar-large {
+      width: 90px; height: 90px; border-radius: 50%;
+      background: var(--gradient);
+      display: flex; align-items: center; justify-content: center;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 2.4rem; font-weight: 600; color: white;
       margin: 0 auto 0.7rem;
     }
     .profile-name {
       font-family: 'Cormorant Garamond', serif;
-      font-size: 2rem;
-      font-weight: 500;
-      letter-spacing: 0.3px;
-      color: var(--ink);
+      font-size: 2rem; font-weight: 500;
+      letter-spacing: 0.3px; color: var(--ink);
     }
     .profile-email { font-size: 0.95rem; color: var(--muted); margin-top: 0.2rem; font-weight: 300; }
     .profile-role-badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.35rem;
-      color: var(--rose);
-      font-size: 0.85rem;
-      font-weight: 400;
+      display: inline-flex; align-items: center; gap: 0.35rem;
+      color: var(--rose); font-size: 0.85rem; font-weight: 400;
       margin-top: 0.5rem;
     }
     .profile-divider { height: 1px; background: var(--border); margin: 0.8rem 0; }
     .profile-details-list { display: flex; flex-direction: column; padding: 0.3rem 0; }
     .profile-detail-item {
-      display: flex;
-      align-items: center;
-      padding: 1rem 0;
+      display: flex; align-items: center; padding: 1rem 0;
       border-bottom: 1px solid var(--border);
     }
     .profile-detail-item:last-child { border-bottom: none; }
@@ -1291,150 +2237,90 @@
     .detail-value { color: var(--ink); font-weight: 500; font-size: 1rem; text-align: right; }
     .profile-actions { display: flex; flex-direction: column; gap: 0.1rem; padding: 0.3rem 0; }
     .profile-action-btn {
-      width: 100%;
-      padding: 0.7rem 0;
-      background: transparent;
-      border: none;
-      font-size: 1rem;
-      font-weight: 400;
-      color: var(--ink);
-      cursor: pointer;
-      transition: 0.15s;
-      font-family: inherit;
-      display: flex;
-      align-items: center;
-      gap: 0.8rem;
-      text-align: left;
+      width: 100%; padding: 0.7rem 0; background: transparent; border: none;
+      font-size: 1rem; font-weight: 400; color: var(--ink); cursor: pointer;
+      transition: 0.15s; font-family: inherit;
+      display: flex; align-items: center; gap: 0.8rem; text-align: left;
       letter-spacing: 0.2px;
     }
     .profile-action-btn .action-icon {
-      width: 22px;
-      color: var(--grey-icon);
-      font-size: 0.95rem;
-      transition: 0.15s;
-      text-align: center;
+      width: 22px; color: var(--grey-icon); font-size: 0.95rem;
+      transition: 0.15s; text-align: center;
     }
     .profile-action-btn:hover { color: var(--rose); padding-left: 0.4rem; }
     .profile-action-btn:hover .action-icon { color: var(--rose); }
     .profile-action-btn.danger:hover { color: var(--danger); }
     .profile-action-btn.danger:hover .action-icon { color: var(--danger); }
     .edit-profile-inline {
-      display: flex;
-      flex-direction: column;
-      gap: 2rem;
-      padding-bottom: 2rem;
-      max-width: 640px;
-      margin: 0 auto;
+      display: flex; flex-direction: column; gap: 2rem;
+      padding-bottom: 2rem; max-width: 640px; margin: 0 auto;
       animation: fadeIn 0.25s ease;
     }
     .edit-profile-heading {
       font-family: 'Cormorant Garamond', serif;
-      font-size: 2.2rem;
-      font-weight: 500;
-      letter-spacing: 0.3px;
-      line-height: 1.15;
+      font-size: 2.2rem; font-weight: 500;
+      letter-spacing: 0.3px; line-height: 1.15;
       background: var(--gradient);
-      -webkit-background-clip: text;
-      background-clip: text;
-      color: transparent;
+      -webkit-background-clip: text; background-clip: text; color: transparent;
     }
     .edit-profile-sub { font-size: 0.95rem; color: var(--muted); font-weight: 300; margin-top: 0.4rem; line-height: 1.6; }
     .edit-field { display: flex; flex-direction: column; gap: 0.4rem; }
     .edit-field-label {
-      font-size: 0.7rem;
-      font-weight: 600;
-      letter-spacing: 0.6px;
-      text-transform: uppercase;
-      color: var(--muted);
+      font-size: 0.7rem; font-weight: 600; letter-spacing: 0.6px;
+      text-transform: uppercase; color: var(--muted);
     }
     .edit-field input {
-      background: transparent;
-      border: none;
+      background: transparent; border: none;
       border-bottom: 1px solid var(--border);
-      padding: 0.7rem 0;
-      font-size: 1.1rem;
-      color: var(--ink);
-      width: 100%;
-      font-family: inherit;
-      font-weight: 300;
-      letter-spacing: 0.2px;
-      transition: all 0.25s ease;
-      border-radius: 0;
+      padding: 0.7rem 0; font-size: 1.1rem; color: var(--ink);
+      width: 100%; font-family: inherit; font-weight: 300;
+      letter-spacing: 0.2px; transition: all 0.25s ease; border-radius: 0;
     }
     .edit-field input:focus { outline: none; border-bottom-color: var(--rose); }
     .edit-field input::placeholder { color: var(--muted); opacity: 0.4; }
     .edit-actions { display: flex; gap: 2rem; padding-top: 0.5rem; flex-wrap: wrap; }
 
-    /* ============================================================
-       MODALS
-       ============================================================ */
+    /* ---------- MODALS ---------- */
     .modal {
-      display: none;
-      position: fixed;
-      inset: 0;
+      display: none; position: fixed; inset: 0;
       background: rgba(0, 0, 0, 0.75);
       backdrop-filter: blur(6px);
-      align-items: center;
-      justify-content: center;
-      z-index: 2000;
-      padding: 1rem;
+      align-items: center; justify-content: center;
+      z-index: 2000; padding: 1rem;
     }
     .modal.active { display: flex; }
     .modal-content {
-      background: var(--bg);
-      border: 1px solid var(--border);
-      border-radius: 1rem;
-      width: 100%;
-      max-width: 520px;
-      padding: 2rem 1.5rem;
-      max-height: 90vh;
-      overflow-y: auto;
+      background: var(--bg); border: 1px solid var(--border);
+      border-radius: 1rem; width: 100%; max-width: 520px;
+      padding: 2rem 1.5rem; max-height: 90vh; overflow-y: auto;
       animation: fadeIn 0.2s ease;
       box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6);
     }
     body.light .modal-content { box-shadow: 0 20px 60px rgba(0, 0, 0, 0.12); }
     .modal-content h3 {
       font-family: 'Cormorant Garamond', serif;
-      font-size: 1.6rem;
-      font-weight: 500;
-      color: var(--ink);
-      letter-spacing: 0.3px;
-      margin-bottom: 1.5rem;
+      font-size: 1.6rem; font-weight: 500;
+      color: var(--ink); letter-spacing: 0.3px; margin-bottom: 1.5rem;
     }
     .modal-content label {
-      display: block;
-      font-size: 0.7rem;
-      font-weight: 600;
-      text-transform: uppercase;
-      letter-spacing: 0.6px;
-      color: var(--muted);
-      margin-bottom: 0.3rem;
-      margin-top: 1rem;
+      display: block; font-size: 0.7rem; font-weight: 600;
+      text-transform: uppercase; letter-spacing: 0.6px;
+      color: var(--muted); margin-bottom: 0.3rem; margin-top: 1rem;
     }
     .modal-content input,
     .modal-content select {
-      width: 100%;
-      padding: 0.7rem 0;
-      border: none;
-      border-bottom: 1px solid var(--border);
-      border-radius: 0;
-      font-size: 1rem;
-      font-family: inherit;
-      color: var(--ink);
-      background: transparent;
-      transition: 0.2s;
-      font-weight: 300;
+      width: 100%; padding: 0.7rem 0; border: none;
+      border-bottom: 1px solid var(--border); border-radius: 0;
+      font-size: 1rem; font-family: inherit; color: var(--ink);
+      background: transparent; transition: 0.2s; font-weight: 300;
     }
     .modal-content input:focus,
     .modal-content select:focus { outline: none; border-bottom-color: var(--rose); }
     .modal-content input::placeholder { color: var(--muted); opacity: 0.5; }
     .modal-content select option { background: var(--bg); color: var(--ink); }
     .modal-content select[multiple] {
-      border: 1px solid var(--border);
-      border-radius: 0.6rem;
-      padding: 0.6rem;
-      min-height: 140px;
-      margin-top: 0.3rem;
+      border: 1px solid var(--border); border-radius: 0.6rem;
+      padding: 0.6rem; min-height: 140px; margin-top: 0.3rem;
     }
     .modal-content select[multiple] option { padding: 0.35rem 0.5rem; border-radius: 0.3rem; }
     .modal-content select[multiple] option:checked {
@@ -1442,53 +2328,33 @@
       color: var(--rose);
     }
     .modal-footer {
-      display: flex;
-      gap: 1.5rem;
-      justify-content: flex-end;
-      margin-top: 1.8rem;
-      flex-wrap: wrap;
+      display: flex; gap: 1.5rem; justify-content: flex-end;
+      margin-top: 1.8rem; flex-wrap: wrap;
     }
 
-    /* ============================================================
-       TOAST + LOADING
-       ============================================================ */
+    /* ---------- TOAST + LOADING ---------- */
     #toast {
-      position: fixed;
-      bottom: 20px;
-      left: 50%;
+      position: fixed; bottom: 20px; left: 50%;
       transform: translateX(-50%) translateY(10px);
-      background: var(--bg);
-      border: 1px solid var(--border);
-      color: var(--ink);
-      padding: 0.6rem 1.4rem;
-      border-radius: 2rem;
-      font-size: 0.9rem;
-      opacity: 0;
-      transition: 0.25s;
-      pointer-events: none;
-      z-index: 3000;
-      white-space: nowrap;
-      box-shadow: var(--shadow);
-      font-weight: 400;
+      background: var(--bg); border: 1px solid var(--border);
+      color: var(--ink); padding: 0.6rem 1.4rem;
+      border-radius: 2rem; font-size: 0.9rem;
+      opacity: 0; transition: 0.25s; pointer-events: none;
+      z-index: 3000; white-space: nowrap;
+      box-shadow: var(--shadow); font-weight: 400;
     }
     #toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
     #loadingOverlay {
-      display: none;
-      position: fixed;
-      inset: 0;
+      display: none; position: fixed; inset: 0;
       background: rgba(10, 14, 26, 0.8);
-      backdrop-filter: blur(6px);
-      z-index: 9999;
-      align-items: center;
-      justify-content: center;
-      flex-direction: column;
-      gap: 1rem;
+      backdrop-filter: blur(6px); z-index: 9999;
+      align-items: center; justify-content: center;
+      flex-direction: column; gap: 1rem;
     }
     body.light #loadingOverlay { background: rgba(255, 255, 255, 0.8); }
     #loadingOverlay.show { display: flex; }
     .spinner {
-      width: 40px;
-      height: 40px;
+      width: 40px; height: 40px;
       border: 3px solid var(--rose-mid);
       border-top-color: var(--rose);
       border-radius: 50%;
@@ -1496,44 +2362,39 @@
     }
     @keyframes spin { to { transform: rotate(360deg); } }
     #loadingOverlayText { font-size: 0.9rem; color: var(--muted); font-weight: 500; }
+
     .help-card {
-      background: transparent;
-      border: none;
+      background: transparent; border: none;
       border-bottom: 1px solid var(--border);
       padding: 1.2rem 0;
     }
     .help-card:last-child { border-bottom: none; }
     .help-card h4 {
       font-family: 'Cormorant Garamond', serif;
-      font-size: 1.2rem;
-      font-weight: 500;
-      color: var(--rose);
-      margin-bottom: 0.5rem;
-      letter-spacing: 0.3px;
+      font-size: 1.2rem; font-weight: 500; color: var(--rose);
+      margin-bottom: 0.5rem; letter-spacing: 0.3px;
     }
     .help-card p {
-      font-size: 0.9rem;
-      color: var(--text-dim);
-      margin-bottom: 0.3rem;
-      font-weight: 300;
-      line-height: 1.6;
-      word-break: break-word;
+      font-size: 0.9rem; color: var(--text-dim);
+      margin-bottom: 0.3rem; font-weight: 300;
+      line-height: 1.6; word-break: break-word;
     }
     .help-card p:last-child { margin-bottom: 0; }
 
-    /* ============================================================
-       RESPONSIVE
-       ============================================================ */
+    /* ---------- RESPONSIVE ---------- */
     @media (max-width: 1100px) {
-      .lux-tiles { grid-template-columns: repeat(2, 1fr); }
-      .lux-feed-row { grid-template-columns: 95px 1fr 1fr auto; }
-      .lux-feed-cell.lux-hide-md { display: none; }
+      .analytics-dual { grid-template-columns: 1fr; gap: 1.5rem; }
+      .pulse-item { grid-template-columns: 90px 22px 48px 1fr auto; }
+      .studio-grid { grid-template-columns: repeat(2, 1fr); }
+      .lux-chips { grid-template-columns: repeat(2, 1fr); }
     }
     @media (max-width: 900px) {
-      .analytics-grid { grid-template-columns: 1fr; gap: 1.5rem; }
-      .lux-stats { grid-template-columns: repeat(2, 1fr); }
-      .lux-stat:nth-child(2) { border-right: none; }
-      .lux-stat:nth-child(1), .lux-stat:nth-child(2) { border-bottom: 1px solid var(--border); }
+      .lux-stats { grid-template-columns: repeat(2, 1fr); gap: 2.5rem; padding: 2rem 0 3rem; }
+      .lux-stats::before { display: none; }
+      .performance-board { grid-template-columns: 1fr; }
+      .lux-note { padding: 2.5rem 1.8rem 2rem; }
+      .lux-note-mark { font-size: 3.5rem; }
+      .lux-signature-name { font-size: 2.4rem; }
     }
     @media (max-width: 768px) {
       body { font-size: 15px; }
@@ -1543,25 +2404,30 @@
       .top-tabs .tab-item i { font-size: 1rem; }
       .main { padding: 1rem 1rem 3rem 1rem; }
       .section-title { font-size: 1.8rem; }
+      .section-title--compact { font-size: 1.45rem; }
       .section-sub { font-size: 0.92rem; }
-      .lux-hero { padding: 2rem 1.2rem 1.8rem; margin: 0 -1rem 2rem; }
+      .lux-ticker { margin: 0 -1rem 1.5rem; }
+      .lux-hero { padding: 2.4rem 1.2rem 2rem; margin: 0 -1rem 2rem; min-height: 440px; }
       .lux-hero-meta { gap: 0.9rem 0; }
       .lux-meta-item { padding: 0 1rem; }
       .lux-meta-item:first-child { padding-left: 0; }
       .lux-section-head { flex-direction: column; align-items: flex-start; }
       .lux-section-desc { text-align: left; }
-      .lux-tiles { grid-template-columns: 1fr; }
-      .lux-tile { min-height: 200px; }
-      .lux-feed-row { grid-template-columns: 80px 1fr auto; gap: 0.9rem; }
-      .lux-feed-cell.lux-hide-sm { display: none; }
+      .lux-chips { grid-template-columns: 1fr; }
+      .studio-grid { grid-template-columns: 1fr 1fr; gap: 0.7rem; }
+      .pulse-item { grid-template-columns: 74px 20px 44px 1fr; gap: 0.7rem; }
+      .pulse-item .pulse-status { grid-column: 3 / -1; justify-self: start; }
       .filter-bar { flex-direction: column; align-items: stretch; }
-      .filter-bar-left { flex-direction: column; align-items: stretch; }
-      .filter-bar-left > * { width: 100%; }
+      .filter-bar-left { flex-direction: column; align-items: stretch; width: 100%; }
+      .filter-group { width: 100%; }
+      .filter-bar select, .filter-bar input { width: 100%; }
+      .filter-bar-actions { width: 100%; justify-content: flex-start; }
       .services-card-grid { grid-template-columns: 1fr; }
       .stylist-grid { grid-template-columns: 1fr 1fr; }
       .admin-table { font-size: 0.82rem; }
-      .admin-table th, .admin-table td { padding: 0.55rem 0.5rem; }
-      .detail-heading { font-size: 1.8rem; }
+      .admin-table thead th { padding: 0.8rem 0.6rem; font-size: 0.68rem; letter-spacing: 0.8px; }
+      .admin-table td { padding: 0.7rem 0.6rem; }
+      .detail-heading { font-size: 1.9rem; }
       .edit-profile-heading { font-size: 1.8rem; }
     }
     @media (max-width: 480px) {
@@ -1574,27 +2440,59 @@
       .brand-name { font-size: 1.55rem; }
       .brand-slogan { font-size: 0.68rem; }
       .section-title { font-size: 1.5rem; }
+      .section-title--compact { font-size: 1.3rem; }
       .section-sub { font-size: 0.85rem; }
-      .lux-hero { padding: 1.6rem 1rem 1.4rem; margin: 0 -0.8rem 1.5rem; }
+      .lux-hero { padding: 2rem 1rem 1.8rem; margin: 0 -0.8rem 1.5rem; min-height: 400px; }
       .lux-hero-heading { letter-spacing: -0.3px; }
       .lux-hero-lead { font-size: 0.92rem; }
       .lux-meta-item { padding: 0 0.8rem; }
       .lux-meta-value { font-size: 1rem; }
-      .lux-stat { padding: 1.2rem 1rem; }
-      .lux-stat-number { font-size: 2.2rem; }
-      .lux-section-title { font-size: 1.5rem; }
+      .lux-stats { grid-template-columns: 1fr 1fr; gap: 1.8rem; padding: 1.5rem 0 2rem; }
+      .lux-stat-number { font-size: 2.6rem; }
+      .lux-stat-label { font-size: 0.62rem; letter-spacing: 1.2px; }
+      .lux-note { padding: 2rem 1.2rem 1.6rem; margin-bottom: 2.5rem; }
+      .lux-note-text { font-size: 1.15rem; }
+      .lux-note-mark { font-size: 3rem; }
+      .lux-signature-name { font-size: 2.2rem; }
+      .studio-grid { grid-template-columns: 1fr 1fr; gap: 0.5rem; }
+      .studio-caption { padding: 1rem 0.9rem; }
+      .studio-title { font-size: 1rem; }
       .stylist-grid { grid-template-columns: 1fr; }
       .services-card-grid { grid-template-columns: 1fr; }
       .admin-table { font-size: 0.72rem; }
-      .admin-table th, .admin-table td { padding: 0.4rem 0.4rem; }
+      .admin-table thead th { padding: 0.6rem 0.4rem; font-size: 0.62rem; letter-spacing: 0.6px; }
+      .admin-table td { padding: 0.55rem 0.4rem; }
       .modal-content { padding: 1.5rem 1.1rem; }
       .sidebar { width: 280px; }
-      .detail-heading { font-size: 1.5rem; }
+      .detail-heading { font-size: 1.6rem; }
       .edit-profile-heading { font-size: 1.5rem; }
+      .analytics-panel { padding: 1.1rem 1rem; }
+      .performance-card { padding: 0.9rem 0.9rem; gap: 0.7rem; }
+      .performance-avatar { width: 38px; height: 38px; font-size: 0.95rem; }
+      .lux-petal { display: none; }
+      .lux-cursor-glow { display: none; }
+    }
+
+    /* Reduced motion safety */
+    @media (prefers-reduced-motion: reduce) {
+      .lux-petal,
+      .lux-sparkle,
+      .lux-orb,
+      .studio-item,
+      .studio-image,
+      .lux-hero-photo,
+      .lux-note::after,
+      .lux-ticker-track {
+        animation: none !important;
+      }
+      .lux-hero-photo { opacity: 0.36 !important; transform: scale(1.06) !important; }
+      .lux-sparkle { opacity: 0.8; }
     }
   </style>
 </head>
 <body>
+
+<div class="scroll-progress" id="scrollProgress"></div>
 
 <header class="header">
   <div class="header-left">
@@ -1607,24 +2505,12 @@
 </header>
 
 <div class="top-tabs">
-  <button class="tab-item nav-item active" data-view="home">
-    <span class="tab-icon"><i class="fas fa-home"></i></span> Home
-  </button>
-  <button class="tab-item nav-item" data-view="services">
-    <span class="tab-icon"><i class="fas fa-concierge-bell"></i></span> Services
-  </button>
-  <button class="tab-item nav-item" data-view="stylists">
-    <span class="tab-icon"><i class="fas fa-users"></i></span> Stylists
-  </button>
-  <button class="tab-item nav-item" data-view="bookings">
-    <span class="tab-icon"><i class="fas fa-calendar-check"></i></span> Bookings
-  </button>
-  <button class="tab-item nav-item" data-view="reports">
-    <span class="tab-icon"><i class="fas fa-chart-line"></i></span> Analytics
-  </button>
-  <button class="tab-item nav-item" data-view="profile">
-    <span class="tab-icon"><i class="fas fa-user"></i></span> Profile
-  </button>
+  <button class="tab-item nav-item active" data-view="home"><span class="tab-icon"><i class="fas fa-home"></i></span> Home</button>
+  <button class="tab-item nav-item" data-view="services"><span class="tab-icon"><i class="fas fa-concierge-bell"></i></span> Services</button>
+  <button class="tab-item nav-item" data-view="stylists"><span class="tab-icon"><i class="fas fa-users"></i></span> Stylists</button>
+  <button class="tab-item nav-item" data-view="bookings"><span class="tab-icon"><i class="fas fa-calendar-check"></i></span> Bookings</button>
+  <button class="tab-item nav-item" data-view="reports"><span class="tab-icon"><i class="fas fa-chart-line"></i></span> Analytics</button>
+  <button class="tab-item nav-item" data-view="profile"><span class="tab-icon"><i class="fas fa-user"></i></span> Profile</button>
 </div>
 
 <div class="app">
@@ -1660,28 +2546,74 @@
     </div>
   </aside>
 
-  <main class="main">
+  <main class="main" id="mainScroll">
 
-    <!-- ==================== HOME — LUXURY ==================== -->
+    <!-- ==================== HOME ==================== -->
     <section id="home-view" class="view active">
 
+      <div class="lux-ticker">
+        <div class="lux-ticker-track" id="luxTickerTrack"></div>
+      </div>
+
       <!-- HERO -->
-      <div class="lux-hero">
+      <div class="lux-hero" id="luxHero">
+        <div class="lux-hero-photo-wrap">
+          <div class="lux-hero-photo live-drift" id="heroPhoto" style="background-image: url('https://scontent-jnb2-1.xx.fbcdn.net/v/t39.30808-6/490978688_1219113733549992_4889656754582406729_n.jpg?stp=dst-jpg_tt6&cstp=mx1365x2048&ctp=s1365x2048&_nc_cat=109&ccb=1-7&_nc_sid=833d8c&_nc_ohc=dSRXYQv91_AQ7kNvwEmgfpu&_nc_oc=AdreT4PrgfjpvD4JviKaleYhDusLUZuns_fPcBiBySfoLvSnhBxN6s6yv8fuzBuG0W0&_nc_zt=23&_nc_ht=scontent-jnb2-1.xx&_nc_gid=r133ozTLW_pwEEc6sZazHA&_nc_ss=7b289&oh=00_AQL99nAIFo7uqZpSr2wanzRrA1WNg8Sdc40QnDciId1xcQ&oe=6AB1961C');"></div>
+        </div>
+
+        <div class="lux-hero-veil"></div>
+        <div class="lux-hero-grid"></div>
+
         <div class="lux-orb lux-orb-1"></div>
         <div class="lux-orb lux-orb-2"></div>
         <div class="lux-orb lux-orb-3"></div>
 
+        <div class="lux-cursor-glow" id="luxCursorGlow"></div>
+
+        <div class="lux-sparkles">
+          <span class="lux-sparkle"></span>
+          <span class="lux-sparkle"></span>
+          <span class="lux-sparkle"></span>
+          <span class="lux-sparkle"></span>
+          <span class="lux-sparkle"></span>
+          <span class="lux-sparkle"></span>
+          <span class="lux-sparkle"></span>
+        </div>
+
+        <div class="lux-petals" id="luxPetals">
+          <span class="lux-petal"></span>
+          <span class="lux-petal"></span>
+          <span class="lux-petal"></span>
+          <span class="lux-petal"></span>
+          <span class="lux-petal"></span>
+          <span class="lux-petal"></span>
+          <span class="lux-petal"></span>
+          <span class="lux-petal"></span>
+          <span class="lux-petal"></span>
+          <span class="lux-petal"></span>
+          <span class="lux-petal"></span>
+          <span class="lux-petal"></span>
+        </div>
+
         <div class="lux-hero-inner">
-          <div class="lux-hero-eyebrow">
-            <span class="lux-dot"></span>
-            PinkMeUp · Administrator Console
+          <div class="lux-status-pill" id="luxStatusPill">
+            <span class="lux-status-dot" id="luxStatusDot"></span>
+            <span class="lux-status-text" id="luxStatusText">Open Now</span>
+            <span class="lux-status-detail" id="luxStatusDetail">—</span>
           </div>
+
+          <div class="lux-hero-dedication">
+            <span class="lux-dedication-line"></span>
+            <span class="lux-dedication-text">A private console, crafted for <em>Phumuzile Moyo</em></span>
+            <span class="lux-dedication-line"></span>
+          </div>
+
           <h1 class="lux-hero-heading">
             The Atelier<br>
             <span class="lux-hero-heading-accent">of Beauty Management</span>
           </h1>
           <p class="lux-hero-lead">
-            Command your salon with quiet precision. Curate services, oversee artisans, orchestrate appointments, and read the rhythm of your studio — all from a single refined space.
+            Every appointment, every artisan, every gesture of care — held in one place. This is where the vision of PinkMeUp is composed, refined, and offered to the world.
           </p>
 
           <div class="lux-hero-meta">
@@ -1707,86 +2639,138 @@
       <div class="lux-stats">
         <div class="lux-stat">
           <div class="lux-stat-index">01</div>
-          <div class="lux-stat-number" id="homeStatServices" data-count="0">0</div>
+          <div class="lux-stat-number" id="homeStatServices">0</div>
           <div class="lux-stat-label">Services Curated</div>
         </div>
         <div class="lux-stat">
           <div class="lux-stat-index">02</div>
-          <div class="lux-stat-number" id="homeStatStylists" data-count="0">0</div>
+          <div class="lux-stat-number" id="homeStatStylists">0</div>
           <div class="lux-stat-label">Artisans On Roster</div>
         </div>
         <div class="lux-stat">
           <div class="lux-stat-index">03</div>
-          <div class="lux-stat-number" id="homeStatBookings" data-count="0">0</div>
+          <div class="lux-stat-number" id="homeStatBookings">0</div>
           <div class="lux-stat-label">Appointments Recorded</div>
         </div>
         <div class="lux-stat">
           <div class="lux-stat-index">04</div>
-          <div class="lux-stat-number" id="homeStatThisMonth" data-count="0">0</div>
+          <div class="lux-stat-number" id="homeStatThisMonth">0</div>
           <div class="lux-stat-label">Booked This Month</div>
         </div>
       </div>
 
+      <!-- FOUNDER'S NOTE -->
+      <div class="lux-note reveal-on-scroll">
+        <div class="lux-note-mark">&ldquo;</div>
+        <p class="lux-note-text">
+          PinkMeUp was born from a simple belief — that every woman deserves a space where she is seen, celebrated, and allowed to <em>become a little more herself.</em> Every detail in this studio is a quiet promise to keep that belief alive.
+        </p>
+        <div class="lux-note-signature">
+          <div class="lux-signature-line"></div>
+          <div class="lux-signature-name">Phumuzile Moyo</div>
+          <div class="lux-signature-role">Founder · PinkMeUp</div>
+        </div>
+      </div>
+
+      <div class="lux-divider"></div>
+
       <!-- DIRECT YOUR SALON -->
       <div class="lux-section">
-        <div class="lux-section-head">
+        <div class="lux-section-head reveal-on-scroll">
           <div>
-            <div class="lux-section-eyebrow">Begin</div>
+            <div class="lux-section-eyebrow">Control</div>
             <h2 class="lux-section-title">Direct Your Salon</h2>
           </div>
-          <p class="lux-section-desc">Four chambers of control — each one designed to give you complete command over a pillar of PinkMeUp.</p>
+          <p class="lux-section-desc">Four chambers of command — one for every pillar of PinkMeUp.</p>
         </div>
 
-        <div class="lux-tiles">
-          <button class="lux-tile nav-item" data-view="services">
-            <div class="lux-tile-number">I</div>
-            <div class="lux-tile-icon"><i class="fas fa-concierge-bell"></i></div>
-            <div class="lux-tile-body">
-              <div class="lux-tile-title">Services</div>
-              <div class="lux-tile-desc">Craft and refine every treatment on your menu.</div>
-            </div>
-            <div class="lux-tile-arrow"><i class="fas fa-arrow-right"></i></div>
+        <div class="lux-chips reveal-on-scroll">
+          <button class="lux-chip nav-item" data-view="services">
+            <span class="lux-chip-num">I</span>
+            <span class="lux-chip-label">Services</span>
+            <span class="lux-chip-arrow"><i class="fas fa-arrow-right"></i></span>
           </button>
-          <button class="lux-tile nav-item" data-view="stylists">
-            <div class="lux-tile-number">II</div>
-            <div class="lux-tile-icon"><i class="fas fa-users"></i></div>
-            <div class="lux-tile-body">
-              <div class="lux-tile-title">Stylists</div>
-              <div class="lux-tile-desc">Curate your roster of artisans and their crafts.</div>
-            </div>
-            <div class="lux-tile-arrow"><i class="fas fa-arrow-right"></i></div>
+          <button class="lux-chip nav-item" data-view="stylists">
+            <span class="lux-chip-num">II</span>
+            <span class="lux-chip-label">Stylists</span>
+            <span class="lux-chip-arrow"><i class="fas fa-arrow-right"></i></span>
           </button>
-          <button class="lux-tile nav-item" data-view="bookings">
-            <div class="lux-tile-number">III</div>
-            <div class="lux-tile-icon"><i class="fas fa-calendar-check"></i></div>
-            <div class="lux-tile-body">
-              <div class="lux-tile-title">Bookings</div>
-              <div class="lux-tile-desc">Orchestrate every appointment with precision.</div>
-            </div>
-            <div class="lux-tile-arrow"><i class="fas fa-arrow-right"></i></div>
+          <button class="lux-chip nav-item" data-view="bookings">
+            <span class="lux-chip-num">III</span>
+            <span class="lux-chip-label">Bookings</span>
+            <span class="lux-chip-arrow"><i class="fas fa-arrow-right"></i></span>
           </button>
-          <button class="lux-tile nav-item" data-view="reports">
-            <div class="lux-tile-number">IV</div>
-            <div class="lux-tile-icon"><i class="fas fa-chart-line"></i></div>
-            <div class="lux-tile-body">
-              <div class="lux-tile-title">Analytics</div>
-              <div class="lux-tile-desc">Read the rhythm of your salon's performance.</div>
-            </div>
-            <div class="lux-tile-arrow"><i class="fas fa-arrow-right"></i></div>
+          <button class="lux-chip nav-item" data-view="reports">
+            <span class="lux-chip-num">IV</span>
+            <span class="lux-chip-label">Analytics</span>
+            <span class="lux-chip-arrow"><i class="fas fa-arrow-right"></i></span>
           </button>
         </div>
       </div>
 
+      <div class="lux-divider"></div>
+
+      <!-- STUDIO GALLERY -->
+      <div class="lux-section">
+        <div class="lux-section-head reveal-on-scroll">
+          <div>
+            <div class="lux-section-eyebrow">Portfolio</div>
+            <h2 class="lux-section-title">From The Studio</h2>
+          </div>
+          <p class="lux-section-desc">A living glimpse of the craft — moments captured inside PinkMeUp.</p>
+        </div>
+
+        <div class="studio-grid reveal-on-scroll" id="studioGrid">
+          <div class="studio-item" data-tilt>
+            <div class="studio-image" style="background-image: url('https://scontent-jnb2-1.xx.fbcdn.net/v/t39.30808-6/494225777_1232124018915630_824881437015822132_n.jpg?stp=dst-jpg_tt6&cstp=mx1152x2048&ctp=s1152x2048&_nc_cat=108&ccb=1-7&_nc_sid=833d8c&_nc_ohc=7H-jSgIMGOQQ7kNvwGIYLAi&_nc_oc=AdpYJgznmIaaBqDfD43TUi4H3hajck6pSbvwWIv0aKRhg_1CpOZTugSPzkZsppnhlbY&_nc_zt=23&_nc_ht=scontent-jnb2-1.xx&_nc_gid=79ge7xaYrZlg4RJ68msblQ&_nc_ss=7b289&oh=00_AQLGTIxjHJP28mFDT2vKRm88D6JHV4GCU47q9utwdsFmew&oe=6AB1C39B');"></div>
+            <div class="studio-caption">
+              <div class="studio-cat">Nail Artistry</div>
+              <div class="studio-title">Sculpted &amp; polished</div>
+              <div class="studio-sub">Gel · acrylic · hand-crafted art</div>
+            </div>
+          </div>
+
+          <div class="studio-item" data-tilt>
+            <div class="studio-image" style="background-image: url('https://scontent-jnb2-1.xx.fbcdn.net/v/t39.30808-6/449266779_989834836477884_750187429763253654_n.jpg?stp=dst-jpg_tt6&cstp=mx960x960&ctp=s960x960&_nc_cat=104&ccb=1-7&_nc_sid=6ee11a&_nc_ohc=mxZd4W4EuGYQ7kNvwHq-JyT&_nc_oc=AdoUlejHGtPl6un9Q-8cEuctUZs0PsJ9sHvontRffwEN_42bZm7P_ZqwaHdSaOoj56Y&_nc_zt=23&_nc_ht=scontent-jnb2-1.xx&_nc_gid=XvSlA0HG3dVTcDwHb6fDbA&_nc_ss=7b289&oh=00_AQJz4GLlGf8gc0Wgp1uXfFE1kHjlMYs7T2P1ObcEdnSfcg&oe=6AB19E10');"></div>
+            <div class="studio-caption">
+              <div class="studio-cat">Body Therapy</div>
+              <div class="studio-title">Restorative massage</div>
+              <div class="studio-sub">Deep tissue · relaxation rituals</div>
+            </div>
+          </div>
+
+          <div class="studio-item" data-tilt>
+            <div class="studio-image" style="background-image: url('https://scontent-jnb2-1.xx.fbcdn.net/v/t39.30808-6/791728214_1664247149036646_1494989274098097811_n.jpg?stp=dst-jpg_tt6&cstp=mx1682x2048&ctp=s1682x2048&_nc_cat=104&ccb=1-7&_nc_sid=833d8c&_nc_ohc=DTc1agxHb98Q7kNvwFcMqZW&_nc_oc=AdpYJcRVdgBcDL0_t4w3kuf1i69VMajm2ePGdyt7QfqkuQPnHoXNOs-DhNCssD8qpt0&_nc_zt=23&_nc_ht=scontent-jnb2-1.xx&_nc_gid=YaqGmRDQDV8JePt-sbohPQ&_nc_ss=7b289&oh=00_AQLh7hNgYFHVB4fV_XX5pzmcA_yUQeCMnNpggUs6nB05WQ&oe=6AB1C7A3');"></div>
+            <div class="studio-caption">
+              <div class="studio-cat">Lash Artistry</div>
+              <div class="studio-title">Classic &amp; volume sets</div>
+              <div class="studio-sub">Hand-crafted lash extensions</div>
+            </div>
+          </div>
+
+          <div class="studio-item" data-tilt>
+            <div class="studio-image" style="background-image: url('https://scontent-jnb2-1.xx.fbcdn.net/v/t39.30808-6/493707347_1228200659307966_5687296148182725335_n.jpg?stp=dst-jpg_tt6&cstp=mx2048x1536&ctp=s2048x1536&_nc_cat=111&ccb=1-7&_nc_sid=833d8c&_nc_ohc=QH4w9hTIZUgQ7kNvwE39vXP&_nc_oc=AdrhVCnc9TqGsAquE5eWa6OQeItb9D6U9rzs57DDbBiH3YK8I2wnZFf7q6ys53AgWlA&_nc_zt=23&_nc_ht=scontent-jnb2-1.xx&_nc_gid=56r3qBBAmIE1kxNDjNsTqg&_nc_ss=7b289&oh=00_AQKdTnIRYn6489LhEkb4BhFBdsM_LfucAK_LVMfhJ0CoWw&oe=6AB19598');"></div>
+            <div class="studio-caption">
+              <div class="studio-cat">The Team</div>
+              <div class="studio-title">At work, in flow</div>
+              <div class="studio-sub">The hands behind every moment</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="lux-divider"></div>
+
       <!-- SALON PULSE -->
       <div class="lux-section">
-        <div class="lux-section-head">
+        <div class="lux-section-head reveal-on-scroll">
           <div>
             <div class="lux-section-eyebrow">Live</div>
             <h2 class="lux-section-title">Salon Pulse</h2>
           </div>
-          <p class="lux-section-desc">The five most recent appointments — updated as your salon breathes.</p>
+          <p class="lux-section-desc">A living glimpse of the most recent appointments moving through your studio.</p>
         </div>
-        <div class="lux-feed" id="luxFeed">
+        <div class="lux-pulse reveal-on-scroll" id="luxFeed">
           <div class="lux-feed-empty">Awaiting activity…</div>
         </div>
       </div>
@@ -1824,8 +2808,8 @@
     <section id="bookings-view" class="view">
       <div class="view-header">
         <div>
-          <div class="section-title">Manage Bookings</div>
-          <div class="section-sub">Every appointment booked at your salon lands here. From this list you can see the customer, requested services, assigned stylist, and current status at a glance. Open any booking to view the full details and take action — mark it as complete when the customer has been served, or flag it as a no-show if they didn't arrive. Completed and cancelled bookings are locked to preserve the record.</div>
+          <div class="section-title section-title--compact">Manage Bookings</div>
+          <div class="section-sub section-sub--compact">Every appointment booked at your salon lands here. Open any booking to view the full details and take action — mark it complete, or flag it as a no-show.</div>
           <div class="section-hint"><i class="fas fa-hand-pointer"></i> Click any booking to view it in full.</div>
         </div>
       </div>
@@ -1849,61 +2833,71 @@
     <section id="reports-view" class="view">
       <div class="view-header">
         <div>
-          <div class="section-title">Analytics</div>
-          <div class="section-sub">This dashboard gives you a complete picture of how PinkMeUp is performing over the selected period. Track booking patterns across the week to understand your busiest days, discover which services your customers request most often, and monitor each stylist's completion rate and average customer rating. Use the period filter below to compare different time frames, and download the full report as a PDF whenever you need to review or share the numbers.</div>
+          <div class="section-title section-title--compact">Analytics</div>
+          <div class="section-sub section-sub--compact">A complete picture of how PinkMeUp is performing over the selected period. Adjust the filters below, and download the report as a PDF whenever you need to review or share the numbers.</div>
         </div>
       </div>
 
       <div class="filter-bar">
         <div class="filter-bar-left">
-          <label>Period</label>
-          <select id="reportPeriod">
-            <option value="last30">Last 30 days</option>
-            <option value="last90">Last 90 days</option>
-            <option value="lastYear">Last 12 months</option>
-            <option value="custom">Custom range</option>
-          </select>
-          <div id="customDateRange" style="display:none; gap:0.6rem; align-items:center; flex-wrap:wrap;">
-            <input type="date" id="startDate" />
-            <span style="font-size:0.85rem;color:var(--muted);font-weight:300;">to</span>
-            <input type="date" id="endDate" />
+          <div class="filter-group">
+            <label>Period</label>
+            <select id="reportPeriod">
+              <option value="last30">Last 30 days</option>
+              <option value="last90">Last 90 days</option>
+              <option value="lastYear">Last 12 months</option>
+              <option value="custom">Custom range</option>
+            </select>
           </div>
-          <button class="btn-outline" id="applyFilterBtn"><i class="fas fa-sync-alt"></i> Apply</button>
+          <div class="filter-date-range" id="customDateRange">
+            <div class="filter-group">
+              <label>From</label>
+              <input type="date" id="startDate" />
+            </div>
+            <span class="filter-date-sep">to</span>
+            <div class="filter-group">
+              <label>To</label>
+              <input type="date" id="endDate" />
+            </div>
+          </div>
         </div>
-        <button class="btn-download" id="downloadReportBtn"><i class="fas fa-file-pdf"></i> Download PDF</button>
+        <div class="filter-bar-actions">
+          <button class="btn-apply" id="applyFilterBtn"><i class="fas fa-sync-alt"></i> Apply</button>
+          <button class="btn-download" id="downloadReportBtn"><i class="fas fa-file-pdf"></i> Download PDF</button>
+        </div>
       </div>
 
       <div id="analyticsContent">
-        <div class="analytics-grid">
-          <div class="analytics-card">
-            <h3>Booking Trends</h3>
-            <p>Bookings by day of week</p>
-            <div class="chart-container">
-              <canvas id="trendsBarChart"></canvas>
+
+        <div class="analytics-panel">
+          <div class="analytics-panel-head">
+            <h3>Booking Insights</h3>
+            <p>Trends across the week and the most requested services in the selected period</p>
+          </div>
+          <div class="analytics-dual">
+            <div class="analytics-dual-col">
+              <div class="analytics-col-label">Booking Trends</div>
+              <div class="chart-container">
+                <canvas id="trendsBarChart"></canvas>
+              </div>
+              <div class="peak-hours-label">Peak Hours</div>
+              <div id="peakHoursStrip"></div>
             </div>
-            <div id="peakHoursStrip"></div>
-          </div>
-
-          <div class="analytics-card">
-            <h3>Popular Services</h3>
-            <p>Most requested services in the selected period</p>
-            <table class="admin-table" id="servicePopularityTable">
-              <thead><tr><th>Service</th><th>Category</th><th class="text-right">Bookings</th></tr></thead>
-              <tbody id="servicePopularityBody"></tbody>
-            </table>
+            <div class="analytics-dual-col">
+              <div class="analytics-col-label">Popular Services</div>
+              <div class="popularity-list" id="servicePopularityBody"></div>
+            </div>
           </div>
         </div>
 
-        <div class="analytics-card" style="margin-top:0;">
-          <h3>Stylist Performance</h3>
-          <p>Completion rates and average ratings per stylist</p>
-          <table class="admin-table" id="stylistTable">
-            <thead>
-              <tr><th>Stylist</th><th class="text-right">Assigned</th><th class="text-right">Completed</th><th class="text-right">Rate</th><th class="text-right">Rating</th></tr>
-            </thead>
-            <tbody id="stylistTableBody"></tbody>
-          </table>
+        <div class="analytics-panel">
+          <div class="analytics-panel-head">
+            <h3>Stylist Performance</h3>
+            <p>Completion rates and average customer ratings per stylist</p>
+          </div>
+          <div class="performance-board" id="stylistTableBody"></div>
         </div>
+
       </div>
     </section>
 
@@ -2083,6 +3077,13 @@
       if (icon) icon.className = 'fas fa-moon';
       if (label) label.textContent = 'Light Mode';
     }
+    if (typeof trendsChart !== 'undefined' && trendsChart) {
+      const isLight = document.body.classList.contains('light');
+      trendsChart.options.scales.y.ticks.color = isLight ? '#666' : '#B8C0CC';
+      trendsChart.options.scales.y.grid.color = isLight ? '#eee' : 'rgba(255,255,255,0.06)';
+      trendsChart.options.scales.x.ticks.color = isLight ? '#666' : '#B8C0CC';
+      trendsChart.update();
+    }
   }
   function toggleTheme() {
     const isLight = document.body.classList.toggle('light');
@@ -2138,7 +3139,74 @@
     return parts.slice(0, 2).map(n => n[0]).join('').toUpperCase();
   }
 
-  // ---------- LUXURY HOME HELPERS ----------
+  // ---------- LIVE STUDIO STATUS ----------
+  function updateStudioStatus() {
+    const pill = document.getElementById('luxStatusPill');
+    if (!pill) return;
+    const now = new Date();
+    const day = now.getDay(); // 0=Sun 1=Mon ... 6=Sat
+    const h = now.getHours();
+    const m = now.getMinutes();
+    const minutes = h * 60 + m;
+
+    let open = false;
+    let detail = '';
+    let opensAt = '';
+
+    if (day === 0) {
+      // Sunday — closed
+      open = false;
+      detail = 'Opens Mon 9:00';
+      opensAt = 'Monday 9:00';
+    } else if (day === 6) {
+      // Saturday — 9am–2pm
+      const s = 9 * 60;
+      const e = 14 * 60;
+      if (minutes >= s && minutes < e) {
+        open = true;
+        const remaining = e - minutes;
+        const hr = Math.floor(remaining / 60);
+        const mn = remaining % 60;
+        detail = hr > 0 ? `Closes in ${hr}h ${mn}m` : `Closes in ${mn}m`;
+      } else if (minutes < s) {
+        detail = `Opens at 9:00`;
+      } else {
+        detail = 'Opens Mon 9:00';
+      }
+    } else {
+      // Mon–Fri — 9am–5pm
+      const s = 9 * 60;
+      const e = 17 * 60;
+      if (minutes >= s && minutes < e) {
+        open = true;
+        const remaining = e - minutes;
+        const hr = Math.floor(remaining / 60);
+        const mn = remaining % 60;
+        detail = hr > 0 ? `Closes in ${hr}h ${mn}m` : `Closes in ${mn}m`;
+      } else if (minutes < s) {
+        detail = `Opens at 9:00`;
+      } else {
+        detail = day === 5 ? 'Opens Sat 9:00' : 'Opens tomorrow 9:00';
+      }
+    }
+
+    const dot = document.getElementById('luxStatusDot');
+    const text = document.getElementById('luxStatusText');
+    const det = document.getElementById('luxStatusDetail');
+
+    if (open) {
+      dot.classList.remove('closed');
+      text.textContent = 'Open Now';
+    } else {
+      dot.classList.add('closed');
+      text.textContent = 'Closed';
+    }
+    det.textContent = detail;
+  }
+  setInterval(updateStudioStatus, 30000);
+  updateStudioStatus();
+
+  // ---------- LIVE CLOCK ----------
   function updateLuxClock() {
     const clockEl = document.getElementById('luxClock');
     const dateEl = document.getElementById('luxDate');
@@ -2155,7 +3223,105 @@
   setInterval(updateLuxClock, 1000);
   updateLuxClock();
 
-  function animateCount(el, target, duration = 900) {
+  // ---------- SCROLL PROGRESS ----------
+  document.addEventListener('DOMContentLoaded', function() {
+    const mainScroll = document.getElementById('mainScroll');
+    const progress = document.getElementById('scrollProgress');
+    if (mainScroll && progress) {
+      mainScroll.addEventListener('scroll', () => {
+        const scrollTop = mainScroll.scrollTop;
+        const scrollHeight = mainScroll.scrollHeight - mainScroll.clientHeight;
+        const pct = scrollHeight > 0 ? (scrollTop / scrollHeight) * 100 : 0;
+        progress.style.width = pct + '%';
+      });
+    }
+  });
+
+  // ---------- PARALLAX HERO PHOTO ----------
+  document.addEventListener('DOMContentLoaded', function() {
+    const mainScroll = document.getElementById('mainScroll');
+    const heroPhoto = document.getElementById('heroPhoto');
+    if (!mainScroll || !heroPhoto) return;
+    mainScroll.addEventListener('scroll', () => {
+      const y = mainScroll.scrollTop;
+      if (y < 900) {
+        heroPhoto.style.setProperty('background-position-y', `calc(50% + ${y * 0.22}px)`);
+      }
+    });
+  });
+
+  // ---------- CURSOR GLOW IN HERO ----------
+  document.addEventListener('DOMContentLoaded', function() {
+    const hero = document.getElementById('luxHero');
+    const glow = document.getElementById('luxCursorGlow');
+    if (!hero || !glow) return;
+    hero.addEventListener('mousemove', (e) => {
+      const rect = hero.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      const y = e.clientY - rect.top;
+      glow.style.left = x + 'px';
+      glow.style.top = y + 'px';
+    });
+  });
+
+  // ---------- 3D TILT ON STUDIO TILES ----------
+  document.addEventListener('DOMContentLoaded', function() {
+    const tiles = document.querySelectorAll('.studio-item[data-tilt]');
+    tiles.forEach(tile => {
+      tile.addEventListener('mousemove', (e) => {
+        const rect = tile.getBoundingClientRect();
+        const x = (e.clientX - rect.left) / rect.width - 0.5;
+        const y = (e.clientY - rect.top) / rect.height - 0.5;
+        const rotY = x * 9;
+        const rotX = -y * 9;
+        tile.style.transform = `translateY(-10px) rotateX(${rotX}deg) rotateY(${rotY}deg)`;
+      });
+      tile.addEventListener('mouseleave', () => {
+        tile.style.transform = '';
+      });
+    });
+  });
+
+  // ---------- SCROLL REVEAL ----------
+  document.addEventListener('DOMContentLoaded', function() {
+    const reveals = document.querySelectorAll('.reveal-on-scroll');
+    if (!reveals.length || !('IntersectionObserver' in window)) {
+      reveals.forEach(el => el.classList.add('revealed'));
+      return;
+    }
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('revealed');
+          io.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.12, rootMargin: '0px 0px -8% 0px' });
+    reveals.forEach(el => io.observe(el));
+  });
+
+  function renderLuxTicker() {
+    const track = document.getElementById('luxTickerTrack');
+    if (!track) return;
+    const now = new Date();
+    const thisMonth = allBookings.filter(b => {
+      const d = new Date(b.date);
+      return d.getMonth() === now.getMonth() && d.getFullYear() === now.getFullYear();
+    }).length;
+    const activeStylists = stylists.filter(s => s.isActive && s.isAvailable).length;
+    const items = [
+      { icon: 'fa-concierge-bell', text: `<strong>${services.length}</strong> Services Curated` },
+      { icon: 'fa-users', text: `<strong>${stylists.length}</strong> Artisans On Roster` },
+      { icon: 'fa-circle-check', text: `<strong>${activeStylists}</strong> Active Right Now` },
+      { icon: 'fa-calendar-check', text: `<strong>${allBookings.length}</strong> Appointments Recorded` },
+      { icon: 'fa-chart-line', text: `<strong>${thisMonth}</strong> Booked This Month` },
+      { icon: 'fa-sparkles', text: `PinkMeUp · Atelier Console` },
+    ];
+    const oneSet = items.map(it => `<span class="lux-ticker-item"><i class="fas ${it.icon}"></i> ${it.text}</span>`).join('');
+    track.innerHTML = oneSet + oneSet;
+  }
+
+  function animateCount(el, target, duration = 1200) {
     if (!el) return;
     const start = parseInt(el.textContent, 10) || 0;
     if (start === target) { el.textContent = target; return; }
@@ -2178,40 +3344,35 @@
       return;
     }
     const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
-    const recent = [...allBookings]
-      .sort((a, b) => new Date(b.date) - new Date(a.date))
-      .slice(0, 5);
+    const recent = [...allBookings].sort((a, b) => new Date(b.date) - new Date(a.date)).slice(0, 6);
     feed.innerHTML = recent.map(b => {
       const d = new Date(b.date);
       const customer = b.customerId
         ? `${b.customerId.firstName || ''} ${b.customerId.lastName || ''}`.trim()
         : (b.guestName || 'Guest');
-      const serviceNames = (b.serviceIds || []).map(s => s.name).join(', ') || 'No services';
+      const initials = initialsFromName(customer);
+      const serviceNames = (b.serviceIds || []).map(s => s.name).join(' · ') || 'No services';
       const stylist = b.stylistId?.userId
         ? `${b.stylistId.userId.firstName || ''} ${b.stylistId.userId.lastName || ''}`.trim()
         : 'Stylist';
       return `
-        <div class="lux-feed-row">
-          <div class="lux-feed-time">${b.startTime || '—'}<small>${d.getDate()} ${months[d.getMonth()]}</small></div>
-          <div class="lux-feed-cell">${escapeHtml(customer)}</div>
-          <div class="lux-feed-cell dim lux-hide-sm">${escapeHtml(serviceNames)}</div>
-          <div class="lux-feed-cell dim lux-hide-md">${escapeHtml(stylist)}</div>
-          <div><span class="badge badge-${b.status}">${b.status}</span></div>
+        <div class="pulse-item">
+          <div class="pulse-time">
+            <div class="pulse-time-main">${b.startTime || '—'}</div>
+            <div class="pulse-time-sub">${d.getDate()} ${months[d.getMonth()]}</div>
+          </div>
+          <div class="pulse-rail"><span class="pulse-dot"></span></div>
+          <div class="pulse-avatar">${escapeHtml(initials)}</div>
+          <div class="pulse-body">
+            <div class="pulse-customer">${escapeHtml(customer)}</div>
+            <div class="pulse-services">${escapeHtml(serviceNames)}</div>
+            <div class="pulse-stylist">with ${escapeHtml(stylist)}</div>
+          </div>
+          <div class="pulse-status"><span class="badge badge-${b.status}">${b.status}</span></div>
         </div>
       `;
     }).join('');
   }
-
-  // Mouse-tracking radial gradient on luxury tiles
-  document.addEventListener('mousemove', (e) => {
-    const tile = e.target.closest('.lux-tile');
-    if (!tile) return;
-    const rect = tile.getBoundingClientRect();
-    const x = ((e.clientX - rect.left) / rect.width * 100).toFixed(1);
-    const y = ((e.clientY - rect.top) / rect.height * 100).toFixed(1);
-    tile.style.setProperty('--x', `${x}%`);
-    tile.style.setProperty('--y', `${y}%`);
-  });
 
   document.addEventListener('DOMContentLoaded', function() {
     const sidebar = document.getElementById('sidebar');
@@ -2308,6 +3469,9 @@
         chartCanvas.parentNode.replaceChild(img, chartCanvas);
       }
 
+      clone.querySelectorAll('*').forEach(el => {
+        el.style.color = el.style.color || '#333';
+      });
       clone.querySelectorAll('.admin-table th, .admin-table td').forEach(el => {
         el.style.padding = '6px 10px';
         el.style.textAlign = 'left';
@@ -2342,11 +3506,10 @@
     if (viewId === 'reports') updateReports();
     if (viewId === 'bookings') loadAllBookings();
     document.querySelector('.main').scrollTop = 0;
+    const progress = document.getElementById('scrollProgress');
+    if (progress) progress.style.width = '0%';
   }
 
-  // ============================================================
-  // SERVICES
-  // ============================================================
   async function loadServices() {
     try {
       const res = await fetch(`${API_BASE}/services?limit=100`, { credentials: 'include' });
@@ -2456,6 +3619,9 @@
       await loadServices();
       closeServiceModal();
       showToast('Service saved.');
+      if (document.getElementById('serviceDetail').style.display === 'block' && editId) {
+        openServiceDetail(editId);
+      }
     } catch (err) { showToast('Error saving service.'); }
     finally { hideLoading(); }
   }
@@ -2490,10 +3656,15 @@
           <i class="fas fa-arrow-left"></i> Back to all services
         </button>
 
-        <div class="detail-hero">
-          <div><span class="badge badge-confirmed">${escapeHtml(svc.category)}</span></div>
-          <div class="detail-heading">${escapeHtml(svc.name)}</div>
-          <div class="detail-subheading">Service offering details and management</div>
+        <div class="detail-hero-panel">
+          <div class="detail-hero-avatar"><i class="fas fa-concierge-bell" style="font-size:1.6rem;"></i></div>
+          <div class="detail-hero-body">
+            <div class="detail-hero-badges">
+              <span class="badge badge-confirmed">${escapeHtml(svc.category)}</span>
+            </div>
+            <div class="detail-heading">${escapeHtml(svc.name)}</div>
+            <div class="detail-subheading">Service offering details and management</div>
+          </div>
         </div>
 
         <div class="detail-section">
@@ -2528,9 +3699,6 @@
     document.querySelector('.main').scrollTop = 0;
   }
 
-  // ============================================================
-  // STYLISTS
-  // ============================================================
   async function loadStylists() {
     try {
       const res = await fetch(`${API_BASE}/stylists?limit=100`, { credentials: 'include' });
@@ -2573,7 +3741,6 @@
         <div class="stylist-card" data-stylist-id="${st.id}">
           <div class="stylist-avatar-circle">${escapeHtml(initials)}</div>
           <div class="stylist-name">${escapeHtml(st.name)}</div>
-          <div class="stylist-status ${currentStatus}">${statusLabel}</div>
 
           <div class="stylist-mini-info">
             <div class="stylist-mini-line">
@@ -2585,6 +3752,8 @@
               <span>${escapeHtml(st.phone || 'No phone on file')}</span>
             </div>
           </div>
+
+          <div class="stylist-status ${currentStatus}">${statusLabel}</div>
 
           <div class="stylist-rating">
             <i class="fas fa-star"></i>
@@ -2735,7 +3904,9 @@
     if (!st.isActive) currentStatus = 'disabled';
     else if (!st.isAvailable) currentStatus = 'inactive';
     const statusLabel = currentStatus === 'active' ? 'Active' : (currentStatus === 'inactive' ? 'Inactive' : 'Disabled');
+    const badgeClass = currentStatus === 'active' ? 'completed' : (currentStatus === 'inactive' ? 'pending' : 'cancelled');
     const serviceNames = st.serviceIds.map(sid => getServiceName(sid)).filter(Boolean);
+    const initials = initialsFromName(st.name);
 
     document.getElementById('stylistsContainer').style.display = 'none';
     const detail = document.getElementById('stylistDetail');
@@ -2746,10 +3917,15 @@
           <i class="fas fa-arrow-left"></i> Back to all stylists
         </button>
 
-        <div class="detail-hero">
-          <div><span class="badge badge-${currentStatus === 'active' ? 'completed' : (currentStatus === 'inactive' ? 'pending' : 'cancelled')}">${statusLabel}</span></div>
-          <div class="detail-heading">${escapeHtml(st.name)}</div>
-          <div class="detail-subheading">${escapeHtml(st.email || 'No email on file')} • ${escapeHtml(st.phone || 'No phone on file')}</div>
+        <div class="detail-hero-panel">
+          <div class="detail-hero-avatar">${escapeHtml(initials)}</div>
+          <div class="detail-hero-body">
+            <div class="detail-hero-badges">
+              <span class="badge badge-${badgeClass}">${statusLabel}</span>
+            </div>
+            <div class="detail-heading">${escapeHtml(st.name)}</div>
+            <div class="detail-subheading">${escapeHtml(st.email || 'No email on file')} • ${escapeHtml(st.phone || 'No phone on file')}</div>
+          </div>
         </div>
 
         <div class="detail-section">
@@ -2809,9 +3985,6 @@
     document.querySelector('.main').scrollTop = 0;
   }
 
-  // ============================================================
-  // BOOKINGS
-  // ============================================================
   async function loadAllBookings() {
     showLoading('Loading bookings...');
     try {
@@ -2861,9 +4034,7 @@
     );
   }
 
-  function markComplete(id) {
-    setBookingStatus(id, 'completed');
-  }
+  function markComplete(id) { setBookingStatus(id, 'completed'); }
 
   async function setBookingStatus(id, status, rating) {
     showLoading('Updating...');
@@ -2920,10 +4091,15 @@
           <i class="fas fa-arrow-left"></i> Back to all bookings
         </button>
 
-        <div class="detail-hero">
-          <div><span class="badge badge-${b.status}">${b.status}</span></div>
-          <div class="detail-heading">${services.map(s => escapeHtml(s.name)).join(', ') || 'Booking'}</div>
-          <div class="detail-subheading">${formatDateLong(b.date)} at ${b.startTime} • with ${escapeHtml(stylist)}</div>
+        <div class="detail-hero-panel">
+          <div class="detail-hero-avatar"><i class="fas fa-calendar-check" style="font-size:1.6rem;"></i></div>
+          <div class="detail-hero-body">
+            <div class="detail-hero-badges">
+              <span class="badge badge-${b.status}">${b.status}</span>
+            </div>
+            <div class="detail-heading">${services.map(s => escapeHtml(s.name)).join(', ') || 'Booking'}</div>
+            <div class="detail-subheading">${formatDateLong(b.date)} at ${b.startTime} • with ${escapeHtml(stylist)}</div>
+          </div>
         </div>
 
         <div class="detail-section">
@@ -2980,9 +4156,6 @@
     document.querySelector('.main').scrollTop = 0;
   }
 
-  // ============================================================
-  // ANALYTICS
-  // ============================================================
   async function updateReports() {
     const period = document.getElementById('reportPeriod').value;
     let startDate, endDate, today = new Date();
@@ -3030,7 +4203,7 @@
       type: 'bar',
       data: {
         labels: DAY_LABELS,
-        datasets: [{ label: 'Bookings', data: dayCounts, backgroundColor: '#D43F6B', borderRadius: 4 }]
+        datasets: [{ label: 'Bookings', data: dayCounts, backgroundColor: '#D43F6B', borderRadius: 6 }]
       },
       options: {
         responsive: true,
@@ -3056,37 +4229,58 @@
   }
 
   function renderPopularity(popularity) {
-    const tbody = document.getElementById('servicePopularityBody');
+    const container = document.getElementById('servicePopularityBody');
+    if (!container) return;
     if (!popularity || !popularity.length) {
-      tbody.innerHTML = '<tr><td colspan="3" style="color:var(--muted);">No bookings in this period.</td></tr>';
+      container.innerHTML = '<p style="color:var(--muted);font-size:0.85rem;">No bookings in this period.</p>';
       return;
     }
-    tbody.innerHTML = popularity.map(s =>
-      `<tr><td><strong style="font-weight:500;">${escapeHtml(s.serviceName)}</strong></td><td>${escapeHtml(s.category)}</td><td class="text-right">${s.bookingsCount}</td></tr>`
-    ).join('');
-  }
-
-  function renderPerformance(performance) {
-    const tbody = document.getElementById('stylistTableBody');
-    if (!performance || !performance.length) {
-      tbody.innerHTML = '<tr><td colspan="5" style="color:var(--muted);">No stylist activity.</td></tr>';
-      return;
-    }
-    tbody.innerHTML = performance.map(s => {
-      const rate = s.totalAssigned ? Math.round((s.completedBookings / s.totalAssigned) * 100) : 0;
-      return `<tr>
-        <td><strong style="font-weight:500;">${escapeHtml(s.stylistName)}</strong></td>
-        <td class="text-right">${s.totalAssigned}</td>
-        <td class="text-right">${s.completedBookings}</td>
-        <td class="text-right">${rate}%</td>
-        <td class="text-right">${s.rating.toFixed(1)} / 5</td>
-      </tr>`;
+    const max = Math.max(...popularity.map(p => p.bookingsCount)) || 1;
+    container.innerHTML = popularity.slice(0, 8).map((s, i) => {
+      const pct = Math.round((s.bookingsCount / max) * 100);
+      return `
+        <div class="popularity-item">
+          <div class="popularity-rank">${String(i + 1).padStart(2, '0')}</div>
+          <div class="popularity-info">
+            <div class="popularity-name">${escapeHtml(s.serviceName)}</div>
+            <div class="popularity-meta">${escapeHtml(s.category)}</div>
+            <div class="popularity-bar"><span style="width:${pct}%"></span></div>
+          </div>
+          <div class="popularity-count">${s.bookingsCount}</div>
+        </div>
+      `;
     }).join('');
   }
 
-  // ============================================================
-  // ADMIN PROFILE EDIT
-  // ============================================================
+  function renderPerformance(performance) {
+    const container = document.getElementById('stylistTableBody');
+    if (!container) return;
+    if (!performance || !performance.length) {
+      container.innerHTML = '<p style="color:var(--muted);font-size:0.85rem;">No stylist activity.</p>';
+      return;
+    }
+    container.innerHTML = performance.map((s, i) => {
+      const rate = s.totalAssigned ? Math.round((s.completedBookings / s.totalAssigned) * 100) : 0;
+      const initials = initialsFromName(s.stylistName);
+      return `
+        <div class="performance-card">
+          <div class="performance-rank">${String(i + 1).padStart(2, '0')}</div>
+          <div class="performance-avatar">${escapeHtml(initials)}</div>
+          <div class="performance-body">
+            <div class="performance-name">${escapeHtml(s.stylistName)}</div>
+            <div class="performance-stats">
+              <span><strong>${s.totalAssigned}</strong> assigned</span>
+              <span><strong>${s.completedBookings}</strong> completed</span>
+              <span><i class="fas fa-star"></i> <strong>${s.rating.toFixed(1)}</strong></span>
+            </div>
+            <div class="performance-bar"><span style="width:${rate}%"></span></div>
+            <div class="performance-rate">${rate}% completion rate</div>
+          </div>
+        </div>
+      `;
+    }).join('');
+  }
+
   function toggleAdminProfileEdit() {
     document.getElementById('adminProfileMain').style.display = 'none';
     document.getElementById('adminProfileEdit').style.display = 'flex';
@@ -3160,9 +4354,6 @@
     }
   }
 
-  // ============================================================
-  // HOME STATS — animated counts + feed refresh
-  // ============================================================
   function updateHomeStats() {
     const sEl = document.getElementById('homeStatServices');
     const stEl = document.getElementById('homeStatStylists');
@@ -3182,11 +4373,9 @@
     animateCount(mEl, thisMonth);
 
     renderLuxFeed();
+    renderLuxTicker();
   }
 
-  // ============================================================
-  // SIGN OUT
-  // ============================================================
   async function signOut() {
     showLoading('Signing out...');
     try { await fetch(`${API_BASE}/auth/logout`, { method: 'POST', credentials: 'include' }); } catch (e) {}
@@ -3199,9 +4388,6 @@
     window.location.replace('login.html');
   }
 
-  // ============================================================
-  // INIT
-  // ============================================================
   document.addEventListener('DOMContentLoaded', async function() {
     let user = null;
     try {
@@ -3221,9 +4407,7 @@
     }
 
     const luxGreeting = document.getElementById('luxGreeting');
-    if (luxGreeting) {
-      luxGreeting.textContent = user.firstName || 'Administrator';
-    }
+    if (luxGreeting) luxGreeting.textContent = user.firstName || 'Administrator';
 
     const fullName = `${user.firstName || ''} ${user.lastName || ''}`.trim() || 'Administrator';
     const pName = document.getElementById('adminProfileName');
@@ -3272,7 +4456,7 @@
     const periodSelect = document.getElementById('reportPeriod');
     const customDiv = document.getElementById('customDateRange');
     periodSelect.addEventListener('change', () => {
-      customDiv.style.display = periodSelect.value === 'custom' ? 'flex' : 'none';
+      customDiv.classList.toggle('active', periodSelect.value === 'custom');
     });
     document.getElementById('applyFilterBtn').addEventListener('click', () => {
       if (periodSelect.value === 'custom') {
