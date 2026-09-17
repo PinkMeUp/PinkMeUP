@@ -78,7 +78,7 @@
     }
     .header-left { display: flex; align-items: center; gap: 0.8rem; }
     .menu-btn {
-      display: none;
+      display: flex;
       background: none;
       border: none;
       font-size: 1.4rem;
@@ -148,14 +148,8 @@
     .top-tabs .tab-item.active {
       color: var(--rose);
       border-bottom-color: var(--rose);
-      background: transparent;
-      transform: none;
     }
-    .top-tabs .tab-item:hover {
-      color: var(--rose);
-      background: transparent;
-      transform: none;
-    }
+    .top-tabs .tab-item:hover { color: var(--rose); }
     .top-tabs .tab-item i {
       color: var(--grey-icon);
       font-size: 1.15rem;
@@ -181,22 +175,29 @@
     }
     .sidebar-overlay.active { display: block; }
     .sidebar {
-      width: 280px;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 300px;
+      height: 100vh;
       background: linear-gradient(180deg, #0B1220 0%, #050810 100%);
       border-right: 1px solid var(--border);
       display: flex;
       flex-direction: column;
-      flex-shrink: 0;
+      transform: translateX(-100%);
       transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), background 0.3s ease;
       z-index: 999;
       padding: 1.5rem 1.2rem;
       overflow-y: auto;
+      box-shadow: 4px 0 40px rgba(0, 0, 0, 0.5);
     }
     body.light .sidebar {
       background: linear-gradient(180deg, #ffffff 0%, #fdf8fa 100%);
+      box-shadow: 4px 0 40px rgba(0, 0, 0, 0.08);
     }
+    .sidebar.open { transform: translateX(0); }
     .sidebar-close {
-      display: none;
+      display: block;
       background: none;
       border: none;
       font-size: 1.3rem;
@@ -205,6 +206,7 @@
       text-align: right;
       width: 100%;
       transition: color 0.2s;
+      margin-bottom: 0.3rem;
     }
     .sidebar-close:hover { color: var(--rose); }
     .sidebar-close i { color: var(--grey-icon); }
@@ -215,7 +217,7 @@
     }
     .greeting-name {
       font-family: 'Cormorant Garamond', serif;
-      font-size: 1.5rem;
+      font-size: 1.55rem;
       font-weight: 600;
       letter-spacing: 0.3px;
       background: var(--gradient);
@@ -298,6 +300,7 @@
       margin-bottom: 0.2rem;
       font-size: 0.85rem;
       line-height: 1.5;
+      word-break: break-word;
     }
     .main {
       flex: 1;
@@ -373,6 +376,7 @@
     .btn-download:hover { opacity: 0.75; transform: translateX(2px); }
     .btn-download i { font-size: 0.85rem; }
     .btn-sm { font-size: 0.85rem; padding: 0.25rem 0; }
+
     .admin-table {
       width: 100%;
       border-collapse: collapse;
@@ -421,171 +425,279 @@
     .badge-cancelled { background: rgba(255, 107, 107, 0.15); color: var(--danger); }
     .badge-no_show { background: rgba(167, 139, 250, 0.15); color: #A78BFA; }
     body.light .badge-no_show { background: rgba(124, 58, 237, 0.12); color: #7C3AED; }
-    .category-group { margin-bottom: 1.75rem; }
-    .category-group:last-child { margin-bottom: 0; }
-    .category-header {
-      font-size: 0.72rem;
-      font-weight: 600;
-      color: var(--rose);
-      text-transform: uppercase;
-      letter-spacing: 0.7px;
-      padding: 0.2rem 0 0.5rem 0.7rem;
-      border-left: 2px solid var(--rose);
-      margin-bottom: 0.4rem;
-    }
-    .service-row {
+
+    /* ============================================================
+       SERVICES
+       ============================================================ */
+    .services-category { margin-bottom: 2.4rem; }
+    .services-category:last-child { margin-bottom: 0; }
+    .services-category-head {
       display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 0.85rem 0;
+      align-items: baseline;
+      gap: 0.85rem;
+      padding-bottom: 0.75rem;
+      margin-bottom: 1.1rem;
       border-bottom: 1px solid var(--border);
-      flex-wrap: wrap;
-      gap: 0.5rem;
-      transition: 0.15s;
-      cursor: pointer;
     }
-    .service-row:last-child { border-bottom: none; }
-    .service-row:hover { padding-left: 0.4rem; padding-right: 0.4rem; background: var(--hover-surface); }
-    .service-info {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 0.75rem;
-      align-items: center;
-      flex: 1;
-    }
-    .service-name { font-weight: 500; font-size: 1rem; color: var(--ink); }
-    .service-duration { font-size: 0.8rem; color: var(--muted); font-weight: 300; }
-    .service-price {
+    .services-category-name {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.5rem;
       font-weight: 500;
-      color: var(--rose);
-      min-width: 70px;
-      text-align: right;
-      font-size: 0.95rem;
+      color: var(--ink);
+      letter-spacing: 0.3px;
     }
-    .service-actions { display: flex; gap: 0.6rem; }
-    .service-actions button {
+    .services-category-count {
+      font-size: 0.68rem;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      font-weight: 500;
+    }
+    .services-card-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+      gap: 0.9rem;
+    }
+    .service-card {
+      position: relative;
+      border: 1px solid var(--border);
+      border-radius: 1rem;
+      padding: 1.15rem 1.2rem 1rem;
+      background: var(--card-bg);
+      cursor: pointer;
+      transition: 0.22s;
+      display: flex;
+      flex-direction: column;
+      gap: 0.55rem;
+      backdrop-filter: blur(6px);
+    }
+    .service-card:hover {
+      border-color: var(--rose-mid);
+      transform: translateY(-2px);
+      box-shadow: var(--shadow);
+    }
+    .service-card-head {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 0.6rem;
+    }
+    .service-card-name {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.2rem;
+      font-weight: 500;
+      color: var(--ink);
+      line-height: 1.2;
+      flex: 1;
+      letter-spacing: 0.2px;
+    }
+    .service-card-menu {
+      display: flex;
+      gap: 0.15rem;
+      opacity: 0.55;
+      transition: 0.15s;
+      flex-shrink: 0;
+    }
+    .service-card:hover .service-card-menu { opacity: 1; }
+    .service-card-menu button {
       background: none;
       border: none;
       cursor: pointer;
       color: var(--grey-icon);
-      padding: 0.3rem 0.4rem;
-      font-size: 0.95rem;
+      padding: 0.3rem;
+      font-size: 0.85rem;
+      border-radius: 0.35rem;
       transition: 0.15s;
     }
-    .service-actions button:hover { color: var(--rose); }
-    .stylist-grid {
+    .service-card-menu button:hover { color: var(--rose); background: var(--rose-pale); }
+    .service-card-meta {
       display: flex;
-      flex-direction: column;
-      gap: 0;
+      align-items: center;
+      gap: 0.85rem;
+      font-size: 0.8rem;
+      color: var(--muted);
+      font-weight: 300;
     }
-    .stylist-card {
-      display: block;
-      border-bottom: 1px solid var(--border);
-      padding: 1.1rem 0;
-      transition: 0.15s;
-      background: transparent;
-      border-radius: 0;
-      cursor: pointer;
-    }
-    .stylist-card:hover {
-      padding-left: 0.4rem;
-      padding-right: 0.4rem;
-      background: var(--hover-surface);
-    }
-    .stylist-card:last-child { border-bottom: none; }
-    .stylist-card .stylist-name {
+    .service-card-meta span { display: inline-flex; align-items: center; gap: 0.3rem; }
+    .service-card-meta i { color: var(--grey-icon); font-size: 0.72rem; }
+    .service-card-price {
       font-family: 'Cormorant Garamond', serif;
       font-size: 1.4rem;
-      font-weight: 500;
-      color: var(--ink);
-      margin-bottom: 0.4rem;
+      font-weight: 600;
+      color: var(--rose);
+      margin-top: auto;
+      padding-top: 0.6rem;
+      border-top: 1px solid var(--border);
+      line-height: 1;
       letter-spacing: 0.2px;
     }
-    .stylist-card .stylist-contact-item {
-      font-size: 0.85rem;
-      color: var(--muted);
-      padding: 0.1rem 0;
-      display: inline-flex;
+
+    /* ============================================================
+       STYLISTS
+       ============================================================ */
+    .stylist-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(270px, 1fr));
+      gap: 1rem;
+    }
+    .stylist-card {
+      display: flex;
+      flex-direction: column;
       align-items: center;
-      gap: 0.5rem;
-      font-weight: 300;
-      margin-right: 1.2rem;
+      text-align: center;
+      gap: 0.65rem;
+      padding: 1.6rem 1.3rem 1.3rem;
+      border: 1px solid var(--border);
+      border-radius: 1.2rem;
+      background: var(--card-bg);
+      cursor: pointer;
+      transition: 0.22s;
+      backdrop-filter: blur(6px);
+      position: relative;
     }
-    .stylist-card .stylist-contact-item i {
-      width: 16px;
-      color: var(--grey-icon);
-      font-size: 0.78rem;
+    .stylist-card:hover {
+      border-color: var(--rose-mid);
+      transform: translateY(-3px);
+      box-shadow: var(--shadow);
     }
-    .stylist-card .stylist-status {
+    .stylist-avatar-circle {
+      width: 76px;
+      height: 76px;
+      border-radius: 50%;
+      background: var(--gradient);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.85rem;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+      box-shadow: 0 4px 14px rgba(212, 63, 107, 0.25);
+    }
+    .stylist-name {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.35rem;
+      font-weight: 500;
+      color: var(--ink);
+      letter-spacing: 0.2px;
+      margin: 0;
+      line-height: 1.15;
+    }
+    .stylist-status {
       display: inline-flex;
       align-items: center;
       gap: 0.3rem;
-      font-size: 0.7rem;
-      font-weight: 500;
-      padding: 0.2rem 0.75rem;
+      font-size: 0.65rem;
+      font-weight: 600;
+      padding: 0.2rem 0.7rem;
       border-radius: 2rem;
-      letter-spacing: 0.2px;
+      text-transform: uppercase;
+      letter-spacing: 0.4px;
     }
-    .stylist-card .stylist-status.active { background: rgba(74, 222, 128, 0.15); color: var(--success); }
-    body.light .stylist-card .stylist-status.active { background: rgba(44, 143, 110, 0.12); }
-    .stylist-card .stylist-status.inactive { background: rgba(251, 191, 36, 0.15); color: var(--warning); }
-    .stylist-card .stylist-status.disabled { background: var(--hover-surface); color: var(--muted); }
-    .stylist-status-select {
-      padding: 0.25rem 0.7rem !important;
-      border-radius: 2rem !important;
-      border: 1px solid var(--border) !important;
-      font-size: 0.7rem !important;
-      font-family: inherit !important;
-      background: transparent !important;
-      color: var(--muted) !important;
-      cursor: pointer !important;
-      transition: 0.15s !important;
+    .stylist-status.active { background: rgba(74, 222, 128, 0.15); color: var(--success); }
+    body.light .stylist-status.active { background: rgba(44, 143, 110, 0.12); }
+    .stylist-status.inactive { background: rgba(251, 191, 36, 0.15); color: var(--warning); }
+    .stylist-status.disabled { background: var(--hover-surface); color: var(--muted); }
+    .stylist-mini-info {
+      display: flex;
+      flex-direction: column;
+      gap: 0.35rem;
+      padding: 0.75rem 0;
+      width: 100%;
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
     }
-    .stylist-status-select:hover { border-color: var(--rose) !important; }
-    .stylist-status-select option { background: var(--bg); color: var(--ink); }
-    .stylist-card .stylist-rating {
-      font-size: 0.85rem;
+    .stylist-mini-line {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      font-size: 0.8rem;
       color: var(--muted);
-      margin-top: 0.4rem;
+      font-weight: 300;
+      white-space: nowrap;
+      overflow: hidden;
+      max-width: 100%;
+    }
+    .stylist-mini-line i {
+      color: var(--grey-icon);
+      font-size: 0.72rem;
+      width: 14px;
+      flex-shrink: 0;
+    }
+    .stylist-mini-line span {
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .stylist-rating {
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      font-size: 0.8rem;
+      color: var(--muted);
       font-weight: 300;
     }
-    .stylist-card .stylist-rating strong { color: var(--ink); font-weight: 500; }
-    .stylist-card .stylist-services-label {
-      font-size: 0.68rem;
+    .stylist-rating i { color: #FFB800; font-size: 0.78rem; }
+    .stylist-rating strong { color: var(--ink); font-weight: 600; }
+    .stylist-services-label {
+      font-size: 0.63rem;
       font-weight: 600;
       color: var(--muted);
       text-transform: uppercase;
-      letter-spacing: 0.6px;
-      margin: 0.7rem 0 0.4rem;
+      letter-spacing: 0.7px;
+      margin-top: 0.15rem;
     }
-    .stylist-card .service-chips {
+    .service-chips {
       display: flex;
       flex-wrap: wrap;
-      gap: 0.35rem;
+      gap: 0.3rem;
+      justify-content: center;
+      min-height: 22px;
     }
-    .stylist-card .chip {
+    .chip {
       background: var(--rose-pale);
       color: var(--rose);
-      padding: 0.2rem 0.7rem;
+      padding: 0.15rem 0.6rem;
       border-radius: 2rem;
-      font-size: 0.72rem;
+      font-size: 0.68rem;
       font-weight: 400;
       letter-spacing: 0.2px;
     }
-    .stylist-card .stylist-actions {
-      display: flex;
-      gap: 1.2rem;
-      margin-top: 0.9rem;
-      flex-wrap: wrap;
+    .chip-more {
+      background: transparent;
+      border: 1px dashed var(--rose-mid);
+      color: var(--rose);
+      padding: 0.15rem 0.55rem;
+      border-radius: 2rem;
+      font-size: 0.68rem;
+      font-weight: 400;
     }
+    .chip-empty {
+      font-size: 0.72rem;
+      color: var(--muted);
+      font-style: italic;
+      font-weight: 300;
+    }
+
+    /* ============================================================
+       FILTER BAR
+       ============================================================ */
     .filter-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      gap: 1.5rem;
+      flex-wrap: wrap;
+      padding: 0 0 1.2rem 0;
+      margin-bottom: 1.8rem;
+      border-bottom: 1px solid var(--border);
+    }
+    .filter-bar-left {
       display: flex;
       gap: 1rem;
       flex-wrap: wrap;
       align-items: center;
-      padding: 0 0 1.2rem 0;
-      margin-bottom: 1.4rem;
-      border-bottom: 1px solid var(--border);
     }
     .filter-bar label {
       font-size: 0.7rem;
@@ -608,41 +720,22 @@
       font-weight: 300;
     }
     .filter-bar select:focus,
-    .filter-bar input:focus {
-      outline: none;
-      border-bottom-color: var(--rose);
-    }
+    .filter-bar input:focus { outline: none; border-bottom-color: var(--rose); }
     .filter-bar select option { background: var(--bg); color: var(--ink); }
+
+    /* ============================================================
+       ANALYTICS
+       ============================================================ */
     .analytics-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
       gap: 2rem;
       margin-bottom: 2rem;
     }
-    .analytics-card {
-      background: transparent;
-      border: none;
-      border-radius: 0;
-      padding: 0;
-    }
-    .analytics-card h3 {
-      font-size: 1.05rem;
-      font-weight: 500;
-      color: var(--ink);
-      margin-bottom: 0.2rem;
-    }
-    .analytics-card > p {
-      font-size: 0.85rem;
-      color: var(--muted);
-      margin-bottom: 0.9rem;
-      font-weight: 300;
-    }
-    .chart-container {
-      max-height: 260px;
-      min-height: 200px;
-      margin-bottom: 0.9rem;
-      position: relative;
-    }
+    .analytics-card { background: transparent; border: none; border-radius: 0; padding: 0; }
+    .analytics-card h3 { font-size: 1.05rem; font-weight: 500; color: var(--ink); margin-bottom: 0.2rem; }
+    .analytics-card > p { font-size: 0.85rem; color: var(--muted); margin-bottom: 0.9rem; font-weight: 300; }
+    .chart-container { max-height: 260px; min-height: 200px; margin-bottom: 0.9rem; position: relative; }
     .chart-container canvas { width: 100% !important; height: 100% !important; }
     .peak-hours { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-top: 0.5rem; }
     .peak-hour-tag {
@@ -655,152 +748,390 @@
     }
 
     /* ============================================================
-       HOME — professional hero
+       ✦ LUXURY HOME ✦
        ============================================================ */
-    .home-hero {
-      padding: 2.2rem 0 2.4rem 0;
+    .lux-hero {
+      position: relative;
+      overflow: hidden;
+      padding: 3.2rem 2.4rem 2.6rem;
+      margin: 0 -2rem 3rem;
       border-bottom: 1px solid var(--border);
-      margin-bottom: 2rem;
+      isolation: isolate;
+      background:
+        radial-gradient(ellipse at 15% 0%, rgba(255, 92, 138, 0.16), transparent 60%),
+        radial-gradient(ellipse at 90% 100%, rgba(212, 63, 107, 0.12), transparent 55%);
     }
-    .home-hero .home-eyebrow {
-      font-size: 0.7rem;
-      letter-spacing: 2.4px;
+    body.light .lux-hero {
+      background:
+        radial-gradient(ellipse at 15% 0%, rgba(255, 182, 193, 0.4), transparent 60%),
+        radial-gradient(ellipse at 90% 100%, rgba(212, 63, 107, 0.07), transparent 55%);
+    }
+    .lux-orb {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(70px);
+      opacity: 0.5;
+      pointer-events: none;
+      z-index: 0;
+      animation: luxFloat 16s ease-in-out infinite;
+    }
+    .lux-orb-1 {
+      width: 340px; height: 340px;
+      background: radial-gradient(circle, #FF5C8A, transparent 70%);
+      top: -140px; left: -90px;
+    }
+    .lux-orb-2 {
+      width: 280px; height: 280px;
+      background: radial-gradient(circle, #D43F6B, transparent 70%);
+      bottom: -120px; right: 6%;
+      animation-delay: -6s;
+      opacity: 0.38;
+    }
+    .lux-orb-3 {
+      width: 220px; height: 220px;
+      background: radial-gradient(circle, #FFB6C1, transparent 70%);
+      top: 35%; right: 24%;
+      animation-delay: -10s;
+      opacity: 0.28;
+    }
+    body.light .lux-orb { opacity: 0.32; }
+    body.light .lux-orb-2 { opacity: 0.2; }
+    body.light .lux-orb-3 { opacity: 0.18; }
+    @keyframes luxFloat {
+      0%, 100% { transform: translate(0, 0) scale(1); }
+      33% { transform: translate(28px, -22px) scale(1.08); }
+      66% { transform: translate(-22px, 24px) scale(0.94); }
+    }
+    .lux-hero-inner { position: relative; z-index: 2; max-width: 900px; }
+    .lux-hero-eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.6rem;
+      font-size: 0.68rem;
+      letter-spacing: 2.8px;
       text-transform: uppercase;
       font-weight: 600;
       color: var(--rose);
-      margin-bottom: 0.6rem;
+      margin-bottom: 1.4rem;
     }
-    .home-hero h1 {
+    .lux-dot {
+      width: 6px; height: 6px; border-radius: 50%;
+      background: var(--rose);
+      animation: luxPulse 2.2s ease-in-out infinite;
+    }
+    @keyframes luxPulse {
+      0% { box-shadow: 0 0 0 0 rgba(255, 92, 138, 0.55); }
+      70% { box-shadow: 0 0 0 14px rgba(255, 92, 138, 0); }
+      100% { box-shadow: 0 0 0 0 rgba(255, 92, 138, 0); }
+    }
+    .lux-hero-heading {
       font-family: 'Cormorant Garamond', serif;
-      font-size: 3.2rem;
-      font-weight: 500;
-      letter-spacing: 0.3px;
-      line-height: 1.05;
+      font-size: clamp(2.6rem, 5.2vw, 4.5rem);
+      font-weight: 400;
+      letter-spacing: -0.5px;
+      line-height: 1.02;
+      color: var(--ink);
+      margin-bottom: 1.3rem;
+    }
+    .lux-hero-heading-accent {
+      font-style: italic;
       background: var(--gradient);
       -webkit-background-clip: text;
       background-clip: text;
       color: transparent;
-      margin-bottom: 1rem;
+      font-weight: 500;
     }
-    .home-hero p {
-      font-size: 1.05rem;
+    .lux-hero-lead {
+      font-size: 1.02rem;
       color: var(--muted);
       font-weight: 300;
-      max-width: 680px;
       line-height: 1.75;
-    }
-    .home-hero .home-meta {
-      margin-top: 1.4rem;
-      font-size: 0.82rem;
-      color: var(--muted);
-      letter-spacing: 0.3px;
-      font-weight: 300;
-      display: flex;
-      align-items: center;
-      gap: 0.6rem;
-    }
-    .home-hero .home-meta i { color: var(--rose); font-size: 0.85rem; }
-
-    /* ============================================================
-       HOME STATS — customer-style, plain with underline
-       ============================================================ */
-    .admin-stats-grid {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 0.8rem;
+      max-width: 640px;
       margin-bottom: 2rem;
     }
-    .admin-stat {
-      background: transparent;
-      border: none;
-      border-bottom: 1px solid var(--border);
-      border-radius: 0;
-      padding: 1rem 0;
-      text-align: left;
-      transition: 0.2s;
+    .lux-hero-meta {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      padding-top: 1.5rem;
+      border-top: 1px solid var(--border);
     }
-    .admin-stat:hover { padding-left: 0.4rem; }
-    .admin-stat-number {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 2rem;
-      font-weight: 600;
-      color: var(--ink);
-      line-height: 1;
+    .lux-meta-item {
+      padding: 0 1.6rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.28rem;
     }
-    .admin-stat-label {
-      font-size: 0.8rem;
-      color: var(--muted);
-      margin-top: 0.2rem;
-      font-weight: 300;
+    .lux-meta-item:first-child { padding-left: 0; }
+    .lux-meta-label {
+      font-size: 0.6rem;
+      letter-spacing: 1.9px;
       text-transform: uppercase;
-      letter-spacing: 0.5px;
+      font-weight: 600;
+      color: var(--muted);
     }
-
-    .home-section-title {
+    .lux-meta-value {
       font-family: 'Cormorant Garamond', serif;
-      font-size: 1.6rem;
+      font-size: 1.15rem;
       font-weight: 500;
       color: var(--ink);
       letter-spacing: 0.3px;
-      margin-bottom: 0.3rem;
+      font-variant-numeric: tabular-nums;
     }
-    .home-section-sub {
-      font-size: 0.9rem;
-      color: var(--muted);
-      font-weight: 300;
-      margin-bottom: 1.2rem;
-      line-height: 1.6;
-      max-width: 720px;
+    .lux-meta-divider {
+      width: 1px;
+      height: 34px;
+      background: var(--border);
     }
 
-    .home-links {
+    .lux-stats {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-      gap: 0;
-      margin-top: 0.5rem;
+      grid-template-columns: repeat(4, 1fr);
+      margin-bottom: 3.5rem;
       border-top: 1px solid var(--border);
-    }
-    .home-link {
-      display: block;
-      padding: 1.5rem 1.2rem 1.5rem 0;
       border-bottom: 1px solid var(--border);
-      border-right: 1px solid var(--border);
-      cursor: pointer;
-      transition: 0.2s;
-      background: transparent;
-      border-top: none;
-      border-left: none;
-      font-family: inherit;
-      text-align: left;
-      width: 100%;
     }
-    .home-link:nth-child(even),
-    .home-link:last-child { border-right: none; }
-    .home-link:hover { padding-left: 0.6rem; background: var(--hover-surface); }
-    .home-link .home-link-title {
-      font-size: 1.05rem;
+    .lux-stat {
+      position: relative;
+      padding: 1.9rem 1.7rem;
+      border-right: 1px solid var(--border);
+      overflow: hidden;
+      transition: 0.35s;
+      cursor: default;
+    }
+    .lux-stat:last-child { border-right: none; }
+    .lux-stat::before {
+      content: '';
+      position: absolute;
+      left: 0; bottom: 0;
+      width: 0; height: 2px;
+      background: var(--gradient);
+      transition: width 0.55s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .lux-stat:hover::before { width: 100%; }
+    .lux-stat:hover { background: var(--hover-surface); }
+    .lux-stat-index {
+      font-size: 0.6rem;
+      letter-spacing: 2.2px;
+      font-weight: 600;
+      color: var(--muted);
+      margin-bottom: 0.9rem;
+      font-variant-numeric: tabular-nums;
+    }
+    .lux-stat-number {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 3.2rem;
       font-weight: 500;
+      line-height: 1;
       color: var(--ink);
+      letter-spacing: -0.02em;
+      margin-bottom: 0.5rem;
+      font-variant-numeric: tabular-nums;
+      transition: color 0.3s;
+    }
+    .lux-stat:hover .lux-stat-number {
+      background: var(--gradient);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+    .lux-stat-label {
+      font-size: 0.72rem;
+      letter-spacing: 0.4px;
+      color: var(--muted);
+      font-weight: 400;
+      text-transform: uppercase;
+    }
+
+    .lux-section { margin-bottom: 3.5rem; }
+    .lux-section:last-child { margin-bottom: 1rem; }
+    .lux-section-head {
       display: flex;
-      align-items: center;
-      gap: 0.6rem;
+      justify-content: space-between;
+      align-items: flex-end;
+      gap: 2rem;
+      margin-bottom: 2rem;
+      flex-wrap: wrap;
+    }
+    .lux-section-eyebrow {
+      font-size: 0.62rem;
+      letter-spacing: 2.6px;
+      text-transform: uppercase;
+      font-weight: 600;
+      color: var(--rose);
       margin-bottom: 0.5rem;
     }
-    .home-link .home-link-title i {
-      color: var(--rose);
-      font-size: 1rem;
-      width: 20px;
+    .lux-section-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(1.8rem, 3vw, 2.4rem);
+      font-weight: 500;
+      color: var(--ink);
+      letter-spacing: -0.3px;
+      line-height: 1.1;
     }
-    .home-link .home-link-desc {
+    .lux-section-desc {
       font-size: 0.88rem;
       color: var(--muted);
       font-weight: 300;
-      line-height: 1.6;
-      max-width: 320px;
+      line-height: 1.65;
+      max-width: 400px;
+      text-align: right;
+    }
+
+    .lux-tiles {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1rem;
+    }
+    .lux-tile {
+      position: relative;
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 1rem;
+      padding: 1.6rem 1.4rem 1.5rem;
+      text-align: left;
+      cursor: pointer;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      min-height: 250px;
+      transition: 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      font-family: inherit;
+      backdrop-filter: blur(6px);
+    }
+    .lux-tile::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle at var(--x, 50%) var(--y, 50%), rgba(255, 92, 138, 0.16), transparent 62%);
+      opacity: 0;
+      transition: opacity 0.4s;
+      pointer-events: none;
+    }
+    .lux-tile:hover::before { opacity: 1; }
+    .lux-tile:hover {
+      border-color: var(--rose-mid);
+      transform: translateY(-4px);
+      box-shadow: 0 22px 55px -22px rgba(255, 92, 138, 0.28);
+    }
+    .lux-tile-number {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 0.9rem;
+      font-weight: 500;
+      color: var(--muted);
+      letter-spacing: 2.5px;
+      opacity: 0.75;
+      font-variant-numeric: tabular-nums;
+    }
+    .lux-tile-icon {
+      width: 46px; height: 46px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--rose-pale);
+      color: var(--rose);
+      font-size: 1.05rem;
+      transition: 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      border: 1px solid transparent;
+    }
+    .lux-tile:hover .lux-tile-icon {
+      background: var(--gradient);
+      color: white;
+      transform: scale(1.06) rotate(-4deg);
+      box-shadow: 0 10px 26px -8px rgba(255, 92, 138, 0.55);
+    }
+    .lux-tile-body { flex: 1; display: flex; flex-direction: column; gap: 0.4rem; }
+    .lux-tile-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.55rem;
+      font-weight: 500;
+      color: var(--ink);
+      letter-spacing: 0.2px;
+      line-height: 1.15;
+    }
+    .lux-tile-desc {
+      font-size: 0.85rem;
+      color: var(--muted);
+      font-weight: 300;
+      line-height: 1.55;
+    }
+    .lux-tile-arrow {
+      position: absolute;
+      bottom: 1.4rem;
+      right: 1.4rem;
+      width: 34px; height: 34px;
+      border-radius: 50%;
+      border: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--muted);
+      font-size: 0.75rem;
+      transition: 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .lux-tile:hover .lux-tile-arrow {
+      background: var(--rose);
+      border-color: var(--rose);
+      color: white;
+      transform: translateX(4px);
+    }
+
+    .lux-feed { display: flex; flex-direction: column; }
+    .lux-feed-row {
+      display: grid;
+      grid-template-columns: 110px 1.1fr 1.4fr 1fr auto;
+      gap: 1.3rem;
+      align-items: center;
+      padding: 1.1rem 0;
+      border-bottom: 1px solid var(--border);
+      transition: 0.25s;
+    }
+    .lux-feed-row:last-child { border-bottom: none; }
+    .lux-feed-row:hover {
+      padding-left: 0.6rem;
+      padding-right: 0.6rem;
+      background: var(--hover-surface);
+      border-radius: 0.5rem;
+    }
+    .lux-feed-time {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.05rem;
+      font-weight: 500;
+      color: var(--ink);
+      letter-spacing: 0.2px;
+    }
+    .lux-feed-time small {
+      display: block;
+      font-size: 0.65rem;
+      font-family: 'DM Sans', sans-serif;
+      color: var(--muted);
+      font-weight: 500;
+      letter-spacing: 0.7px;
+      text-transform: uppercase;
+      margin-top: 0.18rem;
+    }
+    .lux-feed-cell {
+      font-size: 0.88rem;
+      color: var(--ink);
+      font-weight: 400;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+    .lux-feed-cell.dim { color: var(--muted); font-weight: 300; }
+    .lux-feed-empty {
+      padding: 2.5rem 0;
+      text-align: center;
+      color: var(--muted);
+      font-weight: 300;
+      font-size: 0.9rem;
+      letter-spacing: 0.3px;
     }
 
     /* ============================================================
-       DETAIL VIEWS — customer-style inline detail
+       DETAIL VIEWS
        ============================================================ */
     .detail-inline {
       display: flex;
@@ -838,12 +1169,7 @@
       background-clip: text;
       color: transparent;
     }
-    .detail-subheading {
-      font-size: 0.95rem;
-      color: var(--muted);
-      font-weight: 300;
-      letter-spacing: 0.2px;
-    }
+    .detail-subheading { font-size: 0.95rem; color: var(--muted); font-weight: 300; letter-spacing: 0.2px; }
     .detail-section { display: flex; flex-direction: column; gap: 0.3rem; }
     .detail-section-label {
       font-size: 0.7rem;
@@ -861,9 +1187,10 @@
       border-bottom: 1px solid var(--border);
       font-size: 0.95rem;
       font-weight: 300;
+      gap: 1rem;
     }
     .detail-row:last-child { border-bottom: none; }
-    .detail-row span:first-child { color: var(--muted); }
+    .detail-row span:first-child { color: var(--muted); flex-shrink: 0; }
     .detail-row span:last-child { font-weight: 500; color: var(--ink); text-align: right; }
     .detail-svc-item {
       display: flex;
@@ -918,15 +1245,8 @@
     /* ============================================================
        PROFILE
        ============================================================ */
-    .profile-container {
-      max-width: 640px;
-      margin: 0 auto;
-      padding: 0.5rem 0;
-    }
-    .profile-header {
-      text-align: center;
-      padding: 1.5rem 0;
-    }
+    .profile-container { max-width: 640px; margin: 0 auto; padding: 0.5rem 0; }
+    .profile-header { text-align: center; padding: 1.5rem 0; }
     .profile-avatar-large {
       width: 90px;
       height: 90px;
@@ -948,12 +1268,7 @@
       letter-spacing: 0.3px;
       color: var(--ink);
     }
-    .profile-email {
-      font-size: 0.95rem;
-      color: var(--muted);
-      margin-top: 0.2rem;
-      font-weight: 300;
-    }
+    .profile-email { font-size: 0.95rem; color: var(--muted); margin-top: 0.2rem; font-weight: 300; }
     .profile-role-badge {
       display: inline-flex;
       align-items: center;
@@ -1003,7 +1318,6 @@
     .profile-action-btn:hover .action-icon { color: var(--rose); }
     .profile-action-btn.danger:hover { color: var(--danger); }
     .profile-action-btn.danger:hover .action-icon { color: var(--danger); }
-
     .edit-profile-inline {
       display: flex;
       flex-direction: column;
@@ -1024,13 +1338,7 @@
       background-clip: text;
       color: transparent;
     }
-    .edit-profile-sub {
-      font-size: 0.95rem;
-      color: var(--muted);
-      font-weight: 300;
-      margin-top: 0.4rem;
-      line-height: 1.6;
-    }
+    .edit-profile-sub { font-size: 0.95rem; color: var(--muted); font-weight: 300; margin-top: 0.4rem; line-height: 1.6; }
     .edit-field { display: flex; flex-direction: column; gap: 0.4rem; }
     .edit-field-label {
       font-size: 0.7rem;
@@ -1054,17 +1362,12 @@
       border-radius: 0;
     }
     .edit-field input:focus { outline: none; border-bottom-color: var(--rose); }
-    .edit-field input:read-only { color: var(--muted); cursor: not-allowed; pointer-events: none; user-select: none; }
     .edit-field input::placeholder { color: var(--muted); opacity: 0.4; }
-    .edit-note {
-      font-size: 0.75rem;
-      color: var(--muted);
-      font-weight: 300;
-      margin-top: 0.2rem;
-      opacity: 0.7;
-    }
     .edit-actions { display: flex; gap: 2rem; padding-top: 0.5rem; flex-wrap: wrap; }
 
+    /* ============================================================
+       MODALS
+       ============================================================ */
     .modal {
       display: none;
       position: fixed;
@@ -1145,6 +1448,10 @@
       margin-top: 1.8rem;
       flex-wrap: wrap;
     }
+
+    /* ============================================================
+       TOAST + LOADING
+       ============================================================ */
     #toast {
       position: fixed;
       bottom: 20px;
@@ -1210,12 +1517,23 @@
       margin-bottom: 0.3rem;
       font-weight: 300;
       line-height: 1.6;
+      word-break: break-word;
     }
     .help-card p:last-child { margin-bottom: 0; }
 
+    /* ============================================================
+       RESPONSIVE
+       ============================================================ */
+    @media (max-width: 1100px) {
+      .lux-tiles { grid-template-columns: repeat(2, 1fr); }
+      .lux-feed-row { grid-template-columns: 95px 1fr 1fr auto; }
+      .lux-feed-cell.lux-hide-md { display: none; }
+    }
     @media (max-width: 900px) {
       .analytics-grid { grid-template-columns: 1fr; gap: 1.5rem; }
-      .admin-stats-grid { grid-template-columns: repeat(2, 1fr); }
+      .lux-stats { grid-template-columns: repeat(2, 1fr); }
+      .lux-stat:nth-child(2) { border-right: none; }
+      .lux-stat:nth-child(1), .lux-stat:nth-child(2) { border-bottom: 1px solid var(--border); }
     }
     @media (max-width: 768px) {
       body { font-size: 15px; }
@@ -1226,29 +1544,21 @@
       .main { padding: 1rem 1rem 3rem 1rem; }
       .section-title { font-size: 1.8rem; }
       .section-sub { font-size: 0.92rem; }
-      .home-hero h1 { font-size: 2.2rem; }
-      .home-hero p { font-size: 0.95rem; }
-      .home-section-title { font-size: 1.35rem; }
-      .home-link { border-right: none; }
-      .menu-btn { display: flex; }
-      .sidebar-close { display: block; }
-      .sidebar {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 280px;
-        height: 100%;
-        transform: translateX(-100%);
-        border-right: none;
-        box-shadow: 4px 0 30px rgba(0, 0, 0, 0.6);
-      }
-      body.light .sidebar { box-shadow: 4px 0 30px rgba(0, 0, 0, 0.1); }
-      .sidebar.open { transform: translateX(0); }
+      .lux-hero { padding: 2rem 1.2rem 1.8rem; margin: 0 -1rem 2rem; }
+      .lux-hero-meta { gap: 0.9rem 0; }
+      .lux-meta-item { padding: 0 1rem; }
+      .lux-meta-item:first-child { padding-left: 0; }
+      .lux-section-head { flex-direction: column; align-items: flex-start; }
+      .lux-section-desc { text-align: left; }
+      .lux-tiles { grid-template-columns: 1fr; }
+      .lux-tile { min-height: 200px; }
+      .lux-feed-row { grid-template-columns: 80px 1fr auto; gap: 0.9rem; }
+      .lux-feed-cell.lux-hide-sm { display: none; }
       .filter-bar { flex-direction: column; align-items: stretch; }
-      .filter-bar > * { width: 100%; }
-      .service-row { flex-direction: column; align-items: flex-start; }
-      .service-price { text-align: left; width: 100%; }
-      .service-actions { width: 100%; justify-content: flex-end; }
+      .filter-bar-left { flex-direction: column; align-items: stretch; }
+      .filter-bar-left > * { width: 100%; }
+      .services-card-grid { grid-template-columns: 1fr; }
+      .stylist-grid { grid-template-columns: 1fr 1fr; }
       .admin-table { font-size: 0.82rem; }
       .admin-table th, .admin-table td { padding: 0.55rem 0.5rem; }
       .detail-heading { font-size: 1.8rem; }
@@ -1265,17 +1575,20 @@
       .brand-slogan { font-size: 0.68rem; }
       .section-title { font-size: 1.5rem; }
       .section-sub { font-size: 0.85rem; }
-      .home-hero h1 { font-size: 1.9rem; }
-      .home-hero p { font-size: 0.88rem; }
-      .home-section-title { font-size: 1.2rem; }
-      .admin-stats-grid { grid-template-columns: 1fr 1fr; gap: 0.5rem; }
-      .admin-stat { padding: 0.7rem 0; }
-      .admin-stat-number { font-size: 1.5rem; }
-      .admin-stat-label { font-size: 0.7rem; }
+      .lux-hero { padding: 1.6rem 1rem 1.4rem; margin: 0 -0.8rem 1.5rem; }
+      .lux-hero-heading { letter-spacing: -0.3px; }
+      .lux-hero-lead { font-size: 0.92rem; }
+      .lux-meta-item { padding: 0 0.8rem; }
+      .lux-meta-value { font-size: 1rem; }
+      .lux-stat { padding: 1.2rem 1rem; }
+      .lux-stat-number { font-size: 2.2rem; }
+      .lux-section-title { font-size: 1.5rem; }
+      .stylist-grid { grid-template-columns: 1fr; }
+      .services-card-grid { grid-template-columns: 1fr; }
       .admin-table { font-size: 0.72rem; }
       .admin-table th, .admin-table td { padding: 0.4rem 0.4rem; }
       .modal-content { padding: 1.5rem 1.1rem; }
-      .sidebar { width: 260px; }
+      .sidebar { width: 280px; }
       .detail-heading { font-size: 1.5rem; }
       .edit-profile-heading { font-size: 1.5rem; }
     }
@@ -1283,9 +1596,6 @@
 </head>
 <body>
 
-<!-- ============================================================
-     HEADER
-     ============================================================ -->
 <header class="header">
   <div class="header-left">
     <button class="menu-btn" id="menuToggle"><i class="fas fa-bars"></i></button>
@@ -1296,9 +1606,6 @@
   </div>
 </header>
 
-<!-- ============================================================
-     TOP TABS
-     ============================================================ -->
 <div class="top-tabs">
   <button class="tab-item nav-item active" data-view="home">
     <span class="tab-icon"><i class="fas fa-home"></i></span> Home
@@ -1320,9 +1627,6 @@
   </button>
 </div>
 
-<!-- ============================================================
-     APP
-     ============================================================ -->
 <div class="app">
   <div class="sidebar-overlay" id="sidebarOverlay"></div>
 
@@ -1352,63 +1656,139 @@
       <p>Sat: 9am – 2pm</p>
       <strong>IT Support</strong>
       <p>072 536 9347</p>
-      <p>nexgentechs@salon.com</p>
+      <p>leonthendo99@gmail.com</p>
     </div>
   </aside>
 
   <main class="main">
 
-    <!-- ==================== HOME ==================== -->
+    <!-- ==================== HOME — LUXURY ==================== -->
     <section id="home-view" class="view active">
-      <div class="home-hero">
-        <div class="home-eyebrow">Administrator Console</div>
-        <h1>Welcome back to PinkMeUp</h1>
-        <p>Your central command centre for managing services, overseeing stylists, reviewing bookings, and tracking salon performance. Use the dashboard below to jump straight into any area you need to manage, or explore the analytics to see how PinkMeUp is performing.</p>
-        <div class="home-meta">
-          <i class="fas fa-shield-alt"></i>
-          <span>You are signed in as an administrator</span>
+
+      <!-- HERO -->
+      <div class="lux-hero">
+        <div class="lux-orb lux-orb-1"></div>
+        <div class="lux-orb lux-orb-2"></div>
+        <div class="lux-orb lux-orb-3"></div>
+
+        <div class="lux-hero-inner">
+          <div class="lux-hero-eyebrow">
+            <span class="lux-dot"></span>
+            PinkMeUp · Administrator Console
+          </div>
+          <h1 class="lux-hero-heading">
+            The Atelier<br>
+            <span class="lux-hero-heading-accent">of Beauty Management</span>
+          </h1>
+          <p class="lux-hero-lead">
+            Command your salon with quiet precision. Curate services, oversee artisans, orchestrate appointments, and read the rhythm of your studio — all from a single refined space.
+          </p>
+
+          <div class="lux-hero-meta">
+            <div class="lux-meta-item">
+              <div class="lux-meta-label">Signed in as</div>
+              <div class="lux-meta-value" id="luxGreeting">Administrator</div>
+            </div>
+            <div class="lux-meta-divider"></div>
+            <div class="lux-meta-item">
+              <div class="lux-meta-label">Local Time</div>
+              <div class="lux-meta-value" id="luxClock">--:--:--</div>
+            </div>
+            <div class="lux-meta-divider"></div>
+            <div class="lux-meta-item">
+              <div class="lux-meta-label">Today</div>
+              <div class="lux-meta-value" id="luxDate">—</div>
+            </div>
+          </div>
         </div>
       </div>
 
-      <div class="admin-stats-grid">
-        <div class="admin-stat">
-          <div class="admin-stat-number" id="homeStatServices">0</div>
-          <div class="admin-stat-label">Services Offered</div>
+      <!-- STATS -->
+      <div class="lux-stats">
+        <div class="lux-stat">
+          <div class="lux-stat-index">01</div>
+          <div class="lux-stat-number" id="homeStatServices" data-count="0">0</div>
+          <div class="lux-stat-label">Services Curated</div>
         </div>
-        <div class="admin-stat">
-          <div class="admin-stat-number" id="homeStatStylists">0</div>
-          <div class="admin-stat-label">Stylists On Roster</div>
+        <div class="lux-stat">
+          <div class="lux-stat-index">02</div>
+          <div class="lux-stat-number" id="homeStatStylists" data-count="0">0</div>
+          <div class="lux-stat-label">Artisans On Roster</div>
         </div>
-        <div class="admin-stat">
-          <div class="admin-stat-number" id="homeStatBookings">0</div>
-          <div class="admin-stat-label">Total Bookings</div>
+        <div class="lux-stat">
+          <div class="lux-stat-index">03</div>
+          <div class="lux-stat-number" id="homeStatBookings" data-count="0">0</div>
+          <div class="lux-stat-label">Appointments Recorded</div>
         </div>
-        <div class="admin-stat">
-          <div class="admin-stat-number" id="homeStatThisMonth">0</div>
-          <div class="admin-stat-label">Booked This Month</div>
+        <div class="lux-stat">
+          <div class="lux-stat-index">04</div>
+          <div class="lux-stat-number" id="homeStatThisMonth" data-count="0">0</div>
+          <div class="lux-stat-label">Booked This Month</div>
         </div>
       </div>
 
-      <h2 class="home-section-title">Quick Access</h2>
-      <p class="home-section-sub">Jump straight into any area of your salon management. Each section gives you full control over the day-to-day operations of PinkMeUp.</p>
+      <!-- DIRECT YOUR SALON -->
+      <div class="lux-section">
+        <div class="lux-section-head">
+          <div>
+            <div class="lux-section-eyebrow">Begin</div>
+            <h2 class="lux-section-title">Direct Your Salon</h2>
+          </div>
+          <p class="lux-section-desc">Four chambers of control — each one designed to give you complete command over a pillar of PinkMeUp.</p>
+        </div>
 
-      <div class="home-links">
-        <button class="home-link nav-item" data-view="services">
-          <div class="home-link-title"><i class="fas fa-concierge-bell"></i> Manage Services</div>
-          <div class="home-link-desc">Add new services, update pricing, and organise your offerings by category.</div>
-        </button>
-        <button class="home-link nav-item" data-view="stylists">
-          <div class="home-link-title"><i class="fas fa-users"></i> Manage Stylists</div>
-          <div class="home-link-desc">View stylist profiles, assign specialties, and manage their availability status.</div>
-        </button>
-        <button class="home-link nav-item" data-view="bookings">
-          <div class="home-link-title"><i class="fas fa-calendar-check"></i> Manage Bookings</div>
-          <div class="home-link-desc">Review appointments, view customer details, and update booking statuses.</div>
-        </button>
-        <button class="home-link nav-item" data-view="reports">
-          <div class="home-link-title"><i class="fas fa-chart-line"></i> View Analytics</div>
-          <div class="home-link-desc">Track booking trends, discover popular services, and measure stylist performance.</div>
-        </button>
+        <div class="lux-tiles">
+          <button class="lux-tile nav-item" data-view="services">
+            <div class="lux-tile-number">I</div>
+            <div class="lux-tile-icon"><i class="fas fa-concierge-bell"></i></div>
+            <div class="lux-tile-body">
+              <div class="lux-tile-title">Services</div>
+              <div class="lux-tile-desc">Craft and refine every treatment on your menu.</div>
+            </div>
+            <div class="lux-tile-arrow"><i class="fas fa-arrow-right"></i></div>
+          </button>
+          <button class="lux-tile nav-item" data-view="stylists">
+            <div class="lux-tile-number">II</div>
+            <div class="lux-tile-icon"><i class="fas fa-users"></i></div>
+            <div class="lux-tile-body">
+              <div class="lux-tile-title">Stylists</div>
+              <div class="lux-tile-desc">Curate your roster of artisans and their crafts.</div>
+            </div>
+            <div class="lux-tile-arrow"><i class="fas fa-arrow-right"></i></div>
+          </button>
+          <button class="lux-tile nav-item" data-view="bookings">
+            <div class="lux-tile-number">III</div>
+            <div class="lux-tile-icon"><i class="fas fa-calendar-check"></i></div>
+            <div class="lux-tile-body">
+              <div class="lux-tile-title">Bookings</div>
+              <div class="lux-tile-desc">Orchestrate every appointment with precision.</div>
+            </div>
+            <div class="lux-tile-arrow"><i class="fas fa-arrow-right"></i></div>
+          </button>
+          <button class="lux-tile nav-item" data-view="reports">
+            <div class="lux-tile-number">IV</div>
+            <div class="lux-tile-icon"><i class="fas fa-chart-line"></i></div>
+            <div class="lux-tile-body">
+              <div class="lux-tile-title">Analytics</div>
+              <div class="lux-tile-desc">Read the rhythm of your salon's performance.</div>
+            </div>
+            <div class="lux-tile-arrow"><i class="fas fa-arrow-right"></i></div>
+          </button>
+        </div>
+      </div>
+
+      <!-- SALON PULSE -->
+      <div class="lux-section">
+        <div class="lux-section-head">
+          <div>
+            <div class="lux-section-eyebrow">Live</div>
+            <h2 class="lux-section-title">Salon Pulse</h2>
+          </div>
+          <p class="lux-section-desc">The five most recent appointments — updated as your salon breathes.</p>
+        </div>
+        <div class="lux-feed" id="luxFeed">
+          <div class="lux-feed-empty">Awaiting activity…</div>
+        </div>
       </div>
     </section>
 
@@ -1472,23 +1852,25 @@
           <div class="section-title">Analytics</div>
           <div class="section-sub">This dashboard gives you a complete picture of how PinkMeUp is performing over the selected period. Track booking patterns across the week to understand your busiest days, discover which services your customers request most often, and monitor each stylist's completion rate and average customer rating. Use the period filter below to compare different time frames, and download the full report as a PDF whenever you need to review or share the numbers.</div>
         </div>
-        <button class="btn-download" id="downloadReportBtn"><i class="fas fa-file-pdf"></i> Download PDF</button>
       </div>
 
       <div class="filter-bar">
-        <label>Period</label>
-        <select id="reportPeriod">
-          <option value="last30">Last 30 days</option>
-          <option value="last90">Last 90 days</option>
-          <option value="lastYear">Last 12 months</option>
-          <option value="custom">Custom range</option>
-        </select>
-        <div id="customDateRange" style="display:none; display:flex; gap:0.6rem; align-items:center; flex-wrap:wrap;">
-          <input type="date" id="startDate" />
-          <span style="font-size:0.85rem;color:var(--muted);font-weight:300;">to</span>
-          <input type="date" id="endDate" />
+        <div class="filter-bar-left">
+          <label>Period</label>
+          <select id="reportPeriod">
+            <option value="last30">Last 30 days</option>
+            <option value="last90">Last 90 days</option>
+            <option value="lastYear">Last 12 months</option>
+            <option value="custom">Custom range</option>
+          </select>
+          <div id="customDateRange" style="display:none; gap:0.6rem; align-items:center; flex-wrap:wrap;">
+            <input type="date" id="startDate" />
+            <span style="font-size:0.85rem;color:var(--muted);font-weight:300;">to</span>
+            <input type="date" id="endDate" />
+          </div>
+          <button class="btn-outline" id="applyFilterBtn"><i class="fas fa-sync-alt"></i> Apply</button>
         </div>
-        <button class="btn-outline" id="applyFilterBtn"><i class="fas fa-sync-alt"></i> Apply</button>
+        <button class="btn-download" id="downloadReportBtn"><i class="fas fa-file-pdf"></i> Download PDF</button>
       </div>
 
       <div id="analyticsContent">
@@ -1567,7 +1949,6 @@
         </div>
       </div>
 
-      <!-- INLINE EDIT PROFILE -->
       <div class="edit-profile-inline" id="adminProfileEdit" style="display:none;">
         <button class="back-link" onclick="closeAdminProfileEdit()">
           <i class="fas fa-arrow-left"></i> Back
@@ -1590,8 +1971,7 @@
 
         <div class="edit-field">
           <label class="edit-field-label">Email Address</label>
-          <input type="email" id="adminProfileEmailInput" readonly onkeydown="return false;" onpaste="return false;" oninput="return false;">
-          <div class="edit-note">Email address cannot be changed from this page.</div>
+          <input type="email" id="adminProfileEmailInput" placeholder="your@email.com">
         </div>
 
         <div class="edit-actions">
@@ -1604,9 +1984,6 @@
   </main>
 </div>
 
-<!-- ============================================================
-     MODALS
-     ============================================================ -->
 <div id="serviceModal" class="modal">
   <div class="modal-content">
     <h3 id="serviceModalTitle">Add Service</h3>
@@ -1663,12 +2040,12 @@
     <div class="help-card">
       <h4>Managing Services</h4>
       <p>Click <strong>New Service</strong> to add a service with its category, price, and duration.</p>
-      <p>Click any service row to open its full details, where you can edit or archive it.</p>
+      <p>Click any service card to open its full details, where you can edit or archive it.</p>
     </div>
     <div class="help-card">
       <h4>Managing Stylists</h4>
       <p>Click <strong>New Stylist</strong> to add a stylist and assign their service specialties.</p>
-      <p>Click any stylist to open their profile, manage their services, or change their status.</p>
+      <p>Click any stylist card to open their full profile, change their status, or manage their services.</p>
     </div>
     <div class="help-card">
       <h4>Bookings &amp; Analytics</h4>
@@ -1678,7 +2055,7 @@
     <div class="help-card">
       <h4>IT Support</h4>
       <p><i class="fas fa-phone" style="width:18px;color:var(--rose);"></i> 072 536 9347</p>
-      <p><i class="fas fa-envelope" style="width:18px;color:var(--rose);"></i> nexgentechs@salon.com</p>
+      <p><i class="fas fa-envelope" style="width:18px;color:var(--rose);"></i> leonthendo99@gmail.com</p>
     </div>
     <div class="modal-footer">
       <button class="btn-primary" onclick="document.getElementById('helpModal').classList.remove('active')">Close</button>
@@ -1693,9 +2070,6 @@
   <div id="loadingOverlayText">Loading...</div>
 </div>
 
-<!-- ============================================================
-     THEME TOGGLE
-     ============================================================ -->
 <script>
   function applyAdminTheme(theme) {
     const icon = document.getElementById('themeIcon');
@@ -1722,9 +2096,6 @@
   } catch (e) {}
 </script>
 
-<!-- ============================================================
-     MAIN LOGIC
-     ============================================================ -->
 <script>
   const API_BASE = window.API_URL || 'https://pinkmeup-api.onrender.com/api/v1';
   let services = [];
@@ -1737,7 +2108,6 @@
     if (!str) return '';
     return str.replace(/[&<>]/g, m => m === '&' ? '&amp;' : (m === '<' ? '&lt;' : '&gt;'));
   }
-
   function showToast(msg) {
     const t = document.getElementById('toast');
     t.textContent = msg;
@@ -1762,6 +2132,86 @@
     const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
     return `${date.getDate()} ${months[date.getMonth()]} ${date.getFullYear()}`;
   }
+  function initialsFromName(name) {
+    const parts = String(name || '?').trim().split(/\s+/).filter(Boolean);
+    if (!parts.length) return '?';
+    return parts.slice(0, 2).map(n => n[0]).join('').toUpperCase();
+  }
+
+  // ---------- LUXURY HOME HELPERS ----------
+  function updateLuxClock() {
+    const clockEl = document.getElementById('luxClock');
+    const dateEl = document.getElementById('luxDate');
+    if (!clockEl || !dateEl) return;
+    const now = new Date();
+    const hh = String(now.getHours()).padStart(2, '0');
+    const mm = String(now.getMinutes()).padStart(2, '0');
+    const ss = String(now.getSeconds()).padStart(2, '0');
+    clockEl.textContent = `${hh}:${mm}:${ss}`;
+    const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+    const days = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+    dateEl.textContent = `${days[now.getDay()]}, ${now.getDate()} ${months[now.getMonth()]}`;
+  }
+  setInterval(updateLuxClock, 1000);
+  updateLuxClock();
+
+  function animateCount(el, target, duration = 900) {
+    if (!el) return;
+    const start = parseInt(el.textContent, 10) || 0;
+    if (start === target) { el.textContent = target; return; }
+    const startTime = performance.now();
+    function step(now) {
+      const t = Math.min(1, (now - startTime) / duration);
+      const eased = 1 - Math.pow(1 - t, 3);
+      el.textContent = Math.round(start + (target - start) * eased);
+      if (t < 1) requestAnimationFrame(step);
+      else el.textContent = target;
+    }
+    requestAnimationFrame(step);
+  }
+
+  function renderLuxFeed() {
+    const feed = document.getElementById('luxFeed');
+    if (!feed) return;
+    if (!allBookings.length) {
+      feed.innerHTML = '<div class="lux-feed-empty">Awaiting activity — no bookings yet.</div>';
+      return;
+    }
+    const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+    const recent = [...allBookings]
+      .sort((a, b) => new Date(b.date) - new Date(a.date))
+      .slice(0, 5);
+    feed.innerHTML = recent.map(b => {
+      const d = new Date(b.date);
+      const customer = b.customerId
+        ? `${b.customerId.firstName || ''} ${b.customerId.lastName || ''}`.trim()
+        : (b.guestName || 'Guest');
+      const serviceNames = (b.serviceIds || []).map(s => s.name).join(', ') || 'No services';
+      const stylist = b.stylistId?.userId
+        ? `${b.stylistId.userId.firstName || ''} ${b.stylistId.userId.lastName || ''}`.trim()
+        : 'Stylist';
+      return `
+        <div class="lux-feed-row">
+          <div class="lux-feed-time">${b.startTime || '—'}<small>${d.getDate()} ${months[d.getMonth()]}</small></div>
+          <div class="lux-feed-cell">${escapeHtml(customer)}</div>
+          <div class="lux-feed-cell dim lux-hide-sm">${escapeHtml(serviceNames)}</div>
+          <div class="lux-feed-cell dim lux-hide-md">${escapeHtml(stylist)}</div>
+          <div><span class="badge badge-${b.status}">${b.status}</span></div>
+        </div>
+      `;
+    }).join('');
+  }
+
+  // Mouse-tracking radial gradient on luxury tiles
+  document.addEventListener('mousemove', (e) => {
+    const tile = e.target.closest('.lux-tile');
+    if (!tile) return;
+    const rect = tile.getBoundingClientRect();
+    const x = ((e.clientX - rect.left) / rect.width * 100).toFixed(1);
+    const y = ((e.clientY - rect.top) / rect.height * 100).toFixed(1);
+    tile.style.setProperty('--x', `${x}%`);
+    tile.style.setProperty('--y', `${y}%`);
+  });
 
   document.addEventListener('DOMContentLoaded', function() {
     const sidebar = document.getElementById('sidebar');
@@ -1784,16 +2234,11 @@
 
     document.querySelectorAll('.nav-item:not(.signout-nav)').forEach(item => {
       item.addEventListener('click', function() {
-        if (window.innerWidth <= 768) closeSidebar();
+        if (window.innerWidth <= 900) closeSidebar();
         switchView(this.dataset.view);
       });
     });
 
-    window.addEventListener('resize', function() {
-      if (window.innerWidth > 768) closeSidebar();
-    });
-
-    // Delegated clicks for detail views
     const bookingsBody = document.getElementById('bookingsTableBody');
     if (bookingsBody) {
       bookingsBody.addEventListener('click', (e) => {
@@ -1814,8 +2259,8 @@
     if (servicesContainer) {
       servicesContainer.addEventListener('click', (e) => {
         if (e.target.closest('button')) return;
-        const row = e.target.closest('.service-row[data-service-id]');
-        if (row) openServiceDetail(row.dataset.serviceId);
+        const card = e.target.closest('.service-card[data-service-id]');
+        if (card) openServiceDetail(card.dataset.serviceId);
       });
     }
   });
@@ -1925,32 +2370,39 @@
     let html = '';
     categories.forEach(cat => {
       const catServices = services.filter(s => s.category === cat);
-      html += `<div class="category-group"><div class="category-header">${cat}</div>`;
+      html += `<div class="services-category">`;
+      html += `<div class="services-category-head">
+        <span class="services-category-name">${escapeHtml(cat)}</span>
+        <span class="services-category-count">${catServices.length} service${catServices.length !== 1 ? 's' : ''}</span>
+      </div>`;
+      html += `<div class="services-card-grid">`;
       catServices.forEach(s => {
         const sid = s._id || s.id;
         html += `
-          <div class="service-row" data-service-id="${sid}">
-            <div class="service-info">
-              <span class="service-name">${escapeHtml(s.name)}</span>
-              <span class="service-duration">${s.duration} min</span>
+          <div class="service-card" data-service-id="${sid}">
+            <div class="service-card-head">
+              <div class="service-card-name">${escapeHtml(s.name)}</div>
+              <div class="service-card-menu">
+                <button class="edit-service" data-id="${sid}" title="Edit"><i class="fas fa-edit"></i></button>
+                <button class="delete-service" data-id="${sid}" title="Archive"><i class="fas fa-trash-alt"></i></button>
+              </div>
             </div>
-            <div class="service-price">R${s.price}</div>
-            <div class="service-actions">
-              <button class="edit-service" data-id="${sid}" title="Edit"><i class="fas fa-edit"></i></button>
-              <button class="delete-service" data-id="${sid}" title="Archive"><i class="fas fa-trash-alt"></i></button>
+            <div class="service-card-meta">
+              <span><i class="fas fa-clock"></i>${s.duration} min</span>
             </div>
+            <div class="service-card-price">R${s.price}</div>
           </div>
         `;
       });
-      html += `</div>`;
+      html += `</div></div>`;
     });
     container.innerHTML = html;
 
     document.querySelectorAll('.edit-service').forEach(btn =>
-      btn.addEventListener('click', () => openEditServiceModal(btn.dataset.id))
+      btn.addEventListener('click', (e) => { e.stopPropagation(); openEditServiceModal(btn.dataset.id); })
     );
     document.querySelectorAll('.delete-service').forEach(btn =>
-      btn.addEventListener('click', () => deleteService(btn.dataset.id))
+      btn.addEventListener('click', (e) => { e.stopPropagation(); deleteService(btn.dataset.id); })
     );
   }
 
@@ -2113,44 +2565,43 @@
 
       const statusLabel = currentStatus === 'active' ? 'Active' : (currentStatus === 'inactive' ? 'Inactive' : 'Disabled');
       const serviceNames = st.serviceIds.map(id => getServiceName(id)).filter(Boolean);
+      const initials = initialsFromName(st.name);
+      const chips = serviceNames.slice(0, 3);
+      const moreCount = Math.max(0, serviceNames.length - 3);
 
       return `
         <div class="stylist-card" data-stylist-id="${st.id}">
+          <div class="stylist-avatar-circle">${escapeHtml(initials)}</div>
           <div class="stylist-name">${escapeHtml(st.name)}</div>
-          <div>
-            <span class="stylist-contact-item"><i class="fas fa-envelope"></i> ${escapeHtml(st.email || 'N/A')}</span>
-            <span class="stylist-contact-item"><i class="fas fa-phone"></i> ${escapeHtml(st.phone || 'N/A')}</span>
+          <div class="stylist-status ${currentStatus}">${statusLabel}</div>
+
+          <div class="stylist-mini-info">
+            <div class="stylist-mini-line">
+              <i class="fas fa-envelope"></i>
+              <span>${escapeHtml(st.email || 'No email on file')}</span>
+            </div>
+            <div class="stylist-mini-line">
+              <i class="fas fa-phone"></i>
+              <span>${escapeHtml(st.phone || 'No phone on file')}</span>
+            </div>
           </div>
-          <div style="margin: 0.7rem 0 0.3rem; display:flex; align-items:center; gap:1rem; flex-wrap:wrap;">
-            <div class="stylist-status ${currentStatus}">${statusLabel}</div>
-            <select class="stylist-status-select" data-id="${st.id}">
-              <option value="active" ${currentStatus === 'active' ? 'selected' : ''}>Change to Active</option>
-              <option value="inactive" ${currentStatus === 'inactive' ? 'selected' : ''}>Change to Inactive</option>
-              <option value="disabled" ${currentStatus === 'disabled' ? 'selected' : ''}>Change to Disabled</option>
-            </select>
+
+          <div class="stylist-rating">
+            <i class="fas fa-star"></i>
+            <strong>${Number(st.rating).toFixed(1)}</strong>
+            <span>/ 5 avg rating</span>
           </div>
-          <div class="stylist-rating"><strong>${Number(st.rating).toFixed(1)}</strong> / 5 average rating</div>
+
           <div class="stylist-services-label">Services Offered</div>
           <div class="service-chips">
-            ${serviceNames.length ? serviceNames.map(n => `<span class="chip">${escapeHtml(n)}</span>`).join('') : '<span style="font-size:0.8rem;color:var(--muted);">No services assigned</span>'}
-          </div>
-          <div class="stylist-actions">
-            <button class="btn-primary btn-sm edit-stylist" data-id="${st.id}"><i class="fas fa-edit"></i> Edit</button>
-            <button class="btn-danger btn-sm delete-stylist" data-id="${st.id}"><i class="fas fa-trash"></i> Delete</button>
+            ${serviceNames.length
+              ? chips.map(n => `<span class="chip">${escapeHtml(n)}</span>`).join('') +
+                (moreCount > 0 ? `<span class="chip-more">+${moreCount} more</span>` : '')
+              : '<span class="chip-empty">No services assigned</span>'}
           </div>
         </div>
       `;
     }).join('');
-
-    document.querySelectorAll('.stylist-status-select').forEach(sel => {
-      sel.addEventListener('change', function() { updateStylistStatus(this.dataset.id, this.value); });
-    });
-    document.querySelectorAll('.edit-stylist').forEach(btn =>
-      btn.addEventListener('click', (e) => { e.stopPropagation(); openEditStylistModal(btn.dataset.id); })
-    );
-    document.querySelectorAll('.delete-stylist').forEach(btn =>
-      btn.addEventListener('click', (e) => { e.stopPropagation(); deleteStylist(btn.dataset.id); })
-    );
   }
 
   async function updateStylistStatus(id, status) {
@@ -2171,6 +2622,9 @@
       if (!res.ok) { showToast(data.message || 'Failed to update status.'); return; }
       await loadStylists();
       showToast(`Stylist marked as ${status}.`);
+      if (document.getElementById('stylistDetail').style.display === 'block') {
+        openStylistDetail(id);
+      }
     } catch (err) { console.error('Status update error:', err); showToast('Error updating stylist status.'); }
     finally { hideLoading(); }
   }
@@ -2249,6 +2703,9 @@
       await loadStylists();
       closeStylistModal();
       showToast('Stylist saved.');
+      if (document.getElementById('stylistDetail').style.display === 'block' && editId) {
+        openStylistDetail(editId);
+      }
     } catch (err) { console.error('Save error:', err); showToast('Error saving stylist.'); }
     finally { hideLoading(); }
   }
@@ -2310,6 +2767,21 @@
           ${serviceNames.length
             ? serviceNames.map(n => `<div class="detail-row"><span>${escapeHtml(n)}</span><span></span></div>`).join('')
             : '<p style="color:var(--muted);font-weight:300;font-size:0.9rem;">No services assigned yet.</p>'}
+        </div>
+
+        <div class="detail-section">
+          <div class="detail-section-label">Change Availability Status</div>
+          <div class="detail-actions">
+            <button class="action-link ${currentStatus === 'active' ? 'pink' : ''}" onclick="updateStylistStatus('${st.id}', 'active')">
+              <i class="fas fa-circle-check"></i> Set as Active
+            </button>
+            <button class="action-link ${currentStatus === 'inactive' ? 'pink' : ''}" onclick="updateStylistStatus('${st.id}', 'inactive')">
+              <i class="fas fa-clock"></i> Set as Inactive (on leave)
+            </button>
+            <button class="action-link danger" onclick="updateStylistStatus('${st.id}', 'disabled')">
+              <i class="fas fa-ban"></i> Set as Disabled
+            </button>
+          </div>
         </div>
 
         <div class="detail-section">
@@ -2409,7 +2881,6 @@
       showToast('Booking updated.');
       await loadAllBookings();
       if (document.getElementById('reports-view').classList.contains('active')) updateReports();
-      // If detail view was open, refresh it
       if (document.getElementById('bookingDetail').style.display === 'block') {
         openBookingDetail(id);
       }
@@ -2634,6 +3105,12 @@
     const [firstName, ...rest] = name.split(' ');
     const lastName = rest.join(' ') || firstName;
     const phone = document.getElementById('adminProfilePhoneInput').value.trim();
+    const email = document.getElementById('adminProfileEmailInput').value.trim();
+
+    if (email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      showToast('Please enter a valid email address.');
+      return;
+    }
 
     showLoading('Saving...');
     try {
@@ -2641,22 +3118,26 @@
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         credentials: 'include',
-        body: JSON.stringify({ firstName, lastName, phone })
+        body: JSON.stringify({ firstName, lastName, phone, email })
       });
       const data = await res.json();
       if (!res.ok) { showToast(data.message || 'Update failed.'); return; }
 
       const fullName = `${firstName} ${lastName}`.trim();
 
-      // Update UI
       document.getElementById('adminProfileName').textContent = fullName;
       document.getElementById('adminProfileFullName').textContent = fullName;
       document.getElementById('adminProfilePhone').textContent = phone || '—';
+      if (email) {
+        document.getElementById('adminProfileEmail').textContent = email;
+        document.getElementById('adminProfileFullEmail').textContent = email;
+      }
       document.getElementById('greetingName').textContent = `Hello, ${firstName}`;
+      const luxGreeting = document.getElementById('luxGreeting');
+      if (luxGreeting) luxGreeting.textContent = firstName;
       const initials = (firstName[0] || '') + (lastName[0] || '');
       if (initials) document.getElementById('adminAvatar').textContent = initials.toUpperCase();
 
-      // Update stored user
       try {
         const stored = localStorage.getItem('user') || sessionStorage.getItem('user');
         if (stored) {
@@ -2664,6 +3145,7 @@
           u.firstName = firstName;
           u.lastName = lastName;
           u.phone = phone;
+          if (email) u.email = email;
           const target = localStorage.getItem('user') ? localStorage : sessionStorage;
           target.setItem('user', JSON.stringify(u));
         }
@@ -2679,7 +3161,7 @@
   }
 
   // ============================================================
-  // HOME STATS
+  // HOME STATS — animated counts + feed refresh
   // ============================================================
   function updateHomeStats() {
     const sEl = document.getElementById('homeStatServices');
@@ -2687,15 +3169,19 @@
     const bEl = document.getElementById('homeStatBookings');
     const mEl = document.getElementById('homeStatThisMonth');
     if (!sEl) return;
-    sEl.textContent = services.length;
-    stEl.textContent = stylists.length;
-    bEl.textContent = allBookings.length;
+
     const now = new Date();
     const thisMonth = allBookings.filter(b => {
       const d = new Date(b.date);
       return d.getMonth() === now.getMonth() && d.getFullYear() === now.getFullYear();
     }).length;
-    mEl.textContent = thisMonth;
+
+    animateCount(sEl, services.length);
+    animateCount(stEl, stylists.length);
+    animateCount(bEl, allBookings.length);
+    animateCount(mEl, thisMonth);
+
+    renderLuxFeed();
   }
 
   // ============================================================
@@ -2734,7 +3220,11 @@
       greeting.textContent = `Hello, ${firstName}`;
     }
 
-    // Populate admin profile
+    const luxGreeting = document.getElementById('luxGreeting');
+    if (luxGreeting) {
+      luxGreeting.textContent = user.firstName || 'Administrator';
+    }
+
     const fullName = `${user.firstName || ''} ${user.lastName || ''}`.trim() || 'Administrator';
     const pName = document.getElementById('adminProfileName');
     const pFullName = document.getElementById('adminProfileFullName');
