@@ -16,7 +16,7 @@
       --rose-mid: rgba(244, 182, 200, 0.25);
       --ink: #FFFFFF;
       --muted: #A39BA0;
-      --border: rgba(255, 255, 255, 0.06);
+      --border: rgba(255, 255, 255, 0.08);
       --bg: #0A0509; 
       --white: #150C14; 
       --card-bg: #1A1018;
@@ -29,6 +29,7 @@
       --grey-icon: #7A6F76;
       --text-dim: #A39BA0;
       --hover-surface: rgba(255, 255, 255, 0.04);
+      --table-header-bg: #1F151E;
     }
     body.light {
       --rose: #D43F6B;
@@ -50,6 +51,7 @@
       --grey-icon: #888;
       --text-dim: #555;
       --hover-surface: rgba(0, 0, 0, 0.04);
+      --table-header-bg: #f0f0f0;
     }
     * { margin: 0; padding: 0; box-sizing: border-box; }
     html, body { height: 100%; }
@@ -187,7 +189,6 @@
     }
     .icon-btn:hover { color: var(--rose); border-color: var(--rose); }
     
-    /* Button Styles */
     .btn-primary {
       background: var(--gradient); color: #000; border: none;
       padding: 0.7rem 1.4rem; border-radius: 50px;
@@ -252,7 +253,7 @@
     .admin-table { width: 100%; border-collapse: collapse; font-size: 0.95rem; min-width: 600px; }
     .admin-table th {
       padding: 1.2rem 1.2rem; font-size: 0.8rem; font-weight: 600; letter-spacing: 0.5px; text-transform: uppercase;
-      color: var(--muted); background: rgba(255, 255, 255, 0.02); border-bottom: 1px solid var(--border); text-align: left;
+      color: var(--muted); background: var(--table-header-bg); border-bottom: 1px solid var(--border); text-align: left;
     }
     .admin-table td { padding: 1.2rem 1.2rem; border-bottom: 1px solid var(--border); vertical-align: middle; color: var(--ink); font-weight: 300; }
     .admin-table tr:last-child td { border-bottom: none; }
@@ -288,36 +289,49 @@
     .service-price { font-weight: 600; color: var(--ink); font-size: 1.1rem; min-width: 80px; text-align: right; }
     .service-actions { display: flex; gap: 0.5rem; }
     .service-actions button {
-      background: var(--input-bg); border: 1px solid var(--border); border-radius: 50%;
-      width: 36px; height: 36px; display: flex; align-items: center; justify-content: center;
-      cursor: pointer; color: var(--muted); transition: 0.15s;
+      background: none; border: none; border-radius: 0; padding: 0.2rem 0.4rem;
+      cursor: pointer; color: var(--muted); transition: 0.15s; font-size: 1rem;
     }
-    .service-actions button:hover { color: var(--rose); border-color: var(--rose); }
+    .service-actions button:hover { color: var(--rose); }
     
-    .stylist-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); gap: 1.5rem; }
+    /* New Stylist Card Design */
+    .stylist-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 1.5rem; }
     .stylist-card {
       background: var(--card-bg); border: 1px solid var(--border); border-radius: 16px;
       padding: 1.5rem; transition: 0.2s; cursor: pointer; display: flex; flex-direction: column; gap: 0.8rem;
+      align-items: center; text-align: center;
     }
     .stylist-card:hover { border-color: var(--rose-mid); transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0,0,0,0.2); }
-    .stylist-name { font-family: 'Cormorant Garamond', serif; font-size: 1.7rem; font-weight: 600; color: var(--ink); }
-    .stylist-contact-item { font-size: 0.9rem; color: var(--muted); display: inline-flex; align-items: center; gap: 0.5rem; margin-right: 1rem; }
-    .stylist-status { display: inline-flex; align-items: center; gap: 0.3rem; font-size: 0.8rem; font-weight: 600; padding: 0.3rem 0.9rem; border-radius: 50px; }
+    .stylist-avatar {
+      width: 70px; height: 70px; border-radius: 50%; background: var(--gradient);
+      display: flex; align-items: center; justify-content: center;
+      font-family: 'Cormorant Garamond', serif; font-size: 1.8rem; font-weight: 600; color: #000;
+      margin-bottom: 0.3rem;
+    }
+    .stylist-name { font-family: 'Cormorant Garamond', serif; font-size: 1.5rem; font-weight: 600; color: var(--ink); }
+    .stylist-contact-item { font-size: 0.85rem; color: var(--muted); display: inline-flex; align-items: center; gap: 0.4rem; margin: 0.1rem 0; }
+    .stylist-status { display: inline-flex; align-items: center; gap: 0.3rem; font-size: 0.75rem; font-weight: 600; padding: 0.2rem 0.8rem; border-radius: 50px; margin-top: 0.2rem; }
     .stylist-status.active { background: rgba(74, 222, 128, 0.15); color: var(--success); }
     .stylist-status.inactive { background: rgba(251, 191, 36, 0.15); color: var(--warning); }
     .stylist-status.disabled { background: var(--hover-surface); color: var(--muted); }
     .stylist-status-select {
-      padding: 0.3rem 0.8rem; border-radius: 50px; border: 1px solid var(--border);
-      font-size: 0.8rem; font-family: inherit; background: var(--input-bg); color: var(--muted); cursor: pointer; outline: none;
+      padding: 0.2rem 0.6rem; border-radius: 50px; border: 1px solid var(--border);
+      font-size: 0.7rem; font-family: inherit; background: var(--input-bg); color: var(--muted); cursor: pointer; outline: none; margin-top: 0.2rem;
     }
     .stylist-status-select:hover { border-color: var(--rose); color: var(--rose); }
     .stylist-status-select option { background: var(--bg); color: var(--ink); }
-    .stylist-rating { font-size: 0.9rem; color: var(--muted); margin-top: 0.2rem; }
+    .stylist-rating { font-size: 0.85rem; color: var(--muted); }
     .stylist-rating strong { color: var(--ink); font-weight: 600; }
-    .stylist-services-label { font-size: 0.75rem; font-weight: 600; color: var(--muted); text-transform: uppercase; letter-spacing: 0.5px; margin-top: 0.5rem; }
-    .service-chips { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-top: 0.3rem; }
-    .chip { background: var(--rose-pale); color: var(--rose); padding: 0.3rem 0.8rem; border-radius: 50px; font-size: 0.8rem; font-weight: 500; }
-    .stylist-actions { display: flex; gap: 1rem; margin-top: auto; padding-top: 1rem; border-top: 1px solid var(--border); }
+    .stylist-services-label { font-size: 0.7rem; font-weight: 600; color: var(--muted); text-transform: uppercase; letter-spacing: 0.5px; margin-top: 0.5rem; }
+    .service-chips { display: flex; flex-wrap: wrap; gap: 0.4rem; justify-content: center; }
+    .chip { background: var(--rose-pale); color: var(--rose); padding: 0.2rem 0.7rem; border-radius: 50px; font-size: 0.75rem; font-weight: 500; }
+    .stylist-actions { display: flex; gap: 1rem; margin-top: 0.5rem; padding-top: 0.8rem; border-top: 1px solid var(--border); width: 100%; justify-content: center; }
+    .stylist-actions button {
+      background: none; border: none; font-family: inherit; font-size: 0.9rem; font-weight: 500;
+      cursor: pointer; transition: 0.2s; color: var(--muted); display: inline-flex; align-items: center; gap: 0.3rem;
+    }
+    .stylist-actions button:hover { color: var(--rose); }
+    .stylist-actions .delete-stylist:hover { color: var(--danger); }
     
     /* Analytics Redesign */
     .analytics-card { background: var(--card-bg); border: 1px solid var(--border); border-radius: 16px; padding: 2rem; margin-bottom: 2rem; }
@@ -339,10 +353,10 @@
     
     .detail-inline { display: flex; flex-direction: column; gap: 2rem; padding-bottom: 2rem; animation: fadeIn 0.25s ease; }
     .back-link {
-      background: none; border: none; color: var(--muted); font-family: inherit; font-size: 1rem;
+      background: none; border: none; color: var(--rose); font-family: inherit; font-size: 1rem;
       cursor: pointer; padding: 0; display: inline-flex; align-items: center; gap: 0.5rem; align-self: flex-start; transition: 0.2s;
     }
-    .back-link:hover { color: var(--rose); transform: translateX(-3px); }
+    .back-link:hover { color: var(--rose-light); transform: translateX(-3px); }
     .detail-hero { display: flex; flex-direction: column; gap: 0.5rem; }
     .detail-heading { font-family: 'Cormorant Garamond', serif; font-size: 2.5rem; font-weight: 600; color: var(--ink); }
     .detail-subheading { font-size: 1rem; color: var(--muted); }
@@ -361,23 +375,26 @@
     .detail-total span:last-child { color: var(--rose); }
     .detail-actions { display: flex; flex-direction: column; gap: 0.5rem; }
     .action-link {
-      background: var(--input-bg); border: 1px solid var(--border); border-radius: 50px; font-family: inherit;
+      background: none; border: none; font-family: inherit;
       font-size: 1rem; font-weight: 500; color: var(--ink); cursor: pointer; padding: 0.9rem 1.4rem;
-      text-align: left; display: inline-flex; align-items: center; gap: 0.8rem; transition: 0.2s;
+      text-align: left; display: inline-flex; align-items: center; gap: 0.8rem; transition: 0.2s; border-radius: 50px;
     }
     .action-link i { color: var(--muted); transition: color 0.2s; }
-    .action-link:hover { border-color: var(--rose); color: var(--rose); transform: translateX(4px); }
+    .action-link:hover { background: var(--hover-surface); color: var(--rose); }
     .action-link:hover i { color: var(--rose); }
     .action-link.danger { color: var(--danger); }
-    .action-link.danger:hover { border-color: var(--danger); }
+    .action-link.danger:hover { background: rgba(255,107,107,0.1); }
     .action-link.danger:hover i { color: var(--danger); }
+    .action-link.pink { color: var(--rose); }
+    .action-link.pink i { color: var(--rose); }
     
+    /* Profile */
     .profile-container { max-width: 600px; margin: 0 auto; }
     .profile-header { text-align: center; padding: 2rem 0; }
     .profile-avatar-large {
-      width: 100px; height: 100px; border-radius: 50%; background: var(--rose-pale);
+      width: 100px; height: 100px; border-radius: 50%; background: var(--gradient);
       display: flex; align-items: center; justify-content: center;
-      font-family: 'Cormorant Garamond', serif; font-size: 2.5rem; font-weight: 600; color: var(--rose);
+      font-family: 'Cormorant Garamond', serif; font-size: 2.5rem; font-weight: 600; color: #000;
       margin: 0 auto 1rem; border: 2px solid var(--rose-mid);
     }
     .profile-name { font-family: 'Cormorant Garamond', serif; font-size: 2.2rem; font-weight: 600; color: var(--ink); }
@@ -393,7 +410,7 @@
     .profile-action-btn {
       width: 100%; padding: 1.2rem 0; background: transparent; border: none; font-size: 1.05rem;
       font-weight: 400; color: var(--ink); cursor: pointer; transition: 0.2s; font-family: inherit;
-      display: flex; align-items: center; gap: 1rem; text-align: left; border-bottom: 1px solid var(--border);
+      display: flex; align-items: center; gap: 1rem; text-align: left;
     }
     .profile-action-btn:last-child { border-bottom: none; }
     .profile-action-btn .action-icon { width: 24px; color: var(--muted); font-size: 1.1rem; transition: 0.2s; text-align: center; }
@@ -402,23 +419,23 @@
     .profile-action-btn.danger:hover { color: var(--danger); }
     .profile-action-btn.danger:hover .action-icon { color: var(--danger); }
     
+    /* Edit Profile (No cards, just lines) */
     .edit-profile-inline { display: flex; flex-direction: column; gap: 2rem; max-width: 600px; margin: 0 auto; }
     .edit-profile-heading { font-family: 'Cormorant Garamond', serif; font-size: 2.2rem; font-weight: 600; color: var(--ink); }
     .edit-profile-sub { font-size: 1rem; color: var(--muted); margin-top: 0.3rem; }
     .edit-field { display: flex; flex-direction: column; gap: 0.5rem; }
     .edit-field-label { font-size: 0.8rem; font-weight: 600; letter-spacing: 0.5px; text-transform: uppercase; color: var(--muted); }
     .edit-field input {
-      background: var(--input-bg); border: 1px solid var(--border); border-radius: 8px;
-      padding: 1rem; font-size: 1.05rem; color: var(--ink); width: 100%; font-family: inherit; outline: none;
+      background: transparent; border: none; border-bottom: 1px solid var(--border);
+      padding: 1rem 0; font-size: 1.05rem; color: var(--ink); width: 100%; font-family: inherit; outline: none;
     }
-    .edit-field input:focus { border-color: var(--rose); }
-    .edit-field input:read-only { color: var(--muted); background: transparent; cursor: not-allowed; }
+    .edit-field input:focus { border-bottom-color: var(--rose); }
     .edit-note { font-size: 0.85rem; color: var(--muted); margin-top: 0.2rem; }
     .edit-actions { display: flex; gap: 1rem; padding-top: 1rem; }
     
     .modal { display: none; position: fixed; inset: 0; background: rgba(0, 0, 0, 0.8); backdrop-filter: blur(8px); align-items: center; justify-content: center; z-index: 2000; padding: 1rem; }
     .modal.active { display: flex; }
-    .modal-content { background: var(--card-bg); border: 1px solid var(--border); border-radius: 24px; width: 100%; max-width: 500px; padding: 2rem; max-height: 90vh; overflow-y: auto; animation: fadeIn 0.2s ease; box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6); }
+    .modal-content { background: var(--card-bg); border: 1px solid var(--border); border-radius: 24px; width: 100%; max-width: 500px; padding: 2rem; max-height: 90vh; overflow-y: auto; animation: fadeIn 0.2s ease; box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6); position: relative; }
     .modal-content h3 { font-family: 'Cormorant Garamond', serif; font-size: 2rem; font-weight: 600; color: var(--ink); margin-bottom: 1.5rem; }
     .modal-content label { display: block; font-size: 0.8rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; color: var(--muted); margin-bottom: 0.5rem; margin-top: 1rem; }
     .modal-content input, .modal-content select {
@@ -428,10 +445,19 @@
     .modal-content select[multiple] { min-height: 120px; }
     .modal-footer { display: flex; gap: 1rem; justify-content: flex-end; margin-top: 2rem; }
     
+    .help-modal .modal-content { max-width: 700px; }
+    .modal-close-x {
+      position: absolute; top: 1.5rem; right: 1.5rem;
+      background: none; border: none; color: var(--muted); font-size: 1.5rem;
+      cursor: pointer; transition: 0.2s;
+    }
+    .modal-close-x:hover { color: var(--rose); }
+    .help-modal .btn-text { font-size: 0.95rem; }
+    
     #toast {
       position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%) translateY(10px);
-      background: var(--gradient); color: #000; padding: 0.8rem 1.5rem; border-radius: 50px;
-      font-size: 1rem; font-weight: 600; opacity: 0; transition: 0.3s; pointer-events: none; z-index: 3000; box-shadow: 0 10px 30px rgba(244, 182, 200, 0.3);
+      background: #f0f0f0; color: #000; padding: 0.8rem 1.5rem; border-radius: 50px;
+      font-size: 1rem; font-weight: 600; opacity: 0; transition: 0.3s; pointer-events: none; z-index: 3000; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
     }
     #toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
     
@@ -446,7 +472,17 @@
     .help-card h4 { font-family: 'Cormorant Garamond', serif; font-size: 1.3rem; font-weight: 600; color: var(--rose); margin-bottom: 0.5rem; }
     .help-card p { font-size: 0.95rem; color: var(--muted); margin-bottom: 0.3rem; line-height: 1.5; }
     
-    /* Mobile Responsiveness */
+    .peak-hours { display: flex; flex-wrap: wrap; gap: 1rem; margin-top: 0.8rem; }
+    .peak-hour-tag {
+      background: var(--rose-pale); color: var(--rose);
+      padding: 0.5rem 1.2rem; border-radius: 50px;
+      font-size: 0.9rem; font-weight: 600; letter-spacing: 0.5px;
+    }
+    
+    /* Search hide empty category groups (CSS only) */
+    .category-group:has(.service-row[style*="display: none"]) { display: none; }
+    
+    /* Mobile */
     @media (max-width: 1024px) {
       .admin-stats-grid { grid-template-columns: repeat(2, 1fr); }
     }
@@ -466,10 +502,11 @@
       .stylist-grid { grid-template-columns: 1fr; }
       .admin-table th, .admin-table td { padding: 0.8rem 0.5rem; font-size: 0.85rem; }
       .view-header { flex-direction: column; align-items: stretch; }
-      .view-header .btn-primary { width: 100%; justify-content: center; }
+      .view-header .btn-text { width: 100%; justify-content: center; }
       .detail-actions .action-link { width: 100%; justify-content: center; }
       .modal-content { padding: 1.5rem; }
       .analytics-card { padding: 1.5rem; }
+      .peak-hours { flex-direction: column; align-items: flex-start; }
     }
   </style>
 </head>
@@ -565,7 +602,7 @@
         <div class="view-header" style="margin-bottom: 2rem;">
           <div>
             <h2 class="section-title">Dashboard Overview</h2>
-            <p class="section-sub">Welcome back. Here is a summary of your salon's performance today.</p>
+            <p class="section-sub">Welcome back. Here is a summary of your salon's performance today. Use the quick links below to jump into any management area.</p>
           </div>
         </div>
 
@@ -618,7 +655,7 @@
         <div class="view-header">
           <div>
             <h2 class="section-title">Manage Services</h2>
-            <p class="section-sub">Add, update, or archive salon services. Click any service to view its full details.</p>
+            <p class="section-sub">Add, update, or archive salon services. Click any service to view its full details. Use the search bar to filter by service name or category.</p>
           </div>
           <button class="btn-text" id="addServiceBtn"><i class="fas fa-plus"></i> New Service</button>
         </div>
@@ -631,7 +668,7 @@
         <div class="view-header">
           <div>
             <h2 class="section-title">Your Team</h2>
-            <p class="section-sub">Manage stylist profiles, specialties, and availability status.</p>
+            <p class="section-sub">Manage stylist profiles, specialties, and availability status. Click a card to view full details.</p>
           </div>
           <button class="btn-text" id="addStylistBtn"><i class="fas fa-plus"></i> New Stylist</button>
         </div>
@@ -644,7 +681,7 @@
         <div class="view-header">
           <div>
             <h2 class="section-title">Booking Schedule</h2>
-            <p class="section-sub">View and manage all appointments. Click any booking for full details.</p>
+            <p class="section-sub">View and manage all appointments across your salon. Click any row to see full booking details, mark as complete, or flag a no-show.</p>
           </div>
         </div>
         <div class="table-wrapper">
@@ -670,7 +707,7 @@
         <div class="view-header">
           <div>
             <h2 class="section-title">Analytics & Reports</h2>
-            <p class="section-sub">Track performance across the selected period.</p>
+            <p class="section-sub">Track performance across the selected period. Use the filters to adjust the date range, and download the report as a PDF for your records.</p>
           </div>
           <button class="btn-text" id="downloadReportBtn"><i class="fas fa-file-pdf"></i> Download PDF</button>
         </div>
@@ -699,7 +736,7 @@
             <!-- Booking Trends (Top) -->
             <div class="analytics-sub-section">
               <h4>Booking Trends</h4>
-              <p>Bookings by day of week</p>
+              <p>See which days of the week are busiest to help plan staffing and promotions.</p>
               <div class="chart-container">
                 <canvas id="trendsBarChart"></canvas>
               </div>
@@ -709,7 +746,7 @@
             <!-- Popular Services (Bottom) -->
             <div class="analytics-sub-section">
               <h4>Popular Services</h4>
-              <p>Most requested services in the selected period</p>
+              <p>Identify your top-performing treatments and understand what your clients love most.</p>
               <div class="table-wrapper" style="margin-bottom: 0; border: none; background: transparent;">
                 <table class="admin-table" id="servicePopularityTable">
                   <thead><tr><th>Service</th><th>Category</th><th class="text-right">Bookings</th></tr></thead>
@@ -722,7 +759,7 @@
           <!-- Stylist Performance Card -->
           <div class="analytics-card">
             <h3>Stylist Performance</h3>
-            <p>Completion rates and average ratings per stylist</p>
+            <p>Review completion rates and customer satisfaction to recognise top performers and identify areas for improvement.</p>
             <div class="table-wrapper" style="margin-bottom: 0; border: none; background: transparent;">
               <table class="admin-table" id="stylistTable">
                 <thead>
@@ -783,7 +820,7 @@
           </button>
           <div>
             <div class="edit-profile-heading">Edit Profile</div>
-            <div class="edit-profile-sub">Keep your details up to date.</div>
+            <div class="edit-profile-sub">Keep your details up to date. Your email is used for login and notifications.</div>
           </div>
           <div class="edit-field">
             <label class="edit-field-label">Full Name</label>
@@ -795,8 +832,8 @@
           </div>
           <div class="edit-field">
             <label class="edit-field-label">Email Address</label>
-            <input type="email" id="adminProfileEmailInput" readonly onkeydown="return false;" onpaste="return false;" oninput="return false;">
-            <div class="edit-note">Email address cannot be changed from this page.</div>
+            <input type="email" id="adminProfileEmailInput" placeholder="your@email.com">
+            <div class="edit-note">This email is used for login and important notifications.</div>
           </div>
           <div class="edit-actions">
             <button class="btn-primary" onclick="saveAdminProfile()">Save Changes <i class="fas fa-arrow-right"></i></button>
@@ -859,7 +896,7 @@
   </div>
 </div>
 
-<!-- NEW BOOKING MODAL (UI ONLY - HOOK UP YOUR BACKEND LOGIC HERE) -->
+<!-- NEW BOOKING MODAL -->
 <div id="newBookingModal" class="modal">
   <div class="modal-content">
     <h3>New Booking</h3>
@@ -894,8 +931,9 @@
   </div>
 </div>
 
-<div id="helpModal" class="modal">
+<div id="helpModal" class="modal help-modal">
   <div class="modal-content">
+    <button class="modal-close-x" onclick="document.getElementById('helpModal').classList.remove('active')"><i class="fas fa-times"></i></button>
     <h3>Help &amp; Support</h3>
     <div class="help-card">
       <h4>Managing Services</h4>
@@ -905,7 +943,7 @@
     <div class="help-card">
       <h4>Managing Stylists</h4>
       <p>Click <strong>New Stylist</strong> to add a stylist and assign their service specialties.</p>
-      <p>Click any stylist to open their profile, manage their services, or change their status.</p>
+      <p>Click any stylist card to open their profile, manage their services, or change their status.</p>
     </div>
     <div class="help-card">
       <h4>Bookings &amp; Analytics</h4>
@@ -918,7 +956,7 @@
       <p><i class="fas fa-envelope" style="width:18px;color:var(--rose);"></i> leonthendo88@gmail.com</p>
     </div>
     <div class="modal-footer">
-      <button class="btn-primary" onclick="document.getElementById('helpModal').classList.remove('active')">Close</button>
+      <button class="btn-text" onclick="document.getElementById('helpModal').classList.remove('active')">Close</button>
     </div>
   </div>
 </div>
@@ -956,7 +994,7 @@
   } catch (e) {}
 </script>
 
-<!-- MAIN LOGIC (UNTOUCHED) -->
+<!-- MAIN LOGIC (UNTOUCHED CORE, BUT RENDER FUNCTIONS UPDATED FOR NEW UI) -->
 <script>
   const API_BASE = window.API_URL || 'https://pinkmeup-api.onrender.com/api/v1';
   let services = [];
@@ -1051,7 +1089,7 @@
       });
     }
 
-    // GLOBAL SEARCH FUNCTIONALITY
+    // GLOBAL SEARCH
     const globalSearch = document.getElementById('globalSearch');
     if (globalSearch) {
       globalSearch.addEventListener('input', function(e) {
@@ -1346,7 +1384,7 @@
     document.querySelector('.main').scrollTop = 0;
   }
 
-  // STYLISTS
+  // STYLISTS - UPDATED CARD TEMPLATE
   async function loadStylists() {
     try {
       const res = await fetch(`${API_BASE}/stylists?limit=100`, { credentials: 'include' });
@@ -1381,30 +1419,30 @@
 
       const statusLabel = currentStatus === 'active' ? 'Active' : (currentStatus === 'inactive' ? 'Inactive' : 'Disabled');
       const serviceNames = st.serviceIds.map(id => getServiceName(id)).filter(Boolean);
+      const initials = (st.name[0] || '') + (st.name.split(' ')[1]?.[0] || '');
 
       return `
         <div class="stylist-card" data-stylist-id="${st.id}">
+          <div class="stylist-avatar">${initials.toUpperCase()}</div>
           <div class="stylist-name">${escapeHtml(st.name)}</div>
-          <div>
-            <span class="stylist-contact-item"><i class="fas fa-envelope"></i> ${escapeHtml(st.email || 'N/A')}</span>
-            <span class="stylist-contact-item"><i class="fas fa-phone"></i> ${escapeHtml(st.phone || 'N/A')}</span>
-          </div>
-          <div style="margin: 0.7rem 0 0.3rem; display:flex; align-items:center; gap:1rem; flex-wrap:wrap;">
+          <div class="stylist-contact-item"><i class="fas fa-envelope"></i> ${escapeHtml(st.email || 'N/A')}</div>
+          <div class="stylist-contact-item"><i class="fas fa-phone"></i> ${escapeHtml(st.phone || 'N/A')}</div>
+          <div style="margin: 0.3rem 0 0.1rem;">
             <div class="stylist-status ${currentStatus}">${statusLabel}</div>
-            <select class="stylist-status-select" data-id="${st.id}">
-              <option value="active" ${currentStatus === 'active' ? 'selected' : ''}>Change to Active</option>
-              <option value="inactive" ${currentStatus === 'inactive' ? 'selected' : ''}>Change to Inactive</option>
-              <option value="disabled" ${currentStatus === 'disabled' ? 'selected' : ''}>Change to Disabled</option>
-            </select>
           </div>
-          <div class="stylist-rating"><strong>${Number(st.rating).toFixed(1)}</strong> / 5 average rating</div>
-          <div class="stylist-services-label">Services Offered</div>
+          <select class="stylist-status-select" data-id="${st.id}">
+            <option value="active" ${currentStatus === 'active' ? 'selected' : ''}>Change to Active</option>
+            <option value="inactive" ${currentStatus === 'inactive' ? 'selected' : ''}>Change to Inactive</option>
+            <option value="disabled" ${currentStatus === 'disabled' ? 'selected' : ''}>Change to Disabled</option>
+          </select>
+          <div class="stylist-rating"><strong>${Number(st.rating).toFixed(1)}</strong> / 5 avg rating</div>
+          <div class="stylist-services-label">Specialties</div>
           <div class="service-chips">
             ${serviceNames.length ? serviceNames.map(n => `<span class="chip">${escapeHtml(n)}</span>`).join('') : '<span style="font-size:0.8rem;color:var(--muted);">No services assigned</span>'}
           </div>
           <div class="stylist-actions">
-            <button class="btn-primary btn-sm edit-stylist" data-id="${st.id}"><i class="fas fa-edit"></i> Edit</button>
-            <button class="btn-danger btn-sm delete-stylist" data-id="${st.id}"><i class="fas fa-trash"></i> Delete</button>
+            <button class="edit-stylist" data-id="${st.id}"><i class="fas fa-edit"></i> Edit</button>
+            <button class="delete-stylist" data-id="${st.id}"><i class="fas fa-trash"></i> Delete</button>
           </div>
         </div>
       `;
@@ -1605,7 +1643,7 @@
     document.querySelector('.main').scrollTop = 0;
   }
 
-  // BOOKINGS
+  // BOOKINGS - UPDATED ACTIONS ORDER
   async function loadAllBookings() {
     showLoading('Loading bookings...');
     try {
@@ -1638,10 +1676,10 @@
         <td>${escapeHtml(serviceNames)}</td>
         <td>${escapeHtml(stylistName)}</td>
         <td><span class="badge badge-${b.status}">${b.status}</span></td>
-        <td onclick="event.stopPropagation();">
+        <td onclick="event.stopPropagation();" style="white-space:nowrap;">
           ${canAct ? `
             <button class="btn-outline btn-sm mark-complete" data-id="${b._id}">Complete</button>
-            <button class="btn-danger btn-sm mark-noshow" data-id="${b._id}">No-show</button>
+            <button class="btn-danger btn-sm mark-noshow" data-id="${b._id}" style="margin-left:0.3rem;">No-show</button>
           ` : ''}
         </td>
       </tr>`;
@@ -1895,6 +1933,7 @@
     const [firstName, ...rest] = name.split(' ');
     const lastName = rest.join(' ') || firstName;
     const phone = document.getElementById('adminProfilePhoneInput').value.trim();
+    const email = document.getElementById('adminProfileEmailInput').value.trim();
 
     showLoading('Saving...');
     try {
@@ -1902,7 +1941,7 @@
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         credentials: 'include',
-        body: JSON.stringify({ firstName, lastName, phone })
+        body: JSON.stringify({ firstName, lastName, phone, email })
       });
       const data = await res.json();
       if (!res.ok) { showToast(data.message || 'Update failed.'); return; }
@@ -1912,6 +1951,8 @@
       document.getElementById('adminProfileName').textContent = fullName;
       document.getElementById('adminProfileFullName').textContent = fullName;
       document.getElementById('adminProfilePhone').textContent = phone || '—';
+      document.getElementById('adminProfileFullEmail').textContent = email || '—';
+      document.getElementById('adminProfileEmail').textContent = email || '—';
       document.getElementById('greetingName').textContent = `Hello, ${firstName}`;
       const initials = (firstName[0] || '') + (lastName[0] || '');
       if (initials) document.getElementById('adminAvatar').textContent = initials.toUpperCase();
@@ -1923,6 +1964,7 @@
           u.firstName = firstName;
           u.lastName = lastName;
           u.phone = phone;
+          u.email = email;
           const target = localStorage.getItem('user') ? localStorage : sessionStorage;
           target.setItem('user', JSON.stringify(u));
         }
