@@ -265,7 +265,7 @@
     .admin-table tr[data-booking-id]:hover td { background: var(--rose-pale); }
     .admin-table .text-right { text-align: right; }
     
-    /* Bare table (bookings) - only horizontal lines */
+    /* Bookings table - header grey, only horizontal lines between rows */
     .table-wrapper.table-bare {
       border: none;
       background: transparent;
@@ -273,9 +273,10 @@
       overflow: visible;
     }
     .table-wrapper.table-bare .admin-table th {
-      background: transparent;
-      padding: 0.8rem 1rem;
+      background: var(--table-header-bg);
+      padding: 1rem 1rem;
       border-bottom: 1px solid var(--border);
+      border-radius: 0;
     }
     .table-wrapper.table-bare .admin-table td {
       padding: 1.2rem 1rem;
@@ -314,8 +315,9 @@
       cursor: pointer; color: var(--muted); transition: 0.15s; font-size: 1rem;
     }
     .service-actions button:hover { color: var(--rose); }
+    .service-actions .delete-service:hover { color: var(--danger); }
     
-    /* Stylist Card - Redesigned */
+    /* Stylist Card */
     .stylist-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 1.5rem; }
     .stylist-card {
       background: var(--card-bg); border: 1px solid var(--border); border-radius: 16px;
@@ -333,17 +335,6 @@
     .stylist-email, .stylist-phone { font-size: 0.85rem; color: var(--muted); display: inline-flex; align-items: center; gap: 0.4rem; }
     .stylist-email i, .stylist-phone i { font-size: 0.75rem; color: var(--grey-icon); }
     .stylist-divider { width: 100%; height: 1px; background: var(--border); margin: 0.8rem 0; }
-    .stylist-status-row { display: flex; justify-content: center; align-items: center; width: 100%; }
-    .stylist-status { display: inline-flex; align-items: center; gap: 0.3rem; font-size: 0.75rem; font-weight: 600; padding: 0.3rem 0.9rem; border-radius: 50px; }
-    .stylist-status.active { background: rgba(74, 222, 128, 0.15); color: var(--success); }
-    .stylist-status.inactive { background: rgba(251, 191, 36, 0.15); color: var(--warning); }
-    .stylist-status.disabled { background: var(--hover-surface); color: var(--muted); }
-    .stylist-status-select {
-      padding: 0.25rem 0.6rem; border-radius: 50px; border: 1px solid var(--border);
-      font-size: 0.7rem; font-family: inherit; background: var(--input-bg); color: var(--muted); cursor: pointer; outline: none; margin-top: 0.3rem;
-    }
-    .stylist-status-select:hover { border-color: var(--rose); color: var(--rose); }
-    .stylist-status-select option { background: var(--bg); color: var(--ink); }
     .stylist-rating { font-size: 0.8rem; color: var(--muted); margin-top: 0.2rem; }
     .stylist-rating strong { color: var(--ink); font-weight: 600; }
     .stylist-services-label { font-size: 0.7rem; font-weight: 600; color: var(--muted); text-transform: uppercase; letter-spacing: 0.5px; margin-top: 0.3rem; }
@@ -417,6 +408,20 @@
     .action-link.pink { color: var(--rose); }
     .action-link.pink i { color: var(--rose); }
     
+    /* Detail status changer */
+    .detail-status-row { display: flex; align-items: center; gap: 1rem; flex-wrap: wrap; padding: 0.8rem 0; }
+    .detail-status-row .stylist-status { font-size: 0.85rem; padding: 0.35rem 1rem; }
+    .stylist-status { display: inline-flex; align-items: center; gap: 0.3rem; font-size: 0.75rem; font-weight: 600; padding: 0.3rem 0.9rem; border-radius: 50px; }
+    .stylist-status.active { background: rgba(74, 222, 128, 0.15); color: var(--success); }
+    .stylist-status.inactive { background: rgba(251, 191, 36, 0.15); color: var(--warning); }
+    .stylist-status.disabled { background: var(--hover-surface); color: var(--muted); }
+    .stylist-status-select {
+      padding: 0.4rem 1rem; border-radius: 50px; border: 1px solid var(--border);
+      font-size: 0.85rem; font-family: inherit; background: var(--input-bg); color: var(--muted); cursor: pointer; outline: none;
+    }
+    .stylist-status-select:hover { border-color: var(--rose); color: var(--rose); }
+    .stylist-status-select option { background: var(--bg); color: var(--ink); }
+    
     /* Profile */
     .profile-container { max-width: 600px; margin: 0 auto; }
     .profile-header { text-align: center; padding: 2rem 0; }
@@ -484,8 +489,25 @@
       width: 100%; padding: 1rem; border: 1px solid var(--border); border-radius: 8px; font-size: 1rem; font-family: inherit; color: var(--ink); background: var(--input-bg); outline: none;
     }
     .modal-content input:focus, .modal-content select:focus { border-color: var(--rose); }
-    .modal-content select[multiple] { min-height: 120px; }
     .modal-footer { display: flex; gap: 1rem; justify-content: flex-end; margin-top: 2rem; }
+    
+    /* Specialties checkbox list */
+    .specialties-list {
+      max-height: 220px; overflow-y: auto; border: 1px solid var(--border);
+      border-radius: 8px; padding: 0.6rem 0.8rem; background: var(--input-bg);
+    }
+    .specialties-list::-webkit-scrollbar { width: 4px; }
+    .specialties-list::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
+    .specialty-item {
+      display: flex; align-items: center; gap: 0.7rem; padding: 0.5rem 0.3rem;
+      cursor: pointer; font-size: 0.95rem; color: var(--ink); border-radius: 6px; transition: 0.15s;
+    }
+    .specialty-item:hover { background: var(--hover-surface); }
+    .specialty-item input[type="checkbox"] {
+      width: 18px; height: 18px; accent-color: var(--rose);
+      cursor: pointer; flex-shrink: 0; padding: 0; margin: 0;
+    }
+    .specialty-item .sp-cat { font-size: 0.8rem; color: var(--muted); margin-left: auto; }
     
     #toast {
       position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%) translateY(10px);
@@ -693,7 +715,7 @@
         <div class="view-header">
           <div>
             <h2 class="section-title">Your Team</h2>
-            <p class="section-sub">Manage stylist profiles, specialties, and availability status. Click a card to view full details.</p>
+            <p class="section-sub">Manage stylist profiles, specialties, and availability. Click a card to view full details and manage their status.</p>
           </div>
           <button class="btn-text" id="addStylistBtn"><i class="fas fa-plus"></i> New Stylist</button>
         </div>
@@ -894,8 +916,8 @@
           <h3>Managing Stylists</h3>
           <p>Your stylists are the heart of PinkMeUp. From the Stylists section you can:</p>
           <ul>
-            <li>Add a new stylist and assign their service specialties</li>
-            <li>Change a stylist's status between <strong>Active</strong>, <strong>Inactive</strong>, or <strong>Disabled</strong></li>
+            <li>Add a new stylist and tick off all their service specialties at once</li>
+            <li>Open any stylist to change their status between <strong>Active</strong>, <strong>Inactive</strong>, or <strong>Disabled</strong></li>
             <li>Click any card to view the stylist's full profile and performance rating</li>
             <li>Edit or delete stylists directly from their card</li>
           </ul>
@@ -906,7 +928,7 @@
           <p>Keep your service menu organised and up to date. In the Services section you can:</p>
           <ul>
             <li>Add new services with category, price, and duration</li>
-            <li>Edit existing services at any time</li>
+            <li>Edit or delete existing services at any time</li>
             <li>Search by service name or category (e.g. "Thread & Wax") to find things fast</li>
             <li>Click any service to see its full details</li>
           </ul>
@@ -982,8 +1004,8 @@
       <option value="inactive">Inactive (on leave)</option>
       <option value="disabled">Disabled</option>
     </select>
-    <label>Services Offered</label>
-    <select id="stylistServices" multiple></select>
+    <label>Services Offered (select all that apply)</label>
+    <div id="stylistServicesCheckboxes" class="specialties-list"></div>
     <input type="hidden" id="stylistId" />
     <div class="modal-footer">
       <button class="btn-outline" id="cancelStylistModalBtn">Cancel</button>
@@ -1128,7 +1150,6 @@
       if (window.innerWidth > 768) closeSidebar();
     });
 
-    // Delegated clicks for detail views
     const bookingsBody = document.getElementById('bookingsTableBody');
     if (bookingsBody) {
       bookingsBody.addEventListener('click', (e) => {
@@ -1154,7 +1175,6 @@
       });
     }
 
-    // More chip toggle for stylist cards
     document.addEventListener('click', function(e) {
       if (e.target.classList.contains('more-chip')) {
         e.stopPropagation();
@@ -1341,6 +1361,7 @@
             <div class="service-price">R${s.price}</div>
             <div class="service-actions">
               <button class="edit-service" data-id="${sid}" title="Edit"><i class="fas fa-edit"></i></button>
+              <button class="delete-service" data-id="${sid}" title="Delete"><i class="fas fa-trash-alt"></i></button>
             </div>
           </div>
         `;
@@ -1352,17 +1373,26 @@
     document.querySelectorAll('.edit-service').forEach(btn =>
       btn.addEventListener('click', () => openEditServiceModal(btn.dataset.id))
     );
+    document.querySelectorAll('.delete-service').forEach(btn =>
+      btn.addEventListener('click', () => deleteService(btn.dataset.id))
+    );
   }
 
   function populateStylistServiceOptions() {
-    const select = document.getElementById('stylistServices');
-    select.innerHTML = '';
-    services.forEach(s => {
-      const opt = document.createElement('option');
-      opt.value = s._id || s.id;
-      opt.textContent = `${s.name} (${s.category})`;
-      select.appendChild(opt);
-    });
+    const container = document.getElementById('stylistServicesCheckboxes');
+    if (!container) return;
+    if (!services.length) {
+      container.innerHTML = '<p style="color:var(--muted);font-size:0.9rem;padding:0.5rem;">No services available.</p>';
+      return;
+    }
+    container.innerHTML = services.map(s => {
+      const sid = s._id || s.id;
+      return `<label class="specialty-item">
+        <input type="checkbox" value="${sid}" class="stylist-service-checkbox">
+        <span>${escapeHtml(s.name)}</span>
+        <span class="sp-cat">${escapeHtml(s.category)}</span>
+      </label>`;
+    }).join('');
   }
 
   function openEditServiceModal(id) {
@@ -1457,6 +1487,9 @@
             <button class="action-link" onclick="openEditServiceModal('${svc._id || svc.id}')">
               <i class="fas fa-edit"></i> Edit service details
             </button>
+            <button class="action-link danger" onclick="deleteService('${svc._id || svc.id}')">
+              <i class="fas fa-trash-alt"></i> Archive this service
+            </button>
             <button class="action-link pink" onclick="closeServiceDetail()">
               <i class="fas fa-arrow-left"></i> Back to all services
             </button>
@@ -1502,11 +1535,6 @@
       return;
     }
     container.innerHTML = stylists.map(st => {
-      let currentStatus = 'active';
-      if (!st.isActive) currentStatus = 'disabled';
-      else if (!st.isAvailable) currentStatus = 'inactive';
-
-      const statusLabel = currentStatus === 'active' ? 'Active' : (currentStatus === 'inactive' ? 'Inactive' : 'Disabled');
       const serviceNames = st.serviceIds.map(id => getServiceName(id)).filter(Boolean);
       const initials = (st.name[0] || '') + (st.name.split(' ')[1]?.[0] || '');
       const visibleServices = serviceNames.slice(0, 3);
@@ -1519,15 +1547,7 @@
           <div class="stylist-email"><i class="fas fa-envelope"></i> ${escapeHtml(st.email || 'N/A')}</div>
           <div class="stylist-phone"><i class="fas fa-phone"></i> ${escapeHtml(st.phone || 'N/A')}</div>
           <div class="stylist-divider"></div>
-          <div class="stylist-status-row">
-            <span class="stylist-status ${currentStatus}">${statusLabel}</span>
-          </div>
-          <select class="stylist-status-select" data-id="${st.id}">
-            <option value="active" ${currentStatus === 'active' ? 'selected' : ''}>Change to Active</option>
-            <option value="inactive" ${currentStatus === 'inactive' ? 'selected' : ''}>Change to Inactive</option>
-            <option value="disabled" ${currentStatus === 'disabled' ? 'selected' : ''}>Change to Disabled</option>
-          </select>
-          <div class="stylist-divider"></div>
+          <div class="stylist-rating"><strong>${Number(st.rating).toFixed(1)}</strong> / 5 avg rating</div>
           <div class="stylist-services-label">Specialties</div>
           <div class="service-chips">
             ${serviceNames.length
@@ -1544,9 +1564,6 @@
       `;
     }).join('');
 
-    document.querySelectorAll('.stylist-status-select').forEach(sel => {
-      sel.addEventListener('change', function(e) { e.stopPropagation(); updateStylistStatus(this.dataset.id, this.value); });
-    });
     document.querySelectorAll('.edit-stylist').forEach(btn =>
       btn.addEventListener('click', (e) => { e.stopPropagation(); openEditStylistModal(btn.dataset.id); })
     );
@@ -1573,6 +1590,10 @@
       if (!res.ok) { showToast(data.message || 'Failed to update status.'); return; }
       await loadStylists();
       showToast(`Stylist marked as ${status}.`);
+      // Refresh detail view if open
+      if (document.getElementById('stylistDetail').style.display === 'block') {
+        openStylistDetail(id);
+      }
     } catch (err) { console.error('Status update error:', err); showToast('Error updating stylist status.'); }
     finally { hideLoading(); }
   }
@@ -1584,7 +1605,7 @@
     document.getElementById('stylistPhone').value = '';
     document.getElementById('stylistStatus').value = 'active';
     document.getElementById('stylistId').value = '';
-    Array.from(document.getElementById('stylistServices').options).forEach(opt => opt.selected = false);
+    document.querySelectorAll('.stylist-service-checkbox').forEach(cb => cb.checked = false);
     document.getElementById('stylistModal').classList.add('active');
   }
 
@@ -1601,8 +1622,10 @@
     document.getElementById('stylistPhone').value = st.phone || '';
     document.getElementById('stylistStatus').value = currentStatus;
     document.getElementById('stylistId').value = st.id;
-    const select = document.getElementById('stylistServices');
-    Array.from(select.options).forEach(opt => { opt.selected = st.serviceIds.includes(opt.value); });
+    // Check the appropriate checkboxes
+    document.querySelectorAll('.stylist-service-checkbox').forEach(cb => {
+      cb.checked = st.serviceIds.includes(cb.value);
+    });
     document.getElementById('stylistModal').classList.add('active');
   }
 
@@ -1611,8 +1634,7 @@
     const email = document.getElementById('stylistEmail').value.trim();
     const phone = document.getElementById('stylistPhone').value.trim();
     const status = document.getElementById('stylistStatus').value;
-    const select = document.getElementById('stylistServices');
-    const specialties = Array.from(select.selectedOptions).map(opt => opt.value);
+    const specialties = Array.from(document.querySelectorAll('.stylist-service-checkbox:checked')).map(cb => cb.value);
     const editId = document.getElementById('stylistId').value;
 
     if (!name || !email || !phone) { showToast('All fields are required.'); return; }
@@ -1681,6 +1703,7 @@
     else if (!st.isAvailable) currentStatus = 'inactive';
     const statusLabel = currentStatus === 'active' ? 'Active' : (currentStatus === 'inactive' ? 'Inactive' : 'Disabled');
     const serviceNames = st.serviceIds.map(sid => getServiceName(sid)).filter(Boolean);
+    const initials = (st.name[0] || '') + (st.name.split(' ')[1]?.[0] || '');
 
     document.getElementById('stylistsContainer').style.display = 'none';
     const detail = document.getElementById('stylistDetail');
@@ -1691,10 +1714,22 @@
           <i class="fas fa-arrow-left"></i> Back to all stylists
         </button>
 
-        <div class="detail-hero">
-          <div><span class="badge badge-${currentStatus === 'active' ? 'completed' : (currentStatus === 'inactive' ? 'pending' : 'cancelled')}">${statusLabel}</span></div>
+        <div class="detail-hero" style="align-items: center; text-align: center; gap: 0.8rem;">
+          <div class="profile-avatar-large" style="width: 90px; height: 90px; font-size: 2.2rem;">${initials.toUpperCase()}</div>
           <div class="detail-heading">${escapeHtml(st.name)}</div>
           <div class="detail-subheading">${escapeHtml(st.email || 'No email on file')} • ${escapeHtml(st.phone || 'No phone on file')}</div>
+        </div>
+
+        <div class="detail-section">
+          <div class="detail-section-label">Status</div>
+          <div class="detail-status-row">
+            <span class="stylist-status ${currentStatus}">${statusLabel}</span>
+            <select class="stylist-status-select" data-id="${st.id}">
+              <option value="active" ${currentStatus === 'active' ? 'selected' : ''}>Change to Active</option>
+              <option value="inactive" ${currentStatus === 'inactive' ? 'selected' : ''}>Change to Inactive</option>
+              <option value="disabled" ${currentStatus === 'disabled' ? 'selected' : ''}>Change to Disabled</option>
+            </select>
+          </div>
         </div>
 
         <div class="detail-section">
@@ -1702,7 +1737,6 @@
           <div class="detail-row"><span>Full Name</span><span>${escapeHtml(st.name)}</span></div>
           <div class="detail-row"><span>Email</span><span>${escapeHtml(st.email || '—')}</span></div>
           <div class="detail-row"><span>Phone</span><span>${escapeHtml(st.phone || '—')}</span></div>
-          <div class="detail-row"><span>Status</span><span>${statusLabel}</span></div>
           <div class="detail-row"><span>Average Rating</span><span>${Number(st.rating).toFixed(1)} / 5</span></div>
           <div class="detail-row"><span>Services Offered</span><span>${serviceNames.length}</span></div>
         </div>
@@ -1730,6 +1764,13 @@
         </div>
       </div>
     `;
+    // Hook up status select in detail view
+    const statusSel = detail.querySelector('.stylist-status-select');
+    if (statusSel) {
+      statusSel.addEventListener('change', function() {
+        updateStylistStatus(this.dataset.id, this.value);
+      });
+    }
     document.querySelector('.main').scrollTop = 0;
   }
 
