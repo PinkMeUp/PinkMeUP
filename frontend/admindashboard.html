@@ -12,6 +12,7 @@
     :root {
       --rose: #F4B6C8; 
       --rose-light: #FCE1E8;
+      --rose-deep: #D43F6B;
       --rose-pale: rgba(244, 182, 200, 0.1);
       --rose-mid: rgba(244, 182, 200, 0.25);
       --ink: #FFFFFF;
@@ -27,6 +28,7 @@
       --shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
       --gradient: linear-gradient(135deg, #F4B6C8 0%, #D43F6B 100%);
       --gradient-light: linear-gradient(135deg, #FDE4EC 0%, #F4B6C8 100%);
+      --gold-accent: linear-gradient(135deg, #FCE1E8 0%, #F4B6C8 40%, #D43F6B 100%);
       --grey-icon: #7A6F76;
       --text-dim: #A39BA0;
       --hover-surface: rgba(255, 255, 255, 0.04);
@@ -35,6 +37,7 @@
     body.light {
       --rose: #D43F6B;
       --rose-light: #FFB6C1;
+      --rose-deep: #A02850;
       --rose-pale: rgba(212, 63, 107, 0.06);
       --rose-mid: rgba(212, 63, 107, 0.25);
       --ink: #1a1a1a;
@@ -50,6 +53,7 @@
       --shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
       --gradient: linear-gradient(135deg, #FFB6C1 0%, #D43F6B 100%);
       --gradient-light: linear-gradient(135deg, #FFE4EC 0%, #FFB6C1 100%);
+      --gold-accent: linear-gradient(135deg, #FFE4EC 0%, #FFB6C1 40%, #D43F6B 100%);
       --grey-icon: #888;
       --text-dim: #555;
       --hover-surface: rgba(0, 0, 0, 0.04);
@@ -178,7 +182,9 @@
       display: flex; align-items: center; gap: 0.5rem;
       background: var(--input-bg); border: 1px solid var(--border);
       padding: 0.6rem 1.2rem; border-radius: 50px; width: 280px;
+      transition: border-color 0.2s, box-shadow 0.2s;
     }
+    .search-bar:focus-within { border-color: var(--rose-mid); box-shadow: 0 0 0 3px var(--rose-pale); }
     .search-bar i { color: var(--muted); font-size: 0.9rem; }
     .search-bar input { background: transparent; border: none; color: var(--ink); font-family: inherit; font-size: 0.95rem; width: 100%; outline: none; }
     .search-bar input::placeholder { color: var(--muted); }
@@ -196,9 +202,9 @@
       padding: 0.7rem 1.4rem; border-radius: 50px;
       font-family: inherit; font-size: 0.95rem; font-weight: 600;
       display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem; cursor: pointer;
-      transition: 0.2s;
+      transition: 0.2s; letter-spacing: 0.3px;
     }
-    .btn-primary:hover { transform: translateY(-1px); box-shadow: 0 4px 12px rgba(244, 182, 200, 0.3); }
+    .btn-primary:hover { transform: translateY(-1px); box-shadow: 0 6px 18px rgba(244, 182, 200, 0.35); }
     
     .btn-text {
       background: none; border: none;
@@ -242,20 +248,205 @@
       background: var(--card-bg); border: 1px solid var(--border); border-radius: 16px; padding: 1.5rem;
     }
     
-    .admin-stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.5rem; margin-bottom: 2rem; }
-    .admin-stat {
-      background: var(--card-bg); border: 1px solid var(--border); border-radius: 16px; padding: 1.5rem;
-      transition: 0.2s; display: flex; flex-direction: column; justify-content: center;
+    /* ============================================================
+       LUXURY AVATAR
+       ============================================================ */
+    .luxury-avatar {
+      position: relative;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background:
+        radial-gradient(circle at 30% 25%, rgba(255,255,255,0.28), transparent 55%),
+        var(--gradient-light);
+      box-shadow:
+        0 0 0 2px rgba(255,255,255,0.06),
+        0 0 0 4px rgba(244, 182, 200, 0.15),
+        0 10px 30px rgba(212, 63, 107, 0.25),
+        inset 0 2px 6px rgba(255,255,255,0.35);
+      color: #2B1B22;
+      font-family: 'Cormorant Garamond', serif;
+      font-weight: 700;
+      letter-spacing: 0.5px;
     }
-    .admin-stat:hover { border-color: var(--rose-mid); transform: translateY(-2px); }
-    .admin-stat-label { font-size: 0.8rem; color: var(--muted); text-transform: uppercase; letter-spacing: 1px; font-weight: 600; margin-bottom: 0.5rem; }
-    .admin-stat-number { font-family: 'Cormorant Garamond', serif; font-size: 3rem; font-weight: 600; color: var(--ink); line-height: 1; }
+    .luxury-avatar::after {
+      content: '';
+      position: absolute;
+      inset: -6px;
+      border-radius: 50%;
+      border: 1px solid rgba(244, 182, 200, 0.28);
+      pointer-events: none;
+    }
+    .luxury-avatar .crown {
+      position: absolute;
+      top: -6px;
+      right: -4px;
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      background: var(--gradient);
+      color: #2B1B22;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.6rem;
+      box-shadow: 0 4px 10px rgba(212, 63, 107, 0.45);
+      border: 1px solid rgba(255,255,255,0.35);
+    }
+    .luxury-avatar .sparkle {
+      position: absolute;
+      top: -3px;
+      left: -3px;
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #FFFFFF 0%, #FCE1E8 100%);
+      opacity: 0.85;
+      box-shadow: 0 2px 6px rgba(212, 63, 107, 0.35);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.5rem;
+      color: #D43F6B;
+    }
     
-    /* Table styles */
+    /* ============================================================
+       OVERVIEW — LUXURY HERO
+       ============================================================ */
+    .hero-card {
+      position: relative;
+      overflow: hidden;
+      background:
+        radial-gradient(circle at 88% 12%, rgba(244, 182, 200, 0.22), transparent 50%),
+        radial-gradient(circle at 10% 90%, rgba(212, 63, 107, 0.18), transparent 55%),
+        linear-gradient(135deg, #1B0F18 0%, #170B15 100%);
+      border: 1px solid rgba(244, 182, 200, 0.14);
+      border-radius: 22px;
+      padding: 2.4rem 2.4rem;
+      margin-bottom: 2rem;
+      box-shadow: 0 12px 40px rgba(0,0,0,0.35);
+    }
+    body.light .hero-card {
+      background:
+        radial-gradient(circle at 88% 12%, rgba(255, 182, 193, 0.5), transparent 50%),
+        radial-gradient(circle at 10% 90%, rgba(212, 63, 107, 0.1), transparent 55%),
+        linear-gradient(135deg, #FFF7FA 0%, #FFF1F5 100%);
+      border: 1px solid rgba(212, 63, 107, 0.12);
+    }
+    .hero-eyebrow {
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      font-size: 0.72rem; font-weight: 600; letter-spacing: 2px;
+      text-transform: uppercase; color: var(--rose);
+      background: rgba(244, 182, 200, 0.08);
+      border: 1px solid rgba(244, 182, 200, 0.2);
+      padding: 0.4rem 0.9rem; border-radius: 50px;
+      margin-bottom: 1.2rem;
+    }
+    .hero-eyebrow i { font-size: 0.7rem; }
+    .hero-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 3rem;
+      font-weight: 600;
+      line-height: 1.1;
+      letter-spacing: 0.3px;
+      margin-bottom: 0.8rem;
+    }
+    .hero-title .accent {
+      background: var(--gradient);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      font-style: italic;
+    }
+    .hero-sub {
+      font-size: 1.02rem;
+      color: var(--muted);
+      max-width: 640px;
+      line-height: 1.7;
+      font-weight: 300;
+      margin-bottom: 1.5rem;
+    }
+    .hero-meta {
+      display: flex; flex-wrap: wrap; gap: 1.6rem;
+      font-size: 0.85rem; color: var(--muted);
+      padding-top: 1.2rem;
+      border-top: 1px solid var(--border);
+    }
+    .hero-meta-item { display: inline-flex; align-items: center; gap: 0.5rem; }
+    .hero-meta-item i { color: var(--rose); font-size: 0.9rem; }
+    
+    .admin-stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.2rem; margin-bottom: 2rem; }
+    .admin-stat {
+      position: relative;
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 1.6rem 1.5rem;
+      transition: 0.25s;
+      display: flex; flex-direction: column; justify-content: center;
+      overflow: hidden;
+    }
+    .admin-stat::before {
+      content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px;
+      background: var(--gradient);
+      opacity: 0.35;
+      transition: opacity 0.25s;
+    }
+    .admin-stat:hover { border-color: var(--rose-mid); transform: translateY(-3px); box-shadow: 0 12px 30px rgba(0,0,0,0.25); }
+    .admin-stat:hover::before { opacity: 1; }
+    .admin-stat-label {
+      font-size: 0.72rem; color: var(--muted);
+      text-transform: uppercase; letter-spacing: 1.5px; font-weight: 600;
+      margin-bottom: 0.6rem;
+    }
+    .admin-stat-number {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 3.2rem; font-weight: 600; color: var(--ink);
+      line-height: 1; letter-spacing: -0.5px;
+    }
+    
+    .quick-access-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 1.2rem;
+      margin-top: 1rem;
+    }
+    .quick-card {
+      position: relative;
+      background: var(--card-bg); border: 1px solid var(--border);
+      border-radius: 16px; padding: 1.5rem;
+      cursor: pointer; text-align: left; font-family: inherit;
+      transition: 0.25s; overflow: hidden;
+    }
+    .quick-card:hover {
+      border-color: var(--rose-mid);
+      transform: translateY(-4px);
+      box-shadow: 0 15px 40px rgba(0,0,0,0.3);
+    }
+    .quick-card .quick-icon {
+      width: 44px; height: 44px; border-radius: 12px;
+      background: var(--rose-pale); color: var(--rose);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.1rem; margin-bottom: 1rem;
+      border: 1px solid rgba(244, 182, 200, 0.18);
+    }
+    .quick-card h4 { font-size: 1.1rem; font-weight: 600; color: var(--ink); margin-bottom: 0.35rem; font-family: 'Cormorant Garamond', serif; letter-spacing: 0.2px; }
+    .quick-card p { font-size: 0.88rem; color: var(--muted); line-height: 1.55; font-weight: 300; }
+    .quick-card .arrow {
+      position: absolute; bottom: 1.2rem; right: 1.2rem;
+      color: var(--rose); opacity: 0; transform: translateX(-6px);
+      transition: 0.25s; font-size: 0.9rem;
+    }
+    .quick-card:hover .arrow { opacity: 1; transform: translateX(0); }
+    
+    /* ============================================================
+       TABLES
+       ============================================================ */
     .table-wrapper { background: var(--card-bg); border: 1px solid var(--border); border-radius: 16px; overflow: hidden; margin-bottom: 2rem; width: 100%; overflow-x: auto; }
     .admin-table { width: 100%; border-collapse: collapse; font-size: 0.95rem; min-width: 600px; }
     .admin-table th {
-      padding: 1.2rem 1.2rem; font-size: 0.8rem; font-weight: 600; letter-spacing: 0.5px; text-transform: uppercase;
+      padding: 1.2rem 1.2rem; font-size: 0.78rem; font-weight: 600; letter-spacing: 0.6px; text-transform: uppercase;
       color: var(--muted); background: var(--table-header-bg); border-bottom: 1px solid var(--border); text-align: left;
     }
     .admin-table td { padding: 1.2rem 1.2rem; border-bottom: 1px solid var(--border); vertical-align: middle; color: var(--ink); font-weight: 300; }
@@ -265,24 +456,15 @@
     .admin-table tr[data-booking-id]:hover td { background: var(--rose-pale); }
     .admin-table .text-right { text-align: right; }
     
-    /* Bookings table - header grey, only horizontal lines between rows */
     .table-wrapper.table-bare {
-      border: none;
-      background: transparent;
-      border-radius: 0;
-      overflow: visible;
+      border: none; background: transparent; border-radius: 0; overflow: visible;
     }
     .table-wrapper.table-bare .admin-table th {
       background: var(--table-header-bg);
       padding: 1rem 1rem;
       border-bottom: 1px solid var(--border);
-      border-radius: 0;
     }
-    .table-wrapper.table-bare .admin-table td {
-      padding: 1.2rem 1rem;
-    }
-    .table-wrapper.table-bare .admin-table tr:hover td { background: var(--hover-surface); }
-    .table-wrapper.table-bare .admin-table tr[data-booking-id]:hover td { background: var(--rose-pale); }
+    .table-wrapper.table-bare .admin-table td { padding: 1.2rem 1rem; }
     
     .badge {
       display: inline-flex; align-items: center; gap: 0.3rem; padding: 0.4rem 1rem; border-radius: 50px;
@@ -294,6 +476,9 @@
     .badge-cancelled { background: rgba(255, 107, 107, 0.15); color: var(--danger); }
     .badge-no_show { background: rgba(167, 139, 250, 0.15); color: #A78BFA; }
     
+    /* ============================================================
+       SERVICES
+       ============================================================ */
     .category-group { background: var(--card-bg); border: 1px solid var(--border); border-radius: 16px; padding: 1.5rem; margin-bottom: 1.5rem; }
     .category-header {
       font-size: 1.3rem; font-family: 'Cormorant Garamond', serif; font-weight: 600; color: var(--rose);
@@ -311,54 +496,118 @@
     .service-price { font-weight: 600; color: var(--ink); font-size: 1.1rem; min-width: 80px; text-align: right; }
     .service-actions { display: flex; gap: 0.5rem; }
     .service-actions button {
-      background: none; border: none; border-radius: 0; padding: 0.2rem 0.4rem;
+      background: none; border: none; padding: 0.2rem 0.4rem;
       cursor: pointer; color: var(--muted); transition: 0.15s; font-size: 1rem;
     }
     .service-actions button:hover { color: var(--rose); }
     .service-actions .delete-service:hover { color: var(--danger); }
     
-    /* Stylist Card */
-    .stylist-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 1.5rem; }
+    /* ============================================================
+       STYLISTS — LUXURY MINIMAL CARDS
+       ============================================================ */
+    .stylist-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1.5rem; }
     .stylist-card {
-      background: var(--card-bg); border: 1px solid var(--border); border-radius: 16px;
-      padding: 1.8rem 1.5rem 1rem; transition: 0.2s; cursor: pointer; display: flex; flex-direction: column;
-      align-items: center; text-align: center; gap: 0.5rem;
+      position: relative;
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 2rem 1.6rem 1.4rem;
+      transition: 0.3s;
+      cursor: pointer;
+      display: flex; flex-direction: column;
+      align-items: center; text-align: center; gap: 0.4rem;
+      overflow: hidden;
     }
-    .stylist-card:hover { border-color: var(--rose-mid); transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0,0,0,0.2); }
+    .stylist-card::before {
+      content: '';
+      position: absolute; top: 0; left: 0; right: 0; height: 64px;
+      background: linear-gradient(180deg, rgba(244, 182, 200, 0.08), transparent);
+      pointer-events: none;
+    }
+    .stylist-card:hover {
+      border-color: var(--rose-mid);
+      transform: translateY(-4px);
+      box-shadow: 0 15px 40px rgba(0,0,0,0.35);
+    }
     .stylist-avatar {
-      width: 72px; height: 72px; border-radius: 50%; background: var(--gradient-light);
-      display: flex; align-items: center; justify-content: center;
-      font-family: 'Cormorant Garamond', serif; font-size: 1.9rem; font-weight: 600; color: #000;
-      margin-bottom: 0.5rem; border: 2px solid var(--rose-mid);
+      width: 78px; height: 78px;
+      font-size: 2rem;
+      margin-bottom: 0.6rem;
+      z-index: 1;
     }
-    .stylist-name { font-family: 'Cormorant Garamond', serif; font-size: 1.5rem; font-weight: 600; color: var(--ink); line-height: 1.2; }
-    .stylist-email, .stylist-phone { font-size: 0.85rem; color: var(--muted); display: inline-flex; align-items: center; gap: 0.4rem; }
-    .stylist-email i, .stylist-phone i { font-size: 0.75rem; color: var(--grey-icon); }
-    .stylist-divider { width: 100%; height: 1px; background: var(--border); margin: 0.8rem 0; }
-    .stylist-rating { font-size: 0.8rem; color: var(--muted); margin-top: 0.2rem; }
+    .stylist-name {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.55rem; font-weight: 600;
+      color: var(--ink); line-height: 1.15;
+      letter-spacing: 0.2px;
+    }
+    .stylist-contact-item {
+      font-size: 0.83rem; color: var(--muted);
+      display: inline-flex; align-items: center; gap: 0.4rem;
+      line-height: 1.4;
+    }
+    .stylist-contact-item i { font-size: 0.72rem; color: var(--grey-icon); width: 12px; text-align: center; }
+    .stylist-divider { width: 40px; height: 1px; background: var(--rose-mid); margin: 0.9rem auto 0.5rem; }
+    .stylist-rating {
+      font-size: 0.78rem; color: var(--muted);
+      display: inline-flex; align-items: center; gap: 0.4rem;
+      letter-spacing: 0.3px;
+    }
     .stylist-rating strong { color: var(--ink); font-weight: 600; }
-    .stylist-services-label { font-size: 0.7rem; font-weight: 600; color: var(--muted); text-transform: uppercase; letter-spacing: 0.5px; margin-top: 0.3rem; }
-    .service-chips { display: flex; flex-wrap: wrap; gap: 0.4rem; justify-content: center; }
-    .chip { background: var(--rose-pale); color: var(--rose); padding: 0.25rem 0.7rem; border-radius: 50px; font-size: 0.75rem; font-weight: 500; }
+    .stylist-rating .stars { color: var(--rose); font-size: 0.7rem; letter-spacing: 1px; }
+    .stylist-services-label {
+      font-size: 0.65rem; font-weight: 600; color: var(--muted);
+      text-transform: uppercase; letter-spacing: 1.2px; margin-top: 0.8rem;
+    }
+    .service-chips { display: flex; flex-wrap: wrap; gap: 0.4rem; justify-content: center; margin-top: 0.5rem; }
+    .chip {
+      background: transparent;
+      color: var(--rose);
+      border: 1px solid rgba(244, 182, 200, 0.22);
+      padding: 0.25rem 0.75rem;
+      border-radius: 50px;
+      font-size: 0.73rem; font-weight: 500;
+      letter-spacing: 0.2px;
+    }
     .chip.hidden-chip { display: none; }
-    .chip.more-chip { background: transparent; color: var(--muted); border: 1px solid var(--border); cursor: pointer; transition: 0.2s; }
-    .chip.more-chip:hover { color: var(--rose); border-color: var(--rose); }
+    .chip.more-chip { background: transparent; color: var(--muted); border: 1px dashed var(--border); cursor: pointer; transition: 0.2s; }
+    .chip.more-chip:hover { color: var(--rose); border-color: var(--rose-mid); }
     .stylist-card.show-all .chip.hidden-chip { display: inline-flex; }
     .stylist-card.show-all .chip.more-chip { display: none; }
-    .stylist-actions { display: flex; gap: 1rem; margin-top: 0.5rem; padding-top: 1rem; border-top: 1px solid var(--border); width: 100%; justify-content: center; }
+    .stylist-actions {
+      display: flex; gap: 1.4rem; margin-top: 1rem; padding-top: 1rem;
+      border-top: 1px solid var(--border);
+      width: 100%; justify-content: center;
+    }
     .stylist-actions button {
-      background: none; border: none; font-family: inherit; font-size: 0.9rem; font-weight: 500;
-      cursor: pointer; transition: 0.2s; color: var(--muted); display: inline-flex; align-items: center; gap: 0.3rem;
+      background: none; border: none; font-family: inherit;
+      font-size: 0.85rem; font-weight: 500;
+      cursor: pointer; transition: 0.2s; color: var(--muted);
+      display: inline-flex; align-items: center; gap: 0.35rem;
+      letter-spacing: 0.2px;
     }
     .stylist-actions button:hover { color: var(--rose); }
     .stylist-actions .delete-stylist:hover { color: var(--danger); }
     
-    /* Analytics */
+    .stylist-status { display: inline-flex; align-items: center; gap: 0.3rem; font-size: 0.72rem; font-weight: 600; padding: 0.3rem 0.9rem; border-radius: 50px; }
+    .stylist-status.active { background: rgba(74, 222, 128, 0.15); color: var(--success); }
+    .stylist-status.inactive { background: rgba(251, 191, 36, 0.15); color: var(--warning); }
+    .stylist-status.disabled { background: var(--hover-surface); color: var(--muted); }
+    .stylist-status-select {
+      padding: 0.4rem 1rem; border-radius: 50px; border: 1px solid var(--border);
+      font-size: 0.85rem; font-family: inherit; background: var(--input-bg); color: var(--muted); cursor: pointer; outline: none;
+    }
+    .stylist-status-select:hover { border-color: var(--rose); color: var(--rose); }
+    .stylist-status-select option { background: var(--bg); color: var(--ink); }
+    
+    /* ============================================================
+       ANALYTICS
+       ============================================================ */
     .analytics-card { background: var(--card-bg); border: 1px solid var(--border); border-radius: 16px; padding: 2rem; margin-bottom: 2rem; }
     .analytics-card h3 { font-size: 1.4rem; font-weight: 600; color: var(--ink); margin-bottom: 1.5rem; font-family: 'Cormorant Garamond', serif; }
     .analytics-sub-section { margin-bottom: 2rem; }
     .analytics-sub-section:last-child { margin-bottom: 0; }
-    .analytics-sub-section h4 { font-size: 1.1rem; font-weight: 600; color: var(--ink); margin-bottom: 0.3rem; }
+    .analytics-sub-section h4 { font-size: 1.1rem; font-weight: 600; color: var(--ink); margin-bottom: 0.3rem; font-family: 'Cormorant Garamond', serif; letter-spacing: 0.2px; }
     .analytics-sub-section p { font-size: 0.9rem; color: var(--muted); margin-bottom: 1rem; }
     .chart-container { max-height: 300px; min-height: 200px; margin-bottom: 1rem; position: relative; }
     
@@ -371,6 +620,22 @@
     .filter-bar select:focus, .filter-bar input:focus { border-color: var(--rose); }
     .filter-bar select option { background: var(--bg); color: var(--ink); }
     
+    .peak-hours { display: flex; flex-wrap: wrap; gap: 0.8rem; margin-top: 0.9rem; }
+    .peak-hour-tag {
+      background: var(--rose-pale); color: var(--rose);
+      padding: 0.55rem 1.25rem; border-radius: 50px;
+      font-size: 0.88rem; font-weight: 600; letter-spacing: 0.5px;
+      border: 1px solid rgba(244, 182, 200, 0.18);
+      display: inline-flex; align-items: center; gap: 0.5rem;
+    }
+    .peak-hour-tag::before {
+      content: ''; width: 6px; height: 6px; border-radius: 50%; background: var(--rose);
+      box-shadow: 0 0 8px rgba(244, 182, 200, 0.6);
+    }
+    
+    /* ============================================================
+       DETAIL PAGES
+       ============================================================ */
     .detail-inline { display: flex; flex-direction: column; gap: 2rem; padding-bottom: 2rem; animation: fadeIn 0.25s ease; }
     .back-link {
       background: none; border: none; color: var(--rose); font-family: inherit; font-size: 1rem;
@@ -381,7 +646,7 @@
     .detail-heading { font-family: 'Cormorant Garamond', serif; font-size: 2.5rem; font-weight: 600; color: var(--ink); }
     .detail-subheading { font-size: 1rem; color: var(--muted); }
     .detail-section { background: var(--card-bg); border: 1px solid var(--border); border-radius: 16px; padding: 1.5rem; }
-    .detail-section-label { font-size: 0.8rem; font-weight: 600; letter-spacing: 0.5px; text-transform: uppercase; color: var(--muted); margin-bottom: 1rem; }
+    .detail-section-label { font-size: 0.78rem; font-weight: 600; letter-spacing: 0.6px; text-transform: uppercase; color: var(--muted); margin-bottom: 1rem; }
     .detail-row { display: flex; justify-content: space-between; align-items: center; padding: 1rem 0; border-bottom: 1px solid var(--border); font-size: 1rem; }
     .detail-row:last-child { border-bottom: none; }
     .detail-row span:first-child { color: var(--muted); }
@@ -408,37 +673,36 @@
     .action-link.pink { color: var(--rose); }
     .action-link.pink i { color: var(--rose); }
     
-    /* Detail status changer */
     .detail-status-row { display: flex; align-items: center; gap: 1rem; flex-wrap: wrap; padding: 0.8rem 0; }
     .detail-status-row .stylist-status { font-size: 0.85rem; padding: 0.35rem 1rem; }
-    .stylist-status { display: inline-flex; align-items: center; gap: 0.3rem; font-size: 0.75rem; font-weight: 600; padding: 0.3rem 0.9rem; border-radius: 50px; }
-    .stylist-status.active { background: rgba(74, 222, 128, 0.15); color: var(--success); }
-    .stylist-status.inactive { background: rgba(251, 191, 36, 0.15); color: var(--warning); }
-    .stylist-status.disabled { background: var(--hover-surface); color: var(--muted); }
-    .stylist-status-select {
-      padding: 0.4rem 1rem; border-radius: 50px; border: 1px solid var(--border);
-      font-size: 0.85rem; font-family: inherit; background: var(--input-bg); color: var(--muted); cursor: pointer; outline: none;
-    }
-    .stylist-status-select:hover { border-color: var(--rose); color: var(--rose); }
-    .stylist-status-select option { background: var(--bg); color: var(--ink); }
     
-    /* Profile */
-    .profile-container { max-width: 600px; margin: 0 auto; }
+    /* ============================================================
+       PROFILE
+       ============================================================ */
+    .profile-container { max-width: 640px; margin: 0 auto; }
     .profile-header { text-align: center; padding: 2rem 0; }
     .profile-avatar-large {
-      width: 100px; height: 100px; border-radius: 50%; background: var(--gradient-light);
-      display: flex; align-items: center; justify-content: center;
-      font-family: 'Cormorant Garamond', serif; font-size: 2.5rem; font-weight: 600; color: #000;
-      margin: 0 auto 1rem; border: 2px solid var(--rose-mid);
+      width: 112px; height: 112px;
+      font-size: 2.8rem;
+      margin: 0 auto 1.2rem;
     }
     .profile-name { font-family: 'Cormorant Garamond', serif; font-size: 2.2rem; font-weight: 600; color: var(--ink); }
     .profile-email { font-size: 1rem; color: var(--muted); margin-top: 0.3rem; }
-    .profile-role-badge { display: inline-flex; align-items: center; gap: 0.4rem; color: var(--rose); font-size: 0.9rem; font-weight: 600; margin-top: 0.8rem; background: var(--rose-pale); padding: 0.4rem 1rem; border-radius: 50px; }
+    .profile-role-badge {
+      display: inline-flex; align-items: center; gap: 0.4rem;
+      color: var(--rose); font-size: 0.85rem; font-weight: 600;
+      margin-top: 0.9rem;
+      background: var(--rose-pale);
+      padding: 0.4rem 1rem; border-radius: 50px;
+      border: 1px solid rgba(244, 182, 200, 0.2);
+      letter-spacing: 0.4px;
+      text-transform: uppercase;
+    }
     .profile-divider { height: 1px; background: var(--border); margin: 1.5rem 0; }
     .profile-details-list { display: flex; flex-direction: column; }
     .profile-detail-item { display: flex; align-items: center; padding: 1.2rem 0; border-bottom: 1px solid var(--border); }
     .profile-detail-item:last-child { border-bottom: none; }
-    .detail-label { color: var(--muted); font-size: 1rem; flex: 1; }
+    .detail-label { color: var(--muted); font-size: 0.95rem; flex: 1; }
     .detail-value { color: var(--ink); font-weight: 500; font-size: 1.05rem; text-align: right; }
     .profile-actions { display: flex; flex-direction: column; gap: 0; padding: 0.5rem 0; }
     .profile-action-btn {
@@ -452,12 +716,11 @@
     .profile-action-btn.danger:hover { color: var(--danger); }
     .profile-action-btn.danger:hover .action-icon { color: var(--danger); }
     
-    /* Edit Profile */
-    .edit-profile-inline { display: flex; flex-direction: column; gap: 2rem; max-width: 600px; margin: 0 auto; }
+    .edit-profile-inline { display: flex; flex-direction: column; gap: 2rem; max-width: 640px; margin: 0 auto; }
     .edit-profile-heading { font-family: 'Cormorant Garamond', serif; font-size: 2.2rem; font-weight: 600; color: var(--ink); }
     .edit-profile-sub { font-size: 1rem; color: var(--muted); margin-top: 0.3rem; }
     .edit-field { display: flex; flex-direction: column; gap: 0.5rem; }
-    .edit-field-label { font-size: 0.8rem; font-weight: 600; letter-spacing: 0.5px; text-transform: uppercase; color: var(--muted); }
+    .edit-field-label { font-size: 0.78rem; font-weight: 600; letter-spacing: 0.6px; text-transform: uppercase; color: var(--muted); }
     .edit-field input {
       background: transparent; border: none; border-bottom: 1px solid var(--border);
       padding: 1rem 0; font-size: 1.05rem; color: var(--ink); width: 100%; font-family: inherit; outline: none;
@@ -466,7 +729,9 @@
     .edit-note { font-size: 0.85rem; color: var(--muted); margin-top: 0.2rem; }
     .edit-actions { display: flex; gap: 1rem; padding-top: 1rem; }
     
-    /* Help View */
+    /* ============================================================
+       HELP
+       ============================================================ */
     .help-section { margin-bottom: 2rem; padding-bottom: 2rem; border-bottom: 1px solid var(--border); }
     .help-section:last-child { border-bottom: none; }
     .help-section h3 { font-family: 'Cormorant Garamond', serif; font-size: 1.5rem; font-weight: 600; color: var(--rose); margin-bottom: 0.8rem; }
@@ -480,18 +745,20 @@
     .help-contact p { font-size: 1rem; color: var(--muted); margin-bottom: 0.4rem; }
     .help-contact p i { color: var(--rose); width: 22px; }
     
+    /* ============================================================
+       MODALS & MISC
+       ============================================================ */
     .modal { display: none; position: fixed; inset: 0; background: rgba(0, 0, 0, 0.8); backdrop-filter: blur(8px); align-items: center; justify-content: center; z-index: 2000; padding: 1rem; }
     .modal.active { display: flex; }
     .modal-content { background: var(--card-bg); border: 1px solid var(--border); border-radius: 24px; width: 100%; max-width: 500px; padding: 2rem; max-height: 90vh; overflow-y: auto; animation: fadeIn 0.2s ease; box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6); position: relative; }
     .modal-content h3 { font-family: 'Cormorant Garamond', serif; font-size: 2rem; font-weight: 600; color: var(--ink); margin-bottom: 1.5rem; }
-    .modal-content label { display: block; font-size: 0.8rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; color: var(--muted); margin-bottom: 0.5rem; margin-top: 1rem; }
+    .modal-content label { display: block; font-size: 0.78rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.6px; color: var(--muted); margin-bottom: 0.5rem; margin-top: 1rem; }
     .modal-content input, .modal-content select {
       width: 100%; padding: 1rem; border: 1px solid var(--border); border-radius: 8px; font-size: 1rem; font-family: inherit; color: var(--ink); background: var(--input-bg); outline: none;
     }
     .modal-content input:focus, .modal-content select:focus { border-color: var(--rose); }
     .modal-footer { display: flex; gap: 1rem; justify-content: flex-end; margin-top: 2rem; }
     
-    /* Specialties checkbox list */
     .specialties-list {
       max-height: 220px; overflow-y: auto; border: 1px solid var(--border);
       border-radius: 8px; padding: 0.6rem 0.8rem; background: var(--input-bg);
@@ -511,8 +778,8 @@
     
     #toast {
       position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%) translateY(10px);
-      background: #f0f0f0; color: #000; padding: 0.8rem 1.5rem; border-radius: 50px;
-      font-size: 1rem; font-weight: 600; opacity: 0; transition: 0.3s; pointer-events: none; z-index: 3000; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+      background: #f0f0f0; color: #000; padding: 0.85rem 1.6rem; border-radius: 50px;
+      font-size: 1rem; font-weight: 600; opacity: 0; transition: 0.3s; pointer-events: none; z-index: 3000; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
     }
     #toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
     
@@ -522,16 +789,21 @@
     @keyframes spin { to { transform: rotate(360deg); } }
     #loadingOverlayText { font-size: 1rem; color: var(--rose); font-weight: 500; }
     
-    .peak-hours { display: flex; flex-wrap: wrap; gap: 1rem; margin-top: 0.8rem; }
-    .peak-hour-tag {
-      background: var(--rose-pale); color: var(--rose);
-      padding: 0.5rem 1.2rem; border-radius: 50px;
-      font-size: 0.9rem; font-weight: 600; letter-spacing: 0.5px;
+    .empty-search {
+      display: none;
+      text-align: center;
+      padding: 3rem 1rem;
+      color: var(--muted);
     }
+    .empty-search.show { display: block; }
+    .empty-search i { font-size: 2.4rem; color: var(--rose-mid); margin-bottom: 1rem; display: block; }
+    .empty-search h4 { font-family: 'Cormorant Garamond', serif; font-size: 1.4rem; color: var(--ink); margin-bottom: 0.4rem; }
+    .empty-search p { font-size: 0.95rem; }
     
     /* Mobile */
     @media (max-width: 1024px) {
       .admin-stats-grid { grid-template-columns: repeat(2, 1fr); }
+      .hero-title { font-size: 2.4rem; }
     }
     @media (max-width: 768px) {
       .menu-btn { display: block; }
@@ -554,6 +826,9 @@
       .modal-content { padding: 1.5rem; }
       .analytics-card { padding: 1.5rem; }
       .peak-hours { flex-direction: column; align-items: flex-start; }
+      .hero-card { padding: 1.8rem 1.5rem; }
+      .hero-title { font-size: 2rem; }
+      .hero-meta { gap: 1rem; font-size: 0.8rem; }
     }
   </style>
 </head>
@@ -627,14 +902,14 @@
       <div class="header-left">
         <button class="menu-btn" id="menuToggle"><i class="fas fa-bars"></i></button>
         <div>
-          <h1 class="page-title">Overview</h1>
+          <h1 class="page-title" id="pageTitle">Overview</h1>
           <div class="page-subtitle">1 Jun Smuts Ave, JHB Braamfontein, Wits</div>
         </div>
       </div>
       <div class="header-right">
         <div class="search-bar">
           <i class="fas fa-search"></i>
-          <input type="text" id="globalSearch" placeholder="Search bookings, stylists...">
+          <input type="text" id="globalSearch" placeholder="Search bookings, stylists, services...">
         </div>
         <button class="icon-btn"><i class="fas fa-bell"></i></button>
         <button class="btn-text" onclick="document.getElementById('newBookingModal').classList.add('active')">
@@ -646,10 +921,14 @@
     <main class="main">
       <!-- HOME -->
       <section id="home-view" class="view active">
-        <div class="view-header" style="margin-bottom: 2rem;">
-          <div>
-            <h2 class="section-title">Dashboard Overview</h2>
-            <p class="section-sub">Welcome back. Here is a summary of your salon's performance today. Use the quick links below to jump into any management area.</p>
+        <div class="hero-card">
+          <div class="hero-eyebrow"><i class="fas fa-sparkles"></i> Rosewood Salon · Administrator Console</div>
+          <h1 class="hero-title">Welcome back to <span class="accent">PinkMeUp</span></h1>
+          <p class="hero-sub">Your luxury command centre for running the salon. Oversee your services, guide your stylists, and track performance — all in one refined space.</p>
+          <div class="hero-meta">
+            <div class="hero-meta-item"><i class="fas fa-map-marker-alt"></i> 1 Jun Smuts Ave, Braamfontein</div>
+            <div class="hero-meta-item"><i class="fas fa-clock"></i> Mon–Sat · Open today</div>
+            <div class="hero-meta-item"><i class="fas fa-crown"></i> Signed in as Administrator</div>
           </div>
         </div>
 
@@ -672,27 +951,32 @@
           </div>
         </div>
 
-        <h3 class="section-title" style="font-size: 1.5rem; margin-bottom: 1rem;">Quick Access</h3>
-        <div class="home-links" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1rem;">
-          <button class="card nav-item" data-view="services" style="text-align: left; cursor: pointer; transition: 0.2s; border: 1px solid var(--border);">
-            <div style="font-size: 1.2rem; color: var(--rose); margin-bottom: 0.5rem;"><i class="fas fa-concierge-bell"></i></div>
-            <div style="font-weight: 600; margin-bottom: 0.3rem; font-size: 1.1rem;">Manage Services</div>
-            <div style="font-size: 0.9rem; color: var(--muted);">Add new services, update pricing, and organise your offerings.</div>
+        <h3 class="section-title" style="font-size: 1.6rem; margin-bottom: 0.4rem;">Quick Access</h3>
+        <p class="section-sub" style="margin-bottom: 1.2rem;">Jump into any part of your salon operations.</p>
+        <div class="quick-access-grid">
+          <button class="quick-card nav-item" data-view="services">
+            <div class="quick-icon"><i class="fas fa-concierge-bell"></i></div>
+            <h4>Manage Services</h4>
+            <p>Add new services, update pricing, and organise your offerings.</p>
+            <span class="arrow"><i class="fas fa-arrow-right"></i></span>
           </button>
-          <button class="card nav-item" data-view="stylists" style="text-align: left; cursor: pointer; transition: 0.2s; border: 1px solid var(--border);">
-            <div style="font-size: 1.2rem; color: var(--rose); margin-bottom: 0.5rem;"><i class="fas fa-users"></i></div>
-            <div style="font-weight: 600; margin-bottom: 0.3rem; font-size: 1.1rem;">Manage Stylists</div>
-            <div style="font-size: 0.9rem; color: var(--muted);">View profiles, assign specialties, and manage availability.</div>
+          <button class="quick-card nav-item" data-view="stylists">
+            <div class="quick-icon"><i class="fas fa-users"></i></div>
+            <h4>Manage Stylists</h4>
+            <p>View profiles, assign specialties, and manage availability.</p>
+            <span class="arrow"><i class="fas fa-arrow-right"></i></span>
           </button>
-          <button class="card nav-item" data-view="bookings" style="text-align: left; cursor: pointer; transition: 0.2s; border: 1px solid var(--border);">
-            <div style="font-size: 1.2rem; color: var(--rose); margin-bottom: 0.5rem;"><i class="fas fa-calendar-check"></i></div>
-            <div style="font-weight: 600; margin-bottom: 0.3rem; font-size: 1.1rem;">Manage Bookings</div>
-            <div style="font-size: 0.9rem; color: var(--muted);">Review appointments and update booking statuses.</div>
+          <button class="quick-card nav-item" data-view="bookings">
+            <div class="quick-icon"><i class="fas fa-calendar-check"></i></div>
+            <h4>Manage Bookings</h4>
+            <p>Review appointments and update booking statuses.</p>
+            <span class="arrow"><i class="fas fa-arrow-right"></i></span>
           </button>
-          <button class="card nav-item" data-view="reports" style="text-align: left; cursor: pointer; transition: 0.2s; border: 1px solid var(--border);">
-            <div style="font-size: 1.2rem; color: var(--rose); margin-bottom: 0.5rem;"><i class="fas fa-chart-line"></i></div>
-            <div style="font-weight: 600; margin-bottom: 0.3rem; font-size: 1.1rem;">View Analytics</div>
-            <div style="font-size: 0.9rem; color: var(--muted);">Track trends and measure stylist performance.</div>
+          <button class="quick-card nav-item" data-view="reports">
+            <div class="quick-icon"><i class="fas fa-chart-line"></i></div>
+            <h4>View Analytics</h4>
+            <p>Track trends and measure stylist performance.</p>
+            <span class="arrow"><i class="fas fa-arrow-right"></i></span>
           </button>
         </div>
       </section>
@@ -707,6 +991,11 @@
           <button class="btn-text" id="addServiceBtn"><i class="fas fa-plus"></i> New Service</button>
         </div>
         <div id="servicesContainer"></div>
+        <div class="empty-search" id="servicesEmptySearch">
+          <i class="fas fa-search"></i>
+          <h4>No services match your search</h4>
+          <p>Try a different service name or category.</p>
+        </div>
         <div id="serviceDetail" style="display:none;"></div>
       </section>
 
@@ -720,6 +1009,11 @@
           <button class="btn-text" id="addStylistBtn"><i class="fas fa-plus"></i> New Stylist</button>
         </div>
         <div id="stylistsContainer" class="stylist-grid"></div>
+        <div class="empty-search" id="stylistsEmptySearch">
+          <i class="fas fa-search"></i>
+          <h4>No stylists match your search</h4>
+          <p>Try a different name, email, or specialty.</p>
+        </div>
         <div id="stylistDetail" style="display:none;"></div>
       </section>
 
@@ -745,6 +1039,11 @@
             </thead>
             <tbody id="bookingsTableBody"></tbody>
           </table>
+        </div>
+        <div class="empty-search" id="bookingsEmptySearch">
+          <i class="fas fa-search"></i>
+          <h4>No bookings match your search</h4>
+          <p>Try a different customer, service, or stylist name.</p>
         </div>
         <div id="bookingDetail" style="display:none;"></div>
       </section>
@@ -819,7 +1118,11 @@
       <section id="profile-view" class="view">
         <div class="profile-container" id="adminProfileMain">
           <div class="profile-header">
-            <div class="profile-avatar-large" id="adminAvatar">AD</div>
+            <div class="luxury-avatar profile-avatar-large" id="adminAvatar">
+              <span class="sparkle"><i class="fas fa-sparkles"></i></span>
+              <span id="adminAvatarText">AD</span>
+              <span class="crown"><i class="fas fa-crown"></i></span>
+            </div>
             <div class="profile-name" id="adminProfileName">Admin</div>
             <div class="profile-email" id="adminProfileEmail">admin@pinkmeup.com</div>
             <div class="profile-role-badge"><i class="fas fa-crown"></i> Administrator</div>
@@ -1120,6 +1423,11 @@
     return `${date.getDate()} ${months[date.getMonth()]} ${date.getFullYear()}`;
   }
 
+  function setPageTitle(title) {
+    const el = document.getElementById('pageTitle');
+    if (el) el.textContent = title;
+  }
+
   document.addEventListener('DOMContentLoaded', function() {
     const sidebar = document.getElementById('sidebar');
     const overlay = document.getElementById('sidebarOverlay');
@@ -1192,23 +1500,34 @@
 
         if (activeView === 'bookings-view') {
           const rows = document.querySelectorAll('#bookingsTableBody tr');
+          let anyVisible = false;
           rows.forEach(row => {
             if (row.cells.length < 2) return;
             const text = row.innerText.toLowerCase();
-            row.style.display = text.includes(query) ? '' : 'none';
+            const visible = text.includes(query);
+            row.style.display = visible ? '' : 'none';
+            if (visible) anyVisible = true;
           });
+          const emptyMsg = document.getElementById('bookingsEmptySearch');
+          if (emptyMsg) emptyMsg.classList.toggle('show', query !== '' && !anyVisible);
         } else if (activeView === 'stylists-view') {
           const cards = document.querySelectorAll('.stylist-card');
+          let anyVisible = false;
           cards.forEach(card => {
             const text = card.innerText.toLowerCase();
-            card.style.display = text.includes(query) ? 'flex' : 'none';
+            const visible = text.includes(query);
+            card.style.display = visible ? 'flex' : 'none';
+            if (visible) anyVisible = true;
           });
+          const emptyMsg = document.getElementById('stylistsEmptySearch');
+          if (emptyMsg) emptyMsg.classList.toggle('show', query !== '' && !anyVisible);
         } else if (activeView === 'services-view') {
           const groups = document.querySelectorAll('.category-group');
+          let anyVisible = false;
           groups.forEach(group => {
             const categoryName = (group.querySelector('.category-header')?.innerText || '').toLowerCase();
             const rows = group.querySelectorAll('.service-row');
-            let anyVisible = false;
+            let groupVisible = false;
             
             if (query === '') {
               rows.forEach(row => { row.style.display = 'flex'; });
@@ -1219,18 +1538,21 @@
             if (categoryName.includes(query)) {
               rows.forEach(row => {
                 row.style.display = 'flex';
-                anyVisible = true;
+                groupVisible = true;
               });
             } else {
               rows.forEach(row => {
                 const text = row.innerText.toLowerCase();
                 const visible = text.includes(query);
                 row.style.display = visible ? 'flex' : 'none';
-                if (visible) anyVisible = true;
+                if (visible) groupVisible = true;
               });
             }
-            group.style.display = anyVisible ? '' : 'none';
+            group.style.display = groupVisible ? '' : 'none';
+            if (groupVisible) anyVisible = true;
           });
+          const emptyMsg = document.getElementById('servicesEmptySearch');
+          if (emptyMsg) emptyMsg.classList.toggle('show', query !== '' && !anyVisible);
         }
       });
 
@@ -1238,6 +1560,12 @@
         item.addEventListener('click', () => {
           globalSearch.value = '';
           const activeView = document.querySelector('.view.active').id;
+          const bk = document.getElementById('bookingsEmptySearch');
+          const st = document.getElementById('stylistsEmptySearch');
+          const sv = document.getElementById('servicesEmptySearch');
+          if (bk) bk.classList.remove('show');
+          if (st) st.classList.remove('show');
+          if (sv) sv.classList.remove('show');
           if (activeView === 'bookings-view') renderBookings();
           if (activeView === 'stylists-view') renderStylists();
           if (activeView === 'services-view') renderServices();
@@ -1320,6 +1648,18 @@
     const nav = document.querySelector(`.nav-item[data-view="${viewId}"]`);
     if (nav) nav.classList.add('active');
 
+    // Update page title
+    const titles = {
+      home: 'Overview',
+      bookings: 'Bookings',
+      stylists: 'Stylists',
+      services: 'Services',
+      reports: 'Analytics',
+      profile: 'Profile',
+      help: 'Help & Support'
+    };
+    setPageTitle(titles[viewId] || 'Overview');
+
     if (viewId === 'reports') updateReports();
     if (viewId === 'bookings') loadAllBookings();
     document.querySelector('.main').scrollTop = 0;
@@ -1331,7 +1671,7 @@
       const res = await fetch(`${API_BASE}/services?limit=100`, { credentials: 'include' });
       const data = await res.json();
       if (data.success) {
-        services = data.data.services || [];
+        services = (data.data.services || []).filter(s => s.isActive !== false);
         renderServices();
         populateStylistServiceOptions();
         updateHomeStats();
@@ -1371,10 +1711,10 @@
     container.innerHTML = html;
 
     document.querySelectorAll('.edit-service').forEach(btn =>
-      btn.addEventListener('click', () => openEditServiceModal(btn.dataset.id))
+      btn.addEventListener('click', (e) => { e.stopPropagation(); openEditServiceModal(btn.dataset.id); })
     );
     document.querySelectorAll('.delete-service').forEach(btn =>
-      btn.addEventListener('click', () => deleteService(btn.dataset.id))
+      btn.addEventListener('click', (e) => { e.stopPropagation(); deleteService(btn.dataset.id); })
     );
   }
 
@@ -1431,24 +1771,42 @@
       });
       const data = await res.json();
       if (!res.ok) { showToast(data.message || 'Failed to save.'); return; }
-      await loadServices();
+      
       closeServiceModal();
-      showToast('Service saved.');
+      showToast(editId ? 'Service updated.' : 'Service created.');
+      
+      // Refresh the list
+      await loadServices();
+      
+      // If we were viewing a detail, refresh it
+      if (document.getElementById('serviceDetail').style.display === 'block' && editId) {
+        openServiceDetail(editId);
+      }
     } catch (err) { showToast('Error saving service.'); }
     finally { hideLoading(); }
   }
 
   async function deleteService(id) {
-    if (!confirm('Archive this service? It will no longer be visible to customers.')) return;
-    showLoading('Archiving...');
+    if (!confirm('Delete this service? It will no longer be visible to customers.')) return;
+    showLoading('Deleting...');
     try {
       const res = await fetch(`${API_BASE}/services/${id}`, { method: 'DELETE', credentials: 'include' });
       const data = await res.json();
-      if (!res.ok) { showToast(data.message || 'Failed to archive.'); return; }
-      await loadServices();
+      if (!res.ok) { 
+        showToast(data.message || 'Failed to delete.'); 
+        return; 
+      }
+      
+      // Remove locally immediately for real-time feel
+      services = services.filter(s => (s._id || s.id) !== id);
+      renderServices();
+      updateHomeStats();
       closeServiceDetail();
-      showToast('Service archived.');
-    } catch (err) { showToast('Error archiving service.'); }
+      showToast('Service deleted.');
+      
+      // Also refetch to stay in sync
+      setTimeout(loadServices, 400);
+    } catch (err) { showToast('Error deleting service.'); }
     finally { hideLoading(); }
   }
 
@@ -1460,6 +1818,7 @@
     const svc = services.find(s => s._id === id || s.id === id);
     if (!svc) return;
     document.getElementById('servicesContainer').style.display = 'none';
+    document.getElementById('servicesEmptySearch').classList.remove('show');
     const detail = document.getElementById('serviceDetail');
     detail.style.display = 'block';
     detail.innerHTML = `
@@ -1488,7 +1847,7 @@
               <i class="fas fa-edit"></i> Edit service details
             </button>
             <button class="action-link danger" onclick="deleteService('${svc._id || svc.id}')">
-              <i class="fas fa-trash-alt"></i> Archive this service
+              <i class="fas fa-trash-alt"></i> Delete this service
             </button>
             <button class="action-link pink" onclick="closeServiceDetail()">
               <i class="fas fa-arrow-left"></i> Back to all services
@@ -1515,6 +1874,8 @@
         stylists = (data.data.stylists || []).map(st => ({
           id: st._id,
           name: st.userId ? `${st.userId.firstName || ''} ${st.userId.lastName || ''}`.trim() : 'Unknown',
+          firstName: st.userId?.firstName || '',
+          lastName: st.userId?.lastName || '',
           email: st.userId?.email || '',
           phone: st.userId?.phone || '',
           serviceIds: st.serviceIds || [],
@@ -1536,18 +1897,28 @@
     }
     container.innerHTML = stylists.map(st => {
       const serviceNames = st.serviceIds.map(id => getServiceName(id)).filter(Boolean);
-      const initials = (st.name[0] || '') + (st.name.split(' ')[1]?.[0] || '');
+      const initials = (st.firstName[0] || st.name[0] || '') + (st.lastName[0] || '');
       const visibleServices = serviceNames.slice(0, 3);
       const hiddenServices = serviceNames.slice(3);
+      const ratingNum = Number(st.rating) || 0;
+      const starsCount = Math.round(ratingNum);
+      const starsHTML = '★'.repeat(starsCount) + '☆'.repeat(5 - starsCount);
 
       return `
         <div class="stylist-card" data-stylist-id="${st.id}">
-          <div class="stylist-avatar">${initials.toUpperCase()}</div>
+          <div class="luxury-avatar stylist-avatar">
+            <span class="sparkle"><i class="fas fa-sparkles"></i></span>
+            ${initials.toUpperCase() || '?'}
+            <span class="crown"><i class="fas fa-star"></i></span>
+          </div>
           <div class="stylist-name">${escapeHtml(st.name)}</div>
-          <div class="stylist-email"><i class="fas fa-envelope"></i> ${escapeHtml(st.email || 'N/A')}</div>
-          <div class="stylist-phone"><i class="fas fa-phone"></i> ${escapeHtml(st.phone || 'N/A')}</div>
+          <div class="stylist-contact-item"><i class="fas fa-envelope"></i> ${escapeHtml(st.email || 'N/A')}</div>
+          <div class="stylist-contact-item"><i class="fas fa-phone"></i> ${escapeHtml(st.phone || 'N/A')}</div>
           <div class="stylist-divider"></div>
-          <div class="stylist-rating"><strong>${Number(st.rating).toFixed(1)}</strong> / 5 avg rating</div>
+          <div class="stylist-rating">
+            <span class="stars">${starsHTML}</span>
+            <strong>${ratingNum.toFixed(1)}</strong>
+          </div>
           <div class="stylist-services-label">Specialties</div>
           <div class="service-chips">
             ${serviceNames.length
@@ -1588,12 +1959,17 @@
       });
       const data = await res.json();
       if (!res.ok) { showToast(data.message || 'Failed to update status.'); return; }
-      await loadStylists();
+      
+      // Update local state immediately
+      const st = stylists.find(s => s.id === id);
+      if (st) { st.isAvailable = isAvailable; st.isActive = isActive; }
+      renderStylists();
+      
       showToast(`Stylist marked as ${status}.`);
-      // Refresh detail view if open
       if (document.getElementById('stylistDetail').style.display === 'block') {
         openStylistDetail(id);
       }
+      setTimeout(loadStylists, 400);
     } catch (err) { console.error('Status update error:', err); showToast('Error updating stylist status.'); }
     finally { hideLoading(); }
   }
@@ -1622,7 +1998,6 @@
     document.getElementById('stylistPhone').value = st.phone || '';
     document.getElementById('stylistStatus').value = currentStatus;
     document.getElementById('stylistId').value = st.id;
-    // Check the appropriate checkboxes
     document.querySelectorAll('.stylist-service-checkbox').forEach(cb => {
       cb.checked = st.serviceIds.includes(cb.value);
     });
@@ -1651,11 +2026,20 @@
     showLoading(editId ? 'Saving...' : 'Creating...');
     try {
       if (editId) {
+        // Send ALL fields so the backend can update everything
         const res = await fetch(`${API_BASE}/stylists/${editId}`, {
           method: 'PUT',
           headers: { 'Content-Type': 'application/json' },
           credentials: 'include',
-          body: JSON.stringify({ serviceIds: specialties, isAvailable })
+          body: JSON.stringify({ 
+            firstName, 
+            lastName, 
+            email, 
+            phone, 
+            serviceIds: specialties, 
+            isAvailable, 
+            isActive 
+          })
         });
         const data = await res.json();
         if (!res.ok) { showToast(data.message || 'Failed to update.'); return; }
@@ -1670,9 +2054,16 @@
         const data = await res.json();
         if (!res.ok) { showToast(data.message || 'Failed to create stylist.'); return; }
       }
-      await loadStylists();
+      
       closeStylistModal();
-      showToast('Stylist saved.');
+      showToast(editId ? 'Stylist updated.' : 'Stylist created.');
+      
+      // Refresh list
+      await loadStylists();
+      
+      if (document.getElementById('stylistDetail').style.display === 'block' && editId) {
+        openStylistDetail(editId);
+      }
     } catch (err) { console.error('Save error:', err); showToast('Error saving stylist.'); }
     finally { hideLoading(); }
   }
@@ -1684,9 +2075,15 @@
       const res = await fetch(`${API_BASE}/stylists/${id}`, { method: 'DELETE', credentials: 'include' });
       const data = await res.json();
       if (!res.ok) { showToast(data.message || 'Failed to delete.'); return; }
-      await loadStylists();
+      
+      // Remove locally for real-time feel
+      stylists = stylists.filter(s => s.id !== id);
+      renderStylists();
+      updateHomeStats();
       closeStylistDetail();
       showToast('Stylist deleted.');
+      
+      setTimeout(loadStylists, 400);
     } catch (err) { showToast('Error deleting stylist.'); }
     finally { hideLoading(); }
   }
@@ -1703,9 +2100,10 @@
     else if (!st.isAvailable) currentStatus = 'inactive';
     const statusLabel = currentStatus === 'active' ? 'Active' : (currentStatus === 'inactive' ? 'Inactive' : 'Disabled');
     const serviceNames = st.serviceIds.map(sid => getServiceName(sid)).filter(Boolean);
-    const initials = (st.name[0] || '') + (st.name.split(' ')[1]?.[0] || '');
+    const initials = (st.firstName[0] || st.name[0] || '') + (st.lastName[0] || '');
 
     document.getElementById('stylistsContainer').style.display = 'none';
+    document.getElementById('stylistsEmptySearch').classList.remove('show');
     const detail = document.getElementById('stylistDetail');
     detail.style.display = 'block';
     detail.innerHTML = `
@@ -1715,7 +2113,11 @@
         </button>
 
         <div class="detail-hero" style="align-items: center; text-align: center; gap: 0.8rem;">
-          <div class="profile-avatar-large" style="width: 90px; height: 90px; font-size: 2.2rem;">${initials.toUpperCase()}</div>
+          <div class="luxury-avatar profile-avatar-large" style="width: 96px; height: 96px; font-size: 2.4rem;">
+            <span class="sparkle"><i class="fas fa-sparkles"></i></span>
+            ${initials.toUpperCase() || '?'}
+            <span class="crown"><i class="fas fa-star"></i></span>
+          </div>
           <div class="detail-heading">${escapeHtml(st.name)}</div>
           <div class="detail-subheading">${escapeHtml(st.email || 'No email on file')} • ${escapeHtml(st.phone || 'No phone on file')}</div>
         </div>
@@ -1764,7 +2166,6 @@
         </div>
       </div>
     `;
-    // Hook up status select in detail view
     const statusSel = detail.querySelector('.stylist-status-select');
     if (statusSel) {
       statusSel.addEventListener('change', function() {
@@ -1831,6 +2232,8 @@
   }
 
   function markComplete(id) {
+    // Mark as completed without asking for any rating.
+    // The rating is the customer's responsibility via the customer app.
     setBookingStatus(id, 'completed');
   }
 
@@ -1847,8 +2250,16 @@
       });
       const data = await res.json();
       if (!res.ok) { showToast(data.message || 'Update failed.'); return; }
+      
+      // Update local booking
+      const b = allBookings.find(x => x._id === id);
+      if (b) b.status = status;
+      renderBookings();
+      updateHomeStats();
+      
       showToast('Booking updated.');
-      await loadAllBookings();
+      setTimeout(loadAllBookings, 400);
+      
       if (document.getElementById('reports-view').classList.contains('active')) updateReports();
       if (document.getElementById('bookingDetail').style.display === 'block') {
         openBookingDetail(id);
@@ -1881,6 +2292,7 @@
     `).join('');
 
     document.getElementById('bookingsTable').style.display = 'none';
+    document.getElementById('bookingsEmptySearch').classList.remove('show');
     const detail = document.getElementById('bookingDetail');
     detail.style.display = 'block';
     detail.innerHTML = `
@@ -1952,17 +2364,45 @@
   // ANALYTICS
   async function updateReports() {
     const period = document.getElementById('reportPeriod').value;
-    let startDate, endDate, today = new Date();
-    const future = new Date();
-    future.setFullYear(today.getFullYear() + 2);
+    const now = new Date();
+    const endOfToday = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 23, 59, 59);
+    let startDate, endDate;
 
-    if (period === 'last30') { startDate = new Date(); startDate.setDate(today.getDate() - 30); endDate = future; }
-    else if (period === 'last90') { startDate = new Date(); startDate.setDate(today.getDate() - 90); endDate = future; }
-    else if (period === 'lastYear') { startDate = new Date(); startDate.setFullYear(today.getFullYear() - 1); endDate = future; }
-    else {
-      startDate = new Date(document.getElementById('startDate').value);
-      endDate = new Date(document.getElementById('endDate').value);
-      if (isNaN(startDate) || isNaN(endDate)) { startDate = new Date(); startDate.setDate(today.getDate() - 30); endDate = future; }
+    if (period === 'last30') {
+      startDate = new Date(now);
+      startDate.setDate(now.getDate() - 30);
+      startDate.setHours(0, 0, 0, 0);
+      endDate = endOfToday;
+    } else if (period === 'last90') {
+      startDate = new Date(now);
+      startDate.setDate(now.getDate() - 90);
+      startDate.setHours(0, 0, 0, 0);
+      endDate = endOfToday;
+    } else if (period === 'lastYear') {
+      startDate = new Date(now);
+      startDate.setFullYear(now.getFullYear() - 1);
+      startDate.setHours(0, 0, 0, 0);
+      endDate = endOfToday;
+    } else {
+      const s = document.getElementById('startDate').value;
+      const e = document.getElementById('endDate').value;
+      if (s && e) {
+        startDate = new Date(s);
+        startDate.setHours(0, 0, 0, 0);
+        endDate = new Date(e);
+        endDate.setHours(23, 59, 59, 999);
+        if (isNaN(startDate) || isNaN(endDate) || startDate > endDate) {
+          startDate = new Date(now);
+          startDate.setDate(now.getDate() - 30);
+          startDate.setHours(0, 0, 0, 0);
+          endDate = endOfToday;
+        }
+      } else {
+        startDate = new Date(now);
+        startDate.setDate(now.getDate() - 30);
+        startDate.setHours(0, 0, 0, 0);
+        endDate = endOfToday;
+      }
     }
 
     const qs = `?startDate=${startDate.toISOString().slice(0, 10)}&endDate=${endDate.toISOString().slice(0, 10)}`;
@@ -1997,7 +2437,14 @@
       type: 'bar',
       data: {
         labels: DAY_LABELS,
-        datasets: [{ label: 'Bookings', data: dayCounts, backgroundColor: '#D43F6B', borderRadius: 4 }]
+        datasets: [{
+          label: 'Bookings',
+          data: dayCounts,
+          backgroundColor: '#D43F6B',
+          hoverBackgroundColor: '#F4B6C8',
+          borderRadius: 6,
+          maxBarThickness: 44
+        }]
       },
       options: {
         responsive: true,
@@ -2018,7 +2465,7 @@
     }
     const top3 = [...byHour].sort((a, b) => b.count - a.count).slice(0, 3);
     strip.innerHTML = '<div class="peak-hours">' + top3.map(h =>
-      `<span class="peak-hour-tag">${String(h._id).padStart(2, '0')}:00 (${h.count})</span>`
+      `<span class="peak-hour-tag">${String(h._id).padStart(2, '0')}:00 · ${h.count} bookings</span>`
     ).join('') + '</div>';
   }
 
@@ -2092,7 +2539,7 @@
       document.getElementById('adminProfileEmail').textContent = email || '—';
       document.getElementById('greetingName').textContent = `Hello, ${firstName}`;
       const initials = (firstName[0] || '') + (lastName[0] || '');
-      if (initials) document.getElementById('adminAvatar').textContent = initials.toUpperCase();
+      if (initials) document.getElementById('adminAvatarText').textContent = initials.toUpperCase();
 
       try {
         const stored = localStorage.getItem('user') || sessionStorage.getItem('user');
@@ -2158,7 +2605,7 @@
     if (!user) { window.location.replace('login.html'); return; }
 
     const initials = (user.firstName ? user.firstName[0] : '') + (user.lastName ? user.lastName[0] : '');
-    if (initials) document.getElementById('adminAvatar').textContent = initials.toUpperCase();
+    if (initials) document.getElementById('adminAvatarText').textContent = initials.toUpperCase();
 
     const greeting = document.getElementById('greetingName');
     if (greeting) {
