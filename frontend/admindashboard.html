@@ -10,23 +10,24 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js" integrity="sha512-GsLlZN/3F2ErC5ifS5QtgpiJtWd43JWSuIgh7mbzZ8zBps+dvLusV+eNQATqgA/HdeKFVgA5v3S/cIrLF7QnIg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
   <style>
     :root {
+      /* CLEAN BLACK / WHITE / GREY / PINK — DARK MODE DEFAULT */
       --rose: #F4B6C8;
       --rose-light: #FCE1E8;
       --rose-deep: #D43F6B;
       --rose-pale: rgba(244, 182, 200, 0.1);
       --rose-mid: rgba(244, 182, 200, 0.25);
       --ink: #FFFFFF;
-      --ink-soft: #E8E2E6;
-      --muted: #9A9299;
-      --muted-soft: #756D74;
+      --ink-soft: #E4E4E4;
+      --muted: #9A9A9A;
+      --muted-soft: #6E6E6E;
       --border: rgba(255, 255, 255, 0.07);
-      --border-strong: rgba(255, 255, 255, 0.12);
-      --bg: #0A0509;
-      --bg-elevated: #120A10;
-      --white: #150C14;
-      --card-bg: #1A1018;
-      --card-bg-hover: #1F141C;
-      --input-bg: #1A1018;
+      --border-strong: rgba(255, 255, 255, 0.13);
+      --bg: #0A0A0A;
+      --bg-elevated: #111111;
+      --white: #111111;
+      --card-bg: #141414;
+      --card-bg-hover: #1A1A1A;
+      --input-bg: #141414;
       --success: #4ADE80;
       --success-bg: rgba(74, 222, 128, 0.12);
       --warning: #FBBF24;
@@ -37,17 +38,17 @@
       --info-bg: rgba(96, 165, 250, 0.12);
       --violet: #A78BFA;
       --violet-bg: rgba(167, 139, 250, 0.12);
-      --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.25);
-      --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.3);
-      --shadow-lg: 0 12px 40px rgba(0, 0, 0, 0.4);
-      --shadow-xl: 0 24px 60px rgba(0, 0, 0, 0.5);
-      --shadow-rose: 0 8px 24px rgba(212, 63, 107, 0.25);
+      --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.4);
+      --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.5);
+      --shadow-lg: 0 12px 40px rgba(0, 0, 0, 0.6);
+      --shadow-xl: 0 24px 60px rgba(0, 0, 0, 0.7);
+      --shadow-rose: 0 8px 24px rgba(212, 63, 107, 0.3);
       --gradient: linear-gradient(135deg, #F4B6C8 0%, #D43F6B 100%);
       --gradient-light: linear-gradient(135deg, #FDE4EC 0%, #F4B6C8 100%);
-      --grey-icon: #756D74;
-      --text-dim: #9A9299;
-      --hover-surface: rgba(255, 255, 255, 0.035);
-      --hover-surface-strong: rgba(255, 255, 255, 0.06);
+      --grey-icon: #6E6E6E;
+      --text-dim: #9A9A9A;
+      --hover-surface: rgba(255, 255, 255, 0.04);
+      --hover-surface-strong: rgba(255, 255, 255, 0.07);
       --table-header-bg: rgba(255, 255, 255, 0.02);
       --radius-sm: 8px;
       --radius-md: 12px;
@@ -58,23 +59,24 @@
       --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
     }
     body.light {
+      /* CLEAN LIGHT MODE */
       --rose: #D43F6B;
       --rose-light: #FFB6C1;
       --rose-deep: #A02850;
       --rose-pale: rgba(212, 63, 107, 0.06);
-      --rose-mid: rgba(212, 63, 107, 0.22);
-      --ink: #1A1014;
-      --ink-soft: #2A1F24;
-      --muted: #6B5560;
-      --muted-soft: #8B7580;
-      --border: #ECE3E8;
-      --border-strong: #DACDD5;
-      --bg: #FBFAFB;
+      --rose-mid: rgba(212, 63, 107, 0.2);
+      --ink: #0F0F0F;
+      --ink-soft: #1F1F1F;
+      --muted: #6B6B6B;
+      --muted-soft: #9A9A9A;
+      --border: #EAEAEA;
+      --border-strong: #D5D5D5;
+      --bg: #FAFAFA;
       --bg-elevated: #FFFFFF;
       --white: #FFFFFF;
       --card-bg: #FFFFFF;
       --card-bg-hover: #FFF9FB;
-      --input-bg: #F8F5F7;
+      --input-bg: #F6F6F6;
       --success: #1F8F62;
       --success-bg: rgba(31, 143, 98, 0.08);
       --warning: #C77A1F;
@@ -88,14 +90,14 @@
       --gradient: linear-gradient(135deg, #FFB6C1 0%, #D43F6B 100%);
       --gradient-light: linear-gradient(135deg, #FFE4EC 0%, #FFB6C1 100%);
       --grey-icon: #8B7580;
-      --text-dim: #6B5560;
+      --text-dim: #6B6B6B;
       --hover-surface: rgba(0, 0, 0, 0.025);
-      --hover-surface-strong: rgba(0, 0, 0, 0.045);
-      --table-header-bg: #F5F0F3;
-      --shadow-sm: 0 1px 2px rgba(26, 16, 20, 0.05);
-      --shadow-md: 0 4px 16px rgba(26, 16, 20, 0.07);
-      --shadow-lg: 0 12px 40px rgba(26, 16, 20, 0.1);
-      --shadow-xl: 0 24px 60px rgba(26, 16, 20, 0.12);
+      --hover-surface-strong: rgba(0, 0, 0, 0.05);
+      --table-header-bg: #F5F5F5;
+      --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.04);
+      --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.06);
+      --shadow-lg: 0 12px 40px rgba(0, 0, 0, 0.08);
+      --shadow-xl: 0 24px 60px rgba(0, 0, 0, 0.1);
       --shadow-rose: 0 8px 24px rgba(212, 63, 107, 0.18);
     }
     * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -284,7 +286,7 @@
     }
     .notif-header h4 .unread-badge {
       font-family: 'DM Sans', sans-serif;
-      background: var(--gradient); color: #1A0E15;
+      background: var(--gradient); color: #FFFFFF;
       padding: 0.1rem 0.5rem; border-radius: var(--radius-pill);
       font-size: 0.68rem; font-weight: 700;
     }
@@ -324,7 +326,7 @@
     .notif-icon.info { background: var(--info-bg); color: var(--info); }
     .notif-icon.danger { background: var(--danger-bg); color: var(--danger); }
     .notif-body { flex: 1; min-width: 0; }
-    .notif-title { font-size: 0.88rem; font-weight: 600; color: var(--ink); margin-bottom: 0.15rem; }
+    .notif-title { font-size: 0.88rem; font-weight: 600; color: var(--ink); margin-bottom: 0.15rem; padding-right: 1.4rem; }
     .notif-text { font-size: 0.78rem; color: var(--muted); line-height: 1.45; }
     .notif-time {
       font-size: 0.68rem; color: var(--muted-soft); margin-top: 0.3rem;
@@ -337,6 +339,15 @@
       margin-left: auto;
     }
     .notif-item:hover .notif-time .go-hint { opacity: 1; transform: translateX(0); }
+    .notif-dismiss {
+      position: absolute; top: 0.7rem; right: 0.7rem;
+      background: none; border: none; color: var(--muted-soft);
+      width: 20px; height: 20px; border-radius: 50%;
+      cursor: pointer; display: flex; align-items: center; justify-content: center;
+      font-size: 0.65rem; opacity: 0; transition: 0.15s;
+    }
+    .notif-item:hover .notif-dismiss { opacity: 1; }
+    .notif-dismiss:hover { color: var(--danger); background: var(--danger-bg); }
     .notif-empty {
       padding: 2.8rem 1.2rem; text-align: center; color: var(--muted); font-size: 0.85rem;
     }
@@ -344,7 +355,7 @@
 
     /* BUTTONS */
     .btn-primary {
-      background: var(--gradient); color: #1A0E15; border: none;
+      background: var(--gradient); color: #FFFFFF; border: none;
       padding: 0.65rem 1.3rem; border-radius: var(--radius-pill);
       font-family: inherit; font-size: 0.88rem; font-weight: 600;
       display: inline-flex; align-items: center; justify-content: center;
@@ -410,12 +421,12 @@
       font-weight: 300; max-width: 720px; line-height: 1.65;
     }
 
-    /* HOME HERO - lightened */
+    /* HOME HERO */
     .hero-card {
       position: relative; overflow: hidden;
       background:
-        radial-gradient(circle at 92% 8%, rgba(244, 182, 200, 0.12), transparent 50%),
-        linear-gradient(135deg, #170D14 0%, #120A10 100%);
+        radial-gradient(circle at 92% 8%, rgba(244, 182, 200, 0.1), transparent 50%),
+        linear-gradient(135deg, #150810 0%, #0F0F0F 100%);
       border: 1px solid var(--border);
       border-radius: var(--radius-xl);
       padding: 2rem 2.2rem; margin-bottom: 1.6rem;
@@ -451,7 +462,7 @@
     .hero-meta-item { display: inline-flex; align-items: center; gap: 0.5rem; }
     .hero-meta-item i { color: var(--rose); font-size: 0.8rem; }
 
-    /* TODAY BAR - subtle strip */
+    /* TODAY BAR */
     .today-bar {
       display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
       gap: 1rem; background: var(--hover-surface);
@@ -522,28 +533,20 @@
     .activity-empty { padding: 1.6rem 0.5rem; text-align: center; color: var(--muted); font-size: 0.85rem; }
     .activity-empty i { display: block; font-size: 1.4rem; color: var(--rose-mid); margin-bottom: 0.4rem; }
 
-    /* STATS - subtle divider style */
+    /* STATS */
     .admin-stats-grid {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 0;
-      margin-bottom: 2rem;
-      border-top: 1px solid var(--border);
-      border-bottom: 1px solid var(--border);
+      display: grid; grid-template-columns: repeat(4, 1fr);
+      gap: 0; margin-bottom: 2rem;
+      border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);
     }
     .admin-stat {
       padding: 1.4rem 1.5rem;
       display: flex; flex-direction: column; justify-content: center;
-      position: relative;
-      transition: background 0.2s var(--ease);
-      cursor: default;
+      position: relative; transition: background 0.2s var(--ease); cursor: default;
     }
     .admin-stat:not(:last-child)::after {
-      content: '';
-      position: absolute;
-      right: 0; top: 25%; bottom: 25%;
-      width: 1px;
-      background: var(--border);
+      content: ''; position: absolute; right: 0; top: 25%; bottom: 25%;
+      width: 1px; background: var(--border);
     }
     .admin-stat:hover { background: var(--hover-surface); }
     .admin-stat-label {
@@ -568,19 +571,11 @@
       cursor: pointer; text-align: left; font-family: inherit;
       transition: 0.2s var(--ease);
     }
-    .quick-card:hover {
-      border-color: var(--rose-mid);
-      background: var(--card-bg-hover);
-    }
-    .quick-card .quick-icon {
-      color: var(--rose);
-      font-size: 1rem; margin-bottom: 0.5rem;
-      display: inline-flex;
-    }
+    .quick-card:hover { border-color: var(--rose-mid); background: var(--card-bg-hover); }
+    .quick-card .quick-icon { color: var(--rose); font-size: 1rem; margin-bottom: 0.5rem; display: inline-flex; }
     .quick-card h4 {
       font-size: 0.92rem; font-weight: 600; color: var(--ink);
-      margin-bottom: 0.1rem; font-family: 'DM Sans', sans-serif;
-      letter-spacing: 0.1px;
+      margin-bottom: 0.1rem; font-family: 'DM Sans', sans-serif; letter-spacing: 0.1px;
     }
     .quick-card p { font-size: 0.78rem; color: var(--muted); line-height: 1.45; font-weight: 300; }
 
@@ -615,9 +610,13 @@
     .filter-tabs {
       display: flex; gap: 0.3rem; background: var(--card-bg);
       border: 1px solid var(--border); border-radius: var(--radius-pill);
-      padding: 0.3rem; margin-bottom: 1.4rem; overflow-x: auto; scrollbar-width: none;
+      padding: 0.3rem; margin-bottom: 1rem; overflow-x: auto; scrollbar-width: none;
     }
     .filter-tabs::-webkit-scrollbar { display: none; }
+    .filter-tabs.secondary {
+      background: transparent; border: none; padding: 0 0 1.4rem 0;
+      margin-bottom: 0;
+    }
     .filter-tab {
       background: none; border: none; padding: 0.5rem 1rem;
       border-radius: var(--radius-pill); font-family: inherit;
@@ -626,12 +625,19 @@
       display: inline-flex; align-items: center; gap: 0.4rem;
     }
     .filter-tab:hover { color: var(--ink); background: var(--hover-surface); }
-    .filter-tab.active { background: var(--gradient); color: #1A0E15; font-weight: 600; }
+    .filter-tab.active { background: var(--gradient); color: #FFFFFF; font-weight: 600; }
     .filter-tab .count {
       background: rgba(0, 0, 0, 0.15); border-radius: var(--radius-pill);
       padding: 0.05rem 0.5rem; font-size: 0.7rem; font-weight: 600;
     }
+    .filter-tab.active .count { background: rgba(255, 255, 255, 0.25); color: #FFFFFF; }
     .filter-tab:not(.active) .count { background: var(--hover-surface-strong); color: var(--muted); }
+    .filter-tabs.secondary .filter-tab {
+      border: 1px solid var(--border); padding: 0.4rem 0.9rem;
+    }
+    .filter-tabs.secondary .filter-tab.active {
+      background: var(--rose-pale); color: var(--rose); border-color: var(--rose-mid);
+    }
 
     .badge {
       display: inline-flex; align-items: center; gap: 0.3rem;
@@ -649,19 +655,25 @@
     .badge-cancelled { background: var(--danger-bg); color: var(--danger); }
     .badge-no_show { background: var(--violet-bg); color: var(--violet); }
 
-    /* SERVICES */
+    /* SERVICES - clearer categories */
     .category-group {
       background: transparent;
-      border-top: 1px solid var(--border);
-      padding: 1.4rem 0;
-      margin-bottom: 0.8rem;
+      padding: 1.6rem 0 0.8rem 0;
+      margin-bottom: 0.6rem;
     }
-    .category-group:first-child { border-top: none; }
+    .category-group:first-child { padding-top: 0.4rem; }
     .category-header {
       font-size: 1.15rem; font-family: 'Cormorant Garamond', serif;
-      font-weight: 600; color: var(--rose); margin-bottom: 0.8rem;
-      padding-bottom: 0.5rem; border-bottom: 1px solid var(--border);
+      font-weight: 600; color: var(--rose); margin-bottom: 1rem;
+      padding-bottom: 0.7rem;
       display: flex; justify-content: space-between; align-items: center;
+      position: relative;
+      border-bottom: 1px solid var(--border);
+    }
+    .category-header::after {
+      content: ''; position: absolute; bottom: -1px; left: 0;
+      width: 64px; height: 2px; background: var(--gradient);
+      border-radius: 2px;
     }
     .category-header .cat-count {
       font-family: 'DM Sans', sans-serif; font-size: 0.7rem;
@@ -691,48 +703,65 @@
     .service-actions button:hover { color: var(--rose); background: var(--rose-pale); }
     .service-actions .delete-service:hover { color: var(--danger); background: var(--danger-bg); }
 
-    /* STYLISTS */
-    .stylist-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(285px, 1fr)); gap: 1.2rem; }
+    /* STYLISTS - horizontal organized layout */
+    .stylist-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); gap: 1.1rem; }
     .stylist-card {
       position: relative; background: var(--card-bg); border: 1px solid var(--border);
-      border-radius: var(--radius-lg); padding: 1.8rem 1.4rem 1.1rem;
-      transition: 0.25s var(--ease); cursor: pointer;
-      display: flex; flex-direction: column; align-items: center;
-      text-align: center; gap: 0.4rem; overflow: hidden;
+      border-radius: var(--radius-lg); padding: 1.3rem 1.3rem 1rem;
+      transition: 0.22s var(--ease); cursor: pointer;
+      display: flex; flex-direction: column; gap: 0.9rem;
     }
     .stylist-card:hover {
-      border-color: var(--rose-mid); transform: translateY(-3px);
+      border-color: var(--rose-mid);
       box-shadow: var(--shadow-md); background: var(--card-bg-hover);
     }
-    .stylist-avatar { width: 72px; height: 72px; font-size: 1.85rem; margin-bottom: 0.6rem; }
+    .stylist-top { display: flex; align-items: center; gap: 1rem; }
+    .stylist-avatar { width: 60px; height: 60px; font-size: 1.55rem; flex-shrink: 0; }
+    .stylist-info { flex: 1; min-width: 0; }
     .stylist-name {
-      font-family: 'Cormorant Garamond', serif; font-size: 1.45rem;
+      font-family: 'Cormorant Garamond', serif; font-size: 1.35rem;
       font-weight: 600; color: var(--ink); line-height: 1.15; letter-spacing: 0.2px;
+      margin-bottom: 0.25rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
     }
     .stylist-contact-item {
       font-size: 0.78rem; color: var(--muted);
-      display: inline-flex; align-items: center; gap: 0.4rem;
-      line-height: 1.45; font-weight: 300;
-      max-width: 100%; word-break: break-word;
+      display: flex; align-items: center; gap: 0.4rem;
+      line-height: 1.4; font-weight: 300;
+      white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
     }
-    .stylist-contact-item i { font-size: 0.68rem; color: var(--grey-icon); width: 14px; text-align: center; }
-    .stylist-divider { width: 32px; height: 1px; background: var(--rose-mid); margin: 0.9rem auto 0.5rem; }
+    .stylist-contact-item i { font-size: 0.68rem; color: var(--grey-icon); width: 14px; text-align: center; flex-shrink: 0; }
+    .stylist-status-badge {
+      display: inline-flex; align-items: center; gap: 0.3rem;
+      font-size: 0.68rem; font-weight: 600; padding: 0.2rem 0.65rem;
+      border-radius: var(--radius-pill); letter-spacing: 0.3px;
+      flex-shrink: 0;
+    }
+    .stylist-status-badge::before { content: ''; width: 5px; height: 5px; border-radius: 50%; background: currentColor; }
+    .stylist-status-badge.active { background: var(--success-bg); color: var(--success); }
+    .stylist-status-badge.inactive { background: var(--warning-bg); color: var(--warning); }
+    .stylist-status-badge.disabled { background: var(--hover-surface-strong); color: var(--muted); }
+    .stylist-card-divider { height: 1px; background: var(--border); }
+    .stylist-meta {
+      display: flex; align-items: center; justify-content: space-between;
+      gap: 0.8rem;
+    }
     .stylist-rating {
-      font-size: 0.74rem; color: var(--muted);
-      display: inline-flex; align-items: center; gap: 0.45rem; letter-spacing: 0.3px;
+      font-size: 0.76rem; color: var(--muted);
+      display: inline-flex; align-items: center; gap: 0.4rem; letter-spacing: 0.3px;
     }
     .stylist-rating strong { color: var(--ink); font-weight: 600; }
-    .stylist-rating .stars { color: var(--rose); font-size: 0.7rem; letter-spacing: 1px; }
+    .stylist-rating .stars { color: var(--rose); font-size: 0.7rem; letter-spacing: 0.8px; }
+    .stylist-count { font-size: 0.72rem; color: var(--muted); font-weight: 400; }
     .stylist-services-label {
       font-size: 0.62rem; font-weight: 600; color: var(--muted-soft);
-      text-transform: uppercase; letter-spacing: 1.4px; margin-top: 0.75rem;
+      text-transform: uppercase; letter-spacing: 1.3px;
     }
-    .service-chips { display: flex; flex-wrap: wrap; gap: 0.35rem; justify-content: center; margin-top: 0.4rem; }
+    .service-chips { display: flex; flex-wrap: wrap; gap: 0.3rem; margin-top: 0.4rem; }
     .chip {
       background: transparent; color: var(--rose);
       border: 1px solid rgba(244, 182, 200, 0.2);
-      padding: 0.2rem 0.65rem; border-radius: var(--radius-pill);
-      font-size: 0.68rem; font-weight: 500; letter-spacing: 0.2px; transition: 0.15s;
+      padding: 0.18rem 0.6rem; border-radius: var(--radius-pill);
+      font-size: 0.66rem; font-weight: 500; letter-spacing: 0.2px; transition: 0.15s;
     }
     .chip.hidden-chip { display: none; }
     .chip.more-chip {
@@ -743,9 +772,9 @@
     .stylist-card.show-all .chip.hidden-chip { display: inline-flex; }
     .stylist-card.show-all .chip.more-chip { display: none; }
     .stylist-actions {
-      display: flex; gap: 1rem; margin-top: 0.9rem;
-      padding-top: 0.85rem; border-top: 1px solid var(--border);
-      width: 100%; justify-content: center;
+      display: flex; gap: 1.2rem; padding-top: 0.85rem;
+      border-top: 1px solid var(--border);
+      width: 100%; justify-content: flex-end;
     }
     .stylist-actions button {
       background: none; border: none; font-family: inherit;
@@ -765,22 +794,26 @@
       margin-bottom: 1.4rem; transition: 0.2s;
     }
     .analytics-card h3 {
-      font-size: 1.25rem; font-weight: 600; color: var(--ink);
-      margin-bottom: 1.2rem; font-family: 'Cormorant Garamond', serif; letter-spacing: 0.2px;
+      font-size: 1.4rem; font-weight: 600; color: var(--ink);
+      margin-bottom: 1.3rem; font-family: 'Cormorant Garamond', serif;
+      letter-spacing: 0.3px;
     }
-    .analytics-sub-section { margin-bottom: 1.6rem; }
+    .analytics-sub-section { margin-bottom: 1.7rem; }
     .analytics-sub-section:last-child { margin-bottom: 0; }
     .analytics-sub-section h4 {
-      font-size: 0.98rem; font-weight: 600; color: var(--ink);
-      margin-bottom: 0.2rem; font-family: 'Cormorant Garamond', serif; letter-spacing: 0.2px;
+      font-size: 1.15rem; font-weight: 600; color: var(--ink);
+      margin-bottom: 0.35rem; font-family: 'Cormorant Garamond', serif;
+      letter-spacing: 0.3px; line-height: 1.3;
     }
-    .analytics-sub-section p { font-size: 0.82rem; color: var(--muted); margin-bottom: 0.9rem; font-weight: 300; line-height: 1.5; }
+    .analytics-sub-section p {
+      font-size: 0.85rem; color: var(--muted); margin-bottom: 1rem;
+      font-weight: 300; line-height: 1.5;
+    }
     .chart-container { max-height: 280px; min-height: 190px; margin-bottom: 1rem; position: relative; }
     .filter-bar {
       display: flex; gap: 0.9rem; flex-wrap: wrap; align-items: center;
       background: var(--hover-surface); padding: 0.85rem 1.2rem;
-      border-radius: var(--radius-lg);
-      margin-bottom: 1.4rem;
+      border-radius: var(--radius-lg); margin-bottom: 1.4rem;
     }
     .filter-bar label {
       font-size: 0.7rem; font-weight: 600; color: var(--muted);
@@ -915,8 +948,8 @@
     }
 
     /* PROFILE */
-    .profile-container { max-width: 620px; margin: 0 auto; }
-    .profile-header { text-align: center; padding: 1.6rem 0; }
+    .profile-container { max-width: 720px; margin: 0 auto; }
+    .profile-header { text-align: center; padding: 1.6rem 0 1.4rem; }
     .profile-avatar-large { width: 108px; height: 108px; font-size: 2.7rem; margin: 0 auto 1.1rem; }
     .profile-name {
       font-family: 'Cormorant Garamond', serif; font-size: 2rem;
@@ -930,6 +963,31 @@
       padding: 0.38rem 0.95rem; border-radius: var(--radius-pill);
       border: 1px solid rgba(244, 182, 200, 0.2);
       letter-spacing: 1px; text-transform: uppercase;
+    }
+    .profile-stats {
+      display: grid; grid-template-columns: repeat(3, 1fr);
+      gap: 0;
+      margin: 1.6rem 0 0;
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+    }
+    .profile-stat {
+      padding: 1.1rem 0.8rem;
+      text-align: center;
+      position: relative;
+    }
+    .profile-stat:not(:last-child)::after {
+      content: ''; position: absolute; right: 0; top: 25%; bottom: 25%;
+      width: 1px; background: var(--border);
+    }
+    .profile-stat-num {
+      font-family: 'Cormorant Garamond', serif; font-size: 1.85rem;
+      font-weight: 600; color: var(--ink); line-height: 1;
+    }
+    .profile-stat-label {
+      font-size: 0.66rem; color: var(--muted);
+      text-transform: uppercase; letter-spacing: 1.2px;
+      font-weight: 600; margin-top: 0.35rem;
     }
     .profile-divider { height: 1px; background: var(--border); margin: 1.3rem 0; }
     .profile-details-list { display: flex; flex-direction: column; }
@@ -956,6 +1014,7 @@
     .profile-action-btn:hover .action-icon { color: var(--rose); }
     .profile-action-btn.danger:hover { color: var(--danger); }
     .profile-action-btn.danger:hover .action-icon { color: var(--danger); }
+
     .edit-profile-inline { display: flex; flex-direction: column; gap: 1.6rem; max-width: 620px; margin: 0 auto; }
     .edit-profile-heading {
       font-family: 'Cormorant Garamond', serif; font-size: 2rem;
@@ -1021,37 +1080,35 @@
       font-weight: 600; letter-spacing: 0.3px;
     }
 
-    /* SETTINGS - unified single card */
-    .settings-card {
-      background: var(--card-bg); border: 1px solid var(--border);
-      border-radius: var(--radius-lg); padding: 1.8rem;
-      margin-bottom: 2rem; max-width: 820px;
+    /* SETTINGS — FLAT NO CARDS */
+    .settings-page { max-width: 820px; }
+    .settings-block {
+      padding: 1.6rem 0 1.8rem;
+      border-bottom: 1px solid var(--border);
     }
-    .settings-header {
+    .settings-block:first-of-type { padding-top: 0.4rem; }
+    .settings-block:last-of-type { border-bottom: none; padding-bottom: 0; }
+    .settings-block-header {
       display: flex; justify-content: space-between; align-items: baseline;
-      margin-bottom: 1.4rem;
+      margin-bottom: 0.4rem; gap: 1rem;
     }
-    .settings-header h3 {
-      font-family: 'Cormorant Garamond', serif; font-size: 1.5rem;
+    .settings-block h3 {
+      font-family: 'Cormorant Garamond', serif; font-size: 1.35rem;
       font-weight: 600; color: var(--ink); margin: 0;
+      display: flex; align-items: center; gap: 0.6rem;
+    }
+    .settings-block h3 i { color: var(--rose); font-size: 1.1rem; }
+    .settings-block > p {
+      font-size: 0.86rem; color: var(--muted); margin-bottom: 1.2rem;
+      font-weight: 300; line-height: 1.6;
     }
     .settings-saved-indicator {
-      font-size: 0.75rem; color: var(--success); font-weight: 500;
+      font-size: 0.72rem; color: var(--success); font-weight: 500;
       opacity: 0; transition: opacity 0.3s var(--ease);
       display: inline-flex; align-items: center; gap: 0.35rem;
     }
     .settings-saved-indicator.show { opacity: 1; }
-    .settings-saved-indicator i { font-size: 0.7rem; }
-    .settings-section { margin-bottom: 1.6rem; padding-bottom: 1.6rem; border-bottom: 1px solid var(--border); }
-    .settings-section:last-of-type { border-bottom: none; padding-bottom: 0; }
-    .settings-section h4 {
-      font-size: 0.72rem; font-weight: 600; letter-spacing: 1.2px;
-      text-transform: uppercase; color: var(--rose); margin-bottom: 0.3rem;
-    }
-    .settings-section > p {
-      font-size: 0.85rem; color: var(--muted); margin-bottom: 1.1rem;
-      font-weight: 300; line-height: 1.6;
-    }
+    .settings-saved-indicator i { font-size: 0.68rem; }
     .settings-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.1rem; }
     .settings-field { display: flex; flex-direction: column; gap: 0.4rem; }
     .settings-field.full { grid-column: 1 / -1; }
@@ -1068,7 +1125,47 @@
     .settings-field input:focus, .settings-field textarea:focus, .settings-field select:focus {
       border-color: var(--rose); box-shadow: 0 0 0 3px var(--rose-pale);
     }
-    .settings-actions { display: flex; gap: 0.8rem; margin-top: 1.4rem; flex-wrap: wrap; align-items: center; }
+    .settings-toggle-row {
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 1rem 0; gap: 1rem;
+    }
+    .settings-toggle-row:not(:last-child) {
+      border-bottom: 1px solid var(--border);
+    }
+    .settings-toggle-info { flex: 1; min-width: 0; }
+    .settings-toggle-info strong {
+      display: block; font-size: 0.92rem; color: var(--ink);
+      font-weight: 500; margin-bottom: 0.15rem;
+    }
+    .settings-toggle-info span {
+      font-size: 0.8rem; color: var(--muted);
+      font-weight: 300; line-height: 1.5;
+    }
+    .toggle-switch {
+      position: relative; width: 46px; height: 26px;
+      flex-shrink: 0;
+    }
+    .toggle-switch input { opacity: 0; width: 0; height: 0; }
+    .toggle-slider {
+      position: absolute; inset: 0; cursor: pointer;
+      background: var(--hover-surface-strong);
+      border-radius: 100px; transition: 0.25s var(--ease);
+      border: 1px solid var(--border-strong);
+    }
+    .toggle-slider::before {
+      content: ''; position: absolute;
+      height: 18px; width: 18px; left: 3px; bottom: 3px;
+      background: var(--muted); border-radius: 50%;
+      transition: 0.25s var(--ease);
+    }
+    .toggle-switch input:checked + .toggle-slider {
+      background: var(--gradient);
+      border-color: transparent;
+    }
+    .toggle-switch input:checked + .toggle-slider::before {
+      transform: translateX(20px); background: #FFFFFF;
+    }
+    .settings-actions { display: flex; gap: 0.8rem; padding-top: 1.8rem; flex-wrap: wrap; align-items: center; }
 
     /* MODAL */
     .modal {
@@ -1162,7 +1259,7 @@
     /* LOADING */
     #loadingOverlay {
       display: none; position: fixed; inset: 0;
-      background: rgba(10, 5, 9, 0.8); backdrop-filter: blur(8px);
+      background: rgba(0, 0, 0, 0.85); backdrop-filter: blur(8px);
       z-index: 9999; align-items: center; justify-content: center;
       flex-direction: column; gap: 1rem;
     }
@@ -1245,6 +1342,8 @@
       .page-title { font-size: 1.4rem; }
       .notif-panel { width: calc(100vw - 2rem); right: 1rem; }
       .settings-grid { grid-template-columns: 1fr; }
+      .profile-stats { grid-template-columns: 1fr 1fr 1fr; }
+      .profile-stat-num { font-size: 1.5rem; }
     }
   </style>
 </head>
@@ -1417,7 +1516,7 @@
         <div class="view-header">
           <div>
             <h2 class="section-title">Manage Services</h2>
-            <p class="section-sub">Add, update, or remove salon services. Click any service to view its full details. Search by service name or category (e.g. "Thread &amp; Wax").</p>
+            <p class="section-sub">Add, update, or remove salon services. Click any service to view its full details. Search by service name or category.</p>
           </div>
           <div class="view-header-actions">
             <button class="icon-action" id="exportServicesBtn" title="Download PDF" aria-label="Download services PDF"><i class="fas fa-file-pdf"></i></button>
@@ -1459,12 +1558,27 @@
         <div class="view-header">
           <div>
             <h2 class="section-title">Booking Schedule</h2>
-            <p class="section-sub">View and manage all appointments across your salon. Click any row to see full booking details, mark as complete, or flag a no-show.</p>
+            <p class="section-sub">View and manage all appointments. Click any row to see full details, mark as complete, or flag a no-show.</p>
           </div>
           <div class="view-header-actions">
             <button class="icon-action" id="printBookingsBtn" title="Print schedule" aria-label="Print bookings"><i class="fas fa-print"></i></button>
             <button class="icon-action" id="exportBookingsBtn" title="Download PDF" aria-label="Download bookings PDF"><i class="fas fa-file-pdf"></i></button>
           </div>
+        </div>
+
+        <div class="filter-tabs secondary" id="bookingPeriodTabs">
+          <button class="filter-tab active" data-period="all">All Time</button>
+          <button class="filter-tab" data-period="today">Today</button>
+          <button class="filter-tab" data-period="week">This Week</button>
+          <button class="filter-tab" data-period="month">This Month</button>
+          <button class="filter-tab" data-period="custom">Custom Range</button>
+        </div>
+
+        <div id="customBookingRange" style="display:none; gap:0.6rem; align-items:center; flex-wrap:wrap; padding-bottom: 1rem;">
+          <input type="date" id="bookingStartDate" style="padding: 0.5rem 1.05rem; border: 1px solid var(--border); border-radius: var(--radius-pill); background: var(--input-bg); color: var(--ink); font-family: inherit; font-size: 0.86rem; outline: none;">
+          <span style="font-size:0.85rem;color:var(--muted);">to</span>
+          <input type="date" id="bookingEndDate" style="padding: 0.5rem 1.05rem; border: 1px solid var(--border); border-radius: var(--radius-pill); background: var(--input-bg); color: var(--ink); font-family: inherit; font-size: 0.86rem; outline: none;">
+          <button class="btn-text" id="applyBookingDateBtn" style="font-size: 0.85rem;">Apply</button>
         </div>
 
         <div class="filter-tabs" id="bookingFilterTabs">
@@ -1529,13 +1643,13 @@
           <div class="analytics-card">
             <h3>Booking Trends &amp; Popular Services</h3>
             <div class="analytics-sub-section">
-              <h4>Booking Trends</h4>
+              <h4>Booking Trends by Day</h4>
               <p>See which days of the week are busiest to help plan staffing and promotions.</p>
               <div class="chart-container"><canvas id="trendsBarChart"></canvas></div>
               <div id="peakHoursStrip"></div>
             </div>
             <div class="analytics-sub-section">
-              <h4>Popular Services</h4>
+              <h4>Most Popular Services</h4>
               <p>Identify your top-performing treatments and understand what your clients love most.</p>
               <div class="table-wrapper" style="margin-bottom: 0; border: none; background: transparent;">
                 <table class="admin-table" id="servicePopularityTable">
@@ -1570,6 +1684,22 @@
             <div class="profile-email" id="adminProfileEmail">admin@pinkmeup.com</div>
             <div class="profile-role-badge"><i class="fas fa-crown"></i> Administrator</div>
           </div>
+
+          <div class="profile-stats">
+            <div class="profile-stat">
+              <div class="profile-stat-num" id="profileStatServices">0</div>
+              <div class="profile-stat-label">Services</div>
+            </div>
+            <div class="profile-stat">
+              <div class="profile-stat-num" id="profileStatStylists">0</div>
+              <div class="profile-stat-label">Stylists</div>
+            </div>
+            <div class="profile-stat">
+              <div class="profile-stat-num" id="profileStatBookings">0</div>
+              <div class="profile-stat-label">Bookings</div>
+            </div>
+          </div>
+
           <div class="profile-divider"></div>
           <div class="profile-details-list">
             <div class="profile-detail-item"><span class="detail-label">Full Name</span><span class="detail-value" id="adminProfileFullName">—</span></div>
@@ -1612,7 +1742,7 @@
         </div>
       </section>
 
-      <!-- SETTINGS - unified single card -->
+      <!-- SETTINGS — FLAT -->
       <section id="settings-view" class="view">
         <div class="view-header">
           <div>
@@ -1621,16 +1751,15 @@
           </div>
         </div>
 
-        <div class="settings-card">
-          <div class="settings-header">
-            <h3>Salon Preferences</h3>
-            <span class="settings-saved-indicator" id="settingsSavedIndicator">
-              <i class="fas fa-check-circle"></i> <span id="settingsSavedText">Saved</span>
-            </span>
-          </div>
-
-          <div class="settings-section">
-            <h4>Salon Information</h4>
+        <div class="settings-page">
+          <!-- Salon Information -->
+          <div class="settings-block">
+            <div class="settings-block-header">
+              <h3><i class="fas fa-store"></i> Salon Information</h3>
+              <span class="settings-saved-indicator" id="settingsSavedIndicator">
+                <i class="fas fa-check-circle"></i> <span id="settingsSavedText">Saved</span>
+              </span>
+            </div>
             <p>Your salon's name, address, and contact details.</p>
             <div class="settings-grid">
               <div class="settings-field"><label>Salon Name</label><input type="text" id="settingSalonName" placeholder="PinkMeUp"></div>
@@ -1641,8 +1770,9 @@
             </div>
           </div>
 
-          <div class="settings-section">
-            <h4>Opening Hours</h4>
+          <!-- Opening Hours -->
+          <div class="settings-block">
+            <h3><i class="fas fa-clock"></i> Opening Hours</h3>
             <p>Your salon's regular opening hours, shown in the sidebar.</p>
             <div class="settings-grid">
               <div class="settings-field"><label>Monday – Friday</label><input type="text" id="settingWeekday" placeholder="9am – 5pm"></div>
@@ -1651,6 +1781,23 @@
             </div>
           </div>
 
+          <!-- Appearance -->
+          <div class="settings-block">
+            <h3><i class="fas fa-palette"></i> Appearance</h3>
+            <p>Personalise how the admin panel looks for you.</p>
+            <div class="settings-toggle-row">
+              <div class="settings-toggle-info">
+                <strong>Dark Mode</strong>
+                <span>Switch between light and dark themes. Your preference is saved for next time.</span>
+              </div>
+              <label class="toggle-switch">
+                <input type="checkbox" id="darkModeToggle">
+                <span class="toggle-slider"></span>
+              </label>
+            </div>
+          </div>
+
+          <!-- Actions -->
           <div class="settings-actions">
             <button class="btn-primary" id="saveSettingsBtn"><i class="fas fa-check"></i> Save Settings</button>
             <button class="btn-outline" id="resetSettingsBtn"><i class="fas fa-undo"></i> Reset to Defaults</button>
@@ -1674,8 +1821,14 @@
 
         <div class="help-section">
           <h3>Keyboard Shortcuts</h3>
-          <p>Minimal by design — we only use shortcuts that don't interfere with your browser.</p>
+          <p>Fast navigation without leaving the keyboard. These don't conflict with your browser.</p>
           <div class="shortcut-list">
+            <div class="shortcut-row"><span>Focus search bar</span><kbd>Alt + F</kbd></div>
+            <div class="shortcut-row"><span>Go to Overview</span><kbd>Alt + 1</kbd></div>
+            <div class="shortcut-row"><span>Go to Bookings</span><kbd>Alt + 2</kbd></div>
+            <div class="shortcut-row"><span>Go to Stylists</span><kbd>Alt + 3</kbd></div>
+            <div class="shortcut-row"><span>Go to Services</span><kbd>Alt + 4</kbd></div>
+            <div class="shortcut-row"><span>Go to Analytics</span><kbd>Alt + 5</kbd></div>
             <div class="shortcut-row"><span>Close any modal or panel</span><kbd>Esc</kbd></div>
           </div>
         </div>
@@ -1684,10 +1837,11 @@
           <h3>Managing Bookings</h3>
           <p>Every appointment lands in the Bookings section. You can:</p>
           <ul>
+            <li>Filter by time period (Today, This Week, This Month, or a custom range)</li>
+            <li>Filter by status using the tabs above the table</li>
             <li>Click any row to see the full details of a booking</li>
             <li>Mark an appointment as <strong>Complete</strong> once the customer has been served</li>
             <li>Flag a booking as a <strong>No-show</strong> if the customer didn't arrive</li>
-            <li>Filter bookings by status using the tabs above the table</li>
             <li>Download the schedule as PDF or print a paper copy</li>
           </ul>
         </div>
@@ -1709,8 +1863,8 @@
           <ul>
             <li>Add new services with category, price, and duration</li>
             <li>Edit or delete existing services at any time</li>
-            <li>Search by service name or category (e.g. "Thread &amp; Wax")</li>
-            <li>Download the full menu as PDF</li>
+            <li>Search by service name or category</li>
+            <li>Download the full menu as a PDF grouped by category</li>
           </ul>
         </div>
 
@@ -1864,14 +2018,18 @@
   function applyAdminTheme(theme) {
     const icon = document.getElementById('themeIcon');
     const label = document.getElementById('themeLabel');
-    if (theme === 'light') {
-      document.body.classList.add('light');
-      if (icon) icon.className = 'fas fa-sun';
-      if (label) label.textContent = 'Dark Mode';
-    } else {
+    const toggle = document.getElementById('darkModeToggle');
+    const isDark = theme === 'dark';
+    if (isDark) {
       document.body.classList.remove('light');
       if (icon) icon.className = 'fas fa-moon';
       if (label) label.textContent = 'Light Mode';
+      if (toggle) toggle.checked = true;
+    } else {
+      document.body.classList.add('light');
+      if (icon) icon.className = 'fas fa-sun';
+      if (label) label.textContent = 'Dark Mode';
+      if (toggle) toggle.checked = false;
     }
   }
   function toggleTheme() {
@@ -1881,9 +2039,9 @@
     applyAdminTheme(theme);
   }
   try {
-    const saved = localStorage.getItem('pmu-admin-theme');
-    if (saved) applyAdminTheme(saved);
-  } catch (e) {}
+    const saved = localStorage.getItem('pmu-admin-theme') || 'dark';
+    applyAdminTheme(saved);
+  } catch (e) { applyAdminTheme('dark'); }
 </script>
 
 <!-- MAIN LOGIC -->
@@ -1894,9 +2052,13 @@
   let allBookings = [];
   let trendsChart = null;
   let currentBookingFilter = 'all';
+  let currentBookingPeriod = 'all';
+  let customBookingStart = null;
+  let customBookingEnd = null;
   let notifications = [];
   const DAY_LABELS = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
-  const NOTIF_STORAGE_KEY = 'pmu-admin-notifs-read';
+  const NOTIF_READ_KEY = 'pmu-admin-notifs-read';
+  const NOTIF_DISMISSED_KEY = 'pmu-admin-notifs-dismissed';
 
   function escapeHtml(str) {
     if (!str) return '';
@@ -1968,9 +2130,11 @@
   function buildPdfHeader(title, subtitle) {
     return `
       <div style="padding: 30px 25px; font-family: 'DM Sans', sans-serif; color: #1a1a1a;">
-        <div style="border-bottom: 2px solid #D43F6B; padding-bottom: 14px; margin-bottom: 22px;">
-          <h1 style="font-family: 'Cormorant Garamond', serif; font-size: 28px; color: #D43F6B; margin-bottom: 4px;">${title}</h1>
-          <p style="font-size: 13px; color: #666;">${subtitle}</p>
+        <div style="text-align: center; padding-bottom: 16px; margin-bottom: 22px; border-bottom: 2px solid #D43F6B;">
+          <h1 style="font-family: 'Cormorant Garamond', serif; font-size: 32px; color: #D43F6B; margin-bottom: 4px; letter-spacing: 0.5px;">PinkMeUp</h1>
+          <p style="font-size: 12px; color: #888; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 12px;">Book · Relax · Glow</p>
+          <h2 style="font-family: 'Cormorant Garamond', serif; font-size: 20px; color: #1a1a1a; margin-bottom: 4px;">${title}</h2>
+          <p style="font-size: 12px; color: #666;">${subtitle}</p>
         </div>
     `;
   }
@@ -2005,24 +2169,33 @@
   function exportServicesPDF() {
     if (!services.length) { showToast('No services to export.', true); return; }
     showLoading('Generating PDF...');
-    const rows = services.map(s => `
-      <tr>
-        <td style="padding: 10px; border-bottom: 1px solid #eee;">${escapeHtml(s.name)}</td>
-        <td style="padding: 10px; border-bottom: 1px solid #eee;">${escapeHtml(s.category)}</td>
-        <td style="padding: 10px; border-bottom: 1px solid #eee; text-align: right;">R${s.price}</td>
-        <td style="padding: 10px; border-bottom: 1px solid #eee; text-align: right;">${s.duration} min</td>
-      </tr>`).join('');
-    const html = buildPdfHeader('PinkMeUp Services Report', `Total: ${services.length} service${services.length !== 1 ? 's' : ''}`) + `
-      <table style="width: 100%; border-collapse: collapse; font-size: 14px;">
+    const categories = [...new Set(services.map(s => s.category))];
+    let bodyHtml = '';
+    categories.forEach(cat => {
+      const catServices = services.filter(s => s.category === cat);
+      bodyHtml += `<tr style="background: #fdf2f5;">
+        <td colspan="3" style="padding: 12px 10px; font-weight: 600; color: #D43F6B; font-size: 14px; letter-spacing: 0.3px; border-bottom: 1px solid #f0d5dd;">
+          ${escapeHtml(cat)} <span style="font-weight: 400; color: #999; font-size: 11px;">· ${catServices.length} service${catServices.length !== 1 ? 's' : ''}</span>
+        </td>
+      </tr>`;
+      catServices.forEach(s => {
+        bodyHtml += `<tr>
+          <td style="padding: 10px; border-bottom: 1px solid #eee;">${escapeHtml(s.name)}</td>
+          <td style="padding: 10px; border-bottom: 1px solid #eee; text-align: right;">R${s.price}</td>
+          <td style="padding: 10px; border-bottom: 1px solid #eee; text-align: right;">${s.duration} min</td>
+        </tr>`;
+      });
+    });
+    const html = buildPdfHeader('Services Menu', `Total: ${services.length} service${services.length !== 1 ? 's' : ''} across ${categories.length} categories`) + `
+      <table style="width: 100%; border-collapse: collapse; font-size: 13px;">
         <thead>
           <tr style="background: #f5f5f5;">
             <th style="padding: 10px; text-align: left;">Service</th>
-            <th style="padding: 10px; text-align: left;">Category</th>
             <th style="padding: 10px; text-align: right;">Price</th>
             <th style="padding: 10px; text-align: right;">Duration</th>
           </tr>
         </thead>
-        <tbody>${rows}</tbody>
+        <tbody>${bodyHtml}</tbody>
       </table>` + buildPdfFooter();
     downloadPDF('Services', html, `PinkMeUp_Services_${new Date().toISOString().slice(0,10)}.pdf`)
       .then(() => { hideLoading(); showToast('Services PDF downloaded.'); })
@@ -2044,7 +2217,7 @@
         <td style="padding: 10px; border-bottom: 1px solid #eee; text-align: right;">${Number(st.rating).toFixed(1)}/5</td>
       </tr>`;
     }).join('');
-    const html = buildPdfHeader('PinkMeUp Stylists Report', `Total: ${stylists.length} stylist${stylists.length !== 1 ? 's' : ''}`) + `
+    const html = buildPdfHeader('Stylists Report', `Total: ${stylists.length} stylist${stylists.length !== 1 ? 's' : ''}`) + `
       <table style="width: 100%; border-collapse: collapse; font-size: 13px;">
         <thead>
           <tr style="background: #f5f5f5;">
@@ -2063,9 +2236,10 @@
   }
 
   function exportBookingsPDF() {
-    if (!allBookings.length) { showToast('No bookings to export.', true); return; }
+    const visibleBookings = getVisibleBookings();
+    if (!visibleBookings.length) { showToast('No bookings to export.', true); return; }
     showLoading('Generating PDF...');
-    const rows = allBookings.map(b => {
+    const rows = visibleBookings.map(b => {
       const customer = b.customerId ? `${b.customerId.firstName || ''} ${b.customerId.lastName || ''}`.trim() : 'Guest';
       const stylistName = b.stylistId?.userId ? `${b.stylistId.userId.firstName || ''} ${b.stylistId.userId.lastName || ''}`.trim() : 'Stylist';
       const serviceNames = (b.serviceIds || []).map(s => s.name).join(', ') || '—';
@@ -2077,7 +2251,7 @@
         <td style="padding: 9px; border-bottom: 1px solid #eee; text-transform: capitalize;">${b.status}</td>
       </tr>`;
     }).join('');
-    const html = buildPdfHeader('PinkMeUp Bookings Report', `Total: ${allBookings.length} booking${allBookings.length !== 1 ? 's' : ''}`) + `
+    const html = buildPdfHeader('Bookings Report', `Total: ${visibleBookings.length} booking${visibleBookings.length !== 1 ? 's' : ''}`) + `
       <table style="width: 100%; border-collapse: collapse; font-size: 12px;">
         <thead>
           <tr style="background: #f5f5f5;">
@@ -2096,13 +2270,19 @@
   }
 
   // ============================================================
-  // NOTIFICATIONS
+  // NOTIFICATIONS (with persistence)
   // ============================================================
   function getReadIds() {
-    try { return JSON.parse(localStorage.getItem(NOTIF_STORAGE_KEY) || '[]'); } catch (e) { return []; }
+    try { return JSON.parse(localStorage.getItem(NOTIF_READ_KEY) || '[]'); } catch (e) { return []; }
   }
   function saveReadIds(ids) {
-    try { localStorage.setItem(NOTIF_STORAGE_KEY, JSON.stringify(ids)); } catch (e) {}
+    try { localStorage.setItem(NOTIF_READ_KEY, JSON.stringify(ids.slice(-100))); } catch (e) {}
+  }
+  function getDismissedIds() {
+    try { return JSON.parse(localStorage.getItem(NOTIF_DISMISSED_KEY) || '[]'); } catch (e) { return []; }
+  }
+  function saveDismissedIds(ids) {
+    try { localStorage.setItem(NOTIF_DISMISSED_KEY, JSON.stringify(ids.slice(-100))); } catch (e) {}
   }
   function pushNotification(type, title, text, action = null) {
     const id = `n_${Date.now()}_${Math.random().toString(36).slice(2, 7)}`;
@@ -2130,6 +2310,7 @@
       const hasAction = n.action && (n.action.bookingId || n.action.view);
       return `
         <div class="notif-item ${n.read ? '' : 'unread'}" data-notif-id="${n.id}" role="button" tabindex="0">
+          <button class="notif-dismiss" data-dismiss-id="${n.id}" aria-label="Dismiss"><i class="fas fa-times"></i></button>
           <div class="notif-icon ${n.type}"><i class="fas ${n.type === 'success' ? 'fa-check-circle' : n.type === 'warning' ? 'fa-exclamation-circle' : n.type === 'danger' ? 'fa-times-circle' : 'fa-info-circle'}"></i></div>
           <div class="notif-body">
             <div class="notif-title">${escapeHtml(n.title)}</div>
@@ -2142,9 +2323,25 @@
         </div>`;
     }).join('');
     list.querySelectorAll('.notif-item').forEach(item => {
-      item.addEventListener('click', () => handleNotifClick(item.dataset.notifId));
+      item.addEventListener('click', (e) => {
+        if (e.target.closest('.notif-dismiss')) return;
+        handleNotifClick(item.dataset.notifId);
+      });
       item.addEventListener('keydown', (e) => { if (e.key === 'Enter') handleNotifClick(item.dataset.notifId); });
     });
+    list.querySelectorAll('.notif-dismiss').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        dismissNotification(btn.dataset.dismissId);
+      });
+    });
+  }
+  function dismissNotification(id) {
+    const dismissed = getDismissedIds();
+    if (!dismissed.includes(id)) dismissed.push(id);
+    saveDismissedIds(dismissed);
+    notifications = notifications.filter(n => n.id !== id);
+    renderNotifications();
   }
   function handleNotifClick(id) {
     const notif = notifications.find(n => n.id === id);
@@ -2180,12 +2377,18 @@
     renderNotifications();
   }
   function clearNotifications() {
+    const dismissed = getDismissedIds();
+    notifications.forEach(n => {
+      if (!dismissed.includes(n.id)) dismissed.push(n.id);
+    });
+    saveDismissedIds(dismissed);
     notifications = [];
-    saveReadIds([]);
     renderNotifications();
   }
   function buildNotificationsFromData() {
     if (!allBookings.length && !stylists.length && !services.length) return;
+    const dismissed = getDismissedIds();
+    const readIds = getReadIds();
     const built = [];
     const today = new Date(); today.setHours(0, 0, 0, 0);
     const todaysBookings = allBookings.filter(b => {
@@ -2193,14 +2396,14 @@
       return d.getTime() === today.getTime();
     });
     if (todaysBookings.length > 0) {
-      built.push({ id: 'auto_today_' + today.toDateString(), type: 'info',
+      built.push({ id: 'auto_today_' + today.toISOString().slice(0,10), type: 'info',
         title: `${todaysBookings.length} booking${todaysBookings.length > 1 ? 's' : ''} today`,
         text: `You have ${todaysBookings.length} appointment${todaysBookings.length > 1 ? 's' : ''} scheduled for today.`,
         time: new Date(), action: { view: 'bookings', bookingId: todaysBookings[0]._id } });
     }
     const pending = allBookings.filter(b => b.status === 'pending');
     if (pending.length > 0) {
-      built.push({ id: 'auto_pending_' + pending.length, type: 'warning',
+      built.push({ id: 'auto_pending', type: 'warning',
         title: `${pending.length} pending booking${pending.length > 1 ? 's' : ''}`,
         text: `Review and confirm ${pending.length} pending appointment${pending.length > 1 ? 's' : ''}.`,
         time: new Date(), action: { view: 'bookings', bookingId: pending[0]._id } });
@@ -2208,16 +2411,18 @@
     const recent = [...allBookings].sort((a, b) => new Date(b.createdAt || b.date) - new Date(a.createdAt || a.date)).slice(0, 5);
     recent.forEach((b, i) => {
       const customer = b.customerId ? `${b.customerId.firstName || ''} ${b.customerId.lastName || ''}`.trim() : 'Guest';
-      built.push({ id: 'auto_bk_' + (b._id || i), type: 'success',
+      built.push({ id: 'auto_bk_' + b._id, type: 'success',
         title: 'New booking received',
         text: `${customer} booked ${(b.serviceIds || []).map(s => s.name).join(', ') || 'a service'}.`,
         time: new Date(b.createdAt || b.date), action: { view: 'bookings', bookingId: b._id } });
     });
     const existingIds = new Set(notifications.map(n => n.id));
-    built.forEach(n => { if (!existingIds.has(n.id)) notifications.push(n); });
+    built.forEach(n => {
+      if (dismissed.includes(n.id)) return;
+      if (!existingIds.has(n.id)) notifications.push(n);
+    });
     notifications.sort((a, b) => b.time - a.time);
     notifications = notifications.slice(0, 30);
-    const readIds = getReadIds();
     notifications.forEach(n => { n.read = readIds.includes(n.id); });
     renderNotifications();
   }
@@ -2283,24 +2488,96 @@
   }
 
   // ============================================================
-  // BOOKING FILTER
+  // BOOKING FILTER (period + status + search)
   // ============================================================
+  function getVisibleBookings() {
+    let list = [...allBookings];
+    // Period filter
+    if (currentBookingPeriod !== 'all') {
+      const now = new Date();
+      let start, end;
+      if (currentBookingPeriod === 'today') {
+        start = new Date(now); start.setHours(0, 0, 0, 0);
+        end = new Date(now); end.setHours(23, 59, 59, 999);
+      } else if (currentBookingPeriod === 'week') {
+        const day = now.getDay();
+        const diffToMon = (day + 6) % 7;
+        start = new Date(now); start.setDate(now.getDate() - diffToMon); start.setHours(0, 0, 0, 0);
+        end = new Date(start); end.setDate(start.getDate() + 6); end.setHours(23, 59, 59, 999);
+      } else if (currentBookingPeriod === 'month') {
+        start = new Date(now.getFullYear(), now.getMonth(), 1, 0, 0, 0, 0);
+        end = new Date(now.getFullYear(), now.getMonth() + 1, 0, 23, 59, 59, 999);
+      } else if (currentBookingPeriod === 'custom' && customBookingStart && customBookingEnd) {
+        start = new Date(customBookingStart); start.setHours(0, 0, 0, 0);
+        end = new Date(customBookingEnd); end.setHours(23, 59, 59, 999);
+      }
+      if (start && end) {
+        list = list.filter(b => {
+          const d = new Date(b.date);
+          return d >= start && d <= end;
+        });
+      }
+    }
+    // Status filter
+    if (currentBookingFilter !== 'all') {
+      list = list.filter(b => b.status === currentBookingFilter);
+    }
+    return list;
+  }
   function applyBookingFilter() {
+    const searchInput = document.getElementById('globalSearch');
+    const searchTerm = (searchInput?.value || '').toLowerCase().trim();
+    const activeView = document.querySelector('.view.active').id;
+    if (activeView !== 'bookings-view') return;
+    const visible = getVisibleBookings();
     const rows = document.querySelectorAll('#bookingsTableBody tr[data-booking-id]');
     let visibleCount = 0;
     rows.forEach(row => {
-      const status = row.dataset.status;
-      const show = currentBookingFilter === 'all' || status === currentBookingFilter;
+      const id = row.dataset.bookingId;
+      const inPeriod = visible.some(b => b._id === id);
+      const matchesSearch = !searchTerm || row.innerText.toLowerCase().includes(searchTerm);
+      const show = inPeriod && matchesSearch;
       row.style.display = show ? '' : 'none';
       if (show) visibleCount++;
     });
     const emptyMsg = document.getElementById('bookingsEmptySearch');
-    const searchTerm = (document.getElementById('globalSearch')?.value || '').trim();
-    if (emptyMsg) emptyMsg.classList.toggle('show', searchTerm === '' && visibleCount === 0 && allBookings.length > 0);
+    if (emptyMsg) emptyMsg.classList.toggle('show', visibleCount === 0 && (searchTerm !== '' || currentBookingPeriod !== 'all'));
+    updateBookingCounts();
   }
   function updateBookingCounts() {
-    const counts = { all: allBookings.length, pending: 0, confirmed: 0, completed: 0, cancelled: 0, no_show: 0 };
-    allBookings.forEach(b => { if (counts[b.status] !== undefined) counts[b.status]++; });
+    const counts = { all: 0, pending: 0, confirmed: 0, completed: 0, cancelled: 0, no_show: 0 };
+    // Count from period-filtered bookings only (for consistency)
+    const periodFiltered = (() => {
+      let list = [...allBookings];
+      if (currentBookingPeriod !== 'all') {
+        const now = new Date();
+        let start, end;
+        if (currentBookingPeriod === 'today') {
+          start = new Date(now); start.setHours(0, 0, 0, 0);
+          end = new Date(now); end.setHours(23, 59, 59, 999);
+        } else if (currentBookingPeriod === 'week') {
+          const day = now.getDay();
+          const diffToMon = (day + 6) % 7;
+          start = new Date(now); start.setDate(now.getDate() - diffToMon); start.setHours(0, 0, 0, 0);
+          end = new Date(start); end.setDate(start.getDate() + 6); end.setHours(23, 59, 59, 999);
+        } else if (currentBookingPeriod === 'month') {
+          start = new Date(now.getFullYear(), now.getMonth(), 1, 0, 0, 0, 0);
+          end = new Date(now.getFullYear(), now.getMonth() + 1, 0, 23, 59, 59, 999);
+        } else if (currentBookingPeriod === 'custom' && customBookingStart && customBookingEnd) {
+          start = new Date(customBookingStart); start.setHours(0, 0, 0, 0);
+          end = new Date(customBookingEnd); end.setHours(23, 59, 59, 999);
+        }
+        if (start && end) {
+          list = list.filter(b => {
+            const d = new Date(b.date);
+            return d >= start && d <= end;
+          });
+        }
+      }
+      return list;
+    })();
+    counts.all = periodFiltered.length;
+    periodFiltered.forEach(b => { if (counts[b.status] !== undefined) counts[b.status]++; });
     Object.keys(counts).forEach(k => {
       const el = document.getElementById('cnt-' + k);
       if (el) el.textContent = counts[k];
@@ -2308,7 +2585,7 @@
   }
 
   // ============================================================
-  // SETTINGS — persists to localStorage & reflects live
+  // SETTINGS
   // ============================================================
   const SETTINGS_KEY = 'pmu-admin-settings';
   const DEFAULT_SETTINGS = {
@@ -2445,13 +2722,28 @@
     document.getElementById('markAllReadBtn').addEventListener('click', markAllRead);
     document.getElementById('clearNotifsBtn').addEventListener('click', clearNotifications);
 
-    // Keyboard: Esc only (no browser conflicts)
+    // KEYBOARD SHORTCUTS (clean, non-conflicting)
     document.addEventListener('keydown', (e) => {
+      // Escape always closes modals/panels
       if (e.key === 'Escape') {
         document.querySelectorAll('.modal.active').forEach(m => m.classList.remove('active'));
         const panel = document.getElementById('notifPanel');
         if (panel) panel.classList.remove('show');
         closeConfirm();
+        return;
+      }
+      // Alt + F: Focus search
+      if (e.altKey && (e.key === 'f' || e.key === 'F')) {
+        e.preventDefault();
+        const search = document.getElementById('globalSearch');
+        if (search) { search.focus(); search.select(); }
+        return;
+      }
+      // Alt + 1..5: Navigation
+      if (e.altKey && ['1','2','3','4','5'].includes(e.key)) {
+        e.preventDefault();
+        const map = { '1': 'home', '2': 'bookings', '3': 'stylists', '4': 'services', '5': 'reports' };
+        switchView(map[e.key]);
       }
     });
 
@@ -2489,7 +2781,7 @@
       }
     });
 
-    // Booking filter tabs
+    // Booking status filter tabs
     document.querySelectorAll('#bookingFilterTabs .filter-tab').forEach(tab => {
       tab.addEventListener('click', () => {
         document.querySelectorAll('#bookingFilterTabs .filter-tab').forEach(t => t.classList.remove('active'));
@@ -2497,6 +2789,34 @@
         currentBookingFilter = tab.dataset.filter;
         applyBookingFilter();
       });
+    });
+
+    // Booking period filter tabs
+    document.querySelectorAll('#bookingPeriodTabs .filter-tab').forEach(tab => {
+      tab.addEventListener('click', () => {
+        document.querySelectorAll('#bookingPeriodTabs .filter-tab').forEach(t => t.classList.remove('active'));
+        tab.classList.add('active');
+        currentBookingPeriod = tab.dataset.period;
+        const customRange = document.getElementById('customBookingRange');
+        if (currentBookingPeriod === 'custom') {
+          customRange.style.display = 'flex';
+        } else {
+          customRange.style.display = 'none';
+          customBookingStart = null;
+          customBookingEnd = null;
+          applyBookingFilter();
+        }
+      });
+    });
+    document.getElementById('applyBookingDateBtn').addEventListener('click', () => {
+      const s = document.getElementById('bookingStartDate').value;
+      const e = document.getElementById('bookingEndDate').value;
+      if (!s || !e) { showToast('Select both dates.', true); return; }
+      if (new Date(s) > new Date(e)) { showToast('Start must be before end.', true); return; }
+      customBookingStart = s;
+      customBookingEnd = e;
+      applyBookingFilter();
+      showToast('Bookings filtered.');
     });
 
     // Export buttons
@@ -2510,6 +2830,16 @@
     document.getElementById('resetSettingsBtn').addEventListener('click', () => {
       showConfirm('Reset Settings?', 'This will restore all settings to their default values.', resetSettings, 'Yes, Reset');
     });
+
+    // Dark mode toggle in settings
+    const darkModeToggle = document.getElementById('darkModeToggle');
+    if (darkModeToggle) {
+      darkModeToggle.addEventListener('change', function() {
+        const theme = this.checked ? 'dark' : 'light';
+        try { localStorage.setItem('pmu-admin-theme', theme); } catch (e) {}
+        applyAdminTheme(theme);
+      });
+    }
 
     // New Booking save
     document.getElementById('saveBookingBtn').addEventListener('click', saveNewBooking);
@@ -2529,19 +2859,7 @@
         const activeView = document.querySelector('.view.active').id;
 
         if (activeView === 'bookings-view') {
-          const rows = document.querySelectorAll('#bookingsTableBody tr');
-          let anyVisible = false;
-          rows.forEach(row => {
-            if (row.cells.length < 2) return;
-            const text = row.innerText.toLowerCase();
-            const matchesSearch = query === '' || text.includes(query);
-            const matchesFilter = currentBookingFilter === 'all' || row.dataset.status === currentBookingFilter;
-            const visible = matchesSearch && matchesFilter;
-            row.style.display = visible ? '' : 'none';
-            if (visible) anyVisible = true;
-          });
-          const emptyMsg = document.getElementById('bookingsEmptySearch');
-          if (emptyMsg) emptyMsg.classList.toggle('show', query !== '' && !anyVisible);
+          applyBookingFilter();
         } else if (activeView === 'stylists-view') {
           const cards = document.querySelectorAll('.stylist-card');
           let anyVisible = false;
@@ -2682,6 +3000,7 @@
     if (viewId === 'reports') updateReports();
     if (viewId === 'bookings') loadAllBookings();
     if (viewId === 'settings') populateSettingsForm();
+    if (viewId === 'profile') updateProfileStats();
     document.querySelector('.main').scrollTop = 0;
   }
 
@@ -2698,6 +3017,7 @@
         populateStylistServiceOptions();
         populateBookingServiceOptions();
         updateHomeStats();
+        updateProfileStats();
       }
     } catch (err) { showToast('Failed to load services.', true); }
   }
@@ -2798,7 +3118,6 @@
       if (!res.ok) { showToast(data.message || 'Failed to save.', true); return; }
       closeServiceModal();
       showToast(editId ? 'Service updated.' : 'Service created.');
-      pushNotification('success', 'Service saved', `"${name}" was ${editId ? 'updated' : 'created'}.`);
       await loadServices();
       if (document.getElementById('serviceDetail').style.display === 'block' && editId) {
         openServiceDetail(editId);
@@ -2821,9 +3140,9 @@
           services = services.filter(s => (s._id || s.id) !== id);
           renderServices();
           updateHomeStats();
+          updateProfileStats();
           closeServiceDetail();
           showToast('Service deleted.');
-          pushNotification('warning', 'Service removed', `"${svc.name}" has been removed from your menu.`);
           setTimeout(loadServices, 400);
         } catch (err) { showToast('Error deleting service.', true); }
         finally { hideLoading(); }
@@ -2893,6 +3212,7 @@
         renderStylists();
         populateBookingStylistOptions();
         updateHomeStats();
+        updateProfileStats();
       }
     } catch (err) { showToast('Failed to load stylists.', true); }
   }
@@ -2910,21 +3230,34 @@
       const ratingNum = Number(st.rating) || 0;
       const starsCount = Math.round(ratingNum);
       const starsHTML = '★'.repeat(starsCount) + '☆'.repeat(5 - starsCount);
+      let statusClass = 'active', statusLabel = 'Active';
+      if (!st.isActive) { statusClass = 'disabled'; statusLabel = 'Disabled'; }
+      else if (!st.isAvailable) { statusClass = 'inactive'; statusLabel = 'Inactive'; }
       return `
         <div class="stylist-card" data-stylist-id="${st.id}">
-          <div class="luxury-avatar stylist-avatar">${initials.toUpperCase() || '?'}</div>
-          <div class="stylist-name">${escapeHtml(st.name)}</div>
-          <div class="stylist-contact-item"><i class="fas fa-envelope"></i> ${escapeHtml(st.email || 'N/A')}</div>
-          <div class="stylist-contact-item"><i class="fas fa-phone"></i> ${escapeHtml(st.phone || 'N/A')}</div>
-          <div class="stylist-divider"></div>
-          <div class="stylist-rating"><span class="stars">${starsHTML}</span><strong>${ratingNum.toFixed(1)}</strong></div>
-          <div class="stylist-services-label">Specialties</div>
-          <div class="service-chips">
-            ${serviceNames.length
-              ? visibleServices.map(n => `<span class="chip">${escapeHtml(n)}</span>`).join('') +
-                hiddenServices.map(n => `<span class="chip hidden-chip">${escapeHtml(n)}</span>`).join('') +
-                (hiddenServices.length ? `<span class="chip more-chip">+${hiddenServices.length} more</span>` : '')
-              : '<span style="font-size:0.78rem;color:var(--muted);font-weight:300;">No services assigned</span>'}
+          <div class="stylist-top">
+            <div class="luxury-avatar stylist-avatar">${initials.toUpperCase() || '?'}</div>
+            <div class="stylist-info">
+              <div class="stylist-name">${escapeHtml(st.name)}</div>
+              <div class="stylist-contact-item"><i class="fas fa-envelope"></i> ${escapeHtml(st.email || 'N/A')}</div>
+              <div class="stylist-contact-item"><i class="fas fa-phone"></i> ${escapeHtml(st.phone || 'N/A')}</div>
+            </div>
+            <span class="stylist-status-badge ${statusClass}">${statusLabel}</span>
+          </div>
+          <div class="stylist-card-divider"></div>
+          <div class="stylist-meta">
+            <div class="stylist-rating"><span class="stars">${starsHTML}</span><strong>${ratingNum.toFixed(1)}</strong></div>
+            <div class="stylist-count">${serviceNames.length} specialt${serviceNames.length === 1 ? 'y' : 'ies'}</div>
+          </div>
+          <div>
+            <div class="stylist-services-label">Specialties</div>
+            <div class="service-chips">
+              ${serviceNames.length
+                ? visibleServices.map(n => `<span class="chip">${escapeHtml(n)}</span>`).join('') +
+                  hiddenServices.map(n => `<span class="chip hidden-chip">${escapeHtml(n)}</span>`).join('') +
+                  (hiddenServices.length ? `<span class="chip more-chip">+${hiddenServices.length} more</span>` : '')
+                : '<span style="font-size:0.78rem;color:var(--muted);font-weight:300;">No services assigned</span>'}
+            </div>
           </div>
           <div class="stylist-actions">
             <button class="edit-stylist" data-id="${st.id}"><i class="fas fa-edit"></i> Edit</button>
@@ -3011,7 +3344,6 @@
         if (!res.ok) { showToast(data.message || 'Failed to update.', true); return; }
         closeStylistModal();
         showToast('Stylist updated.');
-        pushNotification('success', 'Stylist updated', 'Stylist details were successfully saved.');
         await loadStylists();
         if (document.getElementById('stylistDetail').style.display === 'block') {
           openStylistDetail(editId);
@@ -3044,7 +3376,6 @@
         if (!res.ok) { showToast(data.message || 'Failed to create stylist.', true); return; }
         closeStylistModal();
         showToast('Stylist created.');
-        pushNotification('success', 'New stylist added', `${name} has been added to your team.`);
         await loadStylists();
       } catch (err) { showToast('Error saving stylist.', true); }
       finally { hideLoading(); }
@@ -3065,9 +3396,9 @@
           stylists = stylists.filter(s => s.id !== id);
           renderStylists();
           updateHomeStats();
+          updateProfileStats();
           closeStylistDetail();
           showToast('Stylist deleted.');
-          pushNotification('warning', 'Stylist removed', `${st.name} has been removed from your team.`);
           setTimeout(loadStylists, 400);
         } catch (err) { showToast('Error deleting stylist.', true); }
         finally { hideLoading(); }
@@ -3159,6 +3490,7 @@
       updateTodayBar();
       renderActivityFeed();
       buildNotificationsFromData();
+      updateProfileStats();
     } catch (err) { showToast('Error loading bookings.', true); }
     finally { hideLoading(); }
   }
@@ -3218,11 +3550,6 @@
       updateTodayBar();
       renderActivityFeed();
       showToast('Booking updated.');
-      if (status === 'completed') {
-        pushNotification('success', 'Booking completed', 'An appointment has been marked complete.');
-      } else if (status === 'no_show') {
-        pushNotification('warning', 'No-show flagged', 'A customer did not arrive for their appointment.');
-      }
       setTimeout(loadAllBookings, 400);
       if (document.getElementById('reports-view').classList.contains('active')) updateReports();
       if (document.getElementById('bookingDetail').style.display === 'block') {
@@ -3334,7 +3661,6 @@
       document.getElementById('bookingService').value = '';
       document.getElementById('bookingStylist').value = '';
       showToast('Booking created.');
-      pushNotification('success', 'New booking', `Appointment for ${clientName} was created.`);
       await loadAllBookings();
     } catch (err) { showToast('Error creating booking.', true); }
     finally { hideLoading(); }
@@ -3447,6 +3773,14 @@
     document.getElementById('adminProfileMain').style.display = 'block';
     document.querySelector('.main').scrollTop = 0;
   }
+  function updateProfileStats() {
+    const s = document.getElementById('profileStatServices');
+    const st = document.getElementById('profileStatStylists');
+    const b = document.getElementById('profileStatBookings');
+    if (s) s.textContent = services.length;
+    if (st) st.textContent = stylists.length;
+    if (b) b.textContent = allBookings.length;
+  }
   async function saveAdminProfile() {
     const name = document.getElementById('adminProfileNameInput').value.trim();
     if (!name) { showToast('Name cannot be empty.', true); return; }
@@ -3484,7 +3818,6 @@
       } catch (e) {}
       closeAdminProfileEdit();
       showToast('Profile updated successfully!');
-      pushNotification('success', 'Profile updated', 'Your personal details were saved.');
     } catch (err) {
       showToast('Error saving profile.', true);
     } finally {
@@ -3619,6 +3952,7 @@
     await loadAllBookings();
     updateReports();
     updateHomeStats();
+    updateProfileStats();
   });
 </script>
 </body>
