@@ -10,7 +10,7 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js" integrity="sha512-GsLlZN/3F2ErC5ifS5QtgpiJtWd43JWSuIgh7mbzZ8zBps+dvLusV+eNQATqgA/HdeKFVgA5v3S/cIrLF7QnIg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
   <style>
     :root {
-      /* CLEAN BLACK / WHITE / GREY / PINK — DARK MODE DEFAULT */
+      /* PURE BLACK DARK MODE */
       --rose: #F4B6C8;
       --rose-light: #FCE1E8;
       --rose-deep: #D43F6B;
@@ -20,14 +20,14 @@
       --ink-soft: #E4E4E4;
       --muted: #9A9A9A;
       --muted-soft: #6E6E6E;
-      --border: rgba(255, 255, 255, 0.07);
-      --border-strong: rgba(255, 255, 255, 0.13);
-      --bg: #0A0A0A;
-      --bg-elevated: #111111;
-      --white: #111111;
-      --card-bg: #141414;
-      --card-bg-hover: #1A1A1A;
-      --input-bg: #141414;
+      --border: rgba(255, 255, 255, 0.08);
+      --border-strong: rgba(255, 255, 255, 0.14);
+      --bg: #000000;
+      --bg-elevated: #000000;
+      --white: #000000;
+      --card-bg: #0A0A0A;
+      --card-bg-hover: #111111;
+      --input-bg: #0A0A0A;
       --success: #4ADE80;
       --success-bg: rgba(74, 222, 128, 0.12);
       --warning: #FBBF24;
@@ -38,18 +38,18 @@
       --info-bg: rgba(96, 165, 250, 0.12);
       --violet: #A78BFA;
       --violet-bg: rgba(167, 139, 250, 0.12);
-      --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.4);
-      --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.5);
-      --shadow-lg: 0 12px 40px rgba(0, 0, 0, 0.6);
-      --shadow-xl: 0 24px 60px rgba(0, 0, 0, 0.7);
-      --shadow-rose: 0 8px 24px rgba(212, 63, 107, 0.3);
+      --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.5);
+      --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.6);
+      --shadow-lg: 0 12px 40px rgba(0, 0, 0, 0.7);
+      --shadow-xl: 0 24px 60px rgba(0, 0, 0, 0.8);
+      --shadow-rose: 0 8px 24px rgba(212, 63, 107, 0.35);
       --gradient: linear-gradient(135deg, #F4B6C8 0%, #D43F6B 100%);
       --gradient-light: linear-gradient(135deg, #FDE4EC 0%, #F4B6C8 100%);
       --grey-icon: #6E6E6E;
       --text-dim: #9A9A9A;
-      --hover-surface: rgba(255, 255, 255, 0.04);
-      --hover-surface-strong: rgba(255, 255, 255, 0.07);
-      --table-header-bg: rgba(255, 255, 255, 0.02);
+      --hover-surface: rgba(255, 255, 255, 0.045);
+      --hover-surface-strong: rgba(255, 255, 255, 0.08);
+      --table-header-bg: rgba(255, 255, 255, 0.025);
       --radius-sm: 8px;
       --radius-md: 12px;
       --radius-lg: 14px;
@@ -59,7 +59,6 @@
       --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
     }
     body.light {
-      /* CLEAN LIGHT MODE */
       --rose: #D43F6B;
       --rose-light: #FFB6C1;
       --rose-deep: #A02850;
@@ -125,7 +124,7 @@
     /* SIDEBAR */
     .sidebar-overlay {
       display: none; position: fixed; inset: 0;
-      background: rgba(0, 0, 0, 0.65); backdrop-filter: blur(6px); z-index: 998;
+      background: rgba(0, 0, 0, 0.75); backdrop-filter: blur(6px); z-index: 998;
     }
     .sidebar-overlay.active { display: block; animation: fadeIn 0.2s var(--ease); }
     .sidebar {
@@ -426,7 +425,7 @@
       position: relative; overflow: hidden;
       background:
         radial-gradient(circle at 92% 8%, rgba(244, 182, 200, 0.1), transparent 50%),
-        linear-gradient(135deg, #150810 0%, #0F0F0F 100%);
+        linear-gradient(135deg, #0A0A0A 0%, #000000 100%);
       border: 1px solid var(--border);
       border-radius: var(--radius-xl);
       padding: 2rem 2.2rem; margin-bottom: 1.6rem;
@@ -607,37 +606,103 @@
     }
     .table-wrapper.table-bare .admin-table td { padding: 1.15rem 1rem; }
 
-    .filter-tabs {
-      display: flex; gap: 0.3rem; background: var(--card-bg);
-      border: 1px solid var(--border); border-radius: var(--radius-pill);
-      padding: 0.3rem; margin-bottom: 1rem; overflow-x: auto; scrollbar-width: none;
+    /* BOOKINGS TOOLBAR — ORGANIZED FILTER BAR */
+    .bookings-toolbar {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 1.1rem 1.3rem;
+      margin-bottom: 1.4rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
     }
-    .filter-tabs::-webkit-scrollbar { display: none; }
-    .filter-tabs.secondary {
-      background: transparent; border: none; padding: 0 0 1.4rem 0;
-      margin-bottom: 0;
+    .bookings-filter-section {
+      display: flex;
+      flex-direction: column;
+      gap: 0.55rem;
     }
-    .filter-tab {
-      background: none; border: none; padding: 0.5rem 1rem;
-      border-radius: var(--radius-pill); font-family: inherit;
-      font-size: 0.82rem; font-weight: 500; color: var(--muted);
-      cursor: pointer; transition: 0.2s var(--ease); white-space: nowrap;
-      display: inline-flex; align-items: center; gap: 0.4rem;
+    .bookings-filter-label {
+      font-size: 0.68rem;
+      font-weight: 600;
+      letter-spacing: 1.2px;
+      text-transform: uppercase;
+      color: var(--muted);
+      padding-left: 0.1rem;
     }
-    .filter-tab:hover { color: var(--ink); background: var(--hover-surface); }
-    .filter-tab.active { background: var(--gradient); color: #FFFFFF; font-weight: 600; }
-    .filter-tab .count {
-      background: rgba(0, 0, 0, 0.15); border-radius: var(--radius-pill);
-      padding: 0.05rem 0.5rem; font-size: 0.7rem; font-weight: 600;
+    .bookings-pills {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.4rem;
     }
-    .filter-tab.active .count { background: rgba(255, 255, 255, 0.25); color: #FFFFFF; }
-    .filter-tab:not(.active) .count { background: var(--hover-surface-strong); color: var(--muted); }
-    .filter-tabs.secondary .filter-tab {
-      border: 1px solid var(--border); padding: 0.4rem 0.9rem;
+    .booking-pill {
+      background: transparent;
+      border: 1px solid var(--border);
+      color: var(--muted);
+      padding: 0.45rem 1rem;
+      border-radius: var(--radius-pill);
+      font-family: inherit;
+      font-size: 0.83rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: 0.18s var(--ease);
+      white-space: nowrap;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.45rem;
     }
-    .filter-tabs.secondary .filter-tab.active {
-      background: var(--rose-pale); color: var(--rose); border-color: var(--rose-mid);
+    .booking-pill:hover {
+      color: var(--ink);
+      border-color: var(--rose-mid);
+      background: var(--hover-surface);
     }
+    .booking-pill.active {
+      background: var(--gradient);
+      color: #FFFFFF;
+      border-color: transparent;
+      font-weight: 600;
+      box-shadow: var(--shadow-rose);
+    }
+    .booking-pill .count {
+      background: rgba(255, 255, 255, 0.12);
+      border-radius: var(--radius-pill);
+      padding: 0.05rem 0.5rem;
+      font-size: 0.7rem;
+      font-weight: 600;
+      min-width: 22px;
+      text-align: center;
+    }
+    .booking-pill.active .count { background: rgba(255, 255, 255, 0.28); }
+    .booking-pill:not(.active) .count {
+      background: var(--hover-surface-strong);
+      color: var(--muted);
+    }
+    .custom-range-row {
+      display: none;
+      gap: 0.6rem;
+      align-items: center;
+      flex-wrap: wrap;
+      margin-top: 0.3rem;
+      padding-top: 0.6rem;
+      border-top: 1px dashed var(--border);
+    }
+    .custom-range-row.show { display: flex; }
+    .custom-range-row input[type="date"] {
+      padding: 0.5rem 1rem;
+      border: 1px solid var(--border-strong);
+      border-radius: var(--radius-pill);
+      background: var(--input-bg);
+      color: var(--ink);
+      font-family: inherit;
+      font-size: 0.86rem;
+      outline: none;
+      transition: 0.2s;
+    }
+    .custom-range-row input[type="date"]:focus {
+      border-color: var(--rose);
+      box-shadow: 0 0 0 3px var(--rose-pale);
+    }
+    .custom-range-row span { font-size: 0.85rem; color: var(--muted); }
 
     .badge {
       display: inline-flex; align-items: center; gap: 0.3rem;
@@ -655,7 +720,7 @@
     .badge-cancelled { background: var(--danger-bg); color: var(--danger); }
     .badge-no_show { background: var(--violet-bg); color: var(--violet); }
 
-    /* SERVICES - clearer categories */
+    /* SERVICES */
     .category-group {
       background: transparent;
       padding: 1.6rem 0 0.8rem 0;
@@ -703,40 +768,40 @@
     .service-actions button:hover { color: var(--rose); background: var(--rose-pale); }
     .service-actions .delete-service:hover { color: var(--danger); background: var(--danger-bg); }
 
-    /* STYLISTS - horizontal organized layout */
-    .stylist-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); gap: 1.1rem; }
+    /* STYLISTS — BIGGER FONTS */
+    .stylist-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(360px, 1fr)); gap: 1.1rem; }
     .stylist-card {
       position: relative; background: var(--card-bg); border: 1px solid var(--border);
-      border-radius: var(--radius-lg); padding: 1.3rem 1.3rem 1rem;
+      border-radius: var(--radius-lg); padding: 1.4rem 1.4rem 1.1rem;
       transition: 0.22s var(--ease); cursor: pointer;
-      display: flex; flex-direction: column; gap: 0.9rem;
+      display: flex; flex-direction: column; gap: 1rem;
     }
     .stylist-card:hover {
       border-color: var(--rose-mid);
       box-shadow: var(--shadow-md); background: var(--card-bg-hover);
     }
     .stylist-top { display: flex; align-items: center; gap: 1rem; }
-    .stylist-avatar { width: 60px; height: 60px; font-size: 1.55rem; flex-shrink: 0; }
+    .stylist-avatar { width: 68px; height: 68px; font-size: 1.75rem; flex-shrink: 0; }
     .stylist-info { flex: 1; min-width: 0; }
     .stylist-name {
-      font-family: 'Cormorant Garamond', serif; font-size: 1.35rem;
+      font-family: 'Cormorant Garamond', serif; font-size: 1.55rem;
       font-weight: 600; color: var(--ink); line-height: 1.15; letter-spacing: 0.2px;
-      margin-bottom: 0.25rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+      margin-bottom: 0.35rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
     }
     .stylist-contact-item {
-      font-size: 0.78rem; color: var(--muted);
-      display: flex; align-items: center; gap: 0.4rem;
-      line-height: 1.4; font-weight: 300;
+      font-size: 0.86rem; color: var(--muted);
+      display: flex; align-items: center; gap: 0.45rem;
+      line-height: 1.5; font-weight: 300;
       white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
     }
-    .stylist-contact-item i { font-size: 0.68rem; color: var(--grey-icon); width: 14px; text-align: center; flex-shrink: 0; }
+    .stylist-contact-item i { font-size: 0.75rem; color: var(--grey-icon); width: 15px; text-align: center; flex-shrink: 0; }
     .stylist-status-badge {
-      display: inline-flex; align-items: center; gap: 0.3rem;
-      font-size: 0.68rem; font-weight: 600; padding: 0.2rem 0.65rem;
+      display: inline-flex; align-items: center; gap: 0.35rem;
+      font-size: 0.74rem; font-weight: 600; padding: 0.28rem 0.75rem;
       border-radius: var(--radius-pill); letter-spacing: 0.3px;
       flex-shrink: 0;
     }
-    .stylist-status-badge::before { content: ''; width: 5px; height: 5px; border-radius: 50%; background: currentColor; }
+    .stylist-status-badge::before { content: ''; width: 6px; height: 6px; border-radius: 50%; background: currentColor; }
     .stylist-status-badge.active { background: var(--success-bg); color: var(--success); }
     .stylist-status-badge.inactive { background: var(--warning-bg); color: var(--warning); }
     .stylist-status-badge.disabled { background: var(--hover-surface-strong); color: var(--muted); }
@@ -746,22 +811,22 @@
       gap: 0.8rem;
     }
     .stylist-rating {
-      font-size: 0.76rem; color: var(--muted);
-      display: inline-flex; align-items: center; gap: 0.4rem; letter-spacing: 0.3px;
+      font-size: 0.86rem; color: var(--muted);
+      display: inline-flex; align-items: center; gap: 0.45rem; letter-spacing: 0.3px;
     }
     .stylist-rating strong { color: var(--ink); font-weight: 600; }
-    .stylist-rating .stars { color: var(--rose); font-size: 0.7rem; letter-spacing: 0.8px; }
-    .stylist-count { font-size: 0.72rem; color: var(--muted); font-weight: 400; }
+    .stylist-rating .stars { color: var(--rose); font-size: 0.82rem; letter-spacing: 0.8px; }
+    .stylist-count { font-size: 0.82rem; color: var(--muted); font-weight: 400; }
     .stylist-services-label {
-      font-size: 0.62rem; font-weight: 600; color: var(--muted-soft);
+      font-size: 0.7rem; font-weight: 600; color: var(--muted-soft);
       text-transform: uppercase; letter-spacing: 1.3px;
     }
-    .service-chips { display: flex; flex-wrap: wrap; gap: 0.3rem; margin-top: 0.4rem; }
+    .service-chips { display: flex; flex-wrap: wrap; gap: 0.35rem; margin-top: 0.5rem; }
     .chip {
       background: transparent; color: var(--rose);
       border: 1px solid rgba(244, 182, 200, 0.2);
-      padding: 0.18rem 0.6rem; border-radius: var(--radius-pill);
-      font-size: 0.66rem; font-weight: 500; letter-spacing: 0.2px; transition: 0.15s;
+      padding: 0.25rem 0.7rem; border-radius: var(--radius-pill);
+      font-size: 0.76rem; font-weight: 500; letter-spacing: 0.2px; transition: 0.15s;
     }
     .chip.hidden-chip { display: none; }
     .chip.more-chip {
@@ -772,16 +837,16 @@
     .stylist-card.show-all .chip.hidden-chip { display: inline-flex; }
     .stylist-card.show-all .chip.more-chip { display: none; }
     .stylist-actions {
-      display: flex; gap: 1.2rem; padding-top: 0.85rem;
+      display: flex; gap: 1.2rem; padding-top: 0.9rem;
       border-top: 1px solid var(--border);
       width: 100%; justify-content: flex-end;
     }
     .stylist-actions button {
       background: none; border: none; font-family: inherit;
-      font-size: 0.78rem; font-weight: 500; cursor: pointer;
+      font-size: 0.84rem; font-weight: 500; cursor: pointer;
       transition: 0.15s; color: var(--muted);
       display: inline-flex; align-items: center; gap: 0.35rem;
-      letter-spacing: 0.2px; padding: 0.2rem 0.3rem;
+      letter-spacing: 0.2px; padding: 0.25rem 0.4rem;
       border-radius: var(--radius-sm);
     }
     .stylist-actions button:hover { color: var(--rose); background: var(--rose-pale); }
@@ -964,31 +1029,6 @@
       border: 1px solid rgba(244, 182, 200, 0.2);
       letter-spacing: 1px; text-transform: uppercase;
     }
-    .profile-stats {
-      display: grid; grid-template-columns: repeat(3, 1fr);
-      gap: 0;
-      margin: 1.6rem 0 0;
-      border-top: 1px solid var(--border);
-      border-bottom: 1px solid var(--border);
-    }
-    .profile-stat {
-      padding: 1.1rem 0.8rem;
-      text-align: center;
-      position: relative;
-    }
-    .profile-stat:not(:last-child)::after {
-      content: ''; position: absolute; right: 0; top: 25%; bottom: 25%;
-      width: 1px; background: var(--border);
-    }
-    .profile-stat-num {
-      font-family: 'Cormorant Garamond', serif; font-size: 1.85rem;
-      font-weight: 600; color: var(--ink); line-height: 1;
-    }
-    .profile-stat-label {
-      font-size: 0.66rem; color: var(--muted);
-      text-transform: uppercase; letter-spacing: 1.2px;
-      font-weight: 600; margin-top: 0.35rem;
-    }
     .profile-divider { height: 1px; background: var(--border); margin: 1.3rem 0; }
     .profile-details-list { display: flex; flex-direction: column; }
     .profile-detail-item {
@@ -1080,7 +1120,7 @@
       font-weight: 600; letter-spacing: 0.3px;
     }
 
-    /* SETTINGS — FLAT NO CARDS */
+    /* SETTINGS */
     .settings-page { max-width: 820px; }
     .settings-block {
       padding: 1.6rem 0 1.8rem;
@@ -1129,9 +1169,6 @@
       display: flex; justify-content: space-between; align-items: center;
       padding: 1rem 0; gap: 1rem;
     }
-    .settings-toggle-row:not(:last-child) {
-      border-bottom: 1px solid var(--border);
-    }
     .settings-toggle-info { flex: 1; min-width: 0; }
     .settings-toggle-info strong {
       display: block; font-size: 0.92rem; color: var(--ink);
@@ -1170,7 +1207,7 @@
     /* MODAL */
     .modal {
       display: none; position: fixed; inset: 0;
-      background: rgba(0, 0, 0, 0.8); backdrop-filter: blur(8px);
+      background: rgba(0, 0, 0, 0.85); backdrop-filter: blur(8px);
       align-items: center; justify-content: center;
       z-index: 2000; padding: 1rem; animation: fadeIn 0.2s var(--ease);
     }
@@ -1259,7 +1296,7 @@
     /* LOADING */
     #loadingOverlay {
       display: none; position: fixed; inset: 0;
-      background: rgba(0, 0, 0, 0.85); backdrop-filter: blur(8px);
+      background: rgba(0, 0, 0, 0.88); backdrop-filter: blur(8px);
       z-index: 9999; align-items: center; justify-content: center;
       flex-direction: column; gap: 1rem;
     }
@@ -1288,7 +1325,7 @@
     @media print {
       .sidebar, .sidebar-overlay, .header, .view-header-actions,
       .filter-tabs, .btn-text, .icon-btn, .notif-panel, .stylist-actions,
-      .service-actions, .filter-bar { display: none !important; }
+      .service-actions, .filter-bar, .bookings-toolbar { display: none !important; }
       body { background: white !important; color: #1A1014 !important; }
       .main-wrapper { overflow: visible !important; }
       .main { padding: 1rem !important; overflow: visible !important; }
@@ -1324,8 +1361,6 @@
         width: 1px; background: var(--border); display: block;
       }
       .admin-stat-number { font-size: 2rem; }
-      .filter-bar { flex-direction: column; align-items: stretch; }
-      .filter-bar > * { width: 100%; }
       .stylist-grid { grid-template-columns: 1fr; }
       .admin-table th, .admin-table td { padding: 0.75rem 0.6rem; font-size: 0.8rem; }
       .view-header { flex-direction: column; align-items: stretch; }
@@ -1342,8 +1377,6 @@
       .page-title { font-size: 1.4rem; }
       .notif-panel { width: calc(100vw - 2rem); right: 1rem; }
       .settings-grid { grid-template-columns: 1fr; }
-      .profile-stats { grid-template-columns: 1fr 1fr 1fr; }
-      .profile-stat-num { font-size: 1.5rem; }
     }
   </style>
 </head>
@@ -1566,28 +1599,35 @@
           </div>
         </div>
 
-        <div class="filter-tabs secondary" id="bookingPeriodTabs">
-          <button class="filter-tab active" data-period="all">All Time</button>
-          <button class="filter-tab" data-period="today">Today</button>
-          <button class="filter-tab" data-period="week">This Week</button>
-          <button class="filter-tab" data-period="month">This Month</button>
-          <button class="filter-tab" data-period="custom">Custom Range</button>
-        </div>
+        <div class="bookings-toolbar">
+          <div class="bookings-filter-section">
+            <div class="bookings-filter-label">Time Period</div>
+            <div class="bookings-pills" id="bookingPeriodTabs">
+              <button class="booking-pill active" data-period="all">All Time</button>
+              <button class="booking-pill" data-period="today">Today</button>
+              <button class="booking-pill" data-period="week">This Week</button>
+              <button class="booking-pill" data-period="month">This Month</button>
+              <button class="booking-pill" data-period="custom">Custom Range</button>
+            </div>
+            <div class="custom-range-row" id="customBookingRange">
+              <input type="date" id="bookingStartDate">
+              <span>to</span>
+              <input type="date" id="bookingEndDate">
+              <button class="btn-text" id="applyBookingDateBtn" style="font-size: 0.85rem;"><i class="fas fa-check"></i> Apply Range</button>
+            </div>
+          </div>
 
-        <div id="customBookingRange" style="display:none; gap:0.6rem; align-items:center; flex-wrap:wrap; padding-bottom: 1rem;">
-          <input type="date" id="bookingStartDate" style="padding: 0.5rem 1.05rem; border: 1px solid var(--border); border-radius: var(--radius-pill); background: var(--input-bg); color: var(--ink); font-family: inherit; font-size: 0.86rem; outline: none;">
-          <span style="font-size:0.85rem;color:var(--muted);">to</span>
-          <input type="date" id="bookingEndDate" style="padding: 0.5rem 1.05rem; border: 1px solid var(--border); border-radius: var(--radius-pill); background: var(--input-bg); color: var(--ink); font-family: inherit; font-size: 0.86rem; outline: none;">
-          <button class="btn-text" id="applyBookingDateBtn" style="font-size: 0.85rem;">Apply</button>
-        </div>
-
-        <div class="filter-tabs" id="bookingFilterTabs">
-          <button class="filter-tab active" data-filter="all">All <span class="count" id="cnt-all">0</span></button>
-          <button class="filter-tab" data-filter="pending">Pending <span class="count" id="cnt-pending">0</span></button>
-          <button class="filter-tab" data-filter="confirmed">Confirmed <span class="count" id="cnt-confirmed">0</span></button>
-          <button class="filter-tab" data-filter="completed">Completed <span class="count" id="cnt-completed">0</span></button>
-          <button class="filter-tab" data-filter="cancelled">Cancelled <span class="count" id="cnt-cancelled">0</span></button>
-          <button class="filter-tab" data-filter="no_show">No-show <span class="count" id="cnt-no_show">0</span></button>
+          <div class="bookings-filter-section">
+            <div class="bookings-filter-label">Status</div>
+            <div class="bookings-pills" id="bookingFilterTabs">
+              <button class="booking-pill active" data-filter="all">All <span class="count" id="cnt-all">0</span></button>
+              <button class="booking-pill" data-filter="pending">Pending <span class="count" id="cnt-pending">0</span></button>
+              <button class="booking-pill" data-filter="confirmed">Confirmed <span class="count" id="cnt-confirmed">0</span></button>
+              <button class="booking-pill" data-filter="completed">Completed <span class="count" id="cnt-completed">0</span></button>
+              <button class="booking-pill" data-filter="cancelled">Cancelled <span class="count" id="cnt-cancelled">0</span></button>
+              <button class="booking-pill" data-filter="no_show">No-show <span class="count" id="cnt-no_show">0</span></button>
+            </div>
+          </div>
         </div>
 
         <div class="table-wrapper table-bare">
@@ -1607,8 +1647,8 @@
         </div>
         <div class="empty-search" id="bookingsEmptySearch">
           <i class="fas fa-search"></i>
-          <h4>No bookings match your search</h4>
-          <p>Try a different customer, service, or stylist name.</p>
+          <h4>No bookings match your filters</h4>
+          <p>Try a different period, status, or search term.</p>
         </div>
         <div id="bookingDetail" style="display:none;"></div>
       </section>
@@ -1685,21 +1725,6 @@
             <div class="profile-role-badge"><i class="fas fa-crown"></i> Administrator</div>
           </div>
 
-          <div class="profile-stats">
-            <div class="profile-stat">
-              <div class="profile-stat-num" id="profileStatServices">0</div>
-              <div class="profile-stat-label">Services</div>
-            </div>
-            <div class="profile-stat">
-              <div class="profile-stat-num" id="profileStatStylists">0</div>
-              <div class="profile-stat-label">Stylists</div>
-            </div>
-            <div class="profile-stat">
-              <div class="profile-stat-num" id="profileStatBookings">0</div>
-              <div class="profile-stat-label">Bookings</div>
-            </div>
-          </div>
-
           <div class="profile-divider"></div>
           <div class="profile-details-list">
             <div class="profile-detail-item"><span class="detail-label">Full Name</span><span class="detail-value" id="adminProfileFullName">—</span></div>
@@ -1717,7 +1742,7 @@
         </div>
 
         <div class="edit-profile-inline" id="adminProfileEdit" style="display:none;">
-          <button class="back-link" onclick="closeAdminProfileEdit()"><i class="fas fa-arrow-left"></i> Back</button>
+          <button class="back-link" onclick="history.back()"><i class="fas fa-arrow-left"></i> Back</button>
           <div>
             <div class="edit-profile-heading">Edit Profile</div>
             <div class="edit-profile-sub">Keep your details up to date. Your email is used for login and notifications.</div>
@@ -1742,7 +1767,7 @@
         </div>
       </section>
 
-      <!-- SETTINGS — FLAT -->
+      <!-- SETTINGS -->
       <section id="settings-view" class="view">
         <div class="view-header">
           <div>
@@ -1752,7 +1777,6 @@
         </div>
 
         <div class="settings-page">
-          <!-- Salon Information -->
           <div class="settings-block">
             <div class="settings-block-header">
               <h3><i class="fas fa-store"></i> Salon Information</h3>
@@ -1770,7 +1794,6 @@
             </div>
           </div>
 
-          <!-- Opening Hours -->
           <div class="settings-block">
             <h3><i class="fas fa-clock"></i> Opening Hours</h3>
             <p>Your salon's regular opening hours, shown in the sidebar.</p>
@@ -1781,7 +1804,6 @@
             </div>
           </div>
 
-          <!-- Appearance -->
           <div class="settings-block">
             <h3><i class="fas fa-palette"></i> Appearance</h3>
             <p>Personalise how the admin panel looks for you.</p>
@@ -1797,7 +1819,6 @@
             </div>
           </div>
 
-          <!-- Actions -->
           <div class="settings-actions">
             <button class="btn-primary" id="saveSettingsBtn"><i class="fas fa-check"></i> Save Settings</button>
             <button class="btn-outline" id="resetSettingsBtn"><i class="fas fa-undo"></i> Reset to Defaults</button>
@@ -1821,14 +1842,14 @@
 
         <div class="help-section">
           <h3>Keyboard Shortcuts</h3>
-          <p>Fast navigation without leaving the keyboard. These don't conflict with your browser.</p>
+          <p>Fast navigation without leaving the keyboard.</p>
           <div class="shortcut-list">
             <div class="shortcut-row"><span>Focus search bar</span><kbd>Alt + F</kbd></div>
-            <div class="shortcut-row"><span>Go to Overview</span><kbd>Alt + 1</kbd></div>
-            <div class="shortcut-row"><span>Go to Bookings</span><kbd>Alt + 2</kbd></div>
-            <div class="shortcut-row"><span>Go to Stylists</span><kbd>Alt + 3</kbd></div>
-            <div class="shortcut-row"><span>Go to Services</span><kbd>Alt + 4</kbd></div>
-            <div class="shortcut-row"><span>Go to Analytics</span><kbd>Alt + 5</kbd></div>
+            <div class="shortcut-row"><span>Go to Overview</span><kbd>Alt + H</kbd></div>
+            <div class="shortcut-row"><span>Go to Bookings</span><kbd>Ctrl + B</kbd></div>
+            <div class="shortcut-row"><span>Go to Stylists</span><kbd>Alt + S</kbd></div>
+            <div class="shortcut-row"><span>Go to Services</span><kbd>Alt + E</kbd></div>
+            <div class="shortcut-row"><span>Go to Analytics</span><kbd>Alt + A</kbd></div>
             <div class="shortcut-row"><span>Close any modal or panel</span><kbd>Esc</kbd></div>
           </div>
         </div>
@@ -1838,7 +1859,7 @@
           <p>Every appointment lands in the Bookings section. You can:</p>
           <ul>
             <li>Filter by time period (Today, This Week, This Month, or a custom range)</li>
-            <li>Filter by status using the tabs above the table</li>
+            <li>Filter by status using the pill tabs</li>
             <li>Click any row to see the full details of a booking</li>
             <li>Mark an appointment as <strong>Complete</strong> once the customer has been served</li>
             <li>Flag a booking as a <strong>No-show</strong> if the customer didn't arrive</li>
@@ -2056,6 +2077,8 @@
   let customBookingStart = null;
   let customBookingEnd = null;
   let notifications = [];
+  let isNavigatingBack = false;
+  let suppressHistoryPush = false;
   const DAY_LABELS = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
   const NOTIF_READ_KEY = 'pmu-admin-notifs-read';
   const NOTIF_DISMISSED_KEY = 'pmu-admin-notifs-dismissed';
@@ -2106,6 +2129,22 @@
   function setPageTitle(title) {
     const el = document.getElementById('pageTitle');
     if (el) el.textContent = title;
+  }
+
+  // ============================================================
+  // HISTORY / BACK BUTTON MANAGEMENT
+  // Keeps navigation inside the dashboard. Never leaves the SPA.
+  // ============================================================
+  function pushNavState(state, hash) {
+    if (suppressHistoryPush) return;
+    try {
+      history.pushState(state, '', hash || ('#' + (state.view || 'home')));
+    } catch (e) {}
+  }
+  function replaceNavState(state, hash) {
+    try {
+      history.replaceState(state, '', hash || ('#' + (state.view || 'home')));
+    } catch (e) {}
   }
 
   // ============================================================
@@ -2270,7 +2309,7 @@
   }
 
   // ============================================================
-  // NOTIFICATIONS (with persistence)
+  // NOTIFICATIONS
   // ============================================================
   function getReadIds() {
     try { return JSON.parse(localStorage.getItem(NOTIF_READ_KEY) || '[]'); } catch (e) { return []; }
@@ -2488,11 +2527,10 @@
   }
 
   // ============================================================
-  // BOOKING FILTER (period + status + search)
+  // BOOKING FILTER
   // ============================================================
   function getVisibleBookings() {
     let list = [...allBookings];
-    // Period filter
     if (currentBookingPeriod !== 'all') {
       const now = new Date();
       let start, end;
@@ -2518,7 +2556,6 @@
         });
       }
     }
-    // Status filter
     if (currentBookingFilter !== 'all') {
       list = list.filter(b => b.status === currentBookingFilter);
     }
@@ -2541,12 +2578,11 @@
       if (show) visibleCount++;
     });
     const emptyMsg = document.getElementById('bookingsEmptySearch');
-    if (emptyMsg) emptyMsg.classList.toggle('show', visibleCount === 0 && (searchTerm !== '' || currentBookingPeriod !== 'all'));
+    if (emptyMsg) emptyMsg.classList.toggle('show', visibleCount === 0 && (searchTerm !== '' || currentBookingPeriod !== 'all' || currentBookingFilter !== 'all'));
     updateBookingCounts();
   }
   function updateBookingCounts() {
     const counts = { all: 0, pending: 0, confirmed: 0, completed: 0, cancelled: 0, no_show: 0 };
-    // Count from period-filtered bookings only (for consistency)
     const periodFiltered = (() => {
       let list = [...allBookings];
       if (currentBookingPeriod !== 'all') {
@@ -2722,9 +2758,9 @@
     document.getElementById('markAllReadBtn').addEventListener('click', markAllRead);
     document.getElementById('clearNotifsBtn').addEventListener('click', clearNotifications);
 
-    // KEYBOARD SHORTCUTS (clean, non-conflicting)
+    // KEYBOARD SHORTCUTS
     document.addEventListener('keydown', (e) => {
-      // Escape always closes modals/panels
+      // Escape closes modals/panels
       if (e.key === 'Escape') {
         document.querySelectorAll('.modal.active').forEach(m => m.classList.remove('active'));
         const panel = document.getElementById('notifPanel');
@@ -2732,18 +2768,45 @@
         closeConfirm();
         return;
       }
-      // Alt + F: Focus search
+      // Ctrl+B → Bookings
+      if (e.ctrlKey && !e.shiftKey && !e.altKey && (e.key === 'b' || e.key === 'B')) {
+        const tag = (document.activeElement && document.activeElement.tagName) || '';
+        if (tag !== 'INPUT' && tag !== 'TEXTAREA') {
+          e.preventDefault();
+          switchView('bookings');
+        }
+        return;
+      }
+      // Alt+F → Focus search
       if (e.altKey && (e.key === 'f' || e.key === 'F')) {
         e.preventDefault();
         const search = document.getElementById('globalSearch');
         if (search) { search.focus(); search.select(); }
         return;
       }
-      // Alt + 1..5: Navigation
-      if (e.altKey && ['1','2','3','4','5'].includes(e.key)) {
+      // Alt+H → Home
+      if (e.altKey && (e.key === 'h' || e.key === 'H')) {
         e.preventDefault();
-        const map = { '1': 'home', '2': 'bookings', '3': 'stylists', '4': 'services', '5': 'reports' };
-        switchView(map[e.key]);
+        switchView('home');
+        return;
+      }
+      // Alt+S → Stylists
+      if (e.altKey && (e.key === 's' || e.key === 'S')) {
+        e.preventDefault();
+        switchView('stylists');
+        return;
+      }
+      // Alt+E → Services
+      if (e.altKey && (e.key === 'e' || e.key === 'E')) {
+        e.preventDefault();
+        switchView('services');
+        return;
+      }
+      // Alt+A → Analytics
+      if (e.altKey && (e.key === 'a' || e.key === 'A')) {
+        e.preventDefault();
+        switchView('reports');
+        return;
       }
     });
 
@@ -2782,9 +2845,9 @@
     });
 
     // Booking status filter tabs
-    document.querySelectorAll('#bookingFilterTabs .filter-tab').forEach(tab => {
+    document.querySelectorAll('#bookingFilterTabs .booking-pill').forEach(tab => {
       tab.addEventListener('click', () => {
-        document.querySelectorAll('#bookingFilterTabs .filter-tab').forEach(t => t.classList.remove('active'));
+        document.querySelectorAll('#bookingFilterTabs .booking-pill').forEach(t => t.classList.remove('active'));
         tab.classList.add('active');
         currentBookingFilter = tab.dataset.filter;
         applyBookingFilter();
@@ -2792,16 +2855,16 @@
     });
 
     // Booking period filter tabs
-    document.querySelectorAll('#bookingPeriodTabs .filter-tab').forEach(tab => {
+    document.querySelectorAll('#bookingPeriodTabs .booking-pill').forEach(tab => {
       tab.addEventListener('click', () => {
-        document.querySelectorAll('#bookingPeriodTabs .filter-tab').forEach(t => t.classList.remove('active'));
+        document.querySelectorAll('#bookingPeriodTabs .booking-pill').forEach(t => t.classList.remove('active'));
         tab.classList.add('active');
         currentBookingPeriod = tab.dataset.period;
         const customRange = document.getElementById('customBookingRange');
         if (currentBookingPeriod === 'custom') {
-          customRange.style.display = 'flex';
+          customRange.classList.add('show');
         } else {
-          customRange.style.display = 'none';
+          customRange.classList.remove('show');
           customBookingStart = null;
           customBookingEnd = null;
           applyBookingFilter();
@@ -2929,6 +2992,56 @@
 
     populateSettingsForm();
     renderNotifications();
+
+    // ============================================================
+    // BROWSER BACK BUTTON HANDLING
+    // Keeps navigation inside the dashboard — never exits to a different site.
+    // ============================================================
+    try {
+      history.replaceState({ type: 'view', view: 'home' }, '', '#home');
+    } catch (e) {}
+
+    window.addEventListener('popstate', (e) => {
+      const state = e.state;
+      // If there's no state (attempting to leave the SPA), block it
+      if (!state) {
+        try { history.pushState({ type: 'view', view: 'home' }, '', '#home'); } catch (err) {}
+        switchViewInternal('home', true);
+        return;
+      }
+      isNavigatingBack = true;
+      suppressHistoryPush = true;
+      try {
+        // Always close any open detail views first
+        closeServiceDetail();
+        closeStylistDetail();
+        closeBookingDetail();
+        // Apply the target view
+        const targetView = state.view || 'home';
+        switchViewInternal(targetView, true);
+        // If a detail ID is present, open that detail
+        if (state.detailId) {
+          if (state.type === 'booking') {
+            if (allBookings.some(b => b._id === state.detailId)) {
+              setTimeout(() => openBookingDetail(state.detailId), 30);
+            }
+          } else if (state.type === 'stylist') {
+            if (stylists.some(s => s.id === state.detailId)) {
+              setTimeout(() => openStylistDetail(state.detailId), 30);
+            }
+          } else if (state.type === 'service') {
+            if (services.some(s => (s._id || s.id) === state.detailId)) {
+              setTimeout(() => openServiceDetail(state.detailId), 30);
+            }
+          }
+        }
+      } finally {
+        setTimeout(() => {
+          isNavigatingBack = false;
+          suppressHistoryPush = false;
+        }, 100);
+      }
+    });
   });
 
   function downloadPDFReport() {
@@ -2988,7 +3101,11 @@
     }, 800);
   }
 
+  // switchView wrapper: handles history push by default
   function switchView(viewId) {
+    switchViewInternal(viewId, false);
+  }
+  function switchViewInternal(viewId, fromPopstate) {
     document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
     const target = document.getElementById(`${viewId}-view`);
     if (target) target.classList.add('active');
@@ -3000,8 +3117,13 @@
     if (viewId === 'reports') updateReports();
     if (viewId === 'bookings') loadAllBookings();
     if (viewId === 'settings') populateSettingsForm();
-    if (viewId === 'profile') updateProfileStats();
     document.querySelector('.main').scrollTop = 0;
+    // Push to history unless we came from popstate or suppression is on
+    if (!fromPopstate && !isNavigatingBack && !suppressHistoryPush) {
+      try {
+        history.pushState({ type: 'view', view: viewId }, '', '#' + viewId);
+      } catch (e) {}
+    }
   }
 
   // ============================================================
@@ -3017,7 +3139,6 @@
         populateStylistServiceOptions();
         populateBookingServiceOptions();
         updateHomeStats();
-        updateProfileStats();
       }
     } catch (err) { showToast('Failed to load services.', true); }
   }
@@ -3140,7 +3261,6 @@
           services = services.filter(s => (s._id || s.id) !== id);
           renderServices();
           updateHomeStats();
-          updateProfileStats();
           closeServiceDetail();
           showToast('Service deleted.');
           setTimeout(loadServices, 400);
@@ -3160,7 +3280,7 @@
     detail.style.display = 'block';
     detail.innerHTML = `
       <div class="detail-inline">
-        <button class="back-link" onclick="closeServiceDetail()"><i class="fas fa-arrow-left"></i> Back to all services</button>
+        <button class="back-link" onclick="history.back()"><i class="fas fa-arrow-left"></i> Back to all services</button>
         <div class="detail-hero">
           <div><span class="badge badge-confirmed">${escapeHtml(svc.category)}</span></div>
           <div class="detail-heading">${escapeHtml(svc.name)}</div>
@@ -3177,10 +3297,16 @@
           <div class="detail-actions">
             <button class="action-link" onclick="openEditServiceModal('${svc._id || svc.id}')"><i class="fas fa-edit"></i> Edit service details</button>
             <button class="action-link danger" onclick="deleteService('${svc._id || svc.id}')"><i class="fas fa-trash-alt"></i> Delete this service</button>
-            <button class="action-link pink" onclick="closeServiceDetail()"><i class="fas fa-arrow-left"></i> Back to all services</button>
+            <button class="action-link pink" onclick="history.back()"><i class="fas fa-arrow-left"></i> Back to all services</button>
           </div>
         </div>
       </div>`;
+    // Push detail state to history
+    if (!isNavigatingBack && !suppressHistoryPush) {
+      try {
+        history.pushState({ type: 'service', view: 'services', detailId: svc._id || svc.id }, '', '#services/' + (svc._id || svc.id));
+      } catch (e) {}
+    }
     document.querySelector('.main').scrollTop = 0;
   }
   function closeServiceDetail() {
@@ -3212,7 +3338,6 @@
         renderStylists();
         populateBookingStylistOptions();
         updateHomeStats();
-        updateProfileStats();
       }
     } catch (err) { showToast('Failed to load stylists.', true); }
   }
@@ -3256,7 +3381,7 @@
                 ? visibleServices.map(n => `<span class="chip">${escapeHtml(n)}</span>`).join('') +
                   hiddenServices.map(n => `<span class="chip hidden-chip">${escapeHtml(n)}</span>`).join('') +
                   (hiddenServices.length ? `<span class="chip more-chip">+${hiddenServices.length} more</span>` : '')
-                : '<span style="font-size:0.78rem;color:var(--muted);font-weight:300;">No services assigned</span>'}
+                : '<span style="font-size:0.82rem;color:var(--muted);font-weight:300;">No services assigned</span>'}
             </div>
           </div>
           <div class="stylist-actions">
@@ -3396,7 +3521,6 @@
           stylists = stylists.filter(s => s.id !== id);
           renderStylists();
           updateHomeStats();
-          updateProfileStats();
           closeStylistDetail();
           showToast('Stylist deleted.');
           setTimeout(loadStylists, 400);
@@ -3422,7 +3546,7 @@
     detail.style.display = 'block';
     detail.innerHTML = `
       <div class="detail-inline">
-        <button class="back-link" onclick="closeStylistDetail()"><i class="fas fa-arrow-left"></i> Back to all stylists</button>
+        <button class="back-link" onclick="history.back()"><i class="fas fa-arrow-left"></i> Back to all stylists</button>
         <div class="detail-hero" style="align-items: center; text-align: center; gap: 0.8rem;">
           <div class="luxury-avatar profile-avatar-large" style="width: 88px; height: 88px; font-size: 2.2rem;">${initials.toUpperCase() || '?'}</div>
           <div class="detail-heading">${escapeHtml(st.name)}</div>
@@ -3456,7 +3580,7 @@
           <div class="detail-actions">
             <button class="action-link" onclick="openEditStylistModal('${st.id}')"><i class="fas fa-edit"></i> Edit stylist</button>
             <button class="action-link danger" onclick="deleteStylist('${st.id}')"><i class="fas fa-trash"></i> Delete this stylist</button>
-            <button class="action-link pink" onclick="closeStylistDetail()"><i class="fas fa-arrow-left"></i> Back to all stylists</button>
+            <button class="action-link pink" onclick="history.back()"><i class="fas fa-arrow-left"></i> Back to all stylists</button>
           </div>
         </div>
       </div>`;
@@ -3465,6 +3589,11 @@
       statusSel.addEventListener('change', function() {
         updateStylistStatus(this.dataset.id, this.value);
       });
+    }
+    if (!isNavigatingBack && !suppressHistoryPush) {
+      try {
+        history.pushState({ type: 'stylist', view: 'stylists', detailId: st.id }, '', '#stylists/' + st.id);
+      } catch (e) {}
     }
     document.querySelector('.main').scrollTop = 0;
   }
@@ -3490,7 +3619,6 @@
       updateTodayBar();
       renderActivityFeed();
       buildNotificationsFromData();
-      updateProfileStats();
     } catch (err) { showToast('Error loading bookings.', true); }
     finally { hideLoading(); }
   }
@@ -3580,7 +3708,7 @@
     detail.style.display = 'block';
     detail.innerHTML = `
       <div class="detail-inline">
-        <button class="back-link" onclick="closeBookingDetail()"><i class="fas fa-arrow-left"></i> Back to all bookings</button>
+        <button class="back-link" onclick="history.back()"><i class="fas fa-arrow-left"></i> Back to all bookings</button>
         <div class="detail-hero">
           <div><span class="badge badge-${b.status}">${b.status}</span></div>
           <div class="detail-heading">${services.map(s => escapeHtml(s.name)).join(', ') || 'Booking'}</div>
@@ -3616,10 +3744,15 @@
               <button class="action-link" onclick="markComplete('${b._id}')"><i class="fas fa-check"></i> Mark as completed</button>
               <button class="action-link danger" onclick="setBookingStatus('${b._id}', 'no_show')"><i class="fas fa-user-slash"></i> Flag as no-show</button>
             ` : ''}
-            <button class="action-link pink" onclick="closeBookingDetail()"><i class="fas fa-arrow-left"></i> Back to all bookings</button>
+            <button class="action-link pink" onclick="history.back()"><i class="fas fa-arrow-left"></i> Back to all bookings</button>
           </div>
         </div>
       </div>`;
+    if (!isNavigatingBack && !suppressHistoryPush) {
+      try {
+        history.pushState({ type: 'booking', view: 'bookings', detailId: b._id }, '', '#bookings/' + b._id);
+      } catch (e) {}
+    }
     document.querySelector('.main').scrollTop = 0;
   }
   function closeBookingDetail() {
@@ -3772,14 +3905,6 @@
     document.getElementById('adminProfileEdit').style.display = 'none';
     document.getElementById('adminProfileMain').style.display = 'block';
     document.querySelector('.main').scrollTop = 0;
-  }
-  function updateProfileStats() {
-    const s = document.getElementById('profileStatServices');
-    const st = document.getElementById('profileStatStylists');
-    const b = document.getElementById('profileStatBookings');
-    if (s) s.textContent = services.length;
-    if (st) st.textContent = stylists.length;
-    if (b) b.textContent = allBookings.length;
   }
   async function saveAdminProfile() {
     const name = document.getElementById('adminProfileNameInput').value.trim();
@@ -3952,7 +4077,6 @@
     await loadAllBookings();
     updateReports();
     updateHomeStats();
-    updateProfileStats();
   });
 </script>
 </body>
