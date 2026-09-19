@@ -12,6 +12,7 @@ const availabilityController = require('../controllers/availability.controller')
 const reportController = require('../controllers/report.controller');
 const settingController = require('../controllers/setting.controller');
 const stylistController = require('../controllers/stylist.controller');
+const guestController = require('../controllers/guest.controller')
 
 router.use(authenticate);
 router.use(authorize('admin'));
@@ -27,6 +28,7 @@ router.put('/settings/hours', settingController.updateBusinessHours);
 router.put('/bookings/:id/status', validate(idParamValidation), bookingController.updateBookingStatus);
 router.get('/bookings', bookingController.getAllBookings);
 router.get('/bookings/stylist/:id', validate(idParamValidation), bookingController.getStylistBookings);
+router.post('/bookings', guestController.createGuestBooking);
 
 // Availability
 router.get('/availability', availabilityController.checkAvailability);

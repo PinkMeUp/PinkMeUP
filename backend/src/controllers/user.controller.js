@@ -50,10 +50,15 @@ const getUserById = async (req, res) => {
 
 const updateUser = async (req, res) => {
   try {
-    const { firstName, lastName, phone, role, isActive } = req.body;
+    const { firstName, lastName, phone, email, role, isActive } = req.body;
     const user = await User.findById(req.params.id);
     if (!user) return errorResponse(res, 'User not found.', 404);
 
+    if (email && email.toLowerCase().trim() !== user.email) {
+      const existing = await User.findOne({ email: email.toLowerCase().trim() });
+      if (existing) return errorResponse(res, 'Email already in use.', 409);
+      user.email = email.toLowerCase().trim();
+    }
     if (firstName) user.firstName = firstName;
     if (lastName) user.lastName = lastName;
     if (phone) user.phone = phone;
