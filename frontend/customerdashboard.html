@@ -660,10 +660,10 @@
         <div class="booking-header-sub">Pick your services, choose your preferred stylist, and select a time that works best for you. We'll take care of everything else — all you need to do is arrive and enjoy the experience.</div>
       </div>
       <div class="wizard-steps">
-        <div class="w-step active" id="ws1" onclick="gotoStep(1)"><div class="w-step-num">1</div><span>Services</span></div>
-        <div class="w-step" id="ws2" onclick="gotoStep(2)"><div class="w-step-num">2</div><span>Date, Stylist & Time</span></div>
-        <div class="w-step" id="ws3" onclick="gotoStep(3)"><div class="w-step-num">3</div><span>Details</span></div>
-        <div class="w-step" id="ws4" onclick="gotoStep(4)"><div class="w-step-num">4</div><span>Review</span></div>
+        <div class="w-step active" id="ws1" onclick="tryGotoStep(1)"><div class="w-step-num">1</div><span>Services</span></div>
+<div class="w-step" id="ws2" onclick="tryGotoStep(2)"><div class="w-step-num">2</div><span>Date, Stylist & Time</span></div>
+<div class="w-step" id="ws3" onclick="tryGotoStep(3)"><div class="w-step-num">3</div><span>Details</span></div>
+<div class="w-step" id="ws4" onclick="tryGotoStep(4)"><div class="w-step-num">4</div><span>Review</span></div>
       </div>
 
       <div class="wizard-body" id="wbody1">
@@ -992,7 +992,7 @@
         else { const apptDateTime = new Date(b.date); const [h, m] = (b.startTime || '0:0').split(':').map(Number); apptDateTime.setHours(h, m, 0, 0); displayStatus = apptDateTime >= now ? 'upcoming' : 'past'; }
         const appointmentDate = new Date(b.date);
         const localDate = !Number.isNaN(appointmentDate.getTime()) ? `${appointmentDate.getFullYear()}-${String(appointmentDate.getMonth() + 1).padStart(2, '0')}-${String(appointmentDate.getDate()).padStart(2, '0')}` : String(b.date || '').slice(0, 10);
-        return { id: b._id, services: (b.serviceIds || []).map(s => ({ id: s._id, name: s.name, price: s.price, duration: s.duration })), date: localDate, time: b.startTime, stylistId: b.stylistId?._id || b.stylistId || '', stylist: [b.stylistId?.userId?.firstName, b.stylistId?.userId?.lastName].filter(Boolean).join(' ') || 'Stylist', notes: b.notes, status: displayStatus, rawStatus: b.status, canRate: b.status === 'completed' };
+        return { id: b._id, services: (b.serviceIds || []).map(s => ({ id: s._id, name: s.name, price: s.price, duration: s.duration })), date: localDate, time: b.startTime, stylistId: b.stylistId?._id || b.stylistId || '', stylist: [b.stylistId?.userId?.firstName, b.stylistId?.userId?.lastName].filter(Boolean).join(' ') || 'Stylist', notes: b.notes, status: displayStatus, rawStatus: b.status, canRate: b.status === 'completed', feedback: b.feedback || null };
       });
     } catch (error) { console.warn('Could not load appointments:', error); appointments = []; }
   }
@@ -1181,20 +1181,26 @@
   async function refreshTimeSlots() { bookState.time = ''; await loadAvailableSlots(); renderTimeSlotsIntoDOM(); }
   function selectTime(time) { if (!availableSlots.includes(time)) return; bookState.time = time; renderTimeSlotsIntoDOM(); }
 
-  function gotoStep(n) {
-    wizardStep = n;
-    for (let i = 1; i <= 4; i++) {
-      const body = document.getElementById(`wbody${i}`);
-      if (body) { if (i === n) body.classList.remove('hidden'); else body.classList.add('hidden'); }
-      const ws = document.getElementById(`ws${i}`);
-      if (ws) { ws.classList.toggle('active', i === n); ws.classList.toggle('done', i < n); }
-    }
-    document.getElementById('stepInd').textContent = `Step ${n} of 4`;
-    document.getElementById('wPrev').style.visibility = n === 1 ? 'hidden' : 'visible';
-    document.getElementById('wNext').innerHTML = n === 4 ? 'Confirm <i class="fas fa-check"></i>' : 'Next <i class="fas fa-arrow-right"></i>';
-    if (n === 4) buildReview();
-    document.querySelector('.main').scrollTop = 0;
+  function stepComplete(step) {
+  if (step === 1) return cartIds.length > 0;
+  if (step === 2) {
+    const dateVal = document.getElementById('apptDate')?.value;
+    return !!(dateVal && bookState.stylistId && bookState.time);
   }
+  if (step === 3) {
+    const name = document.getElementById('detName')?.value.trim();
+    const email = document.getElementById('detEmail')?.value.trim();
+    const phone = document.getElementById('detPhone')?.value.trim();
+    return !!(name && email && phone);
+  }
+  return true;
+}
+function tryGotoStep(target) {
+  for (let s = 1; s < target; s++) {
+    if (!stepComplete(s)) { showToast('Please complete the previous steps first.'); return; }
+  }
+  gotoStep(target);
+}
 
   function wizardNext() {
     if (wizardStep === 1) { if (!cartIds.length) { showToast('Please select at least one service.'); return; } }
@@ -1278,7 +1284,7 @@
     document.getElementById('appointmentsHeader').style.display = 'none';
     document.getElementById('filterTabs').style.display = 'none';
 
-    const servicesHTML = a.services.map(sv => `
+        const servicesHTML = a.services.map(sv => `
       <div class="detail-svc-item">
         <div>
           <div class="detail-svc-name">${sv.name}</div>
@@ -1287,6 +1293,24 @@
         <div class="detail-svc-price">R${sv.price}</div>
       </div>
     `).join('');
+
+    selectedRatingStars = 0;
+    const ratingHTML = a.rawStatus !== 'completed' ? '' : (
+      a.feedback && a.feedback.rating
+        ? `<div class="appointment-detail-section">
+             <div class="detail-section-label">Your Rating</div>
+             <div class="detail-row"><span>Rating</span><span>${'★'.repeat(a.feedback.rating)}${'☆'.repeat(5 - a.feedback.rating)}</span></div>
+             ${a.feedback.comment ? `<div class="detail-row"><span>Comment</span><span>${a.feedback.comment}</span></div>` : ''}
+           </div>`
+        : `<div class="appointment-detail-section">
+             <div class="detail-section-label">Rate This Service</div>
+             <div id="ratingStars" style="font-size:1.6rem;color:var(--rose);letter-spacing:0.2rem;cursor:pointer;">
+               ${[1, 2, 3, 4, 5].map(n => `<i class="far fa-star" data-star="${n}" onclick="selectRatingStar(${n})"></i>`).join('')}
+             </div>
+             <textarea id="ratingComment" placeholder="Optional comment..." maxlength="500" style="width:100%;margin-top:0.6rem;padding:0.5rem;border-radius:var(--radius-sm);border:1px solid var(--border);background:transparent;color:inherit;font-family:inherit;"></textarea>
+             <button class="btn-primary" style="margin-top:0.6rem;" onclick="submitRating('${a.id}')">Submit Rating</button>
+           </div>`
+    );
 
     const actionsHTML = `
       ${a.status === 'upcoming' ? `
@@ -1326,9 +1350,11 @@
 
         <div class="appointment-detail-section">
           <div class="detail-section-label">Services Booked</div>
-          ${servicesHTML}
+                    ${servicesHTML}
           <div class="detail-total"><span>Total</span><span>R${total.toLocaleString()}</span></div>
         </div>
+
+        ${ratingHTML}
 
         ${a.notes ? `
         <div class="appointment-detail-section">
@@ -1353,7 +1379,39 @@
     document.querySelector('.main').scrollTop = 0;
   }
 
-  function closeModal() { closeAppointmentDetail(); }
+    function closeModal() { closeAppointmentDetail(); }
+
+  let selectedRatingStars = 0;
+  function selectRatingStar(n) {
+    selectedRatingStars = n;
+    document.querySelectorAll('#ratingStars i').forEach(el => {
+      const star = Number(el.dataset.star);
+      el.className = star <= n ? 'fas fa-star' : 'far fa-star';
+    });
+  }
+
+  async function submitRating(id) {
+    if (!selectedRatingStars) { showToast('Please select a star rating.'); return; }
+    try {
+      const res = await fetch(`${API_URL}/bookings/${encodeURIComponent(id)}/feedback`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        credentials: 'include',
+        body: JSON.stringify({
+          rating: selectedRatingStars,
+          comment: document.getElementById('ratingComment')?.value.trim() || ''
+        })
+      });
+      const data = await res.json();
+      if (!res.ok) { showToast(data.message || 'Could not submit rating.'); return; }
+      showToast('Thanks for your feedback!');
+      await loadAppointments();
+      openDetailModal(id);
+    } catch (error) {
+      console.error('Rating error:', error);
+      showToast('Could not submit rating. Please try again.');
+    }
+  }
 
   let rescheduleApptId = null;
   let rescheduleAvailableSlots = [];
