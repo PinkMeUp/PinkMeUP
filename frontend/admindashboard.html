@@ -3322,6 +3322,8 @@
     else if (!st.isAvailable) currentStatus = 'inactive';
     document.getElementById('stylistStatus').value = currentStatus;
     document.getElementById('stylistId').value = st.id;
+	document.getElementById('stylistEmail').value = st.email;
+	
     document.querySelectorAll('.stylist-service-checkbox').forEach(cb => {
       cb.checked = st.serviceIds.includes(cb.value);
     });
