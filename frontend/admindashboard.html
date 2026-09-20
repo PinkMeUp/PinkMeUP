@@ -498,43 +498,106 @@
     }
     .home-meta-item i { color: var(--rose); font-size: 0.72rem; }
 
-    /* TODAY — premium stat cards */
+    /* BIG OVERVIEW CARD WRAPPER */
+    .overview-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-xl);
+      overflow: hidden;
+      margin-bottom: 1.6rem;
+      transition: border-color 0.25s var(--ease), box-shadow 0.25s var(--ease);
+      position: relative;
+    }
+    .overview-card:hover {
+      border-color: var(--border-strong);
+    }
+    .overview-card-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      padding: 1.15rem 1.6rem 1rem;
+      border-bottom: 1px solid var(--border);
+      position: relative;
+    }
+    .overview-card-header::after {
+      content: '';
+      position: absolute;
+      bottom: -1px;
+      left: 1.6rem;
+      width: 48px;
+      height: 1px;
+      background: var(--gradient);
+    }
+    .overview-card-title {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.7rem;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.3rem;
+      font-weight: 600;
+      color: var(--ink);
+      letter-spacing: 0.3px;
+    }
+    .overview-card-title i {
+      color: var(--rose);
+      font-size: 0.95rem;
+    }
+    .overview-card-sub {
+      font-size: 0.72rem;
+      color: var(--muted);
+      font-weight: 500;
+      letter-spacing: 1.2px;
+      text-transform: uppercase;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      white-space: nowrap;
+    }
+    .overview-card-sub .dot-live {
+      display: inline-block;
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--success);
+      box-shadow: 0 0 6px var(--success);
+      animation: pulse 1.5s infinite;
+    }
+
+    /* TODAY — 4 items inside one big card */
     .today-bar {
       display: grid;
       grid-template-columns: repeat(4, 1fr);
-      gap: 1rem;
-      margin-bottom: 1.4rem;
+      gap: 0;
+      background: transparent;
+      border: none;
+      border-radius: 0;
+      padding: 0;
+      margin-bottom: 0;
+      overflow: visible;
     }
     .today-item {
       display: flex;
       flex-direction: column;
-      gap: 0.7rem;
-      padding: 1.4rem 1.5rem;
-      background: var(--card-bg);
-      border: 1px solid var(--border);
-      border-radius: var(--radius-lg);
+      gap: 0.75rem;
+      padding: 1.8rem 1.7rem;
       position: relative;
-      overflow: hidden;
-      transition: 0.25s var(--ease);
       min-width: 0;
+      transition: 0.25s var(--ease);
+      background: transparent;
     }
-    .today-item::before {
+    .today-item:not(:last-child)::after {
       content: '';
       position: absolute;
-      top: 0;
-      left: 0;
       right: 0;
-      height: 2px;
-      background: var(--gradient);
-      opacity: 0;
-      transition: opacity 0.25s var(--ease);
+      top: 22%;
+      bottom: 22%;
+      width: 1px;
+      background: var(--border);
     }
     .today-item:hover {
-      border-color: var(--rose-mid);
-      transform: translateY(-2px);
-      box-shadow: var(--shadow-md);
+      background: var(--rose-pale);
     }
-    .today-item:hover::before { opacity: 1; }
     .today-item .today-label {
       display: inline-flex;
       align-items: center;
@@ -553,11 +616,11 @@
     }
     .today-item .today-value {
       font-family: 'Cormorant Garamond', serif;
-      font-size: 1.8rem;
+      font-size: 1.9rem;
       color: var(--ink);
       font-weight: 600;
       line-height: 1.15;
-      letter-spacing: -0.3px;
+      letter-spacing: -0.4px;
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
@@ -571,44 +634,43 @@
     }
     .today-item:hover .today-label { color: var(--ink); }
 
-    /* KPI — premium stat cards */
+    /* KPI — 4 items inside one big card */
     .admin-stats-grid {
       display: grid;
       grid-template-columns: repeat(4, 1fr);
-      gap: 1rem;
-      margin-bottom: 2.4rem;
+      gap: 0;
+      background: transparent;
+      border: none;
+      border-radius: 0;
+      padding: 0;
+      margin-bottom: 0;
+      overflow: visible;
     }
     .admin-stat {
       display: flex;
       flex-direction: column;
       gap: 0.5rem;
-      padding: 1.8rem 1.6rem;
-      background: var(--card-bg);
-      border: 1px solid var(--border);
-      border-radius: var(--radius-lg);
+      padding: 2rem 1.7rem;
+      background: transparent;
+      border: none;
+      border-radius: 0;
       position: relative;
-      overflow: hidden;
       transition: 0.25s var(--ease);
       cursor: default;
       min-width: 0;
     }
-    .admin-stat::before {
+    .admin-stat:not(:last-child)::after {
       content: '';
       position: absolute;
-      top: 0;
-      left: 0;
       right: 0;
-      height: 2px;
-      background: var(--gradient);
-      opacity: 0;
-      transition: opacity 0.25s var(--ease);
+      top: 24%;
+      bottom: 24%;
+      width: 1px;
+      background: var(--border);
     }
     .admin-stat:hover {
-      border-color: var(--rose-mid);
-      transform: translateY(-2px);
-      box-shadow: var(--shadow-md);
+      background: var(--rose-pale);
     }
-    .admin-stat:hover::before { opacity: 1; }
     .admin-stat .admin-stat-label {
       display: inline-flex;
       align-items: center;
@@ -627,11 +689,11 @@
     }
     .admin-stat .admin-stat-number {
       font-family: 'Cormorant Garamond', serif;
-      font-size: 3rem;
+      font-size: 3.2rem;
       font-weight: 600;
       color: var(--ink);
       line-height: 1;
-      letter-spacing: -0.8px;
+      letter-spacing: -0.9px;
       transition: 0.22s var(--ease);
       margin: 0.4rem 0 0.4rem;
     }
@@ -1635,7 +1697,11 @@
     /* RESPONSIVE */
     @media (max-width: 1200px) {
       .admin-stats-grid { grid-template-columns: repeat(2, 1fr); }
+      .admin-stat:nth-child(2)::after { display: none; }
+      .admin-stat:nth-child(3)::after { display: none; }
       .today-bar { grid-template-columns: repeat(2, 1fr); }
+      .today-item:nth-child(2)::after { display: none; }
+      .today-item:nth-child(4)::after { display: none; }
     }
     @media (max-width: 1100px) {
       .home-greeting { font-size: 1.9rem; }
@@ -1655,11 +1721,11 @@
       .home-header { flex-direction: column; align-items: flex-start; }
       .home-header-right { width: 100%; }
       .home-greeting { font-size: 1.75rem; }
-      .today-bar { grid-template-columns: 1fr 1fr; gap: 0.75rem; }
-      .today-item { padding: 1.15rem 1.2rem; }
-      .admin-stats-grid { grid-template-columns: 1fr 1fr; gap: 0.75rem; }
-      .admin-stat { padding: 1.4rem 1.2rem; }
-      .admin-stat .admin-stat-number { font-size: 2.2rem; }
+      .today-bar { grid-template-columns: 1fr 1fr; }
+      .today-item { padding: 1.4rem 1.3rem; }
+      .admin-stats-grid { grid-template-columns: 1fr 1fr; }
+      .admin-stat { padding: 1.5rem 1.3rem; }
+      .admin-stat .admin-stat-number { font-size: 2.4rem; }
       .stylist-grid { grid-template-columns: 1fr; }
       .admin-table th, .admin-table td { padding: 0.75rem 0.6rem; font-size: 0.8rem; }
       .view-header { flex-direction: column; align-items: stretch; }
@@ -1674,12 +1740,16 @@
       .notif-panel { width: calc(100vw - 2rem); right: 1rem; }
       .settings-grid { grid-template-columns: 1fr; }
       .quick-access-grid { grid-template-columns: 1fr 1fr; }
+      .overview-card-header { padding: 1rem 1.2rem 0.85rem; }
+      .overview-card-header::after { left: 1.2rem; }
     }
     @media (max-width: 480px) {
       .admin-stats-grid { grid-template-columns: 1fr; }
-      .admin-stat { padding: 1.2rem 1.2rem; }
+      .admin-stat { padding: 1.4rem 1.3rem; }
+      .admin-stat::after { display: none !important; }
       .today-bar { grid-template-columns: 1fr; }
-      .today-item { padding: 1.15rem 1.2rem; }
+      .today-item { padding: 1.3rem 1.3rem; }
+      .today-item::after { display: none !important; }
     }
   </style>
 </head>
@@ -1761,7 +1831,7 @@
     </header>
 
     <main class="main">
-      <!-- HOME / OVERVIEW — Editorial layout -->
+      <!-- HOME / OVERVIEW — Editorial layout with big cards -->
       <section id="home-view" class="view active">
         <div class="home-header">
           <div class="home-header-left">
@@ -1776,47 +1846,59 @@
           </div>
         </div>
 
-        <!-- Today strip — premium stat cards -->
-        <div class="today-bar">
-          <div class="today-item">
-            <div class="today-label"><i class="fas fa-calendar-day"></i> Today</div>
-            <div class="today-value" id="todayBookings">0 bookings</div>
+        <!-- BIG CARD 1: TODAY SNAPSHOT -->
+        <div class="overview-card">
+          <div class="overview-card-header">
+            <div class="overview-card-title"><i class="fas fa-sun"></i> Today's Snapshot</div>
+            <div class="overview-card-sub"><span class="dot-live"></span> Live · <span id="todayDateLabel">—</span></div>
           </div>
-          <div class="today-item">
-            <div class="today-label"><i class="fas fa-clock"></i> Next Appointment</div>
-            <div class="today-value" id="todayNext">—</div>
-          </div>
-          <div class="today-item">
-            <div class="today-label"><i class="fas fa-coins"></i> Est. Revenue</div>
-            <div class="today-value" id="todayRevenue">R0</div>
-          </div>
-          <div class="today-item">
-            <div class="today-label"><i class="fas fa-user-check"></i> Active Stylists</div>
-            <div class="today-value" id="todayStylists">0</div>
+          <div class="today-bar">
+            <div class="today-item">
+              <div class="today-label"><i class="fas fa-calendar-day"></i> Today</div>
+              <div class="today-value" id="todayBookings">0 bookings</div>
+            </div>
+            <div class="today-item">
+              <div class="today-label"><i class="fas fa-clock"></i> Next Appointment</div>
+              <div class="today-value" id="todayNext">—</div>
+            </div>
+            <div class="today-item">
+              <div class="today-label"><i class="fas fa-coins"></i> Est. Revenue</div>
+              <div class="today-value" id="todayRevenue">R0</div>
+            </div>
+            <div class="today-item">
+              <div class="today-label"><i class="fas fa-user-check"></i> Active Stylists</div>
+              <div class="today-value" id="todayStylists">0</div>
+            </div>
           </div>
         </div>
 
-        <!-- KPI — premium stat cards -->
-        <div class="admin-stats-grid">
-          <div class="admin-stat">
-            <div class="admin-stat-label"><i class="fas fa-concierge-bell"></i> Services</div>
-            <div class="admin-stat-number" id="homeStatServices">0</div>
-            <div class="admin-stat-meta"><i class="fas fa-check-circle"></i> All active</div>
+        <!-- BIG CARD 2: SALON OVERVIEW -->
+        <div class="overview-card">
+          <div class="overview-card-header">
+            <div class="overview-card-title"><i class="fas fa-chart-pie"></i> Salon Overview</div>
+            <div class="overview-card-sub">All-time metrics</div>
           </div>
-          <div class="admin-stat">
-            <div class="admin-stat-label"><i class="fas fa-user-friends"></i> Stylists</div>
-            <div class="admin-stat-number" id="homeStatStylists">0</div>
-            <div class="admin-stat-meta"><i class="fas fa-users"></i> On roster</div>
-          </div>
-          <div class="admin-stat">
-            <div class="admin-stat-label"><i class="fas fa-calendar-check"></i> Total Bookings</div>
-            <div class="admin-stat-number" id="homeStatBookings">0</div>
-            <div class="admin-stat-meta"><i class="fas fa-chart-line"></i> All time</div>
-          </div>
-          <div class="admin-stat">
-            <div class="admin-stat-label"><i class="fas fa-calendar-alt"></i> This Month</div>
-            <div class="admin-stat-number" id="homeStatThisMonth">0</div>
-            <div class="admin-stat-meta"><i class="fas fa-clock"></i> Current month</div>
+          <div class="admin-stats-grid">
+            <div class="admin-stat">
+              <div class="admin-stat-label"><i class="fas fa-concierge-bell"></i> Services</div>
+              <div class="admin-stat-number" id="homeStatServices">0</div>
+              <div class="admin-stat-meta"><i class="fas fa-check-circle"></i> All active</div>
+            </div>
+            <div class="admin-stat">
+              <div class="admin-stat-label"><i class="fas fa-user-friends"></i> Stylists</div>
+              <div class="admin-stat-number" id="homeStatStylists">0</div>
+              <div class="admin-stat-meta"><i class="fas fa-users"></i> On roster</div>
+            </div>
+            <div class="admin-stat">
+              <div class="admin-stat-label"><i class="fas fa-calendar-check"></i> Total Bookings</div>
+              <div class="admin-stat-number" id="homeStatBookings">0</div>
+              <div class="admin-stat-meta"><i class="fas fa-chart-line"></i> All time</div>
+            </div>
+            <div class="admin-stat">
+              <div class="admin-stat-label"><i class="fas fa-calendar-alt"></i> This Month</div>
+              <div class="admin-stat-number" id="homeStatThisMonth">0</div>
+              <div class="admin-stat-meta"><i class="fas fa-clock"></i> Current month</div>
+            </div>
           </div>
         </div>
 
@@ -2810,6 +2892,12 @@
     const nextEl = document.getElementById('todayNext');
     const revenueEl = document.getElementById('todayRevenue');
     const stylistsEl = document.getElementById('todayStylists');
+    const dateLabelEl = document.getElementById('todayDateLabel');
+    if (dateLabelEl) {
+      const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+      const d = new Date();
+      dateLabelEl.textContent = `${d.getDate()} ${months[d.getMonth()]} ${d.getFullYear()}`;
+    }
     if (bookingsEl) bookingsEl.textContent = `${todaysBookings.length} booking${todaysBookings.length !== 1 ? 's' : ''}`;
     const upcoming = todaysBookings
       .filter(b => ['pending', 'confirmed'].includes(b.status))
