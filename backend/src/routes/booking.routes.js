@@ -40,5 +40,6 @@ router.get('/:id', authenticate, validate(idParamValidation), bookingController.
 router.post('/', optionalAuthenticate, validate(bookingValidation), bookingController.createBooking);
 router.put('/:id/cancel', authenticate, validate(cancelValidation), bookingController.cancelBooking);
 router.put('/:id/reschedule', authenticate, validate(rescheduleValidation), bookingController.rescheduleBooking);
+router.put('/:id/feedback', authenticate, authorize('customer'), bookingController.submitBookingFeedback);
 
 module.exports = router;
