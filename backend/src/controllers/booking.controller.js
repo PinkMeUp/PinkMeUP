@@ -836,28 +836,39 @@ const getStylistBookings = async (req, res) => {
 const updateBookingStatus = async (req, res) => {
   try {
     const { id } = req.params;
-    const { status, rating, comment } = req.body;
+    const { status } = req.body;
 
     const validStatuses = ['pending', 'confirmed', 'completed', 'no_show'];
     if (!validStatuses.includes(status)) {
       return errorResponse(res, 'Invalid status.', 400);
     }
 
-    // Find the appointment first
     const appointment = await Appointment.findById(id);
     if (!appointment) return errorResponse(res, 'Booking not found.', 404);
-    
+
     if (appointment.status === APPOINTMENT_STATUS.CANCELLED) {
       return errorResponse(res, 'Cancelled bookings cannot be updated.', 400);
     }
 
-    let numericRating = null;
-    if (status === APPOINTMENT_STATUS.COMPLETED) {
-      numericRating = Number(rating);
-      if (!Number.isFinite(numericRating) || numericRating < 1 || numericRating > 5) {
-        return errorResponse(res, 'A rating between 1 and 5 is required to mark an appointment as completed.', 400);
-      }
-    }
+    const updated = await Appointment.findByIdAndUpdate(
+      id,
+      { $set: { status } },
+      { new: true, runValidators: true }
+    )
+      .populate('customerId', 'firstName lastName email phone')
+      .populate({
+        path: 'stylistId',
+        select: 'userId specialties rating serviceIds',
+        populate: { path: 'userId', select: 'firstName lastName email phone isActive' }
+      })
+      .populate('serviceIds', 'name price duration description');
+
+    return successResponse(res, 'Booking status updated.', updated);
+  } catch (error) {
+    logger.error('Update booking status error:', { message: error.message, stack: error.stack });
+    return errorResponse(res, 'Failed to update booking status.', 500);
+  }
+};
 
     // Prepare update fields
     const updateFields = { status };
