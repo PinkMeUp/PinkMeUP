@@ -963,10 +963,10 @@
 
   let SERVICES = [];
   let CATEGORIES = [];
-  async function loadServices() {
+ async function loadServices() {
     const res = await fetch(`${API_URL}/services?limit=100`, { credentials: 'include' });
     const data = await res.json();
-    SERVICES = data.data.services.map(s => ({ id: s._id, category: s.category, name: s.name, price: s.price, duration: s.duration }));
+    SERVICES = data.data.services.filter(s => s.isActive !== false).map(s => ({ id: s._id, category: s.category, name: s.name, price: s.price, duration: s.duration }));
     CATEGORIES = [...new Set(SERVICES.map(s => s.category))];
     activeCat = CATEGORIES[0];
   }
