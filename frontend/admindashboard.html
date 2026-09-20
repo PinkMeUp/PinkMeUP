@@ -2469,6 +2469,8 @@
   let services = [];
   let stylists = [];
   let allBookings = [];
+  let totalBookingsAllTime = 0;
+  let totalBookingsThisMonth = 0;
   let trendsChart = null;
   let currentBookingFilter = 'all';
   let currentBookingPeriod = 'all';
@@ -3982,19 +3984,40 @@
   async function loadAllBookings() {
     showLoading('Loading bookings...');
     try {
-      const res = await fetch(`${API_BASE}/admin/bookings?limit=100`, { credentials: 'include' });
+      const res = await fetch(`${API_BASE}/admin/bookings?limit=500`, { credentials: 'include' });
       const data = await res.json();
       if (!res.ok) { showToast(data.message || 'Failed to load bookings.', true); return; }
       allBookings = data.data.bookings || [];
+      if (data.data.pagination && typeof data.data.pagination.total === 'number') {
+        totalBookingsAllTime = data.data.pagination.total;
+      }
       renderBookings();
-      updateHomeStats();
       updateBookingCounts();
       updateTodayBar();
       renderActivityFeed();
       buildNotificationsFromData();
+      fetchBookingTotals().then(() => updateHomeStats());
     } catch (err) { showToast('Error loading bookings.', true); }
     finally { hideLoading(); }
   }
+
+  async function fetchBookingTotals() {
+    try {
+      const now = new Date();
+      const monthStart = new Date(now.getFullYear(), now.getMonth(), 1);
+      const monthEnd = new Date(now.getFullYear(), now.getMonth() + 1, 0, 23, 59, 59);
+      const fmt = (d) => d.toISOString().slice(0, 10);
+      const monthRes = await fetch(
+        `${API_BASE}/admin/bookings?limit=1&page=1&startDate=${fmt(monthStart)}&endDate=${fmt(monthEnd)}`,
+        { credentials: 'include' }
+      );
+      const monthData = await monthRes.json();
+      if (monthData.success && monthData.data?.pagination) {
+        totalBookingsThisMonth = monthData.data.pagination.total || 0;
+      }
+    } catch (e) {}
+  }
+
   function renderBookings() {
     const tbody = document.getElementById('bookingsTableBody');
     if (!allBookings.length) {
@@ -4325,13 +4348,8 @@
     if (!sEl) return;
     sEl.textContent = services.length;
     stEl.textContent = stylists.length;
-    bEl.textContent = allBookings.length;
-    const now = new Date();
-    const thisMonth = allBookings.filter(b => {
-      const d = new Date(b.date);
-      return d.getMonth() === now.getMonth() && d.getFullYear() === now.getFullYear();
-    }).length;
-    mEl.textContent = thisMonth;
+    bEl.textContent = totalBookingsAllTime || allBookings.length;
+    mEl.textContent = totalBookingsThisMonth;
   }
 
   async function signOut() {
