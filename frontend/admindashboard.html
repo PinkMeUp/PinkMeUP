@@ -420,161 +420,373 @@
       font-weight: 300; max-width: 720px; line-height: 1.65;
     }
 
-    /* HOME HERO */
-    .hero-card {
-      position: relative; overflow: hidden;
-      background:
-        radial-gradient(circle at 92% 8%, rgba(244, 182, 200, 0.1), transparent 50%),
-        linear-gradient(135deg, #0A0A0A 0%, #000000 100%);
-      border: 1px solid var(--border);
-      border-radius: var(--radius-xl);
-      padding: 2rem 2.2rem; margin-bottom: 1.6rem;
+    /* ============================================================
+       OVERVIEW PAGE — Professional admin dashboard
+       ============================================================ */
+    .home-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      gap: 1.5rem;
+      flex-wrap: wrap;
+      margin-bottom: 1.5rem;
+      padding-bottom: 1.4rem;
+      border-bottom: 1px solid var(--border);
     }
-    body.light .hero-card {
-      background:
-        radial-gradient(circle at 92% 8%, rgba(255, 182, 193, 0.4), transparent 50%),
-        linear-gradient(135deg, #FFF9FB 0%, #FFF2F6 100%);
-      border-color: rgba(212, 63, 107, 0.1);
+    .home-header-left { flex: 1; min-width: 260px; }
+    .home-eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.68rem;
+      font-weight: 600;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--rose);
+      margin-bottom: 0.5rem;
     }
-    .hero-eyebrow {
-      display: inline-flex; align-items: center; gap: 0.5rem;
-      font-size: 0.68rem; font-weight: 600; letter-spacing: 2px;
-      text-transform: uppercase; color: var(--rose);
-      margin-bottom: 1rem;
+    .home-eyebrow i { font-size: 0.7rem; }
+    .home-greeting {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 2.2rem;
+      font-weight: 600;
+      color: var(--ink);
+      line-height: 1.1;
+      letter-spacing: 0.2px;
+      margin-bottom: 0.35rem;
     }
-    .hero-title {
-      font-family: 'Cormorant Garamond', serif; font-size: 2.6rem;
-      font-weight: 600; line-height: 1.08; letter-spacing: 0.2px; margin-bottom: 0.7rem;
+    .home-greeting .accent {
+      background: var(--gradient);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      font-style: italic;
     }
-    .hero-title .accent {
-      background: var(--gradient); -webkit-background-clip: text;
-      background-clip: text; color: transparent; font-style: italic;
+    .home-sub {
+      font-size: 0.9rem;
+      color: var(--muted);
+      font-weight: 300;
+      line-height: 1.55;
     }
-    .hero-sub {
-      font-size: 0.98rem; color: var(--muted); max-width: 620px;
-      line-height: 1.65; font-weight: 300; margin-bottom: 1.3rem;
+    .home-header-right {
+      display: flex;
+      gap: 1.2rem;
+      align-items: center;
+      flex-wrap: wrap;
+      padding-bottom: 0.35rem;
     }
-    .hero-meta {
-      display: flex; flex-wrap: wrap; gap: 1.4rem; font-size: 0.8rem;
-      color: var(--muted); padding-top: 1rem; border-top: 1px solid var(--border);
+    .home-meta-item {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.45rem;
+      font-size: 0.8rem;
+      color: var(--muted);
+      font-weight: 400;
+      white-space: nowrap;
     }
-    .hero-meta-item { display: inline-flex; align-items: center; gap: 0.5rem; }
-    .hero-meta-item i { color: var(--rose); font-size: 0.8rem; }
+    .home-meta-item i { color: var(--rose); font-size: 0.75rem; }
 
-    /* TODAY BAR */
+    /* TODAY STRIP */
     .today-bar {
-      display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-      gap: 1rem; background: var(--hover-surface);
-      border-radius: var(--radius-lg); padding: 1rem 1.4rem;
-      margin-bottom: 1.6rem;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 0;
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 0;
+      margin-bottom: 1.4rem;
+      overflow: hidden;
     }
-    .today-item { display: flex; align-items: center; gap: 0.7rem; }
+    .today-item {
+      display: flex;
+      align-items: center;
+      gap: 0.85rem;
+      padding: 1.05rem 1.3rem;
+      position: relative;
+      transition: background 0.2s var(--ease);
+      min-width: 0;
+    }
+    .today-item:not(:last-child)::after {
+      content: '';
+      position: absolute;
+      right: 0; top: 22%; bottom: 22%;
+      width: 1px;
+      background: var(--border);
+    }
+    .today-item:hover { background: var(--hover-surface); }
     .today-item i {
-      width: 30px; height: 30px; border-radius: 50%;
-      background: var(--rose-pale); color: var(--rose);
-      display: flex; align-items: center; justify-content: center;
-      font-size: 0.8rem; flex-shrink: 0;
+      width: 36px; height: 36px;
+      border-radius: 10px;
+      background: var(--rose-pale);
+      color: var(--rose);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.85rem;
+      flex-shrink: 0;
+      border: 1px solid rgba(244, 182, 200, 0.15);
     }
-    .today-item .today-info { line-height: 1.25; }
+    .today-item .today-info { line-height: 1.25; min-width: 0; flex: 1; }
     .today-item .today-label {
-      font-size: 0.68rem; color: var(--muted); text-transform: uppercase;
-      letter-spacing: 1px; font-weight: 600;
+      font-size: 0.66rem;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 1.1px;
+      font-weight: 600;
+      margin-bottom: 0.15rem;
     }
     .today-item .today-value {
-      font-size: 0.95rem; color: var(--ink); font-weight: 600;
-      font-family: 'Cormorant Garamond', serif; letter-spacing: 0.2px;
+      font-size: 0.98rem;
+      color: var(--ink);
+      font-weight: 600;
+      font-family: 'Cormorant Garamond', serif;
+      letter-spacing: 0.3px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
 
-    .dashboard-grid { display: grid; grid-template-columns: 1.4fr 1fr; gap: 1.4rem; margin-bottom: 2rem; }
+    /* KPI CARDS */
+    .admin-stats-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1rem;
+      margin-bottom: 1.4rem;
+    }
+    .admin-stat {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 1.25rem 1.25rem 1.1rem;
+      display: flex;
+      align-items: flex-start;
+      gap: 0.9rem;
+      transition: 0.22s var(--ease);
+      position: relative;
+      min-width: 0;
+    }
+    .admin-stat:hover {
+      border-color: var(--rose-mid);
+      background: var(--card-bg-hover);
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-md);
+    }
+    .admin-stat-icon {
+      width: 42px; height: 42px;
+      border-radius: 11px;
+      background: var(--rose-pale);
+      color: var(--rose);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1rem;
+      flex-shrink: 0;
+      border: 1px solid rgba(244, 182, 200, 0.15);
+    }
+    .admin-stat-content { flex: 1; min-width: 0; }
+    .admin-stat-label {
+      font-size: 0.68rem;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 1.2px;
+      font-weight: 600;
+      margin-bottom: 0.4rem;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .admin-stat-number {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 2.3rem;
+      font-weight: 600;
+      color: var(--ink);
+      line-height: 1;
+      letter-spacing: -0.5px;
+      margin-bottom: 0.35rem;
+    }
+    .admin-stat-meta {
+      font-size: 0.72rem;
+      color: var(--muted);
+      font-weight: 400;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.3rem;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .admin-stat-meta i { color: var(--rose); font-size: 0.65rem; }
+
+    /* DASHBOARD GRID — Activity + Quick Access */
+    .dashboard-grid {
+      display: grid;
+      grid-template-columns: 1.5fr 1fr;
+      gap: 1.2rem;
+      margin-bottom: 1rem;
+      align-items: start;
+    }
     @media (max-width: 1100px) { .dashboard-grid { grid-template-columns: 1fr; } }
 
-    .activity-card {
-      background: transparent;
-      border-top: 1px solid var(--border);
-      padding: 1.4rem 0;
+    .dashboard-panel {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      min-width: 0;
     }
-    .activity-card h3 {
-      font-family: 'Cormorant Garamond', serif; font-size: 1.2rem;
-      font-weight: 600; color: var(--ink); margin-bottom: 0.9rem;
-      display: flex; align-items: center; justify-content: space-between;
+    .dashboard-panel-header {
+      padding: 1.05rem 1.25rem;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.6rem;
     }
-    .activity-card h3 .live-dot {
-      display: inline-flex; align-items: center; gap: 0.4rem;
-      font-family: 'DM Sans', sans-serif; font-size: 0.68rem; color: var(--success);
-      text-transform: uppercase; letter-spacing: 1px; font-weight: 600;
+    .dashboard-panel-header h3 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.15rem;
+      font-weight: 600;
+      color: var(--ink);
+      letter-spacing: 0.2px;
     }
-    .activity-card h3 .live-dot::before {
-      content: ''; width: 6px; height: 6px; border-radius: 50%;
-      background: var(--success); box-shadow: 0 0 8px var(--success);
+    .dashboard-panel-header .live-indicator {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      font-size: 0.66rem;
+      color: var(--success);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      font-weight: 600;
+    }
+    .dashboard-panel-header .live-indicator::before {
+      content: '';
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: var(--success);
+      box-shadow: 0 0 6px var(--success);
       animation: pulse 1.5s infinite;
     }
-    .activity-list { display: flex; flex-direction: column; gap: 0.15rem; }
+    .dashboard-panel-body {
+      padding: 0.5rem 0.55rem 0.9rem;
+      flex: 1;
+      min-height: 0;
+    }
+
+    /* Activity list */
+    .activity-list { display: flex; flex-direction: column; gap: 0.1rem; }
     .activity-item {
-      display: flex; gap: 0.8rem; padding: 0.65rem 0.5rem;
-      border-radius: var(--radius-sm); transition: 0.15s; align-items: flex-start;
+      display: flex;
+      gap: 0.8rem;
+      padding: 0.72rem 0.8rem;
+      border-radius: var(--radius-sm);
+      transition: 0.15s;
+      align-items: flex-start;
     }
     .activity-item:hover { background: var(--hover-surface); }
     .activity-dot {
-      flex-shrink: 0; width: 28px; height: 28px; border-radius: 50%;
-      display: flex; align-items: center; justify-content: center;
-      font-size: 0.72rem; background: var(--rose-pale); color: var(--rose);
-      border: 1px solid rgba(244, 182, 200, 0.2);
+      flex-shrink: 0;
+      width: 32px; height: 32px;
+      border-radius: 9px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.78rem;
+      background: var(--rose-pale);
+      color: var(--rose);
+      border: 1px solid rgba(244, 182, 200, 0.18);
     }
     .activity-dot.success { background: var(--success-bg); color: var(--success); border-color: rgba(74, 222, 128, 0.2); }
     .activity-dot.info { background: var(--info-bg); color: var(--info); border-color: rgba(96, 165, 250, 0.2); }
     .activity-content { flex: 1; min-width: 0; }
-    .activity-title { font-size: 0.86rem; color: var(--ink); font-weight: 500; margin-bottom: 0.1rem; }
-    .activity-desc { font-size: 0.76rem; color: var(--muted); line-height: 1.4; }
+    .activity-title {
+      font-size: 0.88rem;
+      color: var(--ink);
+      font-weight: 500;
+      margin-bottom: 0.15rem;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .activity-desc {
+      font-size: 0.78rem;
+      color: var(--muted);
+      line-height: 1.4;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
     .activity-time {
-      font-size: 0.66rem; color: var(--muted-soft); margin-top: 0.2rem;
-      text-transform: uppercase; letter-spacing: 0.4px; font-weight: 500;
+      font-size: 0.66rem;
+      color: var(--muted-soft);
+      margin-top: 0.22rem;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      font-weight: 500;
     }
-    .activity-empty { padding: 1.6rem 0.5rem; text-align: center; color: var(--muted); font-size: 0.85rem; }
-    .activity-empty i { display: block; font-size: 1.4rem; color: var(--rose-mid); margin-bottom: 0.4rem; }
-
-    /* STATS */
-    .admin-stats-grid {
-      display: grid; grid-template-columns: repeat(4, 1fr);
-      gap: 0; margin-bottom: 2rem;
-      border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);
+    .activity-empty {
+      padding: 2.4rem 1rem;
+      text-align: center;
+      color: var(--muted);
+      font-size: 0.85rem;
     }
-    .admin-stat {
-      padding: 1.4rem 1.5rem;
-      display: flex; flex-direction: column; justify-content: center;
-      position: relative; transition: background 0.2s var(--ease); cursor: default;
-    }
-    .admin-stat:not(:last-child)::after {
-      content: ''; position: absolute; right: 0; top: 25%; bottom: 25%;
-      width: 1px; background: var(--border);
-    }
-    .admin-stat:hover { background: var(--hover-surface); }
-    .admin-stat-label {
-      font-size: 0.68rem; color: var(--muted); text-transform: uppercase;
-      letter-spacing: 1.4px; font-weight: 600; margin-bottom: 0.5rem;
-    }
-    .admin-stat-number {
-      font-family: 'Cormorant Garamond', serif; font-size: 2.8rem;
-      font-weight: 600; color: var(--ink); line-height: 1; letter-spacing: -0.5px;
-    }
-    .admin-stat-trend {
-      font-size: 0.7rem; color: var(--muted); margin-top: 0.4rem;
-      display: inline-flex; align-items: center; gap: 0.3rem; font-weight: 500;
+    .activity-empty i {
+      display: block;
+      font-size: 1.6rem;
+      color: var(--rose-mid);
+      margin-bottom: 0.5rem;
     }
 
-    /* QUICK ACCESS */
-    .quick-access-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 0.8rem; margin-top: 0.8rem; }
+    /* Quick Access */
+    .quick-access-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.65rem;
+      padding: 0.35rem;
+      margin-top: 0;
+    }
     .quick-card {
-      position: relative; background: transparent;
+      position: relative;
+      background: transparent;
       border: 1px solid var(--border);
-      border-radius: var(--radius-md); padding: 1rem 1.1rem;
-      cursor: pointer; text-align: left; font-family: inherit;
+      border-radius: var(--radius-md);
+      padding: 1rem 0.9rem;
+      cursor: pointer;
+      text-align: left;
+      font-family: inherit;
       transition: 0.2s var(--ease);
+      display: flex;
+      flex-direction: column;
+      gap: 0.35rem;
+      min-width: 0;
     }
-    .quick-card:hover { border-color: var(--rose-mid); background: var(--card-bg-hover); }
-    .quick-card .quick-icon { color: var(--rose); font-size: 1rem; margin-bottom: 0.5rem; display: inline-flex; }
+    .quick-card:hover {
+      border-color: var(--rose-mid);
+      background: var(--rose-pale);
+      transform: translateY(-2px);
+    }
+    .quick-card .quick-icon {
+      width: 34px; height: 34px;
+      border-radius: 9px;
+      background: var(--rose-pale);
+      color: var(--rose);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.85rem;
+      margin-bottom: 0.15rem;
+      border: 1px solid rgba(244, 182, 200, 0.15);
+    }
     .quick-card h4 {
-      font-size: 0.92rem; font-weight: 600; color: var(--ink);
-      margin-bottom: 0.1rem; font-family: 'DM Sans', sans-serif; letter-spacing: 0.1px;
+      font-size: 0.88rem;
+      font-weight: 600;
+      color: var(--ink);
+      margin: 0;
+      font-family: 'DM Sans', sans-serif;
+      letter-spacing: 0.1px;
     }
     .quick-card p { font-size: 0.78rem; color: var(--muted); line-height: 1.45; font-weight: 300; }
 
@@ -606,7 +818,7 @@
     }
     .table-wrapper.table-bare .admin-table td { padding: 1.15rem 1rem; }
 
-    /* BOOKINGS TOOLBAR — ORGANIZED FILTER BAR */
+    /* BOOKINGS TOOLBAR */
     .bookings-toolbar {
       background: var(--card-bg);
       border: 1px solid var(--border);
@@ -768,7 +980,7 @@
     .service-actions button:hover { color: var(--rose); background: var(--rose-pale); }
     .service-actions .delete-service:hover { color: var(--danger); background: var(--danger-bg); }
 
-    /* STYLISTS — BIGGER FONTS */
+    /* STYLISTS */
     .stylist-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(360px, 1fr)); gap: 1.1rem; }
     .stylist-card {
       position: relative; background: var(--card-bg); border: 1px solid var(--border);
@@ -1336,10 +1548,11 @@
     }
 
     /* RESPONSIVE */
-    @media (max-width: 1100px) {
+    @media (max-width: 1200px) {
       .admin-stats-grid { grid-template-columns: repeat(2, 1fr); }
-      .admin-stat:nth-child(2)::after { display: none; }
-      .hero-title { font-size: 2.2rem; }
+    }
+    @media (max-width: 1100px) {
+      .home-greeting { font-size: 1.9rem; }
       .dashboard-grid { grid-template-columns: 1fr; }
     }
     @media (max-width: 900px) { .search-bar { width: 260px; } }
@@ -1353,14 +1566,16 @@
       .search-bar { width: 100%; order: 3; margin-top: 0.5rem; }
       .btn-text { font-size: 0.86rem; }
       .main { padding: 1.1rem; }
-      .admin-stats-grid { grid-template-columns: 1fr 1fr; gap: 0; }
-      .admin-stat { padding: 1rem 1.2rem; }
-      .admin-stat::after { display: none; }
-      .admin-stat:nth-child(odd)::after {
-        content: ''; position: absolute; right: 0; top: 20%; bottom: 20%;
-        width: 1px; background: var(--border); display: block;
-      }
-      .admin-stat-number { font-size: 2rem; }
+      .home-header { flex-direction: column; align-items: flex-start; }
+      .home-header-right { width: 100%; }
+      .home-greeting { font-size: 1.75rem; }
+      .today-item:not(:last-child)::after { display: none; }
+      .today-item { border-bottom: 1px solid var(--border); }
+      .today-item:last-child { border-bottom: none; }
+      .admin-stats-grid { grid-template-columns: 1fr 1fr; }
+      .admin-stat { padding: 1rem; }
+      .admin-stat-number { font-size: 1.9rem; }
+      .admin-stat-icon { width: 36px; height: 36px; font-size: 0.85rem; }
       .stylist-grid { grid-template-columns: 1fr; }
       .admin-table th, .admin-table td { padding: 0.75rem 0.6rem; font-size: 0.8rem; }
       .view-header { flex-direction: column; align-items: stretch; }
@@ -1370,13 +1585,14 @@
       .modal-content { padding: 1.5rem; }
       .analytics-card { padding: 1.2rem; }
       .peak-hours { flex-direction: column; align-items: flex-start; }
-      .hero-card { padding: 1.6rem 1.4rem; }
-      .hero-title { font-size: 1.85rem; }
-      .hero-meta { gap: 1rem; font-size: 0.76rem; }
       .section-title { font-size: 1.6rem; }
       .page-title { font-size: 1.4rem; }
       .notif-panel { width: calc(100vw - 2rem); right: 1rem; }
       .settings-grid { grid-template-columns: 1fr; }
+      .quick-access-grid { grid-template-columns: 1fr 1fr; }
+    }
+    @media (max-width: 480px) {
+      .admin-stats-grid { grid-template-columns: 1fr; }
     }
   </style>
 </head>
@@ -1458,87 +1674,126 @@
     </header>
 
     <main class="main">
-      <!-- HOME -->
+      <!-- HOME / OVERVIEW — Professional layout -->
       <section id="home-view" class="view active">
-        <div class="hero-card">
-          <div class="hero-eyebrow"><i class="fas fa-sparkles"></i> Administrator Console</div>
-          <h1 class="hero-title">Welcome back to <span class="accent">PinkMeUp</span></h1>
-          <p class="hero-sub">Your refined command centre for running the salon. Oversee your services, guide your stylists, and track performance — all in one elegant space.</p>
-          <div class="hero-meta">
-            <div class="hero-meta-item"><i class="fas fa-map-marker-alt"></i> 1 Jun Smuts Ave, Braamfontein</div>
-            <div class="hero-meta-item"><i class="fas fa-clock"></i> Mon–Sat · Open today</div>
-            <div class="hero-meta-item"><i class="fas fa-crown"></i> Signed in as Administrator</div>
+        <!-- Header -->
+        <div class="home-header">
+          <div class="home-header-left">
+            <div class="home-eyebrow"><i class="fas fa-sparkles"></i> Administrator Console</div>
+            <h1 class="home-greeting">Welcome back to <span class="accent">PinkMeUp</span></h1>
+            <p class="home-sub">Here's what's happening across your salon today.</p>
+          </div>
+          <div class="home-header-right">
+            <div class="home-meta-item"><i class="fas fa-map-marker-alt"></i> 1 Jun Smuts Ave, Braamfontein</div>
+            <div class="home-meta-item"><i class="fas fa-clock"></i> Mon–Sat · Open today</div>
+            <div class="home-meta-item"><i class="fas fa-crown"></i> Administrator</div>
           </div>
         </div>
 
+        <!-- Today at a glance -->
         <div class="today-bar">
           <div class="today-item">
             <i class="fas fa-calendar-day"></i>
-            <div class="today-info"><div class="today-label">Today</div><div class="today-value" id="todayBookings">0 bookings</div></div>
+            <div class="today-info">
+              <div class="today-label">Today</div>
+              <div class="today-value" id="todayBookings">0 bookings</div>
+            </div>
           </div>
           <div class="today-item">
             <i class="fas fa-clock"></i>
-            <div class="today-info"><div class="today-label">Next Appointment</div><div class="today-value" id="todayNext">—</div></div>
+            <div class="today-info">
+              <div class="today-label">Next Appointment</div>
+              <div class="today-value" id="todayNext">—</div>
+            </div>
           </div>
           <div class="today-item">
             <i class="fas fa-coins"></i>
-            <div class="today-info"><div class="today-label">Est. Revenue</div><div class="today-value" id="todayRevenue">R0</div></div>
+            <div class="today-info">
+              <div class="today-label">Est. Revenue</div>
+              <div class="today-value" id="todayRevenue">R0</div>
+            </div>
           </div>
           <div class="today-item">
             <i class="fas fa-user-check"></i>
-            <div class="today-info"><div class="today-label">Active Stylists</div><div class="today-value" id="todayStylists">0</div></div>
-          </div>
-        </div>
-
-        <div class="admin-stats-grid">
-          <div class="admin-stat">
-            <div class="admin-stat-label">Services Offered</div>
-            <div class="admin-stat-number" id="homeStatServices">0</div>
-            <div class="admin-stat-trend"><i class="fas fa-check-circle"></i> Active</div>
-          </div>
-          <div class="admin-stat">
-            <div class="admin-stat-label">Stylists On Roster</div>
-            <div class="admin-stat-number" id="homeStatStylists">0</div>
-            <div class="admin-stat-trend"><i class="fas fa-users"></i> Team</div>
-          </div>
-          <div class="admin-stat">
-            <div class="admin-stat-label">Total Bookings</div>
-            <div class="admin-stat-number" id="homeStatBookings">0</div>
-            <div class="admin-stat-trend"><i class="fas fa-calendar-check"></i> All time</div>
-          </div>
-          <div class="admin-stat">
-            <div class="admin-stat-label">Booked This Month</div>
-            <div class="admin-stat-number" id="homeStatThisMonth">0</div>
-            <div class="admin-stat-trend"><i class="fas fa-chart-line"></i> Current</div>
-          </div>
-        </div>
-
-        <div class="dashboard-grid">
-          <div class="activity-card">
-            <h3>Recent Activity <span class="live-dot">Live</span></h3>
-            <div class="activity-list" id="activityList">
-              <div class="activity-empty"><i class="fas fa-circle-notch"></i> Loading activity...</div>
+            <div class="today-info">
+              <div class="today-label">Active Stylists</div>
+              <div class="today-value" id="todayStylists">0</div>
             </div>
           </div>
-          <div class="activity-card">
-            <h3>Quick Access</h3>
-            <div class="quick-access-grid" style="grid-template-columns: 1fr 1fr; gap: 0.7rem; margin-top: 0;">
-              <button class="quick-card nav-item" data-view="services">
-                <div class="quick-icon"><i class="fas fa-concierge-bell"></i></div>
-                <h4>Services</h4>
-              </button>
-              <button class="quick-card nav-item" data-view="stylists">
-                <div class="quick-icon"><i class="fas fa-users"></i></div>
-                <h4>Stylists</h4>
-              </button>
-              <button class="quick-card nav-item" data-view="bookings">
-                <div class="quick-icon"><i class="fas fa-calendar-check"></i></div>
-                <h4>Bookings</h4>
-              </button>
-              <button class="quick-card nav-item" data-view="reports">
-                <div class="quick-icon"><i class="fas fa-chart-line"></i></div>
-                <h4>Analytics</h4>
-              </button>
+        </div>
+
+        <!-- KPI Cards -->
+        <div class="admin-stats-grid">
+          <div class="admin-stat">
+            <div class="admin-stat-icon"><i class="fas fa-concierge-bell"></i></div>
+            <div class="admin-stat-content">
+              <div class="admin-stat-label">Services</div>
+              <div class="admin-stat-number" id="homeStatServices">0</div>
+              <div class="admin-stat-meta"><i class="fas fa-check-circle"></i> All active</div>
+            </div>
+          </div>
+          <div class="admin-stat">
+            <div class="admin-stat-icon"><i class="fas fa-user-friends"></i></div>
+            <div class="admin-stat-content">
+              <div class="admin-stat-label">Stylists</div>
+              <div class="admin-stat-number" id="homeStatStylists">0</div>
+              <div class="admin-stat-meta"><i class="fas fa-users"></i> On roster</div>
+            </div>
+          </div>
+          <div class="admin-stat">
+            <div class="admin-stat-icon"><i class="fas fa-calendar-check"></i></div>
+            <div class="admin-stat-content">
+              <div class="admin-stat-label">Total Bookings</div>
+              <div class="admin-stat-number" id="homeStatBookings">0</div>
+              <div class="admin-stat-meta"><i class="fas fa-chart-line"></i> All time</div>
+            </div>
+          </div>
+          <div class="admin-stat">
+            <div class="admin-stat-icon"><i class="fas fa-calendar-alt"></i></div>
+            <div class="admin-stat-content">
+              <div class="admin-stat-label">This Month</div>
+              <div class="admin-stat-number" id="homeStatThisMonth">0</div>
+              <div class="admin-stat-meta"><i class="fas fa-clock"></i> Current month</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Activity + Quick Access -->
+        <div class="dashboard-grid">
+          <div class="dashboard-panel">
+            <div class="dashboard-panel-header">
+              <h3>Recent Activity</h3>
+              <span class="live-indicator">Live</span>
+            </div>
+            <div class="dashboard-panel-body">
+              <div class="activity-list" id="activityList">
+                <div class="activity-empty"><i class="fas fa-circle-notch"></i> Loading activity...</div>
+              </div>
+            </div>
+          </div>
+          <div class="dashboard-panel">
+            <div class="dashboard-panel-header">
+              <h3>Quick Access</h3>
+            </div>
+            <div class="dashboard-panel-body">
+              <div class="quick-access-grid">
+                <button class="quick-card nav-item" data-view="services">
+                  <div class="quick-icon"><i class="fas fa-concierge-bell"></i></div>
+                  <h4>Services</h4>
+                </button>
+                <button class="quick-card nav-item" data-view="stylists">
+                  <div class="quick-icon"><i class="fas fa-users"></i></div>
+                  <h4>Stylists</h4>
+                </button>
+                <button class="quick-card nav-item" data-view="bookings">
+                  <div class="quick-icon"><i class="fas fa-calendar-check"></i></div>
+                  <h4>Bookings</h4>
+                </button>
+                <button class="quick-card nav-item" data-view="reports">
+                  <div class="quick-icon"><i class="fas fa-chart-line"></i></div>
+                  <h4>Analytics</h4>
+                </button>
+              </div>
             </div>
           </div>
         </div>
@@ -2133,7 +2388,6 @@
 
   // ============================================================
   // HISTORY / BACK BUTTON MANAGEMENT
-  // Keeps navigation inside the dashboard. Never leaves the SPA.
   // ============================================================
   function pushNavState(state, hash) {
     if (suppressHistoryPush) return;
@@ -2478,7 +2732,7 @@
     }
     const recent = [...allBookings]
       .sort((a, b) => new Date(b.createdAt || b.date) - new Date(a.createdAt || a.date))
-      .slice(0, 5);
+      .slice(0, 6);
     list.innerHTML = recent.map(b => {
       const customer = b.customerId ? `${b.customerId.firstName || ''} ${b.customerId.lastName || ''}`.trim() : 'Guest';
       const serviceNames = (b.serviceIds || []).map(s => s.name).join(', ') || 'a service';
@@ -2760,7 +3014,6 @@
 
     // KEYBOARD SHORTCUTS
     document.addEventListener('keydown', (e) => {
-      // Escape closes modals/panels
       if (e.key === 'Escape') {
         document.querySelectorAll('.modal.active').forEach(m => m.classList.remove('active'));
         const panel = document.getElementById('notifPanel');
@@ -2768,7 +3021,6 @@
         closeConfirm();
         return;
       }
-      // Ctrl+B → Bookings
       if (e.ctrlKey && !e.shiftKey && !e.altKey && (e.key === 'b' || e.key === 'B')) {
         const tag = (document.activeElement && document.activeElement.tagName) || '';
         if (tag !== 'INPUT' && tag !== 'TEXTAREA') {
@@ -2777,32 +3029,27 @@
         }
         return;
       }
-      // Alt+F → Focus search
       if (e.altKey && (e.key === 'f' || e.key === 'F')) {
         e.preventDefault();
         const search = document.getElementById('globalSearch');
         if (search) { search.focus(); search.select(); }
         return;
       }
-      // Alt+H → Home
       if (e.altKey && (e.key === 'h' || e.key === 'H')) {
         e.preventDefault();
         switchView('home');
         return;
       }
-      // Alt+S → Stylists
       if (e.altKey && (e.key === 's' || e.key === 'S')) {
         e.preventDefault();
         switchView('stylists');
         return;
       }
-      // Alt+E → Services
       if (e.altKey && (e.key === 'e' || e.key === 'E')) {
         e.preventDefault();
         switchView('services');
         return;
       }
-      // Alt+A → Analytics
       if (e.altKey && (e.key === 'a' || e.key === 'A')) {
         e.preventDefault();
         switchView('reports');
@@ -2993,17 +3240,13 @@
     populateSettingsForm();
     renderNotifications();
 
-    // ============================================================
     // BROWSER BACK BUTTON HANDLING
-    // Keeps navigation inside the dashboard — never exits to a different site.
-    // ============================================================
     try {
       history.replaceState({ type: 'view', view: 'home' }, '', '#home');
     } catch (e) {}
 
     window.addEventListener('popstate', (e) => {
       const state = e.state;
-      // If there's no state (attempting to leave the SPA), block it
       if (!state) {
         try { history.pushState({ type: 'view', view: 'home' }, '', '#home'); } catch (err) {}
         switchViewInternal('home', true);
@@ -3012,14 +3255,11 @@
       isNavigatingBack = true;
       suppressHistoryPush = true;
       try {
-        // Always close any open detail views first
         closeServiceDetail();
         closeStylistDetail();
         closeBookingDetail();
-        // Apply the target view
         const targetView = state.view || 'home';
         switchViewInternal(targetView, true);
-        // If a detail ID is present, open that detail
         if (state.detailId) {
           if (state.type === 'booking') {
             if (allBookings.some(b => b._id === state.detailId)) {
@@ -3101,7 +3341,6 @@
     }, 800);
   }
 
-  // switchView wrapper: handles history push by default
   function switchView(viewId) {
     switchViewInternal(viewId, false);
   }
@@ -3118,9 +3357,7 @@
     if (viewId === 'bookings') loadAllBookings();
     if (viewId === 'stylists') loadStylists();
     if (viewId === 'settings') populateSettingsForm();
-    if (viewId === 'profile') updateProfileStats();
     document.querySelector('.main').scrollTop = 0;
-    // Push to history unless we came from popstate or suppression is on
     if (!fromPopstate && !isNavigatingBack && !suppressHistoryPush) {
       try {
         history.pushState({ type: 'view', view: viewId }, '', '#' + viewId);
@@ -3303,7 +3540,6 @@
           </div>
         </div>
       </div>`;
-    // Push detail state to history
     if (!isNavigatingBack && !suppressHistoryPush) {
       try {
         history.pushState({ type: 'service', view: 'services', detailId: svc._id || svc.id }, '', '#services/' + (svc._id || svc.id));
