@@ -3116,7 +3116,9 @@
     setPageTitle(titles[viewId] || 'Overview');
     if (viewId === 'reports') updateReports();
     if (viewId === 'bookings') loadAllBookings();
+    if (viewId === 'stylists') loadStylists();
     if (viewId === 'settings') populateSettingsForm();
+    if (viewId === 'profile') updateProfileStats();
     document.querySelector('.main').scrollTop = 0;
     // Push to history unless we came from popstate or suppression is on
     if (!fromPopstate && !isNavigatingBack && !suppressHistoryPush) {
