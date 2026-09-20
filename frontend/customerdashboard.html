@@ -8,2064 +8,820 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
   <style>
     :root {
-      --rose: #F4B6C8;
-      --rose-light: #FCE1E8;
-      --rose-deep: #D43F6B;
-      --rose-pale: rgba(244, 182, 200, 0.1);
-      --rose-mid: rgba(244, 182, 200, 0.25);
-      --ink: #FFFFFF;
-      --ink-soft: #E4E4E4;
-      --muted: #9A9A9A;
-      --muted-soft: #6E6E6E;
-      --border: rgba(255, 255, 255, 0.08);
-      --border-strong: rgba(255, 255, 255, 0.14);
-      --bg: #000000;
-      --bg-elevated: #000000;
-      --white: #000000;
-      --card-bg: #0A0A0A;
-      --card-bg-hover: #111111;
-      --input-bg: #0A0A0A;
+      --rose: #FF5C8A;
+      --rose-light: #FFB6C1;
+      --rose-pale: rgba(255, 92, 138, 0.12);
+      --rose-mid: rgba(255, 92, 138, 0.3);
+      --ink: #F5F7FA;
+      --muted: #B8C0CC;
+      --border: rgba(255, 255, 255, 0.1);
+      --bg: #0A0E1A;
+      --bg-gradient: linear-gradient(180deg, #0B1220 0%, #060814 50%, #000000 100%);
+      --white: #0F1524;
+      --card-bg: rgba(20, 28, 46, 0.7);
+      --card-bg-solid: #131A2B;
+      --input-bg: #0E1526;
       --success: #4ADE80;
-      --success-bg: rgba(74, 222, 128, 0.12);
       --warning: #FBBF24;
-      --warning-bg: rgba(251, 191, 36, 0.12);
-      --danger: #FF6B6B;
-      --danger-bg: rgba(255, 107, 107, 0.12);
-      --info: #60A5FA;
-      --info-bg: rgba(96, 165, 250, 0.12);
-      --violet: #A78BFA;
-      --violet-bg: rgba(167, 139, 250, 0.12);
-      --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.5);
-      --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.6);
-      --shadow-lg: 0 12px 40px rgba(0, 0, 0, 0.7);
-      --shadow-xl: 0 24px 60px rgba(0, 0, 0, 0.8);
-      --shadow-rose: 0 8px 24px rgba(212, 63, 107, 0.35);
-      --gradient: linear-gradient(135deg, #F4B6C8 0%, #D43F6B 100%);
-      --gradient-light: linear-gradient(135deg, #FDE4EC 0%, #F4B6C8 100%);
-      --grey-icon: #6E6E6E;
-      --text-dim: #9A9A9A;
-      --hover-surface: rgba(255, 255, 255, 0.045);
-      --hover-surface-strong: rgba(255, 255, 255, 0.08);
-      --table-header-bg: rgba(255, 255, 255, 0.025);
-      --radius-sm: 8px;
-      --radius-md: 12px;
-      --radius-lg: 14px;
-      --radius-xl: 20px;
-      --radius-pill: 100px;
-      --ease: cubic-bezier(0.4, 0, 0.2, 1);
-      --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+      --shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+      --gradient: linear-gradient(135deg, #FFB6C1 0%, #D43F6B 100%);
+      --grey-icon: #7A8496;
+      --text-black: #F5F7FA;
+      --text-dim: #B8C0CC;
+      --hover-surface: rgba(255, 255, 255, 0.06);
     }
+
     body.light {
       --rose: #D43F6B;
       --rose-light: #FFB6C1;
-      --rose-deep: #A02850;
       --rose-pale: rgba(212, 63, 107, 0.06);
-      --rose-mid: rgba(212, 63, 107, 0.2);
-      --ink: #0F0F0F;
-      --ink-soft: #1F1F1F;
-      --muted: #6B6B6B;
-      --muted-soft: #9A9A9A;
-      --border: #EAEAEA;
-      --border-strong: #D5D5D5;
-      --bg: #FAFAFA;
-      --bg-elevated: #FFFFFF;
-      --white: #FFFFFF;
-      --card-bg: #FFFFFF;
-      --card-bg-hover: #FFF9FB;
-      --input-bg: #F6F6F6;
-      --success: #1F8F62;
-      --success-bg: rgba(31, 143, 98, 0.08);
-      --warning: #C77A1F;
-      --warning-bg: rgba(199, 122, 31, 0.08);
-      --danger: #D62D2D;
-      --danger-bg: rgba(214, 45, 45, 0.08);
-      --info: #2563EB;
-      --info-bg: rgba(37, 99, 235, 0.08);
-      --violet: #7C3AED;
-      --violet-bg: rgba(124, 58, 237, 0.08);
+      --rose-mid: rgba(212, 63, 107, 0.25);
+      --ink: #1a1a1a;
+      --muted: #6B5560;
+      --border: #e8e0e5;
+      --bg: #ffffff;
+      --bg-gradient: linear-gradient(180deg, #ffffff 0%, #fdf8fa 60%, #faf3f6 100%);
+      --white: #ffffff;
+      --card-bg: #ffffff;
+      --card-bg-solid: #ffffff;
+      --input-bg: #ffffff;
+      --success: #2C8F6E;
+      --warning: #E07B39;
+      --shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
       --gradient: linear-gradient(135deg, #FFB6C1 0%, #D43F6B 100%);
-      --gradient-light: linear-gradient(135deg, #FFE4EC 0%, #FFB6C1 100%);
-      --grey-icon: #8B7580;
-      --text-dim: #6B6B6B;
-      --hover-surface: rgba(0, 0, 0, 0.025);
-      --hover-surface-strong: rgba(0, 0, 0, 0.05);
-      --table-header-bg: #F5F5F5;
-      --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.04);
-      --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.06);
-      --shadow-lg: 0 12px 40px rgba(0, 0, 0, 0.08);
-      --shadow-xl: 0 24px 60px rgba(0, 0, 0, 0.1);
-      --shadow-rose: 0 8px 24px rgba(212, 63, 107, 0.18);
+      --grey-icon: #888;
+      --text-black: #1a1a1a;
+      --text-dim: #555;
+      --hover-surface: rgba(0, 0, 0, 0.04);
     }
+
     * { margin: 0; padding: 0; box-sizing: border-box; }
-    html, body { height: 100%; }
+
     body {
-      font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
-      background: var(--bg);
+      font-family: 'DM Sans', sans-serif;
+      background: var(--bg-gradient);
+      background-attachment: fixed;
       color: var(--ink);
       height: 100vh;
       overflow: hidden;
       display: flex;
-      font-size: 15px;
-      line-height: 1.5;
-      -webkit-font-smoothing: antialiased;
-      transition: background 0.3s var(--ease), color 0.3s var(--ease);
+      flex-direction: column;
+      font-size: 16px;
+      transition: background 0.3s ease, color 0.3s ease;
     }
-    ::selection { background: var(--rose-mid); color: var(--ink); }
-    ::-webkit-scrollbar { width: 8px; height: 8px; }
-    ::-webkit-scrollbar-track { background: transparent; }
-    ::-webkit-scrollbar-thumb { background: var(--border-strong); border-radius: 8px; }
-    ::-webkit-scrollbar-thumb:hover { background: var(--muted-soft); }
 
-    .app { display: flex; width: 100%; height: 100%; }
+    .sidebar-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.65); backdrop-filter: blur(6px); z-index: 999; }
+    .sidebar-overlay.active { display: block; }
 
-    /* SIDEBAR */
-    .sidebar-overlay {
-      display: none; position: fixed; inset: 0;
-      background: rgba(0, 0, 0, 0.75); backdrop-filter: blur(6px); z-index: 998;
-    }
-    .sidebar-overlay.active { display: block; animation: fadeIn 0.2s var(--ease); }
     .sidebar {
-      width: 264px; background: var(--bg-elevated); border-right: 1px solid var(--border);
-      display: flex; flex-direction: column; flex-shrink: 0;
-      transition: transform 0.3s var(--ease); z-index: 999;
-      padding: 1.5rem 1.1rem; overflow-y: auto;
+      position: fixed; top: 0; left: -320px; width: 320px; height: 100%;
+      background: linear-gradient(180deg, #0B1220 0%, #050810 100%);
+      border-right: 1px solid var(--border);
+      z-index: 1000;
+      transition: left 0.3s cubic-bezier(0.4, 0, 0.2, 1), background 0.3s ease;
+      padding: 1.5rem 1.2rem; display: flex; flex-direction: column;
+      box-shadow: 4px 0 30px rgba(0,0,0,0.6);
     }
-    .sidebar::-webkit-scrollbar { width: 4px; }
-    .sidebar-close {
-      display: none; background: none; border: none; font-size: 1.2rem;
-      cursor: pointer; padding: 0.2rem 0; text-align: right; width: 100%;
-      color: var(--muted); margin-bottom: 0.5rem; transition: color 0.2s;
+    body.light .sidebar {
+      background: linear-gradient(180deg, #ffffff 0%, #fdf8fa 100%);
+      box-shadow: 4px 0 30px rgba(0, 0, 0, 0.06);
     }
-    .sidebar-close:hover { color: var(--rose); }
-    .brand-wrapper { display: flex; flex-direction: column; align-items: flex-start; margin-bottom: 1.5rem; padding: 0.3rem 0.4rem; }
-    .brand-name {
-      font-family: 'Cormorant Garamond', serif; font-size: 2.4rem; font-weight: 700;
-      background: var(--gradient); -webkit-background-clip: text; background-clip: text;
-      color: transparent; line-height: 1; letter-spacing: 0.5px;
-    }
-    .brand-slogan {
-      font-size: 0.72rem; font-weight: 500; letter-spacing: 2px;
-      color: var(--muted); text-transform: uppercase; margin-top: 0.4rem;
-    }
-    .sidebar-greeting { margin-bottom: 1.4rem; padding: 0.8rem 0.6rem 1rem; border-bottom: 1px solid var(--border); }
-    .greeting-name { font-size: 1.15rem; font-weight: 600; color: var(--ink); }
-    .greeting-sub { font-size: 0.78rem; color: var(--muted); margin-top: 0.15rem; text-transform: uppercase; letter-spacing: 1px; font-weight: 500; }
-    .nav-group { display: flex; flex-direction: column; gap: 0.15rem; margin-bottom: 1.4rem; }
-    .nav-label {
-      font-size: 0.68rem; font-weight: 600; color: var(--muted-soft);
-      text-transform: uppercase; letter-spacing: 1.4px;
-      margin-bottom: 0.5rem; padding-left: 0.7rem;
-    }
-    .sidebar-item {
-      display: flex; align-items: center; gap: 0.8rem;
-      padding: 0.7rem; border-radius: var(--radius-sm);
-      font-size: 0.95rem; font-weight: 400; color: var(--muted);
-      cursor: pointer; transition: 0.18s var(--ease);
-      background: transparent; border: none; font-family: inherit;
-      width: 100%; text-align: left; position: relative;
-    }
-    .sidebar-item i { width: 20px; text-align: center; font-size: 0.95rem; transition: color 0.18s; }
-    .sidebar-item:hover { color: var(--ink); background: var(--hover-surface); }
-    .sidebar-item:hover i { color: var(--rose); }
-    .sidebar-item.active { color: var(--rose); background: var(--rose-pale); font-weight: 500; }
-    .sidebar-item.active::before {
-      content: ''; position: absolute; left: -1.1rem; top: 50%;
-      transform: translateY(-50%); width: 3px; height: 20px;
-      background: var(--gradient); border-radius: 0 3px 3px 0;
-    }
-    .sidebar-item.active i { color: var(--rose); }
-    .sidebar-item.signout-nav { color: var(--danger); margin-top: auto; }
-    .sidebar-item.signout-nav:hover { background: var(--danger-bg); color: var(--danger); }
-    .sidebar-item.signout-nav:hover i { color: var(--danger); }
-    .sidebar-item .badge-dot {
-      margin-left: auto;
-      background: var(--gradient); color: #FFFFFF;
-      border-radius: var(--radius-pill);
-      min-width: 20px; height: 20px;
-      padding: 0 0.5rem;
-      font-size: 0.66rem; font-weight: 700;
-      display: flex; align-items: center; justify-content: center;
-      line-height: 1;
-    }
-    .sidebar-footer {
-      margin-top: auto; padding-top: 1.3rem; border-top: 1px solid var(--border);
-      font-size: 0.78rem; color: var(--muted); line-height: 1.7;
-    }
-    .sidebar-footer strong {
-      display: block; color: var(--ink); font-size: 0.68rem;
-      text-transform: uppercase; letter-spacing: 1px;
-      margin-bottom: 0.3rem; margin-top: 0.9rem; font-weight: 600;
-    }
-    .sidebar-footer strong:first-child { margin-top: 0; }
+    .sidebar.open { left: 0; }
 
-    /* MAIN WRAPPER */
-    .main-wrapper { flex: 1; display: flex; flex-direction: column; overflow: hidden; background: var(--bg); }
-
-    /* HEADER */
-    .header {
-      padding: 1.1rem 2rem; display: flex; justify-content: space-between; align-items: center;
-      border-bottom: 1px solid var(--border); background: var(--bg);
-      flex-shrink: 0; gap: 1rem;
-    }
-    .header-left { display: flex; align-items: center; gap: 1rem; }
-    .menu-btn {
-      display: none; background: none; border: none; color: var(--muted);
-      font-size: 1.2rem; cursor: pointer; padding: 0.4rem;
-      border-radius: var(--radius-sm); transition: 0.2s;
-    }
-    .menu-btn:hover { color: var(--rose); background: var(--hover-surface); }
-    .header-brand { display: none; flex-direction: column; align-items: flex-start; }
-    .header-brand-name {
-      font-family: 'Cormorant Garamond', serif; font-size: 1.6rem; font-weight: 700;
-      background: var(--gradient); -webkit-background-clip: text; background-clip: text;
-      color: transparent; line-height: 1;
-    }
-    .header-brand-slogan {
-      font-size: 0.62rem; color: var(--muted); letter-spacing: 1.5px;
-      text-transform: uppercase; margin-top: 0.15rem; font-weight: 500;
-    }
-    .header-right { display: flex; align-items: center; gap: 0.7rem; }
-
-    /* SEARCH BAR */
-    .search-bar {
-      display: flex; align-items: center; gap: 0.55rem;
-      background: var(--input-bg); border: 1px solid var(--border);
-      padding: 0.38rem 0.5rem 0.38rem 0.95rem;
-      border-radius: var(--radius-pill); width: 380px;
-      transition: 0.2s var(--ease); position: relative;
-    }
-    .search-bar:focus-within {
-      border-color: var(--rose-mid);
-      box-shadow: 0 0 0 3px var(--rose-pale);
-      background: var(--card-bg);
-    }
-    .search-bar i.search-icon { color: var(--muted); font-size: 0.82rem; flex-shrink: 0; }
-    .search-bar input {
-      background: transparent; border: none; color: var(--ink);
-      font-family: inherit; font-size: 0.85rem; width: 100%;
-      outline: none; padding: 0; line-height: 1.2;
-    }
-    .search-bar input::placeholder { color: var(--muted-soft); }
-    .search-bar .search-clear {
-      display: none; background: none; border: none; color: var(--muted);
-      cursor: pointer; width: 20px; height: 20px; border-radius: 50%;
-      align-items: center; justify-content: center; font-size: 0.7rem;
-      transition: 0.15s; flex-shrink: 0;
-    }
-    .search-bar .search-clear:hover { color: var(--rose); background: var(--rose-pale); }
-    .search-bar.has-text .search-clear { display: flex; }
-    .search-bar .kbd-hint {
-      font-size: 0.62rem; font-weight: 600; color: var(--muted-soft);
-      background: var(--hover-surface-strong);
-      padding: 0.15rem 0.4rem; border-radius: 4px;
-      letter-spacing: 0.5px; flex-shrink: 0;
-      font-family: 'DM Sans', sans-serif;
-    }
-    .search-bar.has-text .kbd-hint { display: none; }
-
-    /* SEARCH RESULTS */
-    .search-results {
-      position: absolute; top: calc(100% + 8px); left: 0; right: 0;
-      background: var(--card-bg); border: 1px solid var(--border-strong);
-      border-radius: var(--radius-lg); box-shadow: var(--shadow-xl);
-      max-height: 420px; overflow-y: auto;
-      z-index: 1500; display: none;
-      animation: viewFade 0.2s var(--ease);
-    }
-    .search-results.show { display: block; }
-    .search-results-section {
-      padding: 0.6rem 0.4rem;
-      border-bottom: 1px solid var(--border);
-    }
-    .search-results-section:last-child { border-bottom: none; }
-    .search-results-label {
-      font-size: 0.62rem; font-weight: 600; color: var(--muted);
-      text-transform: uppercase; letter-spacing: 1.2px;
-      padding: 0.4rem 0.6rem 0.3rem;
-    }
-    .search-result-item {
-      display: flex; align-items: center; gap: 0.7rem;
-      padding: 0.6rem 0.7rem; border-radius: var(--radius-sm);
-      cursor: pointer; transition: 0.15s;
-    }
-    .search-result-item:hover { background: var(--rose-pale); }
-    .search-result-item i {
-      width: 28px; height: 28px; border-radius: 8px;
-      background: var(--rose-pale); color: var(--rose);
-      display: flex; align-items: center; justify-content: center;
-      font-size: 0.75rem; flex-shrink: 0;
-    }
-    .search-result-body { flex: 1; min-width: 0; }
-    .search-result-title {
-      font-size: 0.88rem; font-weight: 500; color: var(--ink);
-      white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
-    }
-    .search-result-meta {
-      font-size: 0.74rem; color: var(--muted); margin-top: 0.1rem;
-      white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
-    }
-    .search-results-empty {
-      padding: 1.5rem 1rem; text-align: center;
-      color: var(--muted); font-size: 0.85rem;
-    }
-    .search-results-empty i {
-      display: block; font-size: 1.4rem;
-      color: var(--rose-mid); margin-bottom: 0.5rem;
-    }
-
-    .btn-text {
-      background: none; border: none; color: var(--rose);
-      font-family: inherit; font-size: 0.92rem; font-weight: 600;
-      display: inline-flex; align-items: center; gap: 0.45rem;
-      cursor: pointer; transition: 0.2s var(--ease);
-      padding: 0.4rem 0; letter-spacing: 0.2px; white-space: nowrap;
-    }
-    .btn-text:hover { color: var(--rose-deep); transform: translateX(3px); }
-    .btn-text i { font-size: 0.85rem; }
-
-    /* MAIN */
-    .main { flex: 1; overflow-y: auto; padding: 1.8rem 2rem; }
-    .view { display: none; animation: viewFade 0.3s var(--ease); }
-    .view.active { display: block; }
-    @keyframes viewFade {
-      from { opacity: 0; transform: translateY(8px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-
-    /* OVERVIEW */
-    .overview-header {
-      display: flex; justify-content: space-between; align-items: flex-start;
-      flex-wrap: wrap; gap: 1rem; margin-bottom: 1.6rem;
-    }
-    .overview-title {
-      font-family: 'Cormorant Garamond', serif; font-size: 2rem;
-      font-weight: 600; color: var(--ink); line-height: 1.15; letter-spacing: 0.2px;
-    }
-    .overview-sub {
-      font-size: 0.9rem; color: var(--muted); margin-top: 0.35rem;
-      font-weight: 300; max-width: 620px; line-height: 1.6;
-    }
-    .book-now-btn {
-      background: none; border: none; color: var(--rose);
-      font-family: inherit; font-size: 0.92rem; font-weight: 600;
-      display: inline-flex; align-items: center; gap: 0.45rem;
-      cursor: pointer; transition: 0.2s var(--ease);
-      padding: 0.4rem 0; letter-spacing: 0.2px; white-space: nowrap;
-    }
-    .book-now-btn:hover { color: var(--rose-deep); transform: translateX(3px); }
-
-    .next-appt-hero {
-      background: var(--card-bg);
-      border: 1px solid var(--border);
-      border-radius: var(--radius-xl);
-      padding: 1.6rem 1.8rem;
-      margin-bottom: 1.6rem;
-      position: relative;
-      overflow: hidden;
-      transition: 0.22s var(--ease);
-      cursor: pointer;
-    }
-    .next-appt-hero::before {
-      content: '';
-      position: absolute;
-      top: 0; left: 0; right: 0;
-      height: 3px;
-      background: var(--gradient);
-    }
-    .next-appt-hero::after {
-      content: '';
-      position: absolute;
-      right: -60px; top: -60px;
-      width: 200px; height: 200px;
-      border-radius: 50%;
-      background: radial-gradient(circle, var(--rose-pale) 0%, transparent 70%);
-      pointer-events: none;
-    }
-    .next-appt-hero:hover {
-      border-color: var(--rose-mid);
-      transform: translateY(-2px);
-      box-shadow: var(--shadow-md);
-    }
-    .next-appt-eyebrow {
-      display: inline-flex; align-items: center; gap: 0.5rem;
-      font-size: 0.66rem; font-weight: 600; color: var(--rose);
-      text-transform: uppercase; letter-spacing: 2px;
-      margin-bottom: 0.8rem;
-    }
-    .next-appt-eyebrow i { font-size: 0.68rem; }
-    .next-appt-title {
+    .sidebar-close { background: none; border: none; font-size: 1.3rem; color: var(--ink); cursor: pointer; padding: 0.2rem 0; text-align: right; width: 100%; }
+    .sidebar-user { padding: 0.3rem 0 0.9rem 0; border-bottom: 1px solid var(--border); margin-bottom: 0.8rem; }
+    .sidebar-greeting {
       font-family: 'Cormorant Garamond', serif;
-      font-size: 1.85rem; font-weight: 600;
-      color: var(--ink); line-height: 1.15;
-      letter-spacing: 0.2px;
-      margin-bottom: 0.8rem;
+      font-size: 1.15rem;
+      color: var(--muted);
+      font-weight: 500;
+      letter-spacing: 0.3px;
     }
-    .next-appt-meta {
-      display: flex; flex-wrap: wrap; gap: 1.4rem;
-      align-items: center;
-    }
-    .next-appt-meta-item {
-      display: inline-flex; align-items: center; gap: 0.5rem;
-      font-size: 0.85rem; color: var(--muted); font-weight: 400;
-    }
-    .next-appt-meta-item i { color: var(--rose); font-size: 0.75rem; }
-    .next-appt-countdown {
-      display: inline-flex; align-items: center; gap: 0.5rem;
-      background: var(--rose-pale); color: var(--rose);
-      padding: 0.5rem 1rem; border-radius: var(--radius-pill);
-      font-size: 0.78rem; font-weight: 600; letter-spacing: 0.3px;
-      border: 1px solid rgba(244, 182, 200, 0.2);
-      margin-top: 1rem;
-    }
-    .next-appt-countdown i { font-size: 0.72rem; }
-    .next-appt-empty {
-      text-align: center; padding: 1rem 0;
-    }
-    .next-appt-empty p {
-      font-size: 0.92rem; color: var(--muted);
-      font-weight: 300; margin-bottom: 0.8rem;
-    }
-
-    .stats-grid {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 1rem;
-      margin-bottom: 2rem;
-    }
-    .stat-card {
-      background: var(--card-bg);
-      border: 1px solid var(--border);
-      border-radius: var(--radius-lg);
-      padding: 1.5rem 1.5rem;
-      text-align: left;
-      transition: 0.22s var(--ease);
-      position: relative;
-      overflow: hidden;
-    }
-    .stat-card::before {
-      content: '';
-      position: absolute;
-      top: 0; left: 0; right: 0;
-      height: 2px;
-      background: var(--gradient);
-      opacity: 0;
-      transition: opacity 0.25s var(--ease);
-    }
-    .stat-card:hover {
-      border-color: var(--rose-mid);
-      transform: translateY(-2px);
-      box-shadow: var(--shadow-md);
-    }
-    .stat-card:hover::before { opacity: 1; }
-    .stat-number {
-      font-family: 'Cormorant Garamond', serif; font-size: 2.4rem;
-      font-weight: 600; color: var(--ink); line-height: 1;
-      letter-spacing: -0.5px;
-      transition: 0.22s var(--ease);
-    }
-    .stat-card:hover .stat-number {
+    .sidebar-username {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.9rem;
+      font-weight: 600;
+      letter-spacing: 0.3px;
       background: var(--gradient);
       -webkit-background-clip: text;
       background-clip: text;
       color: transparent;
-    }
-    .stat-label {
-      font-size: 0.68rem; color: var(--muted); margin-top: 0.5rem;
-      font-weight: 600; text-transform: uppercase; letter-spacing: 1.4px;
+      margin-top: 0.1rem;
+      line-height: 1.1;
     }
 
-    .insights-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 1rem;
-      margin-bottom: 2rem;
-    }
-    .insight-card {
-      background: var(--card-bg);
-      border: 1px solid var(--border);
-      border-radius: var(--radius-lg);
-      padding: 1.4rem 1.5rem;
-      transition: 0.22s var(--ease);
-      position: relative;
-      overflow: hidden;
-    }
-    .insight-card:hover {
-      border-color: var(--rose-mid);
-      background: var(--card-bg-hover);
-    }
-    .insight-icon {
-      width: 40px; height: 40px; border-radius: 10px;
-      background: var(--rose-pale); color: var(--rose);
-      display: flex; align-items: center; justify-content: center;
-      font-size: 0.95rem; margin-bottom: 0.9rem;
-      border: 1px solid rgba(244, 182, 200, 0.15);
-    }
-    .insight-label {
-      font-size: 0.64rem; color: var(--muted);
-      text-transform: uppercase; letter-spacing: 1.4px;
-      font-weight: 600; margin-bottom: 0.4rem;
-    }
-    .insight-value {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 1.5rem; font-weight: 600;
-      color: var(--ink); line-height: 1.2;
-      letter-spacing: -0.2px;
-      word-break: break-word;
-    }
-    .insight-meta {
-      font-size: 0.75rem; color: var(--muted);
-      margin-top: 0.35rem; font-weight: 300;
-    }
-
-    .section-header {
-      display: flex; justify-content: space-between; align-items: center;
-      margin-bottom: 1rem; padding-bottom: 0.8rem;
-      border-bottom: 1px solid var(--border);
-      position: relative;
-    }
-    .section-header::after {
-      content: '';
-      position: absolute;
-      bottom: -1px; left: 0;
-      width: 48px; height: 1px;
-      background: var(--gradient);
-    }
-    .section-title {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 1.3rem; font-weight: 600; color: var(--ink);
-      letter-spacing: 0.3px;
-    }
-    .view-all-link {
-      color: var(--rose); font-weight: 500; font-size: 0.85rem;
-      cursor: pointer; letter-spacing: 0.2px;
-      display: inline-flex; align-items: center; gap: 0.3rem;
-      transition: 0.2s;
-    }
-    .view-all-link:hover { color: var(--rose-deep); }
-
-    /* APPOINTMENT CARD / ITEM */
-    .appointment-card {
-      background: var(--card-bg);
-      border: 1px solid var(--border);
-      border-radius: var(--radius-lg);
-      padding: 1.1rem 1.25rem;
-      margin-bottom: 0.65rem;
-      display: flex; justify-content: space-between; align-items: center;
-      flex-wrap: wrap; gap: 0.5rem;
-      transition: 0.22s var(--ease);
-      cursor: pointer;
-    }
-    .appointment-card:hover {
-      border-color: var(--rose-mid);
-      background: var(--card-bg-hover);
-      transform: translateY(-1px);
-    }
-    .appointment-info { display: flex; flex-direction: column; gap: 0.3rem; flex: 1; min-width: 0; }
-    .appointment-service {
-      font-family: 'Cormorant Garamond', serif;
-      font-weight: 600; font-size: 1.25rem; color: var(--ink);
+    .sidebar-nav { display: flex; flex-direction: column; gap: 0.2rem; flex: 1; }
+    .sidebar-nav-item {
+      display: flex; align-items: center; gap: 1rem;
+      padding: 0.85rem 0.9rem;
+      border-radius: 0.6rem;
+      font-size: 1.15rem;
+      font-weight: 300;
       letter-spacing: 0.2px;
-    }
-    .appointment-details {
-      font-size: 0.82rem; color: var(--muted);
-      display: flex; gap: 0.9rem; flex-wrap: wrap; font-weight: 400;
-    }
-    .appointment-details span { display: flex; align-items: center; gap: 0.35rem; }
-    .appointment-details i { color: var(--rose); font-size: 0.72rem; }
-
-    /* BADGES */
-    .badge {
-      display: inline-flex; align-items: center; gap: 0.3rem;
-      padding: 0.35rem 0.85rem; border-radius: var(--radius-pill);
-      font-size: 0.7rem; font-weight: 600; letter-spacing: 0.4px;
-      text-transform: capitalize; white-space: nowrap;
-    }
-    .badge::before {
-      content: ''; width: 6px; height: 6px;
-      border-radius: 50%; background: currentColor;
-    }
-    .badge-upcoming { background: var(--success-bg); color: var(--success); }
-    .badge-past { background: var(--hover-surface-strong); color: var(--muted); }
-    .badge-cancelled { background: var(--danger-bg); color: var(--danger); }
-    .badge-pending { background: var(--warning-bg); color: var(--warning); }
-
-    /* EMPTY STATE */
-    .empty-state {
-      text-align: center; padding: 3rem 1rem;
-      color: var(--muted); font-weight: 300;
-      background: var(--card-bg);
-      border: 1px dashed var(--border-strong);
-      border-radius: var(--radius-lg);
-      margin-bottom: 1rem;
-    }
-    .empty-state i {
-      font-size: 2rem; color: var(--rose-mid);
-      margin-bottom: 0.8rem; display: block;
-    }
-    .empty-state p { font-size: 0.92rem; margin-bottom: 0.6rem; }
-    .empty-state .book-link {
-      color: var(--rose); font-weight: 500; cursor: pointer;
-      display: inline-block; font-size: 0.9rem;
+      color: var(--ink);
+      cursor: pointer;
       transition: 0.2s;
+      background: transparent;
+      border: none;
+      font-family: inherit;
+      width: 100%;
+      text-align: left;
     }
-    .empty-state .book-link:hover { color: var(--rose-deep); }
+    .sidebar-nav-item:hover { color: var(--rose); background: var(--rose-pale); transform: translateX(4px); }
+    .sidebar-nav-item i { width: 24px; color: var(--grey-icon); font-size: 1.05rem; transition: color 0.2s; text-align: center; font-weight: 400; }
+    .sidebar-nav-item:hover i { color: var(--rose); }
+    .sidebar-nav-item.danger { color: #FF6B6B; font-weight: 300; }
+    .sidebar-nav-item.danger i { color: var(--grey-icon); }
+    .sidebar-nav-item.danger:hover i { color: #FF6B6B; }
+    .sidebar-nav-item.danger:hover { background: rgba(255, 107, 107, 0.12); }
+    .sidebar-nav-item.theme-toggle { color: var(--ink); font-weight: 300; }
 
-    /* BOOKING WIZARD */
-    .booking-header { margin-bottom: 1.8rem; }
-    .booking-header-title {
+    .sidebar-social { padding: 0.8rem 0 0.3rem 0; border-top: 1px solid var(--border); margin-top: auto; }
+    .sidebar-social-label { font-size: 0.8rem; color: var(--muted); font-weight: 500; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 0.5rem; }
+    .sidebar-contact-info { font-size: 0.95rem; color: var(--text-dim); margin-bottom: 0.4rem; font-weight: 300; }
+    .sidebar-contact-info i { width: 20px; color: var(--grey-icon); }
+    .sidebar-social-icons { display: flex; gap: 0.9rem; margin-top: 0.5rem; }
+    .sidebar-social-icons a { color: var(--grey-icon); font-size: 1.25rem; transition: 0.2s; text-decoration: none; }
+    .sidebar-social-icons a:hover { color: var(--rose); transform: scale(1.1); }
+    .sidebar-footer-text { font-size: 0.75rem; color: var(--muted); margin-top: 0.4rem; font-weight: 300; }
+
+    .header { background: transparent; padding: 0.8rem 1.5rem 0.5rem 1.5rem; display: flex; justify-content: space-between; align-items: center; flex-shrink: 0; }
+    .header-left { display: flex; align-items: center; gap: 0.8rem; }
+    .menu-btn { background: none; border: none; font-size: 1.5rem; color: var(--ink); cursor: pointer; padding: 0.2rem; display: flex; align-items: center; justify-content: center; transition: color 0.2s; }
+    .menu-btn:hover { color: var(--rose); }
+    .menu-btn i { font-size: 1.5rem; }
+    .brand-wrapper { display: flex; flex-direction: column; align-items: flex-start; }
+    .brand-name { font-family: 'Cormorant Garamond', serif; font-size: 2.4rem; font-weight: 700; background: var(--gradient); -webkit-background-clip: text; background-clip: text; color: transparent; line-height: 1; }
+    .brand-slogan { font-size: 0.8rem; font-weight: 300; letter-spacing: 1.2px; color: var(--ink); margin-top: 0.05rem; }
+    .header-right { display: flex; align-items: center; }
+
+    .top-tabs { display: flex; background: transparent; padding: 0 1.5rem; flex-shrink: 0; gap: 0; justify-content: space-around; border-bottom: 1px solid var(--border); }
+    .tab-item { padding: 0.85rem 0.6rem; font-size: 1.1rem; font-weight: 400; color: var(--ink); cursor: pointer; border-bottom: 2px solid transparent; transition: 0.15s; background: transparent; border-top: none; border-left: none; border-right: none; font-family: inherit; flex: 1; text-align: center; position: relative; margin-bottom: -1px; }
+    .tab-item.active { color: var(--rose); border-bottom-color: var(--rose); }
+    .tab-item .tab-icon { display: block; font-size: 1.5rem; margin-bottom: 0.1rem; }
+    .badge-dot { position: absolute; top: 0.3rem; right: 0.5rem; background: var(--rose); color: white; border-radius: 50%; width: 18px; height: 18px; font-size: 0.65rem; font-weight: 700; display: flex; align-items: center; justify-content: center; line-height: 1; }
+
+    .app { display: flex; flex: 1; overflow: hidden; flex-direction: column; background: transparent; }
+    .main { flex: 1; overflow-y: auto; padding: 1rem 1.5rem; background: transparent; min-width: 0; padding-bottom: 5rem; }
+    .view { display: none; animation: fadeIn 0.25s ease; }
+    .view.active { display: block; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+
+    .overview-header { display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 0.8rem; margin-bottom: 1.2rem; }
+    .overview-title { font-family: 'Cormorant Garamond', serif; font-size: 2.2rem; font-weight: 500; color: var(--ink); }
+    .overview-sub { font-size: 1rem; color: var(--muted); margin-top: 0.1rem; font-weight: 300; }
+    .book-now-btn { color: var(--rose); font-weight: 500; font-size: 0.95rem; cursor: pointer; background: none; padding: 0; border: none; font-family: inherit; letter-spacing: 0.3px; display: inline-flex; align-items: center; gap: 0.4rem; transition: 0.2s; }
+    .book-now-btn:hover { opacity: 0.7; transform: translateX(2px); }
+
+    .stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.8rem; margin-bottom: 1.2rem; }
+    .stat-card { background: transparent; border: none; border-bottom: 1px solid var(--border); border-radius: 0; padding: 1rem 0; text-align: left; transition: 0.2s; }
+    .stat-card:hover { padding-left: 0.4rem; }
+    .stat-number { font-family: 'Cormorant Garamond', serif; font-size: 2rem; font-weight: 600; color: var(--ink); line-height: 1; }
+    .stat-label { font-size: 0.8rem; color: var(--muted); margin-top: 0.2rem; font-weight: 300; text-transform: uppercase; letter-spacing: 0.5px; }
+
+    .section-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.8rem; }
+    .section-title { font-size: 1.15rem; font-weight: 500; color: var(--ink); }
+    .view-all-link { color: var(--rose); font-weight: 400; font-size: 0.9rem; cursor: pointer; text-decoration: none; letter-spacing: 0.2px; }
+    .view-all-link:hover { opacity: 0.7; }
+
+    .appointment-card { background: transparent; border: none; border-bottom: 1px solid var(--border); border-radius: 0; padding: 1rem 0; margin-bottom: 0; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 0.5rem; transition: 0.2s; cursor: pointer; }
+    .appointment-card:hover { padding-left: 0.4rem; padding-right: 0.4rem; margin-left: -0.4rem; margin-right: -0.4rem; }
+    .appointment-card:last-child { border-bottom: none; }
+    .appointment-info { display: flex; flex-direction: column; gap: 0.2rem; flex: 1; }
+    .appointment-service { font-weight: 500; font-size: 1.05rem; color: var(--ink); }
+    .appointment-details { font-size: 0.85rem; color: var(--muted); display: flex; gap: 0.8rem; flex-wrap: wrap; font-weight: 300; }
+    .appointment-details span { display: flex; align-items: center; gap: 0.3rem; }
+
+    .badge { display: inline-flex; align-items: center; padding: 0.15rem 0.7rem; border-radius: 2rem; font-size: 0.7rem; font-weight: 500; letter-spacing: 0.2px; }
+    .badge-upcoming { background: rgba(74, 222, 128, 0.15); color: var(--success); }
+    body.light .badge-upcoming { background: rgba(44, 143, 110, 0.12); }
+    .badge-past { background: var(--hover-surface); color: var(--muted); }
+    .badge-cancelled { background: rgba(255, 107, 107, 0.15); color: #FF6B6B; }
+    .badge-pending { background: var(--rose-pale); color: var(--rose); }
+
+    .empty-state { text-align: center; padding: 2rem 1rem; color: var(--muted); font-weight: 300; }
+    .empty-state i { font-size: 2.2rem; color: var(--rose-mid); margin-bottom: 0.5rem; display: block; }
+    .empty-state p { font-size: 1rem; margin-bottom: 0.6rem; }
+    .empty-state .book-link { color: var(--rose); font-weight: 500; cursor: pointer; }
+
+    .booking-header-title,
+    .appointments-title {
       font-family: 'Cormorant Garamond', serif;
-      font-size: 2rem; font-weight: 600;
+      font-weight: 500;
+      letter-spacing: 0.3px;
       background: var(--gradient);
-      -webkit-background-clip: text; background-clip: text;
+      -webkit-background-clip: text;
+      background-clip: text;
       color: transparent;
-      line-height: 1.15; letter-spacing: 0.2px;
+      line-height: 1.15;
     }
+    .booking-header-title { font-size: 2.2rem; }
+    .appointments-title { font-size: 2.2rem; }
+    .booking-header { margin-bottom: 1.5rem; }
     .booking-header-sub {
       font-family: 'DM Sans', sans-serif;
-      font-size: 0.92rem; color: var(--muted);
-      margin-top: 0.5rem; line-height: 1.65;
-      max-width: 720px; font-weight: 300;
+      font-size: 1.05rem;
+      color: var(--muted);
+      margin-top: 0.6rem;
+      line-height: 1.6;
+      max-width: 720px;
+      font-weight: 300;
+    }
+    .appointments-header { padding: 0.5rem 0 1rem 0; }
+    .appointments-sub {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 1.05rem;
+      color: var(--muted);
+      margin-top: 0.6rem;
+      line-height: 1.6;
+      max-width: 720px;
+      font-weight: 300;
+    }
+    .appointments-hint {
+      font-size: 0.8rem;
+      color: var(--muted);
+      font-weight: 300;
+      margin-top: 0.4rem;
+      letter-spacing: 0.2px;
+      opacity: 0.75;
     }
 
-    .wizard-steps {
-      display: flex; gap: 0;
-      padding: 0.5rem 0 1rem 0;
-      overflow-x: auto;
-      border-bottom: 1px solid var(--border);
-      margin-bottom: 1.4rem;
-    }
-    .w-step {
-      flex: 1; padding: 0.5rem 0.3rem;
-      text-align: center; font-size: 0.9rem; font-weight: 500;
-      color: var(--muted); transition: 0.2s;
-      min-width: 60px; cursor: pointer;
-      position: relative; border-bottom: 2px solid transparent;
-      font-family: inherit;
-    }
+    .wizard-steps { display: flex; gap: 0; padding: 0.5rem 0 1rem 0; overflow-x: auto; border-bottom: 1px solid var(--border); margin-bottom: 1rem; }
+    .w-step { flex: 1; padding: 0.5rem 0.3rem; text-align: center; font-size: 1rem; font-weight: 500; color: var(--ink); transition: 0.2s; min-width: 60px; cursor: pointer; position: relative; border-bottom: 2px solid transparent; }
     .w-step.active { color: var(--rose); border-bottom-color: var(--rose); }
     .w-step.done { color: var(--success); border-bottom-color: var(--success); }
-    .w-step-num {
-      width: 26px; height: 26px; border-radius: 50%;
-      background: var(--hover-surface-strong); color: var(--muted);
-      font-size: 0.75rem; font-weight: 700;
-      display: flex; align-items: center; justify-content: center;
-      margin: 0 auto 0.3rem; transition: 0.2s;
-    }
-    .w-step.active .w-step-num { background: var(--gradient); color: #FFFFFF; box-shadow: var(--shadow-rose); }
-    .w-step.done .w-step-num { background: var(--success); color: #FFFFFF; }
+    .w-step-num { width: 26px; height: 26px; border-radius: 50%; background: var(--hover-surface); color: var(--muted); font-size: 0.8rem; font-weight: 600; display: flex; align-items: center; justify-content: center; margin: 0 auto 0.2rem; transition: 0.2s; }
+    .w-step.active .w-step-num { background: var(--rose); color: white; }
+    .w-step.done .w-step-num { background: var(--success); color: white; }
 
     .wizard-body { padding: 0.5rem 0 1rem 0; }
     .wizard-body.hidden { display: none; }
 
     .services-picker { display: flex; gap: 1rem; flex-wrap: wrap; }
-    .service-categories { width: 100%; flex-shrink: 0; margin-bottom: 1.2rem; }
-    .category-heading {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 1.3rem; color: var(--ink);
-      margin-bottom: 0.3rem; font-weight: 600; letter-spacing: 0.3px;
-    }
-    .category-sub {
-      font-size: 0.85rem; color: var(--muted);
-      margin-bottom: 0.9rem; line-height: 1.55; font-weight: 300;
-    }
-    .category-buttons { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 1rem; }
-    .cat-btn {
-      padding: 0.5rem 1.1rem; border-radius: var(--radius-pill);
-      border: 1px solid var(--border);
-      background: transparent; text-align: center;
-      font-size: 0.85rem; font-weight: 500;
-      color: var(--muted); cursor: pointer; transition: 0.18s var(--ease);
-      font-family: inherit;
-    }
-    .cat-btn:hover { color: var(--ink); border-color: var(--rose-mid); background: var(--hover-surface); }
-    .cat-btn.active {
-      background: var(--gradient); color: #FFFFFF;
-      font-weight: 600; border-color: transparent;
-      box-shadow: var(--shadow-rose);
-    }
+    .service-categories { width: 100%; flex-shrink: 0; margin-bottom: 1rem; }
+    .category-heading { font-size: 0.95rem; color: var(--ink); margin-bottom: 0.2rem; font-weight: 500; text-transform: uppercase; letter-spacing: 0.5px; }
+    .category-sub { font-size: 0.88rem; color: var(--muted); margin-bottom: 0.8rem; line-height: 1.5; font-weight: 300; }
+    .category-buttons { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+    .cat-btn { padding: 0.55rem 1.2rem; border-radius: 2rem; border: 1px solid var(--border); background: transparent; text-align: center; font-size: 0.9rem; font-weight: 400; color: var(--ink); cursor: pointer; transition: 0.15s; font-family: inherit; }
+    .cat-btn:hover { border-color: var(--rose); background: var(--rose-pale); }
+    .cat-btn.active { background: var(--rose); color: white; font-weight: 500; border-color: var(--rose); }
     .services-list-wrap { flex: 1; min-width: 200px; }
+    .service-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem; }
+    .svc-card { border: 1px solid var(--border); border-radius: 0.6rem; padding: 0.8rem 0.9rem; cursor: pointer; transition: 0.18s; position: relative; background: transparent; }
+    .svc-card:hover { border-color: var(--rose); background: var(--rose-pale); }
+    .svc-card.selected { border-color: var(--rose); background: var(--rose-pale); }
+    .svc-card.selected::after { content: '\f00c'; font-family: 'Font Awesome 5 Free'; font-weight: 900; position: absolute; top: 0.3rem; right: 0.4rem; font-size: 0.7rem; color: var(--rose); }
+    .svc-card-name { font-size: 0.95rem; font-weight: 500; color: var(--ink); margin-bottom: 0.15rem; }
+    .svc-card-meta { display: flex; gap: 0.4rem; align-items: center; flex-wrap: wrap; }
+    .svc-card-price { font-size: 0.9rem; font-weight: 600; color: var(--rose); }
+    .svc-card-dur { font-size: 0.8rem; color: var(--muted); font-weight: 300; }
 
-    .inline-search {
-      display: flex; align-items: center; gap: 0.5rem;
-      background: var(--input-bg); border: 1px solid var(--border);
-      padding: 0.5rem 0.6rem 0.5rem 0.95rem;
-      border-radius: var(--radius-pill);
-      margin-bottom: 0.8rem;
-      transition: 0.2s var(--ease);
-    }
-    .inline-search:focus-within {
-      border-color: var(--rose-mid);
-      box-shadow: 0 0 0 3px var(--rose-pale);
-      background: var(--card-bg);
-    }
-    .inline-search i { color: var(--muted); font-size: 0.82rem; flex-shrink: 0; }
-    .inline-search input {
-      background: transparent; border: none; color: var(--ink);
-      font-family: inherit; font-size: 0.88rem; width: 100%;
-      outline: none; padding: 0;
-    }
-    .inline-search input::placeholder { color: var(--muted-soft); }
-
-    .service-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.6rem; }
-    .svc-card {
-      background: var(--card-bg);
-      border: 1px solid var(--border);
-      border-radius: var(--radius-md);
-      padding: 1rem 1.1rem; cursor: pointer;
-      transition: 0.2s var(--ease); position: relative;
-    }
-    .svc-card:hover {
-      border-color: var(--rose-mid);
-      background: var(--card-bg-hover);
-      transform: translateY(-1px);
-    }
-    .svc-card.selected {
-      border-color: var(--rose);
-      background: var(--rose-pale);
-    }
-    .svc-card.selected::after {
-      content: '\f00c';
-      font-family: 'Font Awesome 6 Free';
-      font-weight: 900;
-      position: absolute; top: 0.6rem; right: 0.7rem;
-      font-size: 0.72rem; color: var(--rose);
-    }
-    .svc-card-name { font-size: 0.95rem; font-weight: 600; color: var(--ink); margin-bottom: 0.3rem; }
-    .svc-card-meta { display: flex; gap: 0.6rem; align-items: center; flex-wrap: wrap; }
-    .svc-card-price { font-size: 0.9rem; font-weight: 700; color: var(--rose); }
-    .svc-card-dur { font-size: 0.78rem; color: var(--muted); font-weight: 400; }
-
-    .cart-panel {
-      background: var(--card-bg);
-      border: 1px solid var(--border);
-      border-radius: var(--radius-lg);
-      padding: 1.1rem 1.25rem;
-      margin-top: 1.4rem;
-      min-height: 60px;
-    }
-    .cart-panel-title {
-      font-size: 0.7rem; font-weight: 600;
-      text-transform: uppercase; letter-spacing: 1.2px;
-      color: var(--muted); margin-bottom: 0.7rem;
-      display: flex; align-items: center; gap: 0.5rem;
-    }
+    .cart-panel { background: transparent; border: none; border-top: 1px dashed var(--rose-mid); border-radius: 0; padding: 1rem 0 0 0; margin-top: 1rem; min-height: 60px; }
+    .cart-panel-title { font-size: 0.75rem; font-weight: 500; text-transform: uppercase; letter-spacing: 0.4px; color: var(--muted); margin-bottom: 0.5rem; display: flex; align-items: center; gap: 0.4rem; }
     .cart-items { display: flex; flex-wrap: wrap; gap: 0.4rem; }
-    .cart-chip {
-      display: flex; align-items: center; gap: 0.35rem;
-      background: var(--rose-pale);
-      border: 1px solid var(--rose-mid);
-      border-radius: var(--radius-pill);
-      padding: 0.3rem 0.4rem 0.3rem 0.75rem;
-      font-size: 0.82rem; font-weight: 500; color: var(--ink);
-    }
-    .cart-chip-remove {
-      width: 18px; height: 18px; border-radius: 50%;
-      background: var(--rose-mid); border: none; cursor: pointer;
-      display: flex; align-items: center; justify-content: center;
-      font-size: 0.55rem; color: #FFFFFF;
-      transition: 0.15s; font-family: inherit;
-    }
+    .cart-chip { display: flex; align-items: center; gap: 0.3rem; background: transparent; border: 1px solid var(--rose-mid); border-radius: 2rem; padding: 0.2rem 0.4rem 0.2rem 0.7rem; font-size: 0.8rem; font-weight: 400; color: var(--ink); }
+    .cart-chip-remove { width: 16px; height: 16px; border-radius: 50%; background: var(--rose-mid); border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 0.55rem; color: white; transition: 0.15s; font-family: inherit; }
     .cart-chip-remove:hover { background: var(--rose); }
-    .cart-empty-msg {
-      font-size: 0.85rem; color: var(--muted);
-      font-style: italic; text-align: center;
-      padding: 0.6rem 0; width: 100%; font-weight: 300;
-    }
-    .cart-summary {
-      display: flex; justify-content: space-between; align-items: center;
-      margin-top: 0.7rem; padding-top: 0.7rem;
-      border-top: 1px solid var(--border);
-      flex-wrap: wrap; gap: 0.3rem;
-    }
-    .cart-total-label {
-      font-size: 0.68rem; color: var(--muted); font-weight: 600;
-      text-transform: uppercase; letter-spacing: 1px;
-    }
-    .cart-total-val { font-size: 1.3rem; font-weight: 700; color: var(--rose); }
-    .cart-duration { font-size: 0.78rem; color: var(--muted); font-weight: 300; margin-top: 0.15rem; }
+    .cart-empty-msg { font-size: 0.85rem; color: var(--muted); font-style: italic; text-align: center; padding: 0.5rem 0; width: 100%; font-weight: 300; }
+    .cart-summary { display: flex; justify-content: space-between; align-items: center; margin-top: 0.6rem; padding-top: 0.6rem; border-top: 1px solid var(--border); flex-wrap: wrap; gap: 0.3rem; }
+    .cart-total-label { font-size: 0.8rem; color: var(--muted); font-weight: 400; text-transform: uppercase; letter-spacing: 0.3px; }
+    .cart-total-val { font-size: 1.2rem; font-weight: 600; color: var(--rose); }
+    .cart-duration { font-size: 0.8rem; color: var(--muted); font-weight: 300; }
 
     .booking-vertical-wrapper { display: flex; flex-direction: column; gap: 1.4rem; }
-    .booking-panel {
-      background: var(--card-bg);
-      border: 1px solid var(--border);
-      border-radius: var(--radius-lg);
-      padding: 1.4rem 1.5rem;
-    }
-    .panel-label {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 1.2rem; font-weight: 600;
-      color: var(--ink); margin-bottom: 0.3rem; letter-spacing: 0.3px;
-    }
-    .panel-hint {
-      font-size: 0.82rem; color: var(--muted);
-      margin-bottom: 1rem; line-height: 1.55; font-weight: 300;
-    }
-    .month-label {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 1.15rem; font-weight: 600;
-      color: var(--ink); text-align: center;
-      margin-bottom: 0.7rem; letter-spacing: 0.3px;
-    }
-    .calendar-weekdays {
-      display: grid; grid-template-columns: repeat(7, 1fr);
-      text-align: center; font-size: 0.7rem; font-weight: 600;
-      color: var(--muted); margin-bottom: 0.3rem;
-      text-transform: uppercase; letter-spacing: 0.5px;
-    }
-    .calendar-days {
-      display: grid; grid-template-columns: repeat(7, 1fr);
-      gap: 2px; text-align: center;
-    }
-    .calendar-day {
-      padding: 0.55rem 0; font-size: 0.88rem; font-weight: 400;
-      color: var(--ink); border-radius: var(--radius-sm);
-      cursor: pointer; transition: 0.15s;
-      background: transparent; border: none; font-family: inherit;
-    }
-    .calendar-day:hover:not(.empty):not(.selected):not(.past) {
-      background: var(--rose-pale); color: var(--rose);
-    }
+    .booking-panel { background: transparent; border: none; border-bottom: 1px solid var(--border); border-radius: 0; padding: 0 0 1.4rem 0; width: 100%; }
+    .booking-panel:last-child { border-bottom: none; }
+    .panel-label { font-size: 0.95rem; font-weight: 500; text-transform: uppercase; letter-spacing: 0.4px; color: var(--ink); margin-bottom: 0.3rem; }
+    .panel-hint { font-size: 0.85rem; color: var(--muted); margin-bottom: 0.9rem; line-height: 1.5; font-weight: 300; }
+    .month-label { font-size: 1.15rem; font-weight: 500; color: var(--ink); text-align: center; margin-bottom: 0.6rem; }
+    .calendar-weekdays { display: grid; grid-template-columns: repeat(7, 1fr); text-align: center; font-size: 0.75rem; font-weight: 500; color: var(--muted); margin-bottom: 0.2rem; }
+    .calendar-days { display: grid; grid-template-columns: repeat(7, 1fr); gap: 2px; text-align: center; }
+    .calendar-day { padding: 0.5rem 0; font-size: 0.9rem; font-weight: 400; color: var(--ink); border-radius: 0.4rem; cursor: pointer; transition: 0.15s; background: transparent; border: none; font-family: inherit; }
+    .calendar-day:hover:not(.empty):not(.selected):not(.past) { background: var(--rose-pale); }
     .calendar-day.empty { color: transparent; cursor: default; }
-    .calendar-day.selected {
-      background: var(--gradient); color: #FFFFFF;
-      font-weight: 700;
-      box-shadow: var(--shadow-rose);
-    }
+    .calendar-day.selected { background: var(--rose); color: white; font-weight: 600; }
     .calendar-day.past { color: var(--muted); opacity: 0.4; cursor: not-allowed; }
-    .calendar-day.today { border: 1.5px solid var(--rose-mid); }
-    .date-nav { display: flex; justify-content: center; gap: 0.8rem; margin-top: 0.8rem; }
-    .date-nav-btn {
-      width: 34px; height: 34px; border-radius: 50%;
-      border: 1px solid var(--border); background: transparent;
-      cursor: pointer; transition: 0.15s;
-      color: var(--muted); font-size: 0.85rem;
-      display: flex; align-items: center; justify-content: center;
-    }
-    .date-nav-btn:hover {
-      color: var(--rose); border-color: var(--rose-mid);
-      background: var(--rose-pale);
-    }
+    .calendar-day.today { border: 1.5px solid var(--rose-light); }
+    .date-nav { display: flex; justify-content: center; gap: 0.8rem; margin-top: 0.6rem; }
+    .date-nav-btn { width: 34px; height: 34px; border-radius: 50%; border: none; background: transparent; cursor: pointer; transition: 0.15s; color: var(--muted); font-size: 0.9rem; display: flex; align-items: center; justify-content: center; }
+    .date-nav-btn:hover { color: var(--rose); }
 
-    .time-slots-container { max-height: 260px; overflow-y: auto; padding-right: 0.3rem; }
-    .time-slots-container::-webkit-scrollbar { width: 4px; }
+    .time-slots-container { max-height: 250px; overflow-y: auto; padding-right: 0.2rem; }
+    .time-slots-container::-webkit-scrollbar { width: 3px; }
     .time-slots-container::-webkit-scrollbar-track { background: var(--hover-surface); border-radius: 10px; }
-    .time-slots-container::-webkit-scrollbar-thumb { background: var(--border-strong); border-radius: 10px; }
-    .time-slots-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.4rem; }
-    .time-slot {
-      border: 1px solid var(--border);
-      border-radius: var(--radius-sm);
-      padding: 0.6rem 0.4rem;
-      text-align: center; font-size: 0.82rem; font-weight: 500;
-      cursor: pointer; transition: 0.18s var(--ease);
-      color: var(--ink); background: transparent;
-      font-family: inherit;
-    }
-    .time-slot:hover:not(.unavailable) {
-      border-color: var(--rose-mid);
-      background: var(--rose-pale);
-      color: var(--rose);
-    }
-    .time-slot.selected {
-      border-color: transparent;
-      background: var(--gradient); color: #FFFFFF;
-      font-weight: 700;
-      box-shadow: var(--shadow-rose);
-    }
+    .time-slots-container::-webkit-scrollbar-thumb { background: var(--rose-mid); border-radius: 10px; }
+    .time-slots-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.3rem; }
+    .time-slot { border: 1px solid var(--border); border-radius: 0.5rem; padding: 0.5rem 0.2rem; text-align: center; font-size: 0.8rem; font-weight: 400; cursor: pointer; transition: 0.15s; color: var(--ink); background: transparent; }
+    .time-slot:hover:not(.unavailable) { border-color: var(--rose); background: var(--rose-pale); }
+    .time-slot.selected { border-color: var(--rose); background: var(--rose-pale); color: var(--rose); font-weight: 600; }
     .time-slot.unavailable { opacity: 0.35; cursor: not-allowed; border-style: dashed; }
 
-    .stylist-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 0.5rem; }
-    .stylist-btn {
-      border: 1px solid var(--border);
-      border-radius: var(--radius-md);
-      padding: 0.8rem 0.5rem;
-      text-align: center; cursor: pointer;
-      transition: 0.18s var(--ease);
-      background: transparent; font-family: inherit;
-    }
-    .stylist-btn:hover:not(.selected) {
-      border-color: var(--rose-mid); background: var(--rose-pale);
-    }
-    .stylist-btn.selected {
-      border-color: var(--rose);
-      background: var(--rose-pale);
-      box-shadow: 0 0 0 1px var(--rose);
-    }
-    .stylist-av {
-      width: 40px; height: 40px; border-radius: 50%;
-      background: var(--gradient);
-      display: flex; align-items: center; justify-content: center;
-      color: #FFFFFF; font-size: 0.95rem; font-weight: 700;
-      margin: 0 auto 0.4rem;
-      font-family: 'Cormorant Garamond', serif;
-      letter-spacing: 0.5px;
-    }
-    .stylist-name { font-size: 0.85rem; font-weight: 600; color: var(--ink); }
+    .stylist-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.4rem; }
+    .stylist-btn { border: 1px solid var(--border); border-radius: 0.6rem; padding: 0.6rem 0.3rem; text-align: center; cursor: pointer; transition: 0.15s; background: transparent; font-family: inherit; }
+    .stylist-btn:hover:not(.selected) { border-color: var(--rose); }
+    .stylist-btn.selected { border-color: var(--rose); background: var(--rose-pale); }
+    .stylist-av { width: 32px; height: 32px; border-radius: 50%; background: var(--gradient); display: flex; align-items: center; justify-content: center; color: white; font-size: 0.8rem; font-weight: 600; margin: 0 auto 0.2rem; }
+    .stylist-name { font-size: 0.8rem; font-weight: 500; color: var(--ink); }
 
     .details-form { max-width: 100%; }
-    .form-group { margin-bottom: 1.1rem; }
-    .form-label {
-      display: block; font-size: 0.7rem; font-weight: 600;
-      text-transform: uppercase; letter-spacing: 0.8px;
-      color: var(--muted); margin-bottom: 0.4rem;
-    }
-    .form-input, .form-textarea {
-      width: 100%;
-      padding: 0.8rem 1rem;
-      border: 1px solid var(--border-strong);
-      border-radius: var(--radius-sm);
-      font-size: 0.92rem; font-family: inherit;
-      color: var(--ink); background: var(--input-bg);
-      transition: 0.2s; font-weight: 400;
-    }
-    .form-input:focus, .form-textarea:focus {
-      outline: none;
-      border-color: var(--rose);
-      box-shadow: 0 0 0 3px var(--rose-pale);
-    }
-    .form-input::placeholder, .form-textarea::placeholder { color: var(--muted-soft); }
-    .form-textarea { resize: vertical; min-height: 60px; }
+    .form-group { margin-bottom: 1rem; }
+    .form-label { display: block; font-size: 0.75rem; font-weight: 500; text-transform: uppercase; letter-spacing: 0.4px; color: var(--muted); margin-bottom: 0.3rem; }
+    .form-input, .form-textarea { width: 100%; padding: 0.7rem 0; border: none; border-bottom: 1px solid var(--border); border-radius: 0; font-size: 1rem; font-family: inherit; color: var(--ink); background: transparent; transition: 0.2s; font-weight: 300; }
+    .form-input:focus, .form-textarea:focus { outline: none; border-bottom-color: var(--rose); }
+    .form-input::placeholder, .form-textarea::placeholder { color: var(--muted); opacity: 0.5; }
+    .form-textarea { resize: vertical; min-height: 50px; }
 
-    .review-card {
-      background: var(--card-bg);
-      border: 1px solid var(--border);
-      border-radius: var(--radius-lg);
-      padding: 1.4rem 1.5rem;
-      max-width: 100%;
-    }
-    .review-section-title {
-      font-size: 0.7rem; font-weight: 600;
-      letter-spacing: 0.8px; text-transform: uppercase;
-      color: var(--muted); margin-bottom: 0.7rem;
-      padding-bottom: 0.5rem;
-      border-bottom: 1px solid var(--border);
-    }
-    .review-row {
-      display: flex; justify-content: space-between; align-items: flex-start;
-      padding: 0.5rem 0; font-size: 0.9rem;
-      gap: 0.5rem; font-weight: 400;
-    }
+    .review-card { background: transparent; border: none; border-top: 1px solid var(--border); border-radius: 0; padding: 1rem 0 0 0; max-width: 100%; }
+    .review-section-title { font-size: 0.72rem; font-weight: 600; letter-spacing: 0.4px; text-transform: uppercase; color: var(--muted); margin-bottom: 0.5rem; padding-bottom: 0.3rem; border-bottom: 1px solid var(--border); }
+    .review-row { display: flex; justify-content: space-between; align-items: flex-start; padding: 0.4rem 0; font-size: 0.9rem; gap: 0.3rem; font-weight: 300; }
     .review-row span:first-child { color: var(--muted); flex-shrink: 0; }
-    .review-row span:last-child { font-weight: 600; color: var(--ink); text-align: right; }
+    .review-row span:last-child { font-weight: 500; color: var(--ink); text-align: right; }
     .review-services-list { margin: 0.3rem 0; }
-    .review-svc-item {
-      display: flex; justify-content: space-between; align-items: center;
-      padding: 0.5rem 0; font-size: 0.9rem;
-      border-bottom: 1px dashed var(--border); gap: 0.4rem;
-    }
+    .review-svc-item { display: flex; justify-content: space-between; align-items: center; padding: 0.4rem 0; font-size: 0.9rem; border-bottom: 1px dashed var(--border); gap: 0.3rem; }
     .review-svc-item:last-child { border-bottom: none; }
-    .review-total {
-      display: flex; justify-content: space-between;
-      padding: 0.7rem 0 0;
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 1.3rem; font-weight: 700;
-      color: var(--rose); margin-top: 0.4rem;
-      letter-spacing: 0.2px;
-    }
+    .review-total { display: flex; justify-content: space-between; padding: 0.5rem 0 0; font-size: 1rem; font-weight: 600; color: var(--rose); margin-top: 0.3rem; }
 
-    .wizard-nav {
-      display: flex; justify-content: space-between; align-items: center;
-      padding: 1.5rem 0 0.5rem 0;
-      flex-wrap: wrap; gap: 1rem;
-      margin-top: 1.8rem;
-      border-top: 1px solid var(--border);
-    }
-    .step-indicator {
-      font-size: 0.68rem; color: var(--muted);
-      letter-spacing: 1.2px; text-transform: uppercase;
-      font-weight: 600;
-    }
-    #wNext, #wPrev {
-      background: none !important;
-      border: none !important;
-      padding: 0.4rem 0 !important;
-      font-family: inherit; font-size: 0.95rem;
-      font-weight: 600; letter-spacing: 0.2px;
-      cursor: pointer; display: inline-flex;
-      align-items: center; gap: 0.5rem; transition: 0.2s var(--ease);
-    }
+    .wizard-nav { display: flex; justify-content: space-between; align-items: center; padding: 1.5rem 0 0.5rem 0; border-top: none; flex-wrap: wrap; gap: 1rem; margin-top: 2rem; background: transparent; }
+    .step-indicator { font-size: 0.78rem; color: var(--muted); letter-spacing: 0.5px; text-transform: uppercase; font-weight: 400; }
+    #wNext, #wPrev { background: none !important; border: none !important; padding: 0 !important; font-family: inherit; font-size: 1rem; font-weight: 500; letter-spacing: 0.3px; cursor: pointer; display: inline-flex; align-items: center; gap: 0.5rem; transition: 0.2s; }
     #wNext { color: var(--rose); }
-    #wNext:hover { color: var(--rose-deep); transform: translateX(3px); }
+    #wNext:hover { opacity: 0.7; transform: translateX(2px); }
     #wPrev { color: var(--muted); }
-    #wPrev:hover { color: var(--ink); transform: translateX(-3px); }
+    #wPrev:hover { color: var(--ink); transform: translateX(-2px); }
 
     .btn-primary, .btn-ghost {
       background: none !important;
       border: none !important;
       padding: 0.5rem 0 !important;
-      font-family: inherit; font-size: 0.95rem;
-      font-weight: 600; letter-spacing: 0.2px;
-      cursor: pointer; display: inline-flex;
-      align-items: center; gap: 0.5rem;
-      transition: 0.2s var(--ease);
+      font-family: inherit;
+      font-size: 1rem;
+      letter-spacing: 0.3px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      transition: 0.2s;
       border-radius: 0;
     }
-    .btn-primary { color: var(--rose); }
-    .btn-primary:hover { color: var(--rose-deep); transform: translateX(3px); }
+    .btn-primary { color: var(--rose); font-weight: 500; }
+    .btn-primary:hover { opacity: 0.7; transform: translateX(2px); }
     .btn-ghost { color: var(--muted); font-weight: 400; }
-    .btn-ghost:hover { color: var(--ink); transform: translateX(-3px); }
+    .btn-ghost:hover { color: var(--ink); transform: translateX(-2px); }
 
-    /* APPOINTMENTS */
-    .appointments-title {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 2rem; font-weight: 600;
-      background: var(--gradient);
-      -webkit-background-clip: text; background-clip: text;
-      color: transparent;
-      line-height: 1.15; letter-spacing: 0.2px;
-    }
-    .appointments-header { padding: 0 0 1.2rem 0; }
-    .appointments-sub {
-      font-size: 0.92rem; color: var(--muted);
-      margin-top: 0.5rem; line-height: 1.65;
-      max-width: 720px; font-weight: 300;
-    }
-    .appointments-hint {
-      font-size: 0.78rem; color: var(--muted-soft);
-      font-weight: 400; margin-top: 0.6rem;
-      letter-spacing: 0.2px;
-      display: inline-flex; align-items: center; gap: 0.4rem;
-    }
-    .appointments-hint i { color: var(--rose); font-size: 0.75rem; }
+    .filter-tabs { display: flex; gap: 0.5rem; margin-bottom: 1.5rem; padding: 0; border-bottom: none; justify-content: space-between; flex-wrap: nowrap; }
+    .filter-btn { flex: 1 1 0; padding: 0.65rem 0.4rem; border: none; background: var(--hover-surface); color: var(--muted); border-radius: 2rem; font-size: 1rem; font-weight: 400; cursor: pointer; transition: all 0.2s; font-family: inherit; text-align: center; letter-spacing: 0.2px; white-space: nowrap; }
+    .filter-btn:hover { background: var(--rose-pale); color: var(--ink); }
+    .filter-btn.active { background: var(--rose-pale); color: var(--rose); font-weight: 500; }
 
-    .appointments-search-wrap {
-      margin-bottom: 1.2rem;
-    }
-
-    .filter-tabs {
-      display: flex; gap: 0.5rem;
-      margin-bottom: 1.4rem;
-      flex-wrap: wrap;
-    }
-    .filter-btn {
-      padding: 0.5rem 1.1rem;
-      border: 1px solid var(--border);
-      background: transparent;
-      color: var(--muted); border-radius: var(--radius-pill);
-      font-size: 0.83rem; font-weight: 500;
-      cursor: pointer; transition: 0.18s var(--ease);
-      font-family: inherit; letter-spacing: 0.2px;
-      white-space: nowrap;
-    }
-    .filter-btn:hover {
-      color: var(--ink); border-color: var(--rose-mid);
-      background: var(--hover-surface);
-    }
-    .filter-btn.active {
-      background: var(--gradient); color: #FFFFFF;
-      font-weight: 600; border-color: transparent;
-      box-shadow: var(--shadow-rose);
-    }
-
-    .appointments-list {
-      display: flex; flex-direction: column;
-      background: var(--card-bg);
-      border: 1px solid var(--border);
-      border-radius: var(--radius-lg);
-      overflow: hidden;
-    }
-    .appointments-list .empty-state {
-      border: none; background: transparent; margin: 0;
-    }
-    .appointment-item {
-      display: flex; justify-content: space-between; align-items: center;
-      padding: 1.1rem 1.3rem;
-      border-bottom: 1px solid var(--border);
-      flex-wrap: wrap; gap: 0.5rem;
-      transition: 0.15s; cursor: pointer;
-      background: transparent;
-    }
-    .appointment-item:hover { background: var(--rose-pale); }
+    .appointments-list { display: flex; flex-direction: column; }
+    .appointment-item { display: flex; justify-content: space-between; align-items: center; padding: 1rem 0; border-bottom: 1px solid var(--border); flex-wrap: wrap; gap: 0.4rem; transition: 0.15s; cursor: pointer; background: transparent; }
+    .appointment-item:hover { padding-left: 0.4rem; padding-right: 0.4rem; margin-left: -0.4rem; margin-right: -0.4rem; border-radius: 0.4rem; background: var(--rose-pale); }
     .appointment-item:last-child { border-bottom: none; }
-    .appointment-item-info {
-      display: flex; flex-direction: column; gap: 0.25rem;
-      flex: 1; min-width: 150px;
-    }
-    .appointment-item-service {
-      font-family: 'Cormorant Garamond', serif;
-      font-weight: 600; font-size: 1.2rem; color: var(--ink);
-      letter-spacing: 0.2px;
-    }
-    .appointment-item-details {
-      display: flex; gap: 0.9rem; flex-wrap: wrap;
-      font-size: 0.82rem; color: var(--muted); font-weight: 400;
-    }
-    .appointment-item-details span { display: flex; align-items: center; gap: 0.3rem; }
-    .appointment-item-details i { color: var(--rose); font-size: 0.7rem; }
+    .appointment-item-info { display: flex; flex-direction: column; gap: 0.15rem; flex: 1; min-width: 150px; }
+    .appointment-item-service { font-weight: 500; font-size: 1rem; color: var(--ink); }
+    .appointment-item-details { display: flex; gap: 0.8rem; flex-wrap: wrap; font-size: 0.85rem; color: var(--muted); font-weight: 300; }
+    .appointment-item-details span { display: flex; align-items: center; gap: 0.2rem; }
     .appointment-item-status { flex-shrink: 0; }
 
     .list-end-marker {
-      text-align: center; padding: 2rem 0 1.4rem;
-      color: var(--muted-soft); font-size: 0.68rem;
-      letter-spacing: 1.5px; text-transform: uppercase;
-      font-weight: 600;
+      text-align: center;
+      padding: 2rem 0 1rem;
+      color: var(--muted);
+      font-size: 0.75rem;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      font-weight: 400;
+      opacity: 0.6;
     }
     .list-end-marker::before,
     .list-end-marker::after {
-      content: ''; display: inline-block;
-      width: 24px; height: 1px;
+      content: '';
+      display: inline-block;
+      width: 24px;
+      height: 1px;
       background: var(--border);
       vertical-align: middle;
       margin: 0 0.8rem;
     }
 
-    .appointment-detail-inline {
-      display: flex; flex-direction: column; gap: 1.8rem;
-      padding-bottom: 2rem;
-    }
-    .back-link {
-      background: none; border: none; color: var(--rose);
-      font-family: inherit; font-size: 0.9rem;
-      font-weight: 500; letter-spacing: 0.2px;
-      cursor: pointer; padding: 0;
-      display: inline-flex; align-items: center; gap: 0.5rem;
-      align-self: flex-start; transition: 0.2s var(--ease);
-    }
-    .back-link:hover { color: var(--rose-deep); transform: translateX(-3px); }
+    .appointment-detail-inline { display: flex; flex-direction: column; gap: 2rem; padding-bottom: 2rem; }
+    .back-link { background: none; border: none; color: var(--muted); font-family: inherit; font-size: 0.9rem; font-weight: 400; letter-spacing: 0.3px; cursor: pointer; padding: 0; display: inline-flex; align-items: center; gap: 0.5rem; align-self: flex-start; transition: 0.2s; }
+    .back-link:hover { color: var(--rose); transform: translateX(-2px); }
     .appointment-detail-hero { display: flex; flex-direction: column; gap: 0.6rem; }
-    .appointment-detail-heading {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 2rem; font-weight: 600;
-      letter-spacing: 0.2px; line-height: 1.15;
-      background: var(--gradient);
-      -webkit-background-clip: text; background-clip: text;
-      color: transparent;
-    }
-    .appointment-detail-subheading {
-      font-size: 0.9rem; color: var(--muted);
-      font-weight: 300; letter-spacing: 0.2px;
-    }
+    .appointment-detail-heading { font-family: 'Cormorant Garamond', serif; font-size: 2.2rem; font-weight: 500; letter-spacing: 0.3px; line-height: 1.15; background: var(--gradient); -webkit-background-clip: text; background-clip: text; color: transparent; }
+    .appointment-detail-subheading { font-size: 0.95rem; color: var(--muted); font-weight: 300; letter-spacing: 0.2px; }
     .appointment-detail-section { display: flex; flex-direction: column; gap: 0.3rem; }
-    .detail-section-label {
-      font-size: 0.68rem; font-weight: 600;
-      letter-spacing: 0.8px; text-transform: uppercase;
-      color: var(--muted); margin-bottom: 0.6rem;
-      padding-bottom: 0.5rem;
-      border-bottom: 1px solid var(--border);
-    }
-    .detail-row {
-      display: flex; justify-content: space-between; align-items: center;
-      padding: 0.75rem 0;
-      border-bottom: 1px solid var(--border);
-      font-size: 0.92rem; font-weight: 400;
-    }
+    .detail-section-label { font-size: 0.7rem; font-weight: 600; letter-spacing: 0.5px; text-transform: uppercase; color: var(--muted); margin-bottom: 0.4rem; }
+    .detail-row { display: flex; justify-content: space-between; align-items: center; padding: 0.7rem 0; border-bottom: 1px solid var(--border); font-size: 0.95rem; font-weight: 300; }
     .detail-row:last-child { border-bottom: none; }
     .detail-row span:first-child { color: var(--muted); }
-    .detail-row span:last-child { font-weight: 600; color: var(--ink); text-align: right; }
-    .detail-svc-item {
-      display: flex; justify-content: space-between; align-items: center;
-      padding: 0.75rem 0;
-      border-bottom: 1px solid var(--border);
-      gap: 0.5rem;
-    }
+    .detail-row span:last-child { font-weight: 500; color: var(--ink); text-align: right; }
+    .detail-svc-item { display: flex; justify-content: space-between; align-items: center; padding: 0.7rem 0; border-bottom: 1px solid var(--border); gap: 0.5rem; }
     .detail-svc-item:last-of-type { border-bottom: none; }
-    .detail-svc-name { font-size: 0.92rem; font-weight: 600; color: var(--ink); }
-    .detail-svc-meta { font-size: 0.78rem; color: var(--muted); margin-top: 0.15rem; font-weight: 400; }
-    .detail-svc-price { font-size: 0.95rem; font-weight: 700; color: var(--rose); }
-    .detail-total {
-      display: flex; justify-content: space-between;
-      padding: 1rem 0 0 0;
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 1.3rem; font-weight: 700;
-      color: var(--ink); margin-top: 0.5rem;
-      border-top: 1px solid var(--border);
-      letter-spacing: 0.2px;
-    }
+    .detail-svc-name { font-size: 0.95rem; font-weight: 500; color: var(--ink); }
+    .detail-svc-meta { font-size: 0.8rem; color: var(--muted); margin-top: 0.1rem; font-weight: 300; }
+    .detail-svc-price { font-size: 0.95rem; font-weight: 600; color: var(--rose); }
+    .detail-total { display: flex; justify-content: space-between; padding: 1rem 0 0 0; font-size: 1.1rem; font-weight: 600; color: var(--ink); margin-top: 0.3rem; border-top: 1px solid var(--border); }
     .detail-total span:last-child { color: var(--rose); }
-    .appointment-detail-actions {
-      display: flex; flex-direction: column; gap: 0.2rem;
-      padding-top: 0.5rem;
-    }
-    .action-link {
-      background: none; border: none; font-family: inherit;
-      font-size: 0.95rem; font-weight: 500;
-      color: var(--ink); cursor: pointer;
-      padding: 0.75rem 0; text-align: left;
-      display: inline-flex; align-items: center; gap: 0.65rem;
-      transition: 0.18s var(--ease);
-      letter-spacing: 0.2px;
-    }
-    .action-link i { width: 20px; color: var(--muted); font-size: 0.88rem; transition: color 0.18s; text-align: center; }
+    .appointment-detail-actions { display: flex; flex-direction: column; gap: 0.2rem; padding-top: 0.5rem; }
+    .action-link { background: none; border: none; font-family: inherit; font-size: 1rem; font-weight: 400; color: var(--ink); cursor: pointer; padding: 0.7rem 0; text-align: left; display: inline-flex; align-items: center; gap: 0.6rem; transition: 0.15s; letter-spacing: 0.2px; }
+    .action-link i { width: 20px; color: var(--muted); font-size: 0.9rem; transition: color 0.15s; }
     .action-link:hover { color: var(--rose); padding-left: 0.4rem; }
     .action-link:hover i { color: var(--rose); }
-    .action-link.danger { color: var(--danger); }
-    .action-link.danger:hover { color: var(--danger); }
-    .action-link.danger:hover i { color: var(--danger); }
-    .action-link.pink { color: var(--rose); }
+    .action-link.danger:hover { color: #FF6B6B; }
+    .action-link.danger:hover i { color: #FF6B6B; }
+    .action-link.pink { color: var(--rose); font-weight: 500; }
     .action-link.pink i { color: var(--rose); }
 
-    /* PROFILE */
-    .profile-container { max-width: 620px; margin: 0 auto; padding: 0.5rem 0; }
-    .profile-header { text-align: center; padding: 1.2rem 0 1.4rem 0; }
-    .profile-avatar-large {
-      width: 90px; height: 90px; border-radius: 50%;
-      background: linear-gradient(135deg, #FDE4EC 0%, #F4B6C8 50%, #E8A0B5 100%);
-      display: flex; align-items: center; justify-content: center;
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 2.4rem; font-weight: 700;
-      color: #2B1B22;
-      margin: 0 auto 0.6rem;
-      box-shadow:
-        0 0 0 1px rgba(255, 255, 255, 0.06),
-        0 0 0 3px rgba(244, 182, 200, 0.12),
-        0 8px 24px rgba(212, 63, 107, 0.18);
-      letter-spacing: 1px;
-    }
-    .profile-name {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 1.9rem; font-weight: 600;
-      letter-spacing: 0.2px; color: var(--ink);
-    }
-    .profile-email {
-      font-size: 0.92rem; color: var(--muted);
-      margin-top: 0.2rem; font-weight: 300;
-    }
-    .profile-member-badge {
-      display: inline-flex; align-items: center; gap: 0.4rem;
-      color: var(--rose); font-size: 0.7rem; font-weight: 600;
-      margin-top: 0.7rem; background: var(--rose-pale);
-      padding: 0.35rem 0.9rem; border-radius: var(--radius-pill);
-      border: 1px solid rgba(244, 182, 200, 0.2);
-      letter-spacing: 1px; text-transform: uppercase;
-    }
-    .profile-divider { height: 1px; background: var(--border); margin: 1.2rem 0; }
-    .profile-details-list { display: flex; flex-direction: column; }
-    .profile-detail-item {
-      display: flex; align-items: center; padding: 1rem 0;
-      border-bottom: 1px solid var(--border);
-    }
+    .profile-container { max-width: 540px; margin: 0 auto; padding: 0.5rem 0; }
+    .profile-header { text-align: center; padding: 1rem 0 1.2rem 0; }
+    .profile-avatar-large { width: 80px; height: 80px; border-radius: 50%; background: var(--gradient); display: flex; align-items: center; justify-content: center; font-family: 'Cormorant Garamond', serif; font-size: 2.2rem; font-weight: 600; color: white; margin: 0 auto 0.4rem; }
+    .profile-name { font-family: 'Cormorant Garamond', serif; font-size: 1.8rem; font-weight: 500; letter-spacing: 0.3px; color: var(--ink); }
+    .profile-email { font-size: 0.95rem; color: var(--muted); margin-top: 0.1rem; font-weight: 300; }
+    .profile-member-badge { display: inline-flex; align-items: center; gap: 0.3rem; color: var(--rose); font-size: 0.85rem; font-weight: 400; margin-top: 0.4rem; }
+    .profile-divider { height: 1px; background: var(--border); margin: 0.5rem 0 0.8rem 0; }
+    .profile-details-list { display: flex; flex-direction: column; padding: 0.3rem 0; }
+    .profile-detail-item { display: flex; align-items: center; padding: 1rem 0; border-bottom: 1px solid var(--border); }
     .profile-detail-item:last-child { border-bottom: none; }
-    .detail-label { color: var(--muted); font-size: 0.9rem; flex: 1; font-weight: 300; }
-    .detail-value { color: var(--ink); font-weight: 600; font-size: 0.95rem; text-align: right; }
-    .profile-actions { display: flex; flex-direction: column; gap: 0.1rem; padding: 0.3rem 0; }
-    .profile-action-btn {
-      width: 100%; padding: 0.95rem 0;
-      background: transparent; border: none;
-      font-size: 0.95rem; font-weight: 500;
-      color: var(--ink); cursor: pointer;
-      transition: 0.18s var(--ease);
-      font-family: inherit;
-      display: flex; align-items: center; gap: 0.9rem;
-      text-align: left; letter-spacing: 0.2px;
-      border-radius: var(--radius-sm);
-    }
-    .profile-action-btn .action-icon {
-      width: 22px; color: var(--muted); font-size: 0.92rem;
-      transition: 0.18s; text-align: center;
-    }
-    .profile-action-btn:hover { color: var(--rose); padding-left: 0.5rem; }
-    .profile-action-btn:hover .action-icon { color: var(--rose); }
-    .profile-action-btn.danger:hover { color: var(--danger); }
-    .profile-action-btn.danger:hover .action-icon { color: var(--danger); }
+    .detail-label { color: var(--muted); font-size: 1.05rem; flex: 1; font-weight: 300; }
+    .detail-value { color: var(--ink); font-weight: 500; font-size: 1.05rem; text-align: right; }
 
-    .edit-profile-inline {
-      display: flex; flex-direction: column; gap: 1.8rem;
-      padding-bottom: 2rem;
-      max-width: 620px; margin: 0 auto;
-    }
-    .edit-profile-heading {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 2rem; font-weight: 600;
-      letter-spacing: 0.2px; line-height: 1.15;
-      background: var(--gradient);
-      -webkit-background-clip: text; background-clip: text;
-      color: transparent;
-    }
-    .edit-profile-sub {
-      font-size: 0.9rem; color: var(--muted);
-      font-weight: 300; margin-top: 0.35rem; line-height: 1.6;
-    }
+    .profile-actions { display: flex; flex-direction: column; gap: 0.1rem; padding: 0.3rem 0; }
+    .profile-action-btn { width: 100%; padding: 0.7rem 0; background: transparent; border: none; font-size: 1rem; font-weight: 400; color: var(--ink); cursor: pointer; transition: 0.15s; font-family: inherit; display: flex; align-items: center; gap: 0.7rem; text-align: left; letter-spacing: 0.2px; }
+    .profile-action-btn .action-icon { width: 22px; color: var(--muted); font-size: 0.95rem; transition: 0.15s; }
+    .profile-action-btn:hover { color: var(--rose); padding-left: 0.4rem; }
+    .profile-action-btn:hover .action-icon { color: var(--rose); }
+    .profile-action-btn.danger:hover { color: #FF6B6B; }
+    .profile-action-btn.danger:hover .action-icon { color: #FF6B6B; }
+
+    .edit-profile-inline { display: flex; flex-direction: column; gap: 2rem; padding-bottom: 2rem; max-width: 540px; margin: 0 auto; }
+    .edit-profile-heading { font-family: 'Cormorant Garamond', serif; font-size: 2.2rem; font-weight: 500; letter-spacing: 0.3px; line-height: 1.15; background: var(--gradient); -webkit-background-clip: text; background-clip: text; color: transparent; }
+    .edit-profile-sub { font-size: 0.95rem; color: var(--muted); font-weight: 300; margin-top: 0.3rem; line-height: 1.6; }
     .edit-field { display: flex; flex-direction: column; gap: 0.4rem; }
-    .edit-field-label {
-      font-size: 0.68rem; font-weight: 600;
-      letter-spacing: 0.8px; text-transform: uppercase;
-      color: var(--muted);
-    }
-    .edit-field input {
-      background: transparent; border: none;
-      border-bottom: 1px solid var(--border-strong);
-      padding: 0.8rem 0;
-      font-size: 1rem; color: var(--ink);
-      width: 100%; font-family: inherit;
-      font-weight: 400; letter-spacing: 0.2px;
-      transition: all 0.25s ease; border-radius: 0;
-    }
+    .edit-field-label { font-size: 0.7rem; font-weight: 600; letter-spacing: 0.6px; text-transform: uppercase; color: var(--muted); }
+    .edit-field input { background: transparent; border: none; border-bottom: 1px solid var(--border); padding: 0.7rem 0; font-size: 1.1rem; color: var(--ink); width: 100%; font-family: inherit; font-weight: 300; letter-spacing: 0.2px; transition: all 0.25s ease; border-radius: 0; }
     .edit-field input:focus { outline: none; border-bottom-color: var(--rose); }
     .edit-field input:read-only { color: var(--muted); cursor: not-allowed; pointer-events: none; user-select: none; }
-    .edit-field input::placeholder { color: var(--muted-soft); }
-    .edit-note {
-      font-size: 0.74rem; color: var(--muted-soft);
-      font-weight: 400; margin-top: 0.3rem;
-    }
-    .edit-actions { display: flex; gap: 1.6rem; padding-top: 0.6rem; flex-wrap: wrap; }
+    .edit-field input::placeholder { color: var(--muted); opacity: 0.4; }
+    .edit-note { font-size: 0.75rem; color: var(--muted); font-weight: 300; margin-top: 0.2rem; opacity: 0.7; }
+    .edit-actions { display: flex; gap: 2rem; padding-top: 0.5rem; flex-wrap: wrap; }
 
-    /* ==================== SETTINGS ==================== */
-    .settings-header { margin-bottom: 1.8rem; }
-    .settings-title {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 2rem; font-weight: 600;
-      background: var(--gradient);
-      -webkit-background-clip: text; background-clip: text;
-      color: transparent;
-      line-height: 1.15; letter-spacing: 0.2px;
-    }
-    .settings-sub {
-      font-size: 0.92rem; color: var(--muted);
-      margin-top: 0.5rem; line-height: 1.65;
-      max-width: 720px; font-weight: 300;
-    }
-    .settings-page { max-width: 820px; }
-    .settings-block {
-      padding: 1.6rem 0 1.8rem;
-      border-bottom: 1px solid var(--border);
-    }
-    .settings-block:first-of-type { padding-top: 0.4rem; }
-    .settings-block:last-of-type { border-bottom: none; padding-bottom: 0; }
-    .settings-block-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: baseline;
-      margin-bottom: 0.4rem;
-      gap: 1rem;
-    }
-    .settings-block h3 {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 1.35rem;
-      font-weight: 600;
-      color: var(--ink);
-      margin: 0;
-      display: flex;
-      align-items: center;
-      gap: 0.6rem;
-      letter-spacing: 0.2px;
-    }
-    .settings-block h3 i {
-      color: var(--rose);
-      font-size: 1.1rem;
-    }
-    .settings-block > p {
-      font-size: 0.86rem;
-      color: var(--muted);
-      margin-bottom: 1.2rem;
-      font-weight: 300;
-      line-height: 1.6;
-    }
-    .settings-saved-indicator {
-      font-size: 0.72rem;
-      color: var(--success);
-      font-weight: 500;
-      opacity: 0;
-      transition: opacity 0.3s var(--ease);
-      display: inline-flex;
-      align-items: center;
-      gap: 0.35rem;
-    }
-    .settings-saved-indicator.show { opacity: 1; }
-    .settings-saved-indicator i { font-size: 0.68rem; }
-    .settings-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 1.1rem;
-    }
-    .settings-field {
-      display: flex;
-      flex-direction: column;
-      gap: 0.4rem;
-    }
-    .settings-field.full { grid-column: 1 / -1; }
-    .settings-field label {
-      font-size: 0.7rem;
-      font-weight: 600;
-      letter-spacing: 0.8px;
-      text-transform: uppercase;
-      color: var(--muted);
-    }
-    .settings-field input,
-    .settings-field select {
-      padding: 0.8rem 1rem;
-      border: 1px solid var(--border-strong);
-      border-radius: var(--radius-sm);
-      background: var(--input-bg);
-      font-size: 0.9rem;
-      font-family: inherit;
-      color: var(--ink);
-      outline: none;
-      transition: 0.2s;
-    }
-    .settings-field input:focus,
-    .settings-field select:focus {
-      border-color: var(--rose);
-      box-shadow: 0 0 0 3px var(--rose-pale);
-    }
-    .settings-field select option { background: var(--bg); color: var(--ink); }
-    .settings-toggle-row {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 1rem 0;
-      gap: 1rem;
-      border-bottom: 1px solid var(--border);
-    }
-    .settings-toggle-row:last-of-type { border-bottom: none; }
-    .settings-toggle-info { flex: 1; min-width: 0; }
-    .settings-toggle-info strong {
-      display: block;
-      font-size: 0.92rem;
-      color: var(--ink);
-      font-weight: 500;
-      margin-bottom: 0.15rem;
-    }
-    .settings-toggle-info span {
-      font-size: 0.8rem;
-      color: var(--muted);
-      font-weight: 300;
-      line-height: 1.5;
-    }
-    .toggle-switch {
-      position: relative;
-      width: 46px;
-      height: 26px;
-      flex-shrink: 0;
-    }
-    .toggle-switch input { opacity: 0; width: 0; height: 0; }
-    .toggle-slider {
-      position: absolute;
-      inset: 0;
-      cursor: pointer;
-      background: var(--hover-surface-strong);
-      border-radius: 100px;
-      transition: 0.25s var(--ease);
-      border: 1px solid var(--border-strong);
-    }
-    .toggle-slider::before {
-      content: '';
-      position: absolute;
-      height: 18px;
-      width: 18px;
-      left: 3px;
-      bottom: 3px;
-      background: var(--muted);
-      border-radius: 50%;
-      transition: 0.25s var(--ease);
-    }
-    .toggle-switch input:checked + .toggle-slider {
-      background: var(--gradient);
-      border-color: transparent;
-    }
-    .toggle-switch input:checked + .toggle-slider::before {
-      transform: translateX(20px);
-      background: #FFFFFF;
-    }
-    .settings-actions {
-      display: flex;
-      gap: 0.8rem;
-      padding-top: 1.8rem;
-      flex-wrap: wrap;
-      align-items: center;
-    }
-
-    /* ==================== MODALS ==================== */
-    .overlay {
-      display: none; position: fixed; inset: 0;
-      background: rgba(0, 0, 0, 0.85); backdrop-filter: blur(8px);
-      z-index: 2000; align-items: center; justify-content: center;
-      padding: 1rem;
-    }
+    .overlay { display: none; position: fixed; inset: 0; background: rgba(0, 0, 0, 0.75); backdrop-filter: blur(6px); z-index: 2000; align-items: center; justify-content: center; padding: 1rem; }
     .overlay.open { display: flex; }
-    .modal-box {
-      background: var(--card-bg);
-      border: 1px solid var(--border-strong);
-      border-radius: var(--radius-xl);
-      padding: 1.8rem 1.6rem;
-      width: 100%; max-width: 500px;
-      max-height: 90vh; overflow-y: auto;
-      animation: modalSlide 0.25s var(--ease-out);
-      box-shadow: var(--shadow-xl);
-    }
-    @keyframes modalSlide {
-      from { opacity: 0; transform: translateY(12px) scale(0.98); }
-      to { opacity: 1; transform: translateY(0) scale(1); }
-    }
-    .modal-header {
-      display: flex; justify-content: space-between; align-items: center;
-      margin-bottom: 1.5rem;
-    }
-    .modal-title {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 1.5rem; font-weight: 600;
-      color: var(--ink); letter-spacing: 0.3px;
-    }
-    .modal-close {
-      width: 32px; height: 32px; border-radius: 50%;
-      border: 1px solid var(--border);
-      background: transparent; cursor: pointer;
-      font-size: 0.85rem; color: var(--muted);
-      display: flex; align-items: center; justify-content: center;
-      transition: 0.15s;
-    }
-    .modal-close:hover {
-      color: var(--rose); border-color: var(--rose-mid);
-      background: var(--rose-pale);
-    }
+    .modal-box { background: var(--bg); border: 1px solid var(--border); border-radius: 1rem; padding: 2rem 1.5rem; width: 100%; max-width: 480px; max-height: 90vh; overflow-y: auto; animation: fadeIn 0.2s ease; box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6); }
+    body.light .modal-box { box-shadow: 0 20px 60px rgba(0, 0, 0, 0.12); }
+    .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; }
+    .modal-title { font-family: 'Cormorant Garamond', serif; font-size: 1.5rem; font-weight: 500; color: var(--ink); letter-spacing: 0.3px; }
+    .modal-close { width: 30px; height: 30px; border-radius: 50%; border: none; background: var(--hover-surface); cursor: pointer; font-size: 0.85rem; color: var(--muted); display: flex; align-items: center; justify-content: center; transition: 0.15s; }
+    .modal-close:hover { color: var(--rose); }
 
-    .confirmation-modal { max-width: 500px !important; text-align: center; padding: 2.4rem 1.6rem !important; }
-    .confirmation-icon { font-size: 3.2rem; margin-bottom: 0.8rem; }
+    .confirmation-modal { max-width: 500px !important; text-align: center; padding: 2.5rem 1.5rem !important; }
+    .confirmation-icon { font-size: 3.5rem; margin-bottom: 0.5rem; }
     .confirmation-icon i { color: var(--success); }
-    .confirmation-title {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 1.9rem; font-weight: 600;
-      color: var(--ink); margin-bottom: 0.35rem;
-      letter-spacing: 0.3px;
-    }
-    .confirmation-sub {
-      font-size: 0.92rem; color: var(--muted);
-      margin-bottom: 1.6rem; font-weight: 300;
-    }
-    .confirmation-details {
-      background: transparent; border: none;
-      border-top: 1px solid var(--border);
-      border-bottom: 1px solid var(--border);
-      padding: 1rem 0; text-align: left;
-      margin-bottom: 1.6rem;
-    }
-    .confirmation-row {
-      display: flex; justify-content: space-between;
-      padding: 0.5rem 0; font-size: 0.88rem; font-weight: 400;
-      gap: 0.5rem;
-    }
-    .confirmation-label { color: var(--muted); font-weight: 400; }
-    .confirmation-value { color: var(--ink); font-weight: 600; text-align: right; }
-    .confirmation-actions {
-      display: flex; gap: 1.6rem; flex-wrap: wrap;
-      justify-content: center;
-    }
+    .confirmation-title { font-family: 'Cormorant Garamond', serif; font-size: 1.8rem; font-weight: 500; color: var(--ink); margin-bottom: 0.3rem; letter-spacing: 0.3px; }
+    .confirmation-sub { font-size: 0.95rem; color: var(--muted); margin-bottom: 1.5rem; font-weight: 300; }
+    .confirmation-details { background: transparent; border: none; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); border-radius: 0; padding: 1rem 0; text-align: left; margin-bottom: 1.5rem; }
+    .confirmation-row { display: flex; justify-content: space-between; padding: 0.4rem 0; font-size: 0.9rem; font-weight: 300; }
+    .confirmation-label { color: var(--muted); font-weight: 300; }
+    .confirmation-value { color: var(--ink); font-weight: 500; text-align: right; }
+    .confirmation-actions { display: flex; gap: 2rem; flex-wrap: wrap; justify-content: center; }
 
-    .help-card {
-      background: transparent; border: none;
-      border-bottom: 1px solid var(--border);
-      padding: 1.2rem 0; margin-bottom: 0;
-    }
-    .help-card:last-child { border-bottom: none; }
-    .help-card h4 {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 1.2rem; font-weight: 600;
-      color: var(--rose); margin-bottom: 0.5rem;
-      letter-spacing: 0.3px;
-    }
-    .help-card p {
-      font-size: 0.88rem; color: var(--muted);
-      margin-bottom: 0.4rem; font-weight: 400;
-      line-height: 1.6;
-    }
-    .help-step { display: flex; gap: 0.6rem; margin-bottom: 0.5rem; align-items: flex-start; }
-    .help-step-number {
-      width: 22px; height: 22px; border-radius: 50%;
-      border: 1px solid var(--rose); color: var(--rose);
-      display: flex; align-items: center; justify-content: center;
-      font-size: 0.7rem; font-weight: 700;
-      flex-shrink: 0;
-    }
-    .help-card .help-step p { margin-bottom: 0; }
-
-    #toast {
-      position: fixed; bottom: 30px; left: 50%;
-      transform: translateX(-50%) translateY(10px);
-      background: var(--card-bg);
-      border: 1px solid var(--border-strong);
-      color: var(--ink); padding: 0.8rem 1.35rem;
-      border-radius: var(--radius-pill);
-      font-size: 0.88rem; font-weight: 500;
-      opacity: 0; transition: 0.3s var(--ease);
-      pointer-events: none; z-index: 3000;
-      box-shadow: var(--shadow-lg);
-      display: inline-flex; align-items: center; gap: 0.6rem;
-      max-width: 90vw; white-space: nowrap;
-    }
+    #toast { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%) translateY(10px); background: var(--bg); border: 1px solid var(--border); color: var(--ink); padding: 0.6rem 1.4rem; border-radius: 2rem; font-size: 0.9rem; opacity: 0; transition: 0.25s; pointer-events: none; z-index: 3000; white-space: nowrap; box-shadow: var(--shadow); font-weight: 400; }
     #toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
 
-    /* RESPONSIVE */
-    @media (max-width: 1200px) {
-      .stats-grid { grid-template-columns: repeat(2, 1fr); }
-      .insights-grid { grid-template-columns: repeat(2, 1fr); }
-    }
-    @media (max-width: 900px) {
-      .search-bar { width: 260px; }
-      .time-slots-grid { grid-template-columns: repeat(2, 1fr); }
-    }
+    .help-card { background: transparent; border: none; border-bottom: 1px solid var(--border); border-radius: 0; padding: 1.2rem 0; margin-bottom: 0; }
+    .help-card:last-child { border-bottom: none; }
+    .help-card h4 { font-family: 'Cormorant Garamond', serif; font-size: 1.2rem; font-weight: 500; color: var(--rose); margin-bottom: 0.5rem; letter-spacing: 0.3px; }
+    .help-card p { font-size: 0.9rem; color: var(--text-dim); margin-bottom: 0.3rem; font-weight: 300; }
+    .help-step { display: flex; gap: 0.6rem; margin-bottom: 0.4rem; }
+    .help-step-number { width: 22px; height: 22px; border-radius: 50%; border: 1px solid var(--rose); color: var(--rose); display: flex; align-items: center; justify-content: center; font-size: 0.75rem; font-weight: 600; flex-shrink: 0; }
+
     @media (max-width: 768px) {
-      body { font-size: 14px; }
-      .menu-btn { display: flex; }
-      .header-brand { display: flex; }
-      .sidebar-close { display: block; }
-      .sidebar {
-        position: fixed; top: 0; left: 0; height: 100%;
-        transform: translateX(-100%);
-        box-shadow: var(--shadow-xl); border-right: none;
-      }
-      .sidebar.open { transform: translateX(0); }
-      .header { padding: 0.9rem 1rem; flex-wrap: wrap; }
-      .header-right { gap: 0.5rem; width: 100%; flex-wrap: wrap; }
-      .search-bar { width: 100%; order: 2; }
-      .search-bar .kbd-hint { display: none; }
-      .main { padding: 1.2rem 1rem; }
-      .overview-title, .appointments-title, .booking-header-title { font-size: 1.65rem; }
-      .settings-title { font-size: 1.65rem; }
-      .next-appt-title { font-size: 1.5rem; }
-      .appointment-detail-heading { font-size: 1.6rem; }
-      .edit-profile-heading { font-size: 1.65rem; }
-      .stat-number { font-size: 1.9rem; }
+      body { font-size: 15px; }
+      .header, .top-tabs, .main { padding-left: 1rem; padding-right: 1rem; }
+      .stats-grid { grid-template-columns: repeat(2, 1fr); }
       .service-grid { grid-template-columns: 1fr 1fr; }
+      .category-buttons { gap: 0.3rem; }
+      .cat-btn { padding: 0.4rem 0.8rem; font-size: 0.85rem; }
+      .services-picker { flex-direction: column; }
+      .w-step { font-size: 0.9rem; padding: 0.4rem 0.2rem; min-width: 45px; }
+      .w-step-num { width: 22px; height: 22px; font-size: 0.7rem; }
+      .appointment-card { flex-direction: column; align-items: stretch; }
+      .calendar-day { font-size: 0.85rem; padding: 0.4rem 0; }
       .time-slots-grid { grid-template-columns: 1fr 1fr; }
       .stylist-grid { grid-template-columns: 1fr 1fr; }
-      .w-step { font-size: 0.78rem; padding: 0.4rem 0.2rem; min-width: 45px; }
-      .w-step-num { width: 22px; height: 22px; font-size: 0.65rem; }
-      .booking-panel { padding: 1.1rem 1.1rem; }
-      .cart-panel { padding: 1rem 1.1rem; }
-      .svc-card { padding: 0.85rem 0.9rem; }
-      .appointment-item { padding: 1rem 1.1rem; }
-      .appointment-item-service { font-size: 1.1rem; }
-      .filter-btn { padding: 0.45rem 0.9rem; font-size: 0.78rem; }
-      .confirmation-modal { padding: 1.8rem 1.2rem !important; }
-      .confirmation-title { font-size: 1.55rem; }
-      .insights-grid { grid-template-columns: 1fr; }
-      .next-appt-hero { padding: 1.3rem 1.3rem; }
-      .settings-grid { grid-template-columns: 1fr; }
+      .appointment-item { flex-direction: column; align-items: stretch; }
+      .appointment-item-info { min-width: auto; }
+      .profile-avatar-large { width: 70px; height: 70px; font-size: 1.9rem; }
+      .profile-name { font-size: 1.6rem; }
+      .brand-name { font-size: 2rem; }
+      .tab-item { font-size: 0.95rem; padding: 0.5rem 0.3rem; }
+      .tab-item .tab-icon { font-size: 1.3rem; }
+      .sidebar { width: 300px; left: -320px; }
+      .sidebar-username { font-size: 1.7rem; }
+      .sidebar-nav-item { font-size: 1.05rem; padding: 0.75rem 0.7rem; }
+      .filter-btn { font-size: 0.85rem; padding: 0.55rem 0.3rem; }
+      .appointments-title, .booking-header-title { font-size: 1.8rem; }
+      .appointments-sub, .booking-header-sub { font-size: 0.95rem; }
+      .appointment-detail-heading { font-size: 1.8rem; }
+      .edit-profile-heading { font-size: 1.8rem; }
     }
+
     @media (max-width: 480px) {
-      .stats-grid { grid-template-columns: 1fr 1fr; gap: 0.65rem; }
-      .stat-card { padding: 1.15rem 1.1rem; }
-      .stat-number { font-size: 1.65rem; }
-      .stat-label { font-size: 0.62rem; letter-spacing: 1.2px; }
+      body { font-size: 14px; }
+      .header, .top-tabs, .main { padding-left: 0.8rem; padding-right: 0.8rem; }
+      .stats-grid { grid-template-columns: 1fr 1fr; gap: 0.5rem; }
+      .stat-card { padding: 0.7rem 0; }
+      .stat-number { font-size: 1.5rem; }
+      .stat-label { font-size: 0.7rem; }
       .service-grid { grid-template-columns: 1fr; }
       .time-slots-grid { grid-template-columns: 1fr; }
       .stylist-grid { grid-template-columns: 1fr; }
-      .category-buttons { gap: 0.35rem; }
-      .cat-btn { padding: 0.4rem 0.85rem; font-size: 0.78rem; }
-      .wizard-nav { flex-wrap: wrap; gap: 0.6rem; }
-      .step-indicator { order: -1; width: 100%; text-align: center; margin-bottom: 0.3rem; }
-      .sidebar { width: 280px; }
-      .brand-name { font-size: 2rem; }
-      .wizard-steps { margin-left: -0.5rem; margin-right: -0.5rem; }
-      .w-step { font-size: 0.72rem; }
-      .confirmation-row { flex-wrap: wrap; gap: 0.2rem; }
+      .w-step { font-size: 0.8rem; padding: 0.3rem 0.1rem; }
+      .w-step-num { width: 20px; height: 20px; font-size: 0.6rem; }
+      .tab-item { font-size: 0.8rem; padding: 0.4rem 0.2rem; }
+      .tab-item .tab-icon { font-size: 1.15rem; }
+      .appointment-item-details { font-size: 0.8rem; gap: 0.4rem; }
+      .confirmation-modal { padding: 1.5rem 1rem !important; }
+      .confirmation-icon { font-size: 2.8rem; }
+      .confirmation-title { font-size: 1.4rem; }
+      .confirmation-row { font-size: 0.85rem; flex-wrap: wrap; gap: 0.1rem; }
       .confirmation-value { text-align: left; width: 100%; }
-      .settings-actions { flex-direction: column; align-items: stretch; }
+      .profile-detail-item { padding: 0.85rem 0; }
+      .detail-label { font-size: 1rem; }
+      .detail-value { font-size: 1rem; }
+      .profile-action-btn { font-size: 0.95rem; }
+      .brand-name { font-size: 1.7rem; }
+      .brand-slogan { font-size: 0.7rem; }
+      .sidebar { width: 280px; left: -300px; }
+      .sidebar-username { font-size: 1.5rem; }
+      .sidebar-nav-item { font-size: 0.95rem; padding: 0.65rem 0.5rem; }
+      .filter-btn { font-size: 0.8rem; padding: 0.5rem 0.2rem; }
+      .cat-btn { font-size: 0.8rem; padding: 0.3rem 0.7rem; }
+      .appointments-title, .booking-header-title { font-size: 1.6rem; }
+      .appointments-sub, .booking-header-sub { font-size: 0.9rem; }
+      .appointment-detail-heading { font-size: 1.6rem; }
+      .edit-profile-heading { font-size: 1.6rem; }
+      .edit-field input { font-size: 1rem; }
+      .wizard-nav { padding: 1rem 0 0.5rem 0; }
+      #wNext, #wPrev { font-size: 0.95rem; }
+      .step-indicator { font-size: 0.7rem; }
     }
   </style>
 </head>
 <body>
 
-<div class="app">
-  <div class="sidebar-overlay" id="sidebarOverlay"></div>
+<!-- SIDEBAR OVERLAY -->
+<div class="sidebar-overlay" id="sidebarOverlay"></div>
 
-  <!-- SIDEBAR -->
-  <aside class="sidebar" id="sidebar">
-    <button class="sidebar-close" id="sidebarClose" aria-label="Close menu"><i class="fas fa-times"></i></button>
+<!-- SIDEBAR -->
+<div class="sidebar" id="sidebar">
+  <button class="sidebar-close" id="sidebarClose"><i class="fas fa-times"></i></button>
+  <div class="sidebar-user">
+    <div class="sidebar-greeting">Hello</div>
+    <div class="sidebar-username" id="sidebarUsername">Sarah Mokoena</div>
+  </div>
+  <nav class="sidebar-nav">
+    <button class="sidebar-nav-item" onclick="switchView('overview');closeSidebar();"><i class="fas fa-home"></i> Home</button>
+    <button class="sidebar-nav-item" onclick="switchView('book');closeSidebar();"><i class="fas fa-plus" style="font-weight:300;"></i> Book Appointment</button>
+    <button class="sidebar-nav-item" onclick="switchView('appointments');closeSidebar();"><i class="fa-regular fa-calendar"></i> My Appointments</button>
+    <button class="sidebar-nav-item" onclick="switchView('profile');closeSidebar();"><i class="fa-regular fa-user"></i> Account Details</button>
+    <button class="sidebar-nav-item" onclick="help();closeSidebar();"><i class="fas fa-question-circle"></i> Help</button>
+    <button class="sidebar-nav-item theme-toggle" id="themeToggleBtn" onclick="toggleTheme()"><i class="fas fa-moon" id="themeIcon"></i> <span id="themeLabel">Light Mode</span></button>
+    <button class="sidebar-nav-item danger" onclick="signOut();closeSidebar();"><i class="fas fa-arrow-left"></i> Sign Out</button>
+  </nav>
+  <div class="sidebar-social">
+    <div class="sidebar-social-label">Connect with us</div>
+    <div class="sidebar-contact-info">
+      <div><i class="fas fa-phone"></i> 076 769 0102</div>
+      <div><i class="fas fa-clock"></i> Mon-Fri: 9am-6pm</div>
+      <div style="margin-left: 20px;">Sat: 9am-2pm</div>
+    </div>
+    <div class="sidebar-social-icons">
+      <a href="#" target="_blank"><i class="fab fa-instagram"></i></a>
+      <a href="#" target="_blank"><i class="fab fa-facebook"></i></a>
+      <a href="#" target="_blank"><i class="fab fa-tiktok"></i></a>
+    </div>
+  </div>
+  <div class="sidebar-footer-text">Version 1.0.0</div>
+</div>
 
+<!-- HEADER -->
+<header class="header">
+  <div class="header-left">
+    <button class="menu-btn" id="menuToggle"><i class="fas fa-bars"></i></button>
     <div class="brand-wrapper">
       <span class="brand-name">PinkMeUp</span>
-      <span class="brand-slogan">Book · Relax · Glow</span>
+      <span class="brand-slogan">Book • Glow • Relax</span>
     </div>
-
-    <div class="sidebar-greeting">
-      <div class="greeting-sub">Hello,</div>
-      <div class="greeting-name" id="sidebarUsername">Sarah Mokoena</div>
-    </div>
-
-    <div class="nav-group">
-      <div class="nav-label">Menu</div>
-      <button class="sidebar-item tab-item active" data-tab="overview" onclick="switchView('overview');closeSidebar();"><i class="fas fa-th-large"></i> Home</button>
-      <button class="sidebar-item tab-item" data-tab="book" onclick="switchView('book');closeSidebar();"><i class="fas fa-plus"></i> Book Appointment</button>
-      <button class="sidebar-item tab-item" data-tab="appointments" onclick="switchView('appointments');closeSidebar();"><i class="fas fa-calendar-alt"></i> My Appointments <span class="badge-dot" id="tabBadge" style="display:none;">0</span></button>
-      <button class="sidebar-item tab-item" data-tab="profile" onclick="switchView('profile');closeSidebar();"><i class="fas fa-user"></i> Account Details</button>
-    </div>
-
-    <div class="nav-group">
-      <div class="nav-label">Preferences</div>
-      <button class="sidebar-item tab-item" data-tab="settings" onclick="switchView('settings');closeSidebar();"><i class="fas fa-cog"></i> Settings</button>
-      <button class="sidebar-item" onclick="help();closeSidebar();"><i class="fas fa-question-circle"></i> Help &amp; Support</button>
-    </div>
-
-    <button class="sidebar-item" onclick="toggleTheme()">
-      <i class="fas fa-moon" id="themeIcon"></i> <span id="themeLabel">Light Mode</span>
-    </button>
-    <button class="sidebar-item signout-nav" onclick="signOut();closeSidebar();">
-      <i class="fas fa-arrow-left"></i> Sign Out
-    </button>
-
-    <div class="sidebar-footer">
-      <strong>Hours</strong>
-      <p>Mon–Fri · 9am – 6pm</p>
-      <p>Sat · 9am – 2pm</p>
-      <strong>Contact</strong>
-      <p>076 769 0102</p>
-    </div>
-  </aside>
-
-  <!-- MAIN WRAPPER -->
-  <div class="main-wrapper">
-    <header class="header">
-      <div class="header-left">
-        <button class="menu-btn" id="menuToggle" aria-label="Open menu"><i class="fas fa-bars"></i></button>
-        <div class="header-brand">
-          <span class="header-brand-name">PinkMeUp</span>
-          <span class="header-brand-slogan">Book · Relax · Glow</span>
-        </div>
-      </div>
-      <div class="header-right">
-        <div class="search-bar" id="searchWrap">
-          <i class="fas fa-search search-icon"></i>
-          <input type="text" id="globalSearch" placeholder="Search appointments, services..." autocomplete="off" aria-label="Search">
-          <span class="kbd-hint">Ctrl K</span>
-          <button class="search-clear" id="searchClearBtn" aria-label="Clear search"><i class="fas fa-times"></i></button>
-          <div class="search-results" id="searchResults"></div>
-        </div>
-        <button class="btn-text" onclick="switchView('book')">
-          <i class="fas fa-plus"></i> Book now
-        </button>
-      </div>
-    </header>
-
-    <main class="main">
-
-      <!-- OVERVIEW -->
-      <section id="overview-view" class="view active">
-        <div class="overview-header">
-          <div>
-            <div class="overview-title">Good morning</div>
-            <div class="overview-sub">Here's a snapshot of your beauty journey</div>
-          </div>
-          <button class="book-now-btn" onclick="switchView('book')">Book now <i class="fas fa-arrow-right"></i></button>
-        </div>
-
-        <div id="nextApptHero"></div>
-
-        <div class="stats-grid">
-          <div class="stat-card"><div class="stat-number" id="statTotal">0</div><div class="stat-label">Total Appointments</div></div>
-          <div class="stat-card"><div class="stat-number" id="statUpcoming">0</div><div class="stat-label">Upcoming</div></div>
-          <div class="stat-card"><div class="stat-number" id="statSpend">R0</div><div class="stat-label">Total Spent</div></div>
-          <div class="stat-card"><div class="stat-number" id="statServices">0</div><div class="stat-label">Services Enjoyed</div></div>
-        </div>
-
-        <div class="section-header">
-          <span class="section-title">Your Beauty Insights</span>
-        </div>
-        <div class="insights-grid" id="insightsGrid"></div>
-
-        <div class="section-header">
-          <span class="section-title">Upcoming Appointments</span>
-          <span class="view-all-link" onclick="switchView('appointments')">View all <i class="fas fa-arrow-right"></i></span>
-        </div>
-        <div id="overviewUpcomingBody">
-          <div class="empty-state"><i class="fas fa-spa"></i><p>No upcoming appointments yet. Treat yourself!</p><span class="book-link" onclick="switchView('book')">Book now</span></div>
-        </div>
-      </section>
-
-      <!-- BOOK APPOINTMENT -->
-      <section id="book-view" class="view">
-        <div class="booking-header">
-          <div class="booking-header-title">Book Your Appointment</div>
-          <div class="booking-header-sub">Pick your services, choose your preferred stylist, and select a time that works best for you. We'll take care of everything else — all you need to do is arrive and enjoy the experience.</div>
-        </div>
-        <div class="wizard-steps">
-          <div class="w-step active" id="ws1" onclick="tryGotoStep(1)"><div class="w-step-num">1</div><span>Services</span></div>
-          <div class="w-step" id="ws2" onclick="tryGotoStep(2)"><div class="w-step-num">2</div><span>Date, Stylist &amp; Time</span></div>
-          <div class="w-step" id="ws3" onclick="tryGotoStep(3)"><div class="w-step-num">3</div><span>Details</span></div>
-          <div class="w-step" id="ws4" onclick="tryGotoStep(4)"><div class="w-step-num">4</div><span>Review</span></div>
-        </div>
-
-        <div class="wizard-body" id="wbody1">
-          <div class="services-picker">
-            <div class="service-categories">
-              <div class="category-heading">Pick your services</div>
-              <div class="category-sub">Choose a category below, then tap any service to add it to your booking. You can combine multiple services in one visit.</div>
-              <div class="category-buttons" id="catNav"></div>
-              <div class="inline-search">
-                <i class="fas fa-search"></i>
-                <input type="text" id="svcSearch" placeholder="Search services by name..." autocomplete="off" aria-label="Search services">
-              </div>
-            </div>
-            <div class="services-list-wrap">
-              <div class="service-grid" id="svcGrid"></div>
-            </div>
-          </div>
-          <div class="cart-panel">
-            <div class="cart-panel-title"><i class="fas fa-shopping-bag"></i> Selected Services <span id="cartCount" style="background:var(--gradient);color:#FFFFFF;border-radius:2rem;padding:0.1rem 0.5rem;font-size:0.68rem;font-weight:700;margin-left:0.2rem;">0</span></div>
-            <div class="cart-items" id="cartItems"><div class="cart-empty-msg" id="cartEmpty">Tap a service above to add it here</div></div>
-            <div class="cart-summary" id="cartSummary" style="display:none;">
-              <div><div class="cart-total-label">Total</div><div class="cart-duration" id="cartDuration"></div></div>
-              <div class="cart-total-val" id="cartTotal">R0</div>
-            </div>
-          </div>
-        </div>
-
-        <div class="wizard-body hidden" id="wbody2">
-          <div class="booking-vertical-wrapper">
-            <div class="booking-panel date-panel">
-              <div class="panel-label">Pick Your Appointment Date</div>
-              <div class="panel-hint">Choose any available day that suits you. Past dates can't be selected.</div>
-              <div class="month-label" id="currentMonthLabel">April, 2031</div>
-              <div class="calendar-grid">
-                <div class="calendar-weekdays"><span>Mo</span><span>Tu</span><span>We</span><span>Th</span><span>Fr</span><span>Sa</span><span>Su</span></div>
-                <div class="calendar-days" id="calendarDays"></div>
-              </div>
-              <div class="date-nav">
-                <button class="date-nav-btn" onclick="changeMonth(-1)"><i class="fas fa-chevron-left"></i></button>
-                <button class="date-nav-btn" onclick="changeMonth(1)"><i class="fas fa-chevron-right"></i></button>
-              </div>
-              <input type="hidden" id="apptDate" min="">
-            </div>
-            <div class="booking-panel stylist-panel">
-              <div class="panel-label">Choose Your Stylist</div>
-              <div class="panel-hint">These stylists are available for the services you selected.</div>
-              <div class="stylist-grid" id="stylistGrid"></div>
-            </div>
-            <div class="booking-panel time-panel">
-              <div class="panel-label">Available Time Slots</div>
-              <div class="panel-hint">Times shown are based on your stylist's availability for your chosen date.</div>
-              <div class="time-slots-container"><div class="time-slots-grid" id="timeSlots"></div></div>
-              <div style="margin-top:0.7rem;font-size:0.82rem;color:var(--muted);font-weight:400;"><i class="fas fa-info-circle" style="color:var(--rose);"></i> Your session will be approximately <strong id="totalDurLabel" style="font-weight:600;color:var(--ink);">—</strong></div>
-            </div>
-          </div>
-        </div>
-
-        <div class="wizard-body hidden" id="wbody3">
-          <div class="details-form">
-            <div style="background: var(--rose-pale); padding: 0.9rem 1.1rem; border-radius: var(--radius-sm); border: 1px solid var(--rose-mid); margin-bottom: 1.5rem;">
-              <p style="font-size: 0.88rem; color: var(--ink); font-weight: 400;"><i class="fas fa-info-circle" style="color:var(--rose);"></i> <strong style="font-weight:600;">Quick Book:</strong> no account needed. Enter your details below and we'll send a confirmation email.</p>
-            </div>
-            <div class="form-group"><label class="form-label">Full Name <span style="color: var(--rose);">*</span></label><input class="form-input" id="detName" type="text" placeholder="Your full name"></div>
-            <div class="form-group"><label class="form-label">Email Address <span style="color: var(--rose);">*</span></label><input class="form-input" id="detEmail" type="email" placeholder="you@example.com"></div>
-            <div class="form-group"><label class="form-label">Phone Number <span style="color: var(--rose);">*</span></label><input class="form-input" id="detPhone" type="tel" placeholder="e.g. 071 234 5678"></div>
-            <div class="form-group"><label class="form-label">Special Requests <span style="font-size:0.68rem;color:var(--muted);text-transform:none;letter-spacing:0;">(optional)</span></label><textarea class="form-textarea" id="detNotes" placeholder="Allergies, preferences, anything we should know…"></textarea></div>
-          </div>
-        </div>
-
-        <div class="wizard-body hidden" id="wbody4">
-          <div class="review-card" id="reviewCard"></div>
-          <p style="font-size:0.82rem;color:var(--muted);margin-top:1rem;font-weight:400;"><i class="fas fa-lock" style="color:var(--rose);"></i> Your information is kept private. No payment is taken online — pay in-store on the day.</p>
-        </div>
-
-        <div class="wizard-nav">
-          <button class="btn-ghost" id="wPrev" onclick="wizardPrev()"><i class="fas fa-arrow-left"></i> Back</button>
-          <span class="step-indicator" id="stepInd">Step 1 of 4</span>
-          <button class="btn-primary" id="wNext" onclick="wizardNext()">Next <i class="fas fa-arrow-right"></i></button>
-        </div>
-      </section>
-
-      <!-- APPOINTMENTS -->
-      <section id="appointments-view" class="view">
-        <div class="appointments-container">
-          <div class="appointments-header" id="appointmentsHeader">
-            <div class="appointments-title">Your Appointments</div>
-            <div class="appointments-sub">Everything in one place — see what's coming up, and look back on past visits whenever you like.</div>
-            <div class="appointments-hint"><i class="fas fa-hand-pointer"></i> Tap any appointment below to view full details and manage it.</div>
-          </div>
-          <div class="appointments-search-wrap">
-            <div class="inline-search" style="max-width: 420px;">
-              <i class="fas fa-search"></i>
-              <input type="text" id="apptSearch" placeholder="Search by service, stylist or date..." autocomplete="off" aria-label="Search appointments">
-            </div>
-          </div>
-          <div class="filter-tabs" id="filterTabs">
-            <button class="filter-btn active" data-filter="all">All</button>
-            <button class="filter-btn" data-filter="upcoming">Upcoming</button>
-            <button class="filter-btn" data-filter="past">Past</button>
-            <button class="filter-btn" data-filter="cancelled">Cancelled</button>
-          </div>
-          <div class="appointments-list" id="appointmentsBody">
-            <div class="empty-state"><i class="fas fa-calendar-times"></i><p>You haven't booked any appointments yet.</p><span class="book-link" onclick="switchView('book')">Book now</span></div>
-          </div>
-        </div>
-      </section>
-
-      <!-- PROFILE -->
-      <section id="profile-view" class="view">
-        <div class="profile-container" id="profileMain">
-          <div class="profile-header">
-            <div class="profile-avatar-large" id="profileAvatar">SM</div>
-            <div class="profile-name" id="profileFullName">Sarah Mokoena</div>
-            <div class="profile-email" id="profileEmail">sarah@example.com</div>
-            <div class="profile-member-badge"><i class="fas fa-crown"></i> Member since May 2026</div>
-          </div>
-          <div class="profile-divider"></div>
-          <div class="profile-details-list">
-            <div class="profile-detail-item"><span class="detail-label">Phone</span><span class="detail-value" id="profileDisplayPhone">+27 82 123 4567</span></div>
-            <div class="profile-detail-item"><span class="detail-label">Member Since</span><span class="detail-value">May 2026</span></div>
-            <div class="profile-detail-item"><span class="detail-label">Total Bookings</span><span class="detail-value" id="profileStatBookings">0</span></div>
-            <div class="profile-detail-item"><span class="detail-label">Upcoming</span><span class="detail-value" id="profileStatUpcoming">0</span></div>
-            <div class="profile-detail-item"><span class="detail-label">Total Spent</span><span class="detail-value" id="profileStatSpent">R0</span></div>
-          </div>
-          <div class="profile-divider"></div>
-          <div class="profile-actions">
-            <button class="profile-action-btn" onclick="toggleProfileEdit()"><span class="action-icon"><i class="fas fa-user-edit"></i></span> Edit Profile</button>
-            <button class="profile-action-btn" onclick="switchView('book')"><span class="action-icon"><i class="fas fa-calendar-plus"></i></span> Book Appointment</button>
-            <button class="profile-action-btn" onclick="switchView('appointments')"><span class="action-icon"><i class="fas fa-calendar-alt"></i></span> My Appointments</button>
-            <button class="profile-action-btn" onclick="switchView('settings')"><span class="action-icon"><i class="fas fa-cog"></i></span> Settings</button>
-            <button class="profile-action-btn danger" onclick="signOut()"><span class="action-icon"><i class="fas fa-arrow-left"></i></span> Sign Out</button>
-          </div>
-        </div>
-
-        <div class="edit-profile-inline" id="editProfileInline" style="display:none;">
-          <button class="back-link" onclick="closeEditProfile()">
-            <i class="fas fa-arrow-left"></i> Back
-          </button>
-
-          <div>
-            <div class="edit-profile-heading">Edit Profile</div>
-            <div class="edit-profile-sub">Keep your details up to date so we can reach you and personalise your experience.</div>
-          </div>
-
-          <div class="edit-field">
-            <label class="edit-field-label">Full Name</label>
-            <input type="text" id="profileName" placeholder="Your full name">
-          </div>
-
-          <div class="edit-field">
-            <label class="edit-field-label">Phone Number</label>
-            <input type="tel" id="profilePhone" placeholder="+27 82 123 4567">
-          </div>
-
-          <div class="edit-field">
-            <label class="edit-field-label">Email Address</label>
-            <input type="email" id="profileEmailInput" readonly onkeydown="return false;" onpaste="return false;" oninput="return false;">
-            <div class="edit-note">Email address cannot be changed from this page.</div>
-          </div>
-
-          <div class="edit-actions">
-            <button class="btn-primary" onclick="saveProfile();closeEditProfile();">Save Changes <i class="fas fa-arrow-right"></i></button>
-            <button class="btn-ghost" onclick="closeEditProfile()">Cancel</button>
-          </div>
-        </div>
-      </section>
-
-      <!-- SETTINGS -->
-      <section id="settings-view" class="view">
-        <div class="settings-header">
-          <div class="settings-title">Settings</div>
-          <div class="settings-sub">Manage your notifications, preferences, and appearance. These settings apply to this device and are saved automatically.</div>
-        </div>
-
-        <div class="settings-page">
-
-          <!-- NOTIFICATIONS -->
-          <div class="settings-block">
-            <div class="settings-block-header">
-              <h3><i class="fas fa-bell"></i> Notifications</h3>
-              <span class="settings-saved-indicator" id="customerSettingsSavedIndicator">
-                <i class="fas fa-check-circle"></i> <span id="customerSettingsSavedText">Saved</span>
-              </span>
-            </div>
-            <p>Choose how you'd like us to keep in touch about your appointments and offers.</p>
-
-            <div class="settings-toggle-row">
-              <div class="settings-toggle-info">
-                <strong>Appointment Reminders</strong>
-                <span>Receive an email the day before your appointment.</span>
-              </div>
-              <label class="toggle-switch">
-                <input type="checkbox" id="settingApptReminders">
-                <span class="toggle-slider"></span>
-              </label>
-            </div>
-
-            <div class="settings-toggle-row">
-              <div class="settings-toggle-info">
-                <strong>SMS Reminders</strong>
-                <span>A friendly text message on the day of your visit.</span>
-              </div>
-              <label class="toggle-switch">
-                <input type="checkbox" id="settingSmsReminders">
-                <span class="toggle-slider"></span>
-              </label>
-            </div>
-
-            <div class="settings-toggle-row">
-              <div class="settings-toggle-info">
-                <strong>Promotions &amp; Offers</strong>
-                <span>Occasional emails about specials, new services, and events.</span>
-              </div>
-              <label class="toggle-switch">
-                <input type="checkbox" id="settingPromos">
-                <span class="toggle-slider"></span>
-              </label>
-            </div>
-
-            <div class="settings-toggle-row">
-              <div class="settings-toggle-info">
-                <strong>Birthday Treats</strong>
-                <span>A little something from us on your special day.</span>
-              </div>
-              <label class="toggle-switch">
-                <input type="checkbox" id="settingBirthday">
-                <span class="toggle-slider"></span>
-              </label>
-            </div>
-          </div>
-
-          <!-- PREFERENCES -->
-          <div class="settings-block">
-            <h3><i class="fas fa-sliders-h"></i> Booking Preferences</h3>
-            <p>Help us tailor your booking experience. These are used as smart defaults when you book.</p>
-
-            <div class="settings-grid">
-              <div class="settings-field">
-                <label>Preferred Stylist</label>
-                <select id="settingPreferredStylist">
-                  <option value="">No preference</option>
-                </select>
-              </div>
-              <div class="settings-field">
-                <label>Preferred Time of Day</label>
-                <select id="settingPreferredTime">
-                  <option value="">Any time</option>
-                  <option value="morning">Morning (9am – 12pm)</option>
-                  <option value="afternoon">Afternoon (12pm – 4pm)</option>
-                  <option value="evening">Evening (4pm – close)</option>
-                </select>
-              </div>
-            </div>
-          </div>
-
-          <!-- APPEARANCE -->
-          <div class="settings-block">
-            <h3><i class="fas fa-palette"></i> Appearance</h3>
-            <p>Personalise how PinkMeUp looks on this device.</p>
-
-            <div class="settings-toggle-row">
-              <div class="settings-toggle-info">
-                <strong>Dark Mode</strong>
-                <span>Switch between light and dark themes. Your preference is saved for next time.</span>
-              </div>
-              <label class="toggle-switch">
-                <input type="checkbox" id="settingDarkMode">
-                <span class="toggle-slider"></span>
-              </label>
-            </div>
-          </div>
-
-          <!-- ACCOUNT -->
-          <div class="settings-block">
-            <h3><i class="fas fa-user-circle"></i> Account</h3>
-            <p>Manage your PinkMeUp account and session.</p>
-
-            <div class="settings-actions" style="padding-top: 0.4rem;">
-              <button class="btn-ghost" onclick="switchView('profile')"><i class="fas fa-user-edit"></i> Edit Profile</button>
-              <button class="btn-ghost" style="color: var(--danger);" onclick="signOut()"><i class="fas fa-arrow-left"></i> Sign Out</button>
-            </div>
-          </div>
-
-          <!-- ACTIONS -->
-          <div class="settings-actions">
-            <button class="btn-primary" onclick="saveCustomerSettings()"><i class="fas fa-check"></i> Save Settings</button>
-            <button class="btn-ghost" onclick="resetCustomerSettings()"><i class="fas fa-undo"></i> Reset to Defaults</button>
-          </div>
-
-        </div>
-      </section>
-
-    </main>
   </div>
+  <div class="header-right"></div>
+</header>
+
+<!-- TOP TABS -->
+<div class="top-tabs">
+  <button class="tab-item active" data-tab="overview"><span class="tab-icon"><i class="fas fa-home"></i></span> Home</button>
+  <button class="tab-item" data-tab="book"><span class="tab-icon"><i class="fas fa-plus" style="font-weight:300;"></i></span> Book</button>
+  <button class="tab-item" data-tab="appointments"><span class="tab-icon"><i class="fa-regular fa-calendar"></i></span> Appointments<span class="badge-dot" id="tabBadge" style="display:none;"></span></button>
+  <button class="tab-item" data-tab="profile"><span class="tab-icon"><i class="fa-regular fa-user"></i></span> Profile</button>
+</div>
+
+<div class="app">
+  <main class="main">
+
+    <!-- OVERVIEW -->
+    <section id="overview-view" class="view active">
+      <div class="overview-header">
+        <div>
+          <div class="overview-title">Good morning</div>
+          <div class="overview-sub">Here's a snapshot of your beauty journey</div>
+        </div>
+        <button class="book-now-btn" onclick="switchView('book')">Book now <i class="fas fa-arrow-right"></i></button>
+      </div>
+      <div class="stats-grid">
+        <div class="stat-card"><div class="stat-number" id="statTotal">0</div><div class="stat-label">Total Appointments</div></div>
+        <div class="stat-card"><div class="stat-number" id="statUpcoming">0</div><div class="stat-label">Upcoming</div></div>
+        <div class="stat-card"><div class="stat-number" id="statSpend">R0</div><div class="stat-label">Total Spent</div></div>
+        <div class="stat-card"><div class="stat-number" id="statServices">0</div><div class="stat-label">Services Enjoyed</div></div>
+      </div>
+      <div class="section-header">
+        <span class="section-title">Upcoming Appointments</span>
+        <span class="view-all-link" onclick="switchView('appointments')">View all →</span>
+      </div>
+      <div id="overviewUpcomingBody">
+        <div class="empty-state"><i class="fas fa-spa"></i><p>No upcoming appointments yet. Treat yourself!</p><span class="book-link" onclick="switchView('book')">Book now</span></div>
+      </div>
+    </section>
+
+    <!-- BOOK APPOINTMENT -->
+    <section id="book-view" class="view">
+      <div class="booking-header">
+        <div class="booking-header-title">Book Your Appointment</div>
+        <div class="booking-header-sub">Pick your services, choose your preferred stylist, and select a time that works best for you. We'll take care of everything else — all you need to do is arrive and enjoy the experience.</div>
+      </div>
+      <div class="wizard-steps">
+        <div class="w-step active" id="ws1" onclick="tryGotoStep(1)"><div class="w-step-num">1</div><span>Services</span></div>
+<div class="w-step" id="ws2" onclick="tryGotoStep(2)"><div class="w-step-num">2</div><span>Date, Stylist & Time</span></div>
+<div class="w-step" id="ws3" onclick="tryGotoStep(3)"><div class="w-step-num">3</div><span>Details</span></div>
+<div class="w-step" id="ws4" onclick="tryGotoStep(4)"><div class="w-step-num">4</div><span>Review</span></div>
+      </div>
+
+      <div class="wizard-body" id="wbody1">
+        <div class="services-picker">
+          <div class="service-categories">
+            <div class="category-heading">Pick your services</div>
+            <div class="category-sub">Choose a category below, then tap any service to add it to your booking. You can combine multiple services in one visit.</div>
+            <div class="category-buttons" id="catNav"></div>
+          </div>
+          <div class="services-list-wrap">
+            <div class="service-grid" id="svcGrid"></div>
+          </div>
+        </div>
+        <div class="cart-panel">
+          <div class="cart-panel-title"><i class="fas fa-shopping-bag"></i> Selected Services <span id="cartCount" style="background:var(--rose);color:white;border-radius:2rem;padding:0.1rem 0.4rem;font-size:0.7rem;margin-left:0.2rem;">0</span></div>
+          <div class="cart-items" id="cartItems"><div class="cart-empty-msg" id="cartEmpty">Tap a service above to add it here</div></div>
+          <div class="cart-summary" id="cartSummary" style="display:none;">
+            <div><div class="cart-total-label">Total</div><div class="cart-duration" id="cartDuration"></div></div>
+            <div class="cart-total-val" id="cartTotal">R0</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="wizard-body hidden" id="wbody2">
+        <div class="booking-vertical-wrapper">
+          <div class="booking-panel date-panel">
+            <div class="panel-label">Pick Your Appointment Date</div>
+            <div class="panel-hint">Choose any available day that suits you. Past dates can't be selected.</div>
+            <div class="month-label" id="currentMonthLabel">April, 2031</div>
+            <div class="calendar-grid">
+              <div class="calendar-weekdays"><span>Mo</span><span>Tu</span><span>We</span><span>Th</span><span>Fr</span><span>Sa</span><span>Su</span></div>
+              <div class="calendar-days" id="calendarDays"></div>
+            </div>
+            <div class="date-nav">
+              <button class="date-nav-btn" onclick="changeMonth(-1)"><i class="fas fa-chevron-left"></i></button>
+              <button class="date-nav-btn" onclick="changeMonth(1)"><i class="fas fa-chevron-right"></i></button>
+            </div>
+            <input type="hidden" id="apptDate" min="">
+          </div>
+          <div class="booking-panel stylist-panel">
+            <div class="panel-label">Choose Your Stylist</div>
+            <div class="panel-hint">These stylists are available for the services you selected.</div>
+            <div class="stylist-grid" id="stylistGrid"></div>
+          </div>
+          <div class="booking-panel time-panel">
+            <div class="panel-label">Available Time Slots</div>
+            <div class="panel-hint">Times shown are based on your stylist's availability for your chosen date.</div>
+            <div class="time-slots-container"><div class="time-slots-grid" id="timeSlots"></div></div>
+            <div style="margin-top:0.6rem;font-size:0.85rem;color:var(--muted);font-weight:300;"><i class="fas fa-info-circle"></i> Your session will be approximately <strong id="totalDurLabel" style="font-weight:500;">—</strong></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="wizard-body hidden" id="wbody3">
+        <div class="details-form">
+          <div style="background: var(--rose-pale); padding: 0.8rem 1rem; border-radius: 0.4rem; margin-bottom: 1.5rem;">
+            <p style="font-size: 0.9rem; color: var(--muted); font-weight: 300;"><i class="fas fa-info-circle" style="color:var(--rose);"></i> <strong style="font-weight:500;">Quick Book:</strong> no account needed. Enter your details below and we'll send a confirmation email.</p>
+          </div>
+          <div class="form-group"><label class="form-label">Full Name <span style="color: var(--rose);">*</span></label><input class="form-input" id="detName" type="text" placeholder="Your full name"></div>
+          <div class="form-group"><label class="form-label">Email Address <span style="color: var(--rose);">*</span></label><input class="form-input" id="detEmail" type="email" placeholder="you@example.com"></div>
+          <div class="form-group"><label class="form-label">Phone Number <span style="color: var(--rose);">*</span></label><input class="form-input" id="detPhone" type="tel" placeholder="e.g. 071 234 5678"></div>
+          <div class="form-group"><label class="form-label">Special Requests <span style="font-size:0.7rem;color:var(--muted);text-transform:none;letter-spacing:0;">(optional)</span></label><textarea class="form-textarea" id="detNotes" placeholder="Allergies, preferences, anything we should know…"></textarea></div>
+        </div>
+      </div>
+
+      <div class="wizard-body hidden" id="wbody4">
+        <div class="review-card" id="reviewCard"></div>
+        <p style="font-size:0.85rem;color:var(--muted);margin-top:1rem;font-weight:300;"><i class="fas fa-lock"></i> Your information is kept private. No payment is taken online — pay in-store on the day.</p>
+      </div>
+
+      <div class="wizard-nav">
+        <button class="btn-ghost" id="wPrev" onclick="wizardPrev()"><i class="fas fa-arrow-left"></i> Back</button>
+        <span class="step-indicator" id="stepInd">Step 1 of 4</span>
+        <button class="btn-primary" id="wNext" onclick="wizardNext()">Next <i class="fas fa-arrow-right"></i></button>
+      </div>
+    </section>
+
+    <!-- APPOINTMENTS -->
+    <section id="appointments-view" class="view">
+      <div class="appointments-container">
+        <div class="appointments-header" id="appointmentsHeader">
+          <div class="appointments-title">Your Appointments</div>
+          <div class="appointments-sub">Everything in one place — see what's coming up, and look back on past visits whenever you like.</div>
+          <div class="appointments-hint"><i class="fas fa-hand-pointer"></i> Tap any appointment below to view full details and manage it.</div>
+        </div>
+        <div class="filter-tabs" id="filterTabs">
+          <button class="filter-btn active" data-filter="all">All</button>
+          <button class="filter-btn" data-filter="upcoming">Upcoming</button>
+          <button class="filter-btn" data-filter="past">Past</button>
+          <button class="filter-btn" data-filter="cancelled">Cancelled</button>
+        </div>
+        <div class="appointments-list" id="appointmentsBody">
+          <div class="empty-state"><i class="fas fa-calendar-times"></i><p>You haven't booked any appointments yet.</p><span class="book-link" onclick="switchView('book')">Book now</span></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- PROFILE -->
+    <section id="profile-view" class="view">
+      <div class="profile-container" id="profileMain">
+        <div class="profile-header">
+          <div class="profile-avatar-large" id="profileAvatar">SM</div>
+          <div class="profile-name" id="profileFullName">Sarah Mokoena</div>
+          <div class="profile-email" id="profileEmail">sarah@example.com</div>
+          <div class="profile-member-badge"><i class="fas fa-crown"></i> Member since May 2026</div>
+        </div>
+        <div class="profile-divider"></div>
+        <div class="profile-details-list">
+          <div class="profile-detail-item"><span class="detail-label">Phone</span><span class="detail-value" id="profileDisplayPhone">+27 82 123 4567</span></div>
+          <div class="profile-detail-item"><span class="detail-label">Member Since</span><span class="detail-value">May 2026</span></div>
+          <div class="profile-detail-item"><span class="detail-label">Total Bookings</span><span class="detail-value" id="profileStatBookings">0</span></div>
+          <div class="profile-detail-item"><span class="detail-label">Upcoming</span><span class="detail-value" id="profileStatUpcoming">0</span></div>
+          <div class="profile-detail-item"><span class="detail-label">Total Spent</span><span class="detail-value" id="profileStatSpent">R0</span></div>
+        </div>
+        <div class="profile-divider"></div>
+        <div class="profile-actions">
+          <button class="profile-action-btn" onclick="toggleProfileEdit()"><span class="action-icon"><i class="fas fa-user-edit"></i></span> Edit Profile</button>
+          <button class="profile-action-btn" onclick="switchView('book')"><span class="action-icon"><i class="fas fa-calendar-plus"></i></span> Book Appointment</button>
+          <button class="profile-action-btn" onclick="switchView('appointments')"><span class="action-icon"><i class="fa-regular fa-calendar"></i></span> My Appointments</button>
+          <button class="profile-action-btn danger" onclick="signOut()"><span class="action-icon"><i class="fas fa-arrow-left"></i></span> Sign Out</button>
+        </div>
+      </div>
+
+      <!-- INLINE EDIT PROFILE -->
+      <div class="edit-profile-inline" id="editProfileInline" style="display:none;">
+        <button class="back-link" onclick="closeEditProfile()">
+          <i class="fas fa-arrow-left"></i> Back
+        </button>
+
+        <div>
+          <div class="edit-profile-heading">Edit Profile</div>
+          <div class="edit-profile-sub">Keep your details up to date so we can reach you and personalise your experience.</div>
+        </div>
+
+        <div class="edit-field">
+          <label class="edit-field-label">Full Name</label>
+          <input type="text" id="profileName" placeholder="Your full name">
+        </div>
+
+        <div class="edit-field">
+          <label class="edit-field-label">Phone Number</label>
+          <input type="tel" id="profilePhone" placeholder="+27 82 123 4567">
+        </div>
+
+        <div class="edit-field">
+          <label class="edit-field-label">Email Address</label>
+          <input type="email" id="profileEmailInput" readonly onkeydown="return false;" onpaste="return false;" oninput="return false;">
+          <div class="edit-note">Email address cannot be changed from this page.</div>
+        </div>
+
+        <div class="edit-actions">
+          <button class="btn-primary" onclick="saveProfile();closeEditProfile();">Save Changes <i class="fas fa-arrow-right"></i></button>
+          <button class="btn-ghost" onclick="closeEditProfile()">Cancel</button>
+        </div>
+      </div>
+    </section>
+
+  </main>
 </div>
 
 <!-- RESCHEDULE MODAL -->
@@ -2089,7 +845,7 @@
     <div class="confirmation-details">
       <div class="confirmation-row"><span class="confirmation-label">Booking Reference</span><span class="confirmation-value" id="confirmRef">PMU-2026-0001</span></div>
       <div class="confirmation-row"><span class="confirmation-label">Services</span><span class="confirmation-value" id="confirmServices">Hair Cut, Facial</span></div>
-      <div class="confirmation-row"><span class="confirmation-label">Date &amp; Time</span><span class="confirmation-value" id="confirmDateTime">15 May 2026, 2:30 PM</span></div>
+      <div class="confirmation-row"><span class="confirmation-label">Date & Time</span><span class="confirmation-value" id="confirmDateTime">15 May 2026, 2:30 PM</span></div>
       <div class="confirmation-row"><span class="confirmation-label">Stylist</span><span class="confirmation-value" id="confirmStylist">Sarah Mokoena</span></div>
       <div class="confirmation-row"><span class="confirmation-label">Total</span><span class="confirmation-value" id="confirmTotal">R450</span></div>
       <div class="confirmation-row"><span class="confirmation-label">Guest</span><span class="confirmation-value" id="confirmGuest">John Doe</span></div>
@@ -2104,15 +860,11 @@
 <!-- HELP MODAL -->
 <div class="overlay" id="helpModal">
   <div class="modal-box">
-    <div class="modal-header"><div class="modal-title">Help &amp; Navigation Guide</div><button class="modal-close" onclick="closeHelpModal()"><i class="fas fa-times"></i></button></div>
-    <div class="help-card">
-      <h4>Quick Search</h4>
-      <p>Press <strong style="color: var(--rose);">Ctrl + K</strong> (or <strong style="color: var(--rose);">⌘ + K</strong> on Mac) to jump to the search bar. Search across your appointments and services in one place.</p>
-    </div>
+    <div class="modal-header"><div class="modal-title">Help & Navigation Guide</div><button class="modal-close" onclick="closeHelpModal()"><i class="fas fa-times"></i></button></div>
     <div class="help-card">
       <h4>Booking an Appointment</h4>
-      <div class="help-step"><div class="help-step-number">1</div><p>Click "Book" in the sidebar or "Book now" in the header.</p></div>
-      <div class="help-step"><div class="help-step-number">2</div><p>Select your desired services from the categories. Use search to find them quickly.</p></div>
+      <div class="help-step"><div class="help-step-number">1</div><p>Click "Book" in the top menu or "Book Appointment" in the sidebar.</p></div>
+      <div class="help-step"><div class="help-step-number">2</div><p>Select your desired services from the categories.</p></div>
       <div class="help-step"><div class="help-step-number">3</div><p>Pick a date, choose a stylist, then select an available time.</p></div>
       <div class="help-step"><div class="help-step-number">4</div><p>Enter your contact details and review your booking.</p></div>
       <p style="margin-top:0.6rem; color: var(--rose); font-weight:500;"><i class="fas fa-phone"></i> Struggling with online booking or have a query? Call us at 076 769 0102</p>
@@ -2121,11 +873,10 @@
       <h4>Managing Appointments</h4>
       <p>• View all appointments under "My Appointments".</p>
       <p>• Use filter buttons (All, Upcoming, Past, Cancelled) to sort.</p>
-      <p>• Search by service, stylist or date.</p>
       <p>• Click on an appointment to view details and manage it.</p>
     </div>
     <div class="help-card">
-      <h4>Contact &amp; Support</h4>
+      <h4>Contact & Support</h4>
       <p><i class="fas fa-phone"></i> 076 769 0102</p>
       <p><i class="fas fa-clock"></i> Mon-Fri: 9am-6pm</p>
       <p style="margin-left: 20px;">Sat: 9am-2pm</p>
@@ -2145,17 +896,14 @@
   function applyTheme(theme) {
     const icon = document.getElementById('themeIcon');
     const label = document.getElementById('themeLabel');
-    const settingsToggle = document.getElementById('settingDarkMode');
     if (theme === 'light') {
       document.body.classList.add('light');
       if (icon) icon.className = 'fas fa-sun';
       if (label) label.textContent = 'Dark Mode';
-      if (settingsToggle) settingsToggle.checked = false;
     } else {
       document.body.classList.remove('light');
       if (icon) icon.className = 'fas fa-moon';
       if (label) label.textContent = 'Light Mode';
-      if (settingsToggle) settingsToggle.checked = true;
     }
   }
 
@@ -2170,91 +918,6 @@
     const saved = localStorage.getItem('pmu-theme');
     if (saved) applyTheme(saved);
   } catch(e) {}
-
-  // ============================================================
-  // CUSTOMER SETTINGS
-  // ============================================================
-  const CUSTOMER_SETTINGS_KEY = 'pmu-customer-settings';
-  const CUSTOMER_DEFAULT_SETTINGS = {
-    apptReminders: true,
-    smsReminders: true,
-    promos: false,
-    birthday: true,
-    preferredStylist: '',
-    preferredTime: ''
-  };
-
-  function loadCustomerSettings() {
-    try {
-      const saved = localStorage.getItem(CUSTOMER_SETTINGS_KEY);
-      return saved ? { ...CUSTOMER_DEFAULT_SETTINGS, ...JSON.parse(saved) } : { ...CUSTOMER_DEFAULT_SETTINGS };
-    } catch (e) { return { ...CUSTOMER_DEFAULT_SETTINGS }; }
-  }
-
-  function populateCustomerSettingsForm() {
-    const s = loadCustomerSettings();
-    const apptEl = document.getElementById('settingApptReminders');
-    const smsEl = document.getElementById('settingSmsReminders');
-    const promosEl = document.getElementById('settingPromos');
-    const bdayEl = document.getElementById('settingBirthday');
-    const prefTimeEl = document.getElementById('settingPreferredTime');
-    const darkEl = document.getElementById('settingDarkMode');
-    const prefStylistEl = document.getElementById('settingPreferredStylist');
-
-    if (apptEl) apptEl.checked = s.apptReminders;
-    if (smsEl) smsEl.checked = s.smsReminders;
-    if (promosEl) promosEl.checked = s.promos;
-    if (bdayEl) bdayEl.checked = s.birthday;
-    if (prefTimeEl) prefTimeEl.value = s.preferredTime || '';
-    if (darkEl) darkEl.checked = !document.body.classList.contains('light');
-
-    if (prefStylistEl && Array.isArray(STYLISTS)) {
-      const current = s.preferredStylist || '';
-      prefStylistEl.innerHTML = '<option value="">No preference</option>' +
-        STYLISTS.map(st => `<option value="${st.id}">${st.name}</option>`).join('');
-      prefStylistEl.value = current;
-    }
-  }
-
-  function saveCustomerSettings() {
-    const apptEl = document.getElementById('settingApptReminders');
-    const smsEl = document.getElementById('settingSmsReminders');
-    const promosEl = document.getElementById('settingPromos');
-    const bdayEl = document.getElementById('settingBirthday');
-    const prefTimeEl = document.getElementById('settingPreferredTime');
-    const prefStylistEl = document.getElementById('settingPreferredStylist');
-
-    const s = {
-      apptReminders: apptEl ? apptEl.checked : true,
-      smsReminders: smsEl ? smsEl.checked : true,
-      promos: promosEl ? promosEl.checked : false,
-      birthday: bdayEl ? bdayEl.checked : true,
-      preferredStylist: prefStylistEl ? prefStylistEl.value : '',
-      preferredTime: prefTimeEl ? prefTimeEl.value : ''
-    };
-    try { localStorage.setItem(CUSTOMER_SETTINGS_KEY, JSON.stringify(s)); } catch (e) {}
-    showCustomerSettingsSavedIndicator();
-    showToast('Settings saved.');
-  }
-
-  function resetCustomerSettings() {
-    try { localStorage.removeItem(CUSTOMER_SETTINGS_KEY); } catch (e) {}
-    populateCustomerSettingsForm();
-    showCustomerSettingsSavedIndicator();
-    showToast('Settings reset to defaults.');
-  }
-
-  function showCustomerSettingsSavedIndicator() {
-    const indicator = document.getElementById('customerSettingsSavedIndicator');
-    const textEl = document.getElementById('customerSettingsSavedText');
-    if (!indicator || !textEl) return;
-    const now = new Date();
-    const timeStr = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-    textEl.textContent = `Saved at ${timeStr}`;
-    indicator.classList.add('show');
-    clearTimeout(indicator._timeout);
-    indicator._timeout = setTimeout(() => indicator.classList.remove('show'), 4000);
-  }
 
   // ============================================================
   // SIDEBAR
@@ -2280,9 +943,6 @@
   });
 
   let currentFilter = 'all';
-  let appointmentSearchQuery = '';
-  let serviceSearchQuery = '';
-
   document.addEventListener('DOMContentLoaded', function() {
     const filterTabs = document.getElementById('filterTabs');
     if (filterTabs) {
@@ -2295,172 +955,6 @@
         renderAppointments();
       });
     }
-
-    const apptSearch = document.getElementById('apptSearch');
-    if (apptSearch) {
-      apptSearch.addEventListener('input', function() {
-        appointmentSearchQuery = this.value.toLowerCase().trim();
-        renderAppointments();
-      });
-    }
-
-    const svcSearch = document.getElementById('svcSearch');
-    if (svcSearch) {
-      svcSearch.addEventListener('input', function() {
-        serviceSearchQuery = this.value.toLowerCase().trim();
-        renderSvcGrid();
-      });
-    }
-
-    // Dark mode toggle on settings page
-    const settingsDark = document.getElementById('settingDarkMode');
-    if (settingsDark) {
-      settingsDark.addEventListener('change', function() {
-        const theme = this.checked ? 'dark' : 'light';
-        try { localStorage.setItem('pmu-theme', theme); } catch(e) {}
-        applyTheme(theme);
-      });
-    }
-
-    // Global search
-    const globalSearch = document.getElementById('globalSearch');
-    const searchWrap = document.getElementById('searchWrap');
-    const searchClearBtn = document.getElementById('searchClearBtn');
-    const searchResults = document.getElementById('searchResults');
-
-    function updateSearchState() {
-      const has = globalSearch.value.length > 0;
-      searchWrap.classList.toggle('has-text', has);
-    }
-
-    function runGlobalSearch(query) {
-      query = query.toLowerCase().trim();
-      if (!query) { searchResults.classList.remove('show'); return; }
-      const results = [];
-      const matchedAppts = appointments.filter(a => {
-        const svcText = a.services.map(s => s.name).join(' ').toLowerCase();
-        const stylistText = (a.stylist || '').toLowerCase();
-        const dateText = (a.date || '').toLowerCase();
-        return svcText.includes(query) || stylistText.includes(query) || dateText.includes(query);
-      }).slice(0, 5);
-      matchedAppts.forEach(a => {
-        results.push({
-          type: 'appointment',
-          id: a.id,
-          title: a.services.map(s => s.name).join(', '),
-          meta: `${formatDate(a.date)} · ${a.time} · ${a.stylist}`,
-          icon: 'fa-calendar-alt'
-        });
-      });
-      const matchedSvcs = SERVICES.filter(s => s.name.toLowerCase().includes(query) || s.category.toLowerCase().includes(query)).slice(0, 5);
-      matchedSvcs.forEach(s => {
-        results.push({
-          type: 'service',
-          id: s.id,
-          title: s.name,
-          meta: `${s.category} · R${s.price} · ${s.duration} min`,
-          icon: 'fa-spa'
-        });
-      });
-      renderSearchResults(results);
-    }
-
-    function renderSearchResults(results) {
-      if (!results.length) {
-        searchResults.innerHTML = `<div class="search-results-empty"><i class="fas fa-search"></i>No matches found. Try a different term.</div>`;
-        searchResults.classList.add('show');
-        return;
-      }
-      const apptResults = results.filter(r => r.type === 'appointment');
-      const svcResults = results.filter(r => r.type === 'service');
-      let html = '';
-      if (apptResults.length) {
-        html += `<div class="search-results-section"><div class="search-results-label">Appointments</div>`;
-        html += apptResults.map(r => `
-          <div class="search-result-item" data-type="${r.type}" data-id="${r.id}">
-            <i class="fas ${r.icon}"></i>
-            <div class="search-result-body">
-              <div class="search-result-title">${r.title}</div>
-              <div class="search-result-meta">${r.meta}</div>
-            </div>
-          </div>
-        `).join('');
-        html += `</div>`;
-      }
-      if (svcResults.length) {
-        html += `<div class="search-results-section"><div class="search-results-label">Services</div>`;
-        html += svcResults.map(r => `
-          <div class="search-result-item" data-type="${r.type}" data-id="${r.id}">
-            <i class="fas ${r.icon}"></i>
-            <div class="search-result-body">
-              <div class="search-result-title">${r.title}</div>
-              <div class="search-result-meta">${r.meta}</div>
-            </div>
-          </div>
-        `).join('');
-        html += `</div>`;
-      }
-      searchResults.innerHTML = html;
-      searchResults.classList.add('show');
-
-      searchResults.querySelectorAll('.search-result-item').forEach(item => {
-        item.addEventListener('click', function() {
-          const type = this.dataset.type;
-          const id = this.dataset.id;
-          searchResults.classList.remove('show');
-          globalSearch.value = '';
-          updateSearchState();
-          if (type === 'appointment') {
-            switchView('appointments');
-            setTimeout(() => openDetailModal(id), 80);
-          } else if (type === 'service') {
-            switchView('book');
-            const svcSearchEl = document.getElementById('svcSearch');
-            if (svcSearchEl) {
-              const svc = SERVICES.find(s => s.id === id);
-              if (svc) {
-                activeCat = svc.category;
-                renderCatNav();
-                serviceSearchQuery = '';
-                svcSearchEl.value = '';
-                renderSvcGrid();
-                if (!cartIds.includes(id)) toggleService(id);
-              }
-            }
-          }
-        });
-      });
-    }
-
-    if (globalSearch) {
-      globalSearch.addEventListener('input', function() {
-        updateSearchState();
-        runGlobalSearch(this.value);
-      });
-      globalSearch.addEventListener('keydown', function(e) {
-        if (e.key === 'Escape') { searchResults.classList.remove('show'); this.blur(); }
-      });
-    }
-    if (searchClearBtn) {
-      searchClearBtn.addEventListener('click', () => {
-        globalSearch.value = '';
-        updateSearchState();
-        searchResults.classList.remove('show');
-        globalSearch.focus();
-      });
-    }
-    document.addEventListener('click', (e) => {
-      if (!searchWrap.contains(e.target)) {
-        searchResults.classList.remove('show');
-      }
-    });
-    document.addEventListener('keydown', (e) => {
-      if ((e.ctrlKey || e.metaKey) && (e.key === 'k' || e.key === 'K')) {
-        e.preventDefault();
-        globalSearch.focus();
-        globalSearch.select();
-      }
-    });
   });
 
   function help() { document.getElementById('helpModal').classList.add('open'); }
@@ -2518,7 +1012,6 @@
     if (viewId === 'appointments') renderAppointments();
     if (viewId === 'book') { resetWizard(); }
     if (viewId === 'profile') { updateProfileStats(); closeEditProfile(); }
-    if (viewId === 'settings') { populateCustomerSettingsForm(); }
     document.querySelector('.main').scrollTop = 0;
   }
 
@@ -2556,117 +1049,6 @@
   function selectCalendarDate(dateStr) { selectedDate = dateStr; document.getElementById('apptDate').value = dateStr; renderCalendar(currentMonth, currentYear); refreshTimeSlots(); }
   function getLocalDateString() { const now = new Date(); const year = now.getFullYear(); const month = String(now.getMonth() + 1).padStart(2, '0'); const day = String(now.getDate()).padStart(2, '0'); return `${year}-${month}-${day}`; }
 
-  function renderNextApptHero() {
-    const el = document.getElementById('nextApptHero');
-    if (!el) return;
-    const upcoming = appointments
-      .filter(a => a.status === 'upcoming')
-      .sort((a, b) => {
-        const da = `${a.date}T${a.time || '00:00'}`;
-        const db = `${b.date}T${b.time || '00:00'}`;
-        return da.localeCompare(db);
-      });
-    if (!upcoming.length) {
-      el.innerHTML = `
-        <div class="next-appt-hero" style="cursor: default;">
-          <div class="next-appt-eyebrow"><i class="fas fa-sparkles"></i> Next Appointment</div>
-          <div class="next-appt-empty">
-            <p>No upcoming appointments. Ready for a little self-care?</p>
-            <button class="btn-primary" onclick="switchView('book')" style="margin: 0 auto;">Book now <i class="fas fa-arrow-right"></i></button>
-          </div>
-        </div>`;
-      return;
-    }
-    const next = upcoming[0];
-    const countdown = computeCountdown(next);
-    el.innerHTML = `
-      <div class="next-appt-hero" onclick="openDetailModal('${next.id}')">
-        <div class="next-appt-eyebrow"><i class="fas fa-sparkles"></i> Next Appointment</div>
-        <div class="next-appt-title">${next.services.map(s => s.name).join(', ')}</div>
-        <div class="next-appt-meta">
-          <span class="next-appt-meta-item"><i class="far fa-calendar"></i> ${formatDate(next.date)}</span>
-          <span class="next-appt-meta-item"><i class="far fa-clock"></i> ${next.time}</span>
-          <span class="next-appt-meta-item"><i class="fas fa-user"></i> ${next.stylist}</span>
-        </div>
-        <div class="next-appt-countdown"><i class="fas fa-hourglass-half"></i> ${countdown}</div>
-      </div>
-    `;
-  }
-
-  function computeCountdown(appt) {
-    try {
-      const target = new Date(`${appt.date}T${appt.time || '00:00'}`);
-      if (isNaN(target)) return 'Upcoming';
-      const now = new Date();
-      const diff = target - now;
-      if (diff <= 0) return 'Starting soon';
-      const days = Math.floor(diff / 86400000);
-      const hours = Math.floor((diff % 86400000) / 3600000);
-      const mins = Math.floor((diff % 3600000) / 60000);
-      if (days > 0) return `In ${days} day${days !== 1 ? 's' : ''}${hours ? `, ${hours}h` : ''}`;
-      if (hours > 0) return `In ${hours}h ${mins}m`;
-      return `In ${mins} min`;
-    } catch (e) { return 'Upcoming'; }
-  }
-
-  function renderInsights() {
-    const el = document.getElementById('insightsGrid');
-    if (!el) return;
-    const completed = appointments.filter(a => a.status !== 'cancelled');
-    const stylistCounts = {};
-    completed.forEach(a => {
-      if (a.stylist && a.stylist !== 'Stylist') {
-        stylistCounts[a.stylist] = (stylistCounts[a.stylist] || 0) + 1;
-      }
-    });
-    const favStylistEntry = Object.entries(stylistCounts).sort((a, b) => b[1] - a[1])[0];
-    const favStylist = favStylistEntry ? favStylistEntry[0] : '—';
-    const favStylistCount = favStylistEntry ? favStylistEntry[1] : 0;
-
-    const svcCounts = {};
-    completed.forEach(a => a.services.forEach(s => { svcCounts[s.name] = (svcCounts[s.name] || 0) + 1; }));
-    const topSvcEntry = Object.entries(svcCounts).sort((a, b) => b[1] - a[1])[0];
-    const topSvc = topSvcEntry ? topSvcEntry[0] : '—';
-    const topSvcCount = topSvcEntry ? topSvcEntry[1] : 0;
-
-    const now = new Date();
-    const sixMonthsAgo = new Date(now.getFullYear(), now.getMonth() - 5, 1);
-    let totalSpend = 0;
-    const monthsSet = new Set();
-    completed.forEach(a => {
-      const d = new Date(a.date);
-      if (d >= sixMonthsAgo) {
-        totalSpend += a.services.reduce((sum, s) => sum + s.price, 0);
-        monthsSet.add(`${d.getFullYear()}-${d.getMonth()}`);
-      }
-    });
-    const monthsCount = Math.max(monthsSet.size, 1);
-    const avgMonthly = Math.round(totalSpend / monthsCount);
-    const avgMonthlyDisplay = totalSpend === 0 ? 'R0' : `R${avgMonthly.toLocaleString()}`;
-    const avgMeta = totalSpend === 0 ? 'Start your journey' : `Last ${monthsSet.size || 1} month${monthsSet.size !== 1 ? 's' : ''}`;
-
-    el.innerHTML = `
-      <div class="insight-card">
-        <div class="insight-icon"><i class="fas fa-user-check"></i></div>
-        <div class="insight-label">Favourite Stylist</div>
-        <div class="insight-value">${favStylist}</div>
-        <div class="insight-meta">${favStylistCount ? `${favStylistCount} visit${favStylistCount !== 1 ? 's' : ''}` : 'No visits yet'}</div>
-      </div>
-      <div class="insight-card">
-        <div class="insight-icon"><i class="fas fa-crown"></i></div>
-        <div class="insight-label">Most Booked Service</div>
-        <div class="insight-value">${topSvc}</div>
-        <div class="insight-meta">${topSvcCount ? `Booked ${topSvcCount} time${topSvcCount !== 1 ? 's' : ''}` : 'No bookings yet'}</div>
-      </div>
-      <div class="insight-card">
-        <div class="insight-icon"><i class="fas fa-coins"></i></div>
-        <div class="insight-label">Avg Monthly Spend</div>
-        <div class="insight-value">${avgMonthlyDisplay}</div>
-        <div class="insight-meta">${avgMeta}</div>
-      </div>
-    `;
-  }
-
   function renderOverview() {
     const total = appointments.length;
     const upcoming = appointments.filter(a => a.status === 'upcoming').length;
@@ -2678,10 +1060,6 @@
     document.getElementById('statServices').textContent = svcCount;
     const badge = document.getElementById('tabBadge');
     if (upcoming > 0) { badge.style.display = 'flex'; badge.textContent = upcoming; } else { badge.style.display = 'none'; }
-
-    renderNextApptHero();
-    renderInsights();
-
     const upcomingAppts = appointments.filter(a => a.status === 'upcoming');
     const el = document.getElementById('overviewUpcomingBody');
     if (!upcomingAppts.length) { el.innerHTML = `<div class="empty-state"><i class="fas fa-spa"></i><p>No upcoming appointments yet. Treat yourself!</p><span class="book-link" onclick="switchView('book')">Book now</span></div>`; return; }
@@ -2699,25 +1077,7 @@
     if (currentFilter === 'upcoming') filtered = appointments.filter(a => a.status === 'upcoming');
     else if (currentFilter === 'past') filtered = appointments.filter(a => a.status === 'past');
     else if (currentFilter === 'cancelled') filtered = appointments.filter(a => a.status === 'cancelled');
-
-    if (appointmentSearchQuery) {
-      filtered = filtered.filter(a => {
-        const svcText = a.services.map(s => s.name).join(' ').toLowerCase();
-        const stylistText = (a.stylist || '').toLowerCase();
-        const dateText = (a.date || '').toLowerCase();
-        const formattedDate = formatDate(a.date).toLowerCase();
-        return svcText.includes(appointmentSearchQuery) ||
-               stylistText.includes(appointmentSearchQuery) ||
-               dateText.includes(appointmentSearchQuery) ||
-               formattedDate.includes(appointmentSearchQuery);
-      });
-    }
-
-    if (!filtered.length) {
-      const isSearching = appointmentSearchQuery.length > 0;
-      el.innerHTML = `<div class="empty-state"><i class="fas fa-${isSearching ? 'search' : 'calendar-times'}"></i><p>${isSearching ? `No appointments match "${appointmentSearchQuery}".` : `No ${currentFilter !== 'all' ? currentFilter : ''} appointments found.`}</p>${!isSearching && currentFilter === 'all' ? `<span class="book-link" onclick="switchView('book')">Book now</span>` : ''}</div>`;
-      return;
-    }
+    if (!filtered.length) { el.innerHTML = `<div class="empty-state"><i class="fas fa-calendar-times"></i><p>No ${currentFilter !== 'all' ? currentFilter : ''} appointments found.</p>${currentFilter === 'all' ? `<span class="book-link" onclick="switchView('book')">Book now</span>` : ''}</div>`; return; }
     const sorted = [...filtered].sort((a, b) => b.date.localeCompare(a.date));
     const statusMap = { upcoming: 'badge-upcoming', past: 'badge-past', cancelled: 'badge-cancelled', pending: 'badge-pending' };
     el.innerHTML = sorted.map(a => `<div class="appointment-item" onclick="openDetailModal('${a.id}')"><div class="appointment-item-info"><div class="appointment-item-service">${a.services.map(s => s.name).join(', ')}</div><div class="appointment-item-details"><span><i class="far fa-calendar"></i> ${formatDate(a.date)}</span><span><i class="far fa-clock"></i> ${a.time}</span><span><i class="fas fa-user"></i> ${a.stylist}</span></div></div><div class="appointment-item-status"><span class="badge ${statusMap[a.status]}">${a.status}</span></div></div>`).join('') + `<div class="list-end-marker">You've reached the end</div>`;
@@ -2725,9 +1085,6 @@
 
   function resetWizard() {
     wizardStep = 1; cartIds = []; activeCat = CATEGORIES[0] || ''; bookState = { date: '', time: '', stylistId: '', stylist: '' };
-    serviceSearchQuery = '';
-    const svcSearchEl = document.getElementById('svcSearch');
-    if (svcSearchEl) svcSearchEl.value = '';
     renderCatNav(); renderSvcGrid(); renderCart(); gotoStep(1);
     const today = getLocalDateString(); document.getElementById('apptDate').min = today; document.getElementById('apptDate').value = '';
     const todayDate = new Date(); currentMonth = todayDate.getMonth(); currentYear = todayDate.getFullYear(); selectedDate = '';
@@ -2745,16 +1102,8 @@
   function setActiveCat(cat) { activeCat = cat; renderCatNav(); renderSvcGrid(); }
 
   function renderSvcGrid() {
-    let svcs = SERVICES.filter(s => s.category === activeCat);
-    if (serviceSearchQuery) {
-      svcs = svcs.filter(s => s.name.toLowerCase().includes(serviceSearchQuery) || s.category.toLowerCase().includes(serviceSearchQuery));
-    }
-    const gridEl = document.getElementById('svcGrid');
-    if (!svcs.length) {
-      gridEl.innerHTML = `<div class="empty-state" style="grid-column:1/-1;padding:1.5rem;"><i class="fas fa-search"></i><p>No services match your search.</p></div>`;
-      return;
-    }
-    gridEl.innerHTML = svcs.map(s => `<div class="svc-card ${cartIds.includes(s.id) ? 'selected' : ''}" onclick="toggleService('${s.id}')"><div class="svc-card-name">${s.name}</div><div class="svc-card-meta"><span class="svc-card-price">R${s.price}</span><span class="svc-card-dur">${s.duration} min</span></div></div>`).join('');
+    const svcs = SERVICES.filter(s => s.category === activeCat);
+    document.getElementById('svcGrid').innerHTML = svcs.map(s => `<div class="svc-card ${cartIds.includes(s.id) ? 'selected' : ''}" onclick="toggleService('${s.id}')"><div class="svc-card-name">${s.name}</div><div class="svc-card-meta"><span class="svc-card-price">R${s.price}</span><span class="svc-card-dur">${s.duration} min</span></div></div>`).join('');
   }
 
   function toggleService(id) {
@@ -2949,8 +1298,6 @@ function tryGotoStep(target) {
 
     document.getElementById('appointmentsHeader').style.display = 'none';
     document.getElementById('filterTabs').style.display = 'none';
-    const searchWrapEl = document.querySelector('.appointments-search-wrap');
-    if (searchWrapEl) searchWrapEl.style.display = 'none';
 
         const servicesHTML = a.services.map(sv => `
       <div class="detail-svc-item">
@@ -2975,7 +1322,7 @@ function tryGotoStep(target) {
              <div id="ratingStars" style="font-size:1.6rem;color:var(--rose);letter-spacing:0.2rem;cursor:pointer;">
                ${[1, 2, 3, 4, 5].map(n => `<i class="far fa-star" data-star="${n}" onclick="selectRatingStar(${n})"></i>`).join('')}
              </div>
-             <textarea id="ratingComment" placeholder="Optional comment..." maxlength="500" style="width:100%;margin-top:0.6rem;padding:0.7rem 1rem;border-radius:var(--radius-sm);border:1px solid var(--border-strong);background:var(--input-bg);color:var(--ink);font-family:inherit;"></textarea>
+             <textarea id="ratingComment" placeholder="Optional comment..." maxlength="500" style="width:100%;margin-top:0.6rem;padding:0.5rem;border-radius:var(--radius-sm);border:1px solid var(--border);background:transparent;color:inherit;font-family:inherit;"></textarea>
              <button class="btn-primary" style="margin-top:0.6rem;" onclick="submitRating('${a.id}')">Submit Rating</button>
            </div>`
     );
@@ -3043,8 +1390,6 @@ function tryGotoStep(target) {
   function closeAppointmentDetail() {
     document.getElementById('appointmentsHeader').style.display = '';
     document.getElementById('filterTabs').style.display = '';
-    const searchWrapEl = document.querySelector('.appointments-search-wrap');
-    if (searchWrapEl) searchWrapEl.style.display = '';
     renderAppointments();
     document.querySelector('.main').scrollTop = 0;
   }
@@ -3243,7 +1588,6 @@ function tryGotoStep(target) {
     }
     await Promise.all([loadServices(), loadStylists()]);
     await loadAppointments();
-    populateCustomerSettingsForm();
     renderOverview();
     resetWizard();
     updateProfileStats();
