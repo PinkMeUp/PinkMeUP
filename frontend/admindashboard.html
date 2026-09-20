@@ -10,7 +10,6 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js" integrity="sha512-GsLlZN/3F2ErC5ifS5QtgpiJtWd43JWSuIgh7mbzZ8zBps+dvLusV+eNQATqgA/HdeKFVgA5v3S/cIrLF7QnIg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
   <style>
     :root {
-      /* PURE BLACK DARK MODE */
       --rose: #F4B6C8;
       --rose-light: #FCE1E8;
       --rose-deep: #D43F6B;
@@ -421,7 +420,7 @@
     }
 
     /* ============================================================
-       OVERVIEW PAGE — Professional admin dashboard
+       OVERVIEW — LUXURY EDITORIAL
        ============================================================ */
     .home-header {
       display: flex;
@@ -429,8 +428,8 @@
       align-items: flex-end;
       gap: 1.5rem;
       flex-wrap: wrap;
-      margin-bottom: 1.5rem;
-      padding-bottom: 1.4rem;
+      margin-bottom: 1.8rem;
+      padding-bottom: 1.6rem;
       border-bottom: 1px solid var(--border);
     }
     .home-header-left { flex: 1; min-width: 260px; }
@@ -443,7 +442,7 @@
       letter-spacing: 2px;
       text-transform: uppercase;
       color: var(--rose);
-      margin-bottom: 0.5rem;
+      margin-bottom: 0.6rem;
     }
     .home-eyebrow i { font-size: 0.7rem; }
     .home-greeting {
@@ -470,7 +469,7 @@
     }
     .home-header-right {
       display: flex;
-      gap: 1.2rem;
+      gap: 1.4rem;
       align-items: center;
       flex-wrap: wrap;
       padding-bottom: 0.35rem;
@@ -486,143 +485,153 @@
     }
     .home-meta-item i { color: var(--rose); font-size: 0.75rem; }
 
-    /* TODAY STRIP */
+    /* TODAY — editorial strip, no cards */
     .today-bar {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      grid-template-columns: repeat(4, 1fr);
       gap: 0;
-      background: var(--card-bg);
-      border: 1px solid var(--border);
-      border-radius: var(--radius-lg);
+      background: transparent;
+      border: none;
+      border-radius: 0;
       padding: 0;
-      margin-bottom: 1.4rem;
-      overflow: hidden;
+      margin-bottom: 2rem;
+      overflow: visible;
     }
     .today-item {
       display: flex;
-      align-items: center;
-      gap: 0.85rem;
-      padding: 1.05rem 1.3rem;
+      flex-direction: column;
+      gap: 0.55rem;
+      padding: 1.4rem 1.6rem 1.4rem 0;
       position: relative;
-      transition: background 0.2s var(--ease);
       min-width: 0;
+      transition: 0.22s var(--ease);
     }
+    .today-item:first-child { padding-left: 0; }
+    .today-item:last-child { padding-right: 0; }
     .today-item:not(:last-child)::after {
       content: '';
       position: absolute;
-      right: 0; top: 22%; bottom: 22%;
+      right: 0.8rem; top: 22%; bottom: 22%;
       width: 1px;
       background: var(--border);
     }
-    .today-item:hover { background: var(--hover-surface); }
-    .today-item i {
-      width: 36px; height: 36px;
-      border-radius: 10px;
-      background: var(--rose-pale);
-      color: var(--rose);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 0.85rem;
-      flex-shrink: 0;
-      border: 1px solid rgba(244, 182, 200, 0.15);
-    }
-    .today-item .today-info { line-height: 1.25; min-width: 0; flex: 1; }
     .today-item .today-label {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
       font-size: 0.66rem;
       color: var(--muted);
       text-transform: uppercase;
-      letter-spacing: 1.1px;
+      letter-spacing: 1.5px;
       font-weight: 600;
-      margin-bottom: 0.15rem;
+      transition: color 0.2s var(--ease);
+    }
+    .today-item .today-label i {
+      color: var(--rose);
+      font-size: 0.72rem;
+      transition: color 0.2s var(--ease);
     }
     .today-item .today-value {
-      font-size: 0.98rem;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.6rem;
       color: var(--ink);
       font-weight: 600;
-      font-family: 'Cormorant Garamond', serif;
-      letter-spacing: 0.3px;
+      line-height: 1.1;
+      letter-spacing: -0.2px;
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
+      transition: color 0.22s var(--ease);
     }
+    .today-item:hover .today-value { color: var(--rose); }
+    .today-item:hover .today-label { color: var(--ink); }
 
-    /* KPI CARDS */
+    /* KPI — editorial numbers grid, no cards */
     .admin-stats-grid {
       display: grid;
       grid-template-columns: repeat(4, 1fr);
-      gap: 1rem;
-      margin-bottom: 1.4rem;
+      gap: 0;
+      margin-bottom: 2.4rem;
+      background: transparent;
+      border: none;
+      border-radius: 0;
+      padding: 0;
+      overflow: visible;
     }
     .admin-stat {
-      background: var(--card-bg);
-      border: 1px solid var(--border);
-      border-radius: var(--radius-lg);
-      padding: 1.25rem 1.25rem 1.1rem;
       display: flex;
-      align-items: flex-start;
-      gap: 0.9rem;
-      transition: 0.22s var(--ease);
+      flex-direction: column;
+      gap: 0.5rem;
+      padding: 1.8rem 1.8rem 1.8rem 0;
+      background: transparent;
+      border: none;
+      border-radius: 0;
       position: relative;
+      transition: 0.22s var(--ease);
+      cursor: default;
       min-width: 0;
     }
-    .admin-stat:hover {
-      border-color: var(--rose-mid);
-      background: var(--card-bg-hover);
-      transform: translateY(-2px);
-      box-shadow: var(--shadow-md);
+    .admin-stat:first-child { padding-left: 0; }
+    .admin-stat:last-child { padding-right: 0; }
+    .admin-stat:not(:last-child)::after {
+      content: '';
+      position: absolute;
+      right: 0.9rem; top: 24%; bottom: 24%;
+      width: 1px;
+      background: var(--border);
     }
-    .admin-stat-icon {
-      width: 42px; height: 42px;
-      border-radius: 11px;
-      background: var(--rose-pale);
-      color: var(--rose);
-      display: flex;
+    .admin-stat .admin-stat-label {
+      display: inline-flex;
       align-items: center;
-      justify-content: center;
-      font-size: 1rem;
-      flex-shrink: 0;
-      border: 1px solid rgba(244, 182, 200, 0.15);
-    }
-    .admin-stat-content { flex: 1; min-width: 0; }
-    .admin-stat-label {
+      gap: 0.5rem;
       font-size: 0.68rem;
       color: var(--muted);
       text-transform: uppercase;
-      letter-spacing: 1.2px;
+      letter-spacing: 1.5px;
       font-weight: 600;
-      margin-bottom: 0.4rem;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
+      margin: 0;
+      transition: color 0.22s var(--ease);
     }
-    .admin-stat-number {
+    .admin-stat .admin-stat-label i {
+      color: var(--rose);
+      font-size: 0.72rem;
+    }
+    .admin-stat .admin-stat-number {
       font-family: 'Cormorant Garamond', serif;
-      font-size: 2.3rem;
+      font-size: 3rem;
       font-weight: 600;
       color: var(--ink);
       line-height: 1;
-      letter-spacing: -0.5px;
-      margin-bottom: 0.35rem;
+      letter-spacing: -0.8px;
+      transition: 0.22s var(--ease);
+      margin: 0.35rem 0 0.4rem;
     }
-    .admin-stat-meta {
+    .admin-stat .admin-stat-meta {
       font-size: 0.72rem;
       color: var(--muted);
       font-weight: 400;
-      display: inline-flex;
-      align-items: center;
-      gap: 0.3rem;
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
     }
-    .admin-stat-meta i { color: var(--rose); font-size: 0.65rem; }
+    .admin-stat .admin-stat-meta i {
+      color: var(--rose);
+      font-size: 0.65rem;
+      margin-right: 0.35rem;
+    }
+    .admin-stat:hover .admin-stat-number {
+      background: var(--gradient);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+    .admin-stat:hover .admin-stat-label { color: var(--ink); }
 
-    /* DASHBOARD GRID — Activity + Quick Access */
+    /* DASHBOARD GRID */
     .dashboard-grid {
       display: grid;
       grid-template-columns: 1.5fr 1fr;
-      gap: 1.2rem;
+      gap: 1.4rem;
       margin-bottom: 1rem;
       align-items: start;
     }
@@ -676,17 +685,38 @@
       min-height: 0;
     }
 
-    /* Activity list */
+    /* Activity list — clickable */
     .activity-list { display: flex; flex-direction: column; gap: 0.1rem; }
     .activity-item {
       display: flex;
       gap: 0.8rem;
-      padding: 0.72rem 0.8rem;
+      padding: 0.72rem 2.4rem 0.72rem 0.8rem;
       border-radius: var(--radius-sm);
       transition: 0.15s;
       align-items: flex-start;
+      cursor: pointer;
+      position: relative;
     }
     .activity-item:hover { background: var(--hover-surface); }
+    .activity-item:focus { outline: none; background: var(--hover-surface); }
+    .activity-item[data-booking-id]::after {
+      content: '\f054';
+      font-family: 'Font Awesome 6 Free';
+      font-weight: 900;
+      position: absolute;
+      right: 1rem;
+      top: 50%;
+      transform: translateY(-50%) translateX(-6px);
+      color: var(--rose);
+      font-size: 0.7rem;
+      opacity: 0;
+      transition: 0.22s var(--ease-out);
+      pointer-events: none;
+    }
+    .activity-item[data-booking-id]:hover::after {
+      opacity: 1;
+      transform: translateY(-50%) translateX(0);
+    }
     .activity-dot {
       flex-shrink: 0;
       width: 32px; height: 32px;
@@ -1550,6 +1580,13 @@
     /* RESPONSIVE */
     @media (max-width: 1200px) {
       .admin-stats-grid { grid-template-columns: repeat(2, 1fr); }
+      .admin-stat:nth-child(2)::after { display: none; }
+      .admin-stat:nth-child(2) { padding-right: 0; }
+      .admin-stat:nth-child(3) { padding-left: 0; }
+      .today-bar { grid-template-columns: repeat(2, 1fr); }
+      .today-item:nth-child(2)::after { display: none; }
+      .today-item:nth-child(2) { padding-right: 0; }
+      .today-item:nth-child(3) { padding-left: 0; }
     }
     @media (max-width: 1100px) {
       .home-greeting { font-size: 1.9rem; }
@@ -1569,13 +1606,17 @@
       .home-header { flex-direction: column; align-items: flex-start; }
       .home-header-right { width: 100%; }
       .home-greeting { font-size: 1.75rem; }
-      .today-item:not(:last-child)::after { display: none; }
-      .today-item { border-bottom: 1px solid var(--border); }
-      .today-item:last-child { border-bottom: none; }
-      .admin-stats-grid { grid-template-columns: 1fr 1fr; }
-      .admin-stat { padding: 1rem; }
-      .admin-stat-number { font-size: 1.9rem; }
-      .admin-stat-icon { width: 36px; height: 36px; font-size: 0.85rem; }
+      .today-bar { grid-template-columns: 1fr 1fr; gap: 0; }
+      .today-item { padding: 1.1rem 1rem 1.1rem 0; }
+      .today-item:nth-child(2)::after { display: none; }
+      .today-item:nth-child(2) { padding-right: 0; }
+      .today-item:nth-child(3) { padding-left: 0; }
+      .admin-stats-grid { grid-template-columns: 1fr 1fr; gap: 0; }
+      .admin-stat { padding: 1.2rem 1rem 1.2rem 0; }
+      .admin-stat:nth-child(2)::after { display: none; }
+      .admin-stat:nth-child(2) { padding-right: 0; }
+      .admin-stat:nth-child(3) { padding-left: 0; }
+      .admin-stat .admin-stat-number { font-size: 2.2rem; }
       .stylist-grid { grid-template-columns: 1fr; }
       .admin-table th, .admin-table td { padding: 0.75rem 0.6rem; font-size: 0.8rem; }
       .view-header { flex-direction: column; align-items: stretch; }
@@ -1593,6 +1634,11 @@
     }
     @media (max-width: 480px) {
       .admin-stats-grid { grid-template-columns: 1fr; }
+      .admin-stat { padding: 1rem 0; }
+      .admin-stat::after { display: none !important; }
+      .today-bar { grid-template-columns: 1fr; }
+      .today-item { padding: 1rem 0; }
+      .today-item::after { display: none !important; }
     }
   </style>
 </head>
@@ -1674,9 +1720,8 @@
     </header>
 
     <main class="main">
-      <!-- HOME / OVERVIEW — Professional layout -->
+      <!-- HOME / OVERVIEW — Editorial layout -->
       <section id="home-view" class="view active">
-        <!-- Header -->
         <div class="home-header">
           <div class="home-header-left">
             <div class="home-eyebrow"><i class="fas fa-sparkles"></i> Administrator Console</div>
@@ -1690,75 +1735,50 @@
           </div>
         </div>
 
-        <!-- Today at a glance -->
+        <!-- Today strip — editorial -->
         <div class="today-bar">
           <div class="today-item">
-            <i class="fas fa-calendar-day"></i>
-            <div class="today-info">
-              <div class="today-label">Today</div>
-              <div class="today-value" id="todayBookings">0 bookings</div>
-            </div>
+            <div class="today-label"><i class="fas fa-calendar-day"></i> Today</div>
+            <div class="today-value" id="todayBookings">0 bookings</div>
           </div>
           <div class="today-item">
-            <i class="fas fa-clock"></i>
-            <div class="today-info">
-              <div class="today-label">Next Appointment</div>
-              <div class="today-value" id="todayNext">—</div>
-            </div>
+            <div class="today-label"><i class="fas fa-clock"></i> Next Appointment</div>
+            <div class="today-value" id="todayNext">—</div>
           </div>
           <div class="today-item">
-            <i class="fas fa-coins"></i>
-            <div class="today-info">
-              <div class="today-label">Est. Revenue</div>
-              <div class="today-value" id="todayRevenue">R0</div>
-            </div>
+            <div class="today-label"><i class="fas fa-coins"></i> Est. Revenue</div>
+            <div class="today-value" id="todayRevenue">R0</div>
           </div>
           <div class="today-item">
-            <i class="fas fa-user-check"></i>
-            <div class="today-info">
-              <div class="today-label">Active Stylists</div>
-              <div class="today-value" id="todayStylists">0</div>
-            </div>
+            <div class="today-label"><i class="fas fa-user-check"></i> Active Stylists</div>
+            <div class="today-value" id="todayStylists">0</div>
           </div>
         </div>
 
-        <!-- KPI Cards -->
+        <!-- KPI — editorial numbers grid -->
         <div class="admin-stats-grid">
           <div class="admin-stat">
-            <div class="admin-stat-icon"><i class="fas fa-concierge-bell"></i></div>
-            <div class="admin-stat-content">
-              <div class="admin-stat-label">Services</div>
-              <div class="admin-stat-number" id="homeStatServices">0</div>
-              <div class="admin-stat-meta"><i class="fas fa-check-circle"></i> All active</div>
-            </div>
+            <div class="admin-stat-label"><i class="fas fa-concierge-bell"></i> Services</div>
+            <div class="admin-stat-number" id="homeStatServices">0</div>
+            <div class="admin-stat-meta"><i class="fas fa-check-circle"></i> All active</div>
           </div>
           <div class="admin-stat">
-            <div class="admin-stat-icon"><i class="fas fa-user-friends"></i></div>
-            <div class="admin-stat-content">
-              <div class="admin-stat-label">Stylists</div>
-              <div class="admin-stat-number" id="homeStatStylists">0</div>
-              <div class="admin-stat-meta"><i class="fas fa-users"></i> On roster</div>
-            </div>
+            <div class="admin-stat-label"><i class="fas fa-user-friends"></i> Stylists</div>
+            <div class="admin-stat-number" id="homeStatStylists">0</div>
+            <div class="admin-stat-meta"><i class="fas fa-users"></i> On roster</div>
           </div>
           <div class="admin-stat">
-            <div class="admin-stat-icon"><i class="fas fa-calendar-check"></i></div>
-            <div class="admin-stat-content">
-              <div class="admin-stat-label">Total Bookings</div>
-              <div class="admin-stat-number" id="homeStatBookings">0</div>
-              <div class="admin-stat-meta"><i class="fas fa-chart-line"></i> All time</div>
-            </div>
+            <div class="admin-stat-label"><i class="fas fa-calendar-check"></i> Total Bookings</div>
+            <div class="admin-stat-number" id="homeStatBookings">0</div>
+            <div class="admin-stat-meta"><i class="fas fa-chart-line"></i> All time</div>
           </div>
           <div class="admin-stat">
-            <div class="admin-stat-icon"><i class="fas fa-calendar-alt"></i></div>
-            <div class="admin-stat-content">
-              <div class="admin-stat-label">This Month</div>
-              <div class="admin-stat-number" id="homeStatThisMonth">0</div>
-              <div class="admin-stat-meta"><i class="fas fa-clock"></i> Current month</div>
-            </div>
+            <div class="admin-stat-label"><i class="fas fa-calendar-alt"></i> This Month</div>
+            <div class="admin-stat-number" id="homeStatThisMonth">0</div>
+            <div class="admin-stat-meta"><i class="fas fa-clock"></i> Current month</div>
           </div>
         </div>
 
-        <!-- Activity + Quick Access -->
         <div class="dashboard-grid">
           <div class="dashboard-panel">
             <div class="dashboard-panel-header">
@@ -2386,9 +2406,6 @@
     if (el) el.textContent = title;
   }
 
-  // ============================================================
-  // HISTORY / BACK BUTTON MANAGEMENT
-  // ============================================================
   function pushNavState(state, hash) {
     if (suppressHistoryPush) return;
     try {
@@ -2401,9 +2418,6 @@
     } catch (e) {}
   }
 
-  // ============================================================
-  // CONFIRMATION MODAL
-  // ============================================================
   let confirmCallback = null;
   function showConfirm(title, message, callback, actionLabel = 'Yes, Continue') {
     document.getElementById('confirmTitle').textContent = title;
@@ -2417,9 +2431,6 @@
     confirmCallback = null;
   }
 
-  // ============================================================
-  // PDF EXPORT HELPERS
-  // ============================================================
   function buildPdfHeader(title, subtitle) {
     return `
       <div style="padding: 30px 25px; font-family: 'DM Sans', sans-serif; color: #1a1a1a;">
@@ -2562,9 +2573,6 @@
       .catch(() => { hideLoading(); showToast('Failed to generate PDF.', true); });
   }
 
-  // ============================================================
-  // NOTIFICATIONS
-  // ============================================================
   function getReadIds() {
     try { return JSON.parse(localStorage.getItem(NOTIF_READ_KEY) || '[]'); } catch (e) { return []; }
   }
@@ -2721,7 +2729,7 @@
   }
 
   // ============================================================
-  // DASHBOARD: ACTIVITY + TODAY BAR
+  // DASHBOARD: ACTIVITY + TODAY BAR — activities now clickable
   // ============================================================
   function renderActivityFeed() {
     const list = document.getElementById('activityList');
@@ -2741,7 +2749,7 @@
       const iconClass = b.status === 'completed' ? 'fa-check' : b.status === 'pending' ? 'fa-clock' : 'fa-calendar-check';
       const time = formatRelativeTime(new Date(b.createdAt || b.date));
       return `
-        <div class="activity-item">
+        <div class="activity-item" data-booking-id="${b._id}" role="button" tabindex="0" aria-label="View booking for ${escapeHtml(customer)}">
           <div class="activity-dot ${icon}"><i class="fas ${iconClass}"></i></div>
           <div class="activity-content">
             <div class="activity-title">${escapeHtml(customer)}</div>
@@ -2780,9 +2788,6 @@
     if (stylistsEl) stylistsEl.textContent = active;
   }
 
-  // ============================================================
-  // BOOKING FILTER
-  // ============================================================
   function getVisibleBookings() {
     let list = [...allBookings];
     if (currentBookingPeriod !== 'all') {
@@ -2874,9 +2879,6 @@
     });
   }
 
-  // ============================================================
-  // SETTINGS
-  // ============================================================
   const SETTINGS_KEY = 'pmu-admin-settings';
   const DEFAULT_SETTINGS = {
     salonName: 'PinkMeUp', phone: '072 536 9347',
@@ -2952,9 +2954,6 @@
     showSettingsSavedIndicator();
   }
 
-  // ============================================================
-  // INIT & GLOBAL EVENTS
-  // ============================================================
   document.addEventListener('DOMContentLoaded', function() {
     const sidebar = document.getElementById('sidebar');
     const overlay = document.getElementById('sidebarOverlay');
@@ -2991,11 +2990,31 @@
       });
     });
 
+    // ============================================================
+    // ACTIVITY FEED CLICKABLE (event delegation)
+    // ============================================================
+    const activityList = document.getElementById('activityList');
+    if (activityList) {
+      activityList.addEventListener('click', (e) => {
+        const item = e.target.closest('.activity-item[data-booking-id]');
+        if (item && item.dataset.bookingId) {
+          openBookingDetail(item.dataset.bookingId);
+        }
+      });
+      activityList.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') {
+          const item = e.target.closest('.activity-item[data-booking-id]');
+          if (item && item.dataset.bookingId) {
+            openBookingDetail(item.dataset.bookingId);
+          }
+        }
+      });
+    }
+
     window.addEventListener('resize', function() {
       if (window.innerWidth > 768) closeSidebar();
     });
 
-    // Notification bell
     const notifBtn = document.getElementById('notifBtn');
     const notifPanel = document.getElementById('notifPanel');
     if (notifBtn && notifPanel) {
@@ -3012,7 +3031,6 @@
     document.getElementById('markAllReadBtn').addEventListener('click', markAllRead);
     document.getElementById('clearNotifsBtn').addEventListener('click', clearNotifications);
 
-    // KEYBOARD SHORTCUTS
     document.addEventListener('keydown', (e) => {
       if (e.key === 'Escape') {
         document.querySelectorAll('.modal.active').forEach(m => m.classList.remove('active'));
@@ -3057,7 +3075,6 @@
       }
     });
 
-    // Delegated clicks
     const bookingsBody = document.getElementById('bookingsTableBody');
     if (bookingsBody) {
       bookingsBody.addEventListener('click', (e) => {
@@ -3091,7 +3108,6 @@
       }
     });
 
-    // Booking status filter tabs
     document.querySelectorAll('#bookingFilterTabs .booking-pill').forEach(tab => {
       tab.addEventListener('click', () => {
         document.querySelectorAll('#bookingFilterTabs .booking-pill').forEach(t => t.classList.remove('active'));
@@ -3101,7 +3117,6 @@
       });
     });
 
-    // Booking period filter tabs
     document.querySelectorAll('#bookingPeriodTabs .booking-pill').forEach(tab => {
       tab.addEventListener('click', () => {
         document.querySelectorAll('#bookingPeriodTabs .booking-pill').forEach(t => t.classList.remove('active'));
@@ -3129,19 +3144,16 @@
       showToast('Bookings filtered.');
     });
 
-    // Export buttons
     document.getElementById('exportServicesBtn').addEventListener('click', exportServicesPDF);
     document.getElementById('exportStylistsBtn').addEventListener('click', exportStylistsPDF);
     document.getElementById('exportBookingsBtn').addEventListener('click', exportBookingsPDF);
     document.getElementById('printBookingsBtn').addEventListener('click', () => window.print());
 
-    // Settings buttons
     document.getElementById('saveSettingsBtn').addEventListener('click', saveSettings);
     document.getElementById('resetSettingsBtn').addEventListener('click', () => {
       showConfirm('Reset Settings?', 'This will restore all settings to their default values.', resetSettings, 'Yes, Reset');
     });
 
-    // Dark mode toggle in settings
     const darkModeToggle = document.getElementById('darkModeToggle');
     if (darkModeToggle) {
       darkModeToggle.addEventListener('change', function() {
@@ -3151,10 +3163,8 @@
       });
     }
 
-    // New Booking save
     document.getElementById('saveBookingBtn').addEventListener('click', saveNewBooking);
 
-    // SEARCH with clear button
     const globalSearch = document.getElementById('globalSearch');
     const searchWrap = document.getElementById('searchWrap');
     const searchClearBtn = document.getElementById('searchClearBtn');
@@ -3240,7 +3250,6 @@
     populateSettingsForm();
     renderNotifications();
 
-    // BROWSER BACK BUTTON HANDLING
     try {
       history.replaceState({ type: 'view', view: 'home' }, '', '#home');
     } catch (e) {}
@@ -3365,9 +3374,6 @@
     }
   }
 
-  // ============================================================
-  // SERVICES
-  // ============================================================
   async function loadServices() {
     try {
       const res = await fetch(`${API_BASE}/services?limit=100`, { credentials: 'include' });
@@ -3553,9 +3559,6 @@
     document.querySelector('.main').scrollTop = 0;
   }
 
-  // ============================================================
-  // STYLISTS
-  // ============================================================
   async function loadStylists() {
     try {
       const res = await fetch(`${API_BASE}/stylists?limit=100`, { credentials: 'include' });
@@ -3685,8 +3688,7 @@
     else if (!st.isAvailable) currentStatus = 'inactive';
     document.getElementById('stylistStatus').value = currentStatus;
     document.getElementById('stylistId').value = st.id;
-	document.getElementById('stylistEmail').value = st.email;
-	
+    document.getElementById('stylistEmail').value = st.email;
     document.querySelectorAll('.stylist-service-checkbox').forEach(cb => {
       cb.checked = st.serviceIds.includes(cb.value);
     });
@@ -3843,9 +3845,6 @@
     document.querySelector('.main').scrollTop = 0;
   }
 
-  // ============================================================
-  // BOOKINGS
-  // ============================================================
   async function loadAllBookings() {
     showLoading('Loading bookings...');
     try {
@@ -4039,9 +4038,6 @@
     finally { hideLoading(); }
   }
 
-  // ============================================================
-  // ANALYTICS
-  // ============================================================
   async function updateReports() {
     const period = document.getElementById('reportPeriod').value;
     const now = new Date();
@@ -4133,9 +4129,6 @@
     }).join('');
   }
 
-  // ============================================================
-  // PROFILE
-  // ============================================================
   function toggleAdminProfileEdit() {
     document.getElementById('adminProfileMain').style.display = 'none';
     document.getElementById('adminProfileEdit').style.display = 'flex';
@@ -4190,9 +4183,6 @@
     }
   }
 
-  // ============================================================
-  // HOME STATS
-  // ============================================================
   function updateHomeStats() {
     const sEl = document.getElementById('homeStatServices');
     const stEl = document.getElementById('homeStatStylists');
@@ -4210,9 +4200,6 @@
     mEl.textContent = thisMonth;
   }
 
-  // ============================================================
-  // SIGN OUT
-  // ============================================================
   async function signOut() {
     showConfirm(
       'Sign out?',
@@ -4232,9 +4219,6 @@
     );
   }
 
-  // ============================================================
-  // INIT
-  // ============================================================
   document.addEventListener('DOMContentLoaded', async function() {
     let user = null;
     try {
