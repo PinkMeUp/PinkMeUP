@@ -1202,6 +1202,21 @@ function tryGotoStep(target) {
   gotoStep(target);
 }
 
+  function gotoStep(n) {
+    wizardStep = n;
+    for (let i = 1; i <= 4; i++) {
+      const body = document.getElementById(`wbody${i}`);
+      if (body) { if (i === n) body.classList.remove('hidden'); else body.classList.add('hidden'); }
+      const ws = document.getElementById(`ws${i}`);
+      if (ws) { ws.classList.toggle('active', i === n); ws.classList.toggle('done', i < n); }
+    }
+    document.getElementById('stepInd').textContent = `Step ${n} of 4`;
+    document.getElementById('wPrev').style.visibility = n === 1 ? 'hidden' : 'visible';
+    document.getElementById('wNext').innerHTML = n === 4 ? 'Confirm <i class="fas fa-check"></i>' : 'Next <i class="fas fa-arrow-right"></i>';
+    if (n === 4) buildReview();
+    document.querySelector('.main').scrollTop = 0;
+  }
+
   function wizardNext() {
     if (wizardStep === 1) { if (!cartIds.length) { showToast('Please select at least one service.'); return; } }
     if (wizardStep === 2) { if (!document.getElementById('apptDate').value) { showToast('Please pick a date.'); return; } if (!bookState.stylistId) { showToast('Please choose a stylist.'); return; } if (!bookState.time) { showToast('Please pick a time slot.'); return; } bookState.date = document.getElementById('apptDate').value; }
