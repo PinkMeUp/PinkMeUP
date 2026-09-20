@@ -833,6 +833,10 @@ const getStylistBookings = async (req, res) => {
 /**
  * Update booking status with proper rating handling
  */
+/**
+ * Update a booking's status. Rating is handled separately by the customer
+ * via submitBookingFeedback, once the booking is completed.
+ */
 const updateBookingStatus = async (req, res) => {
   try {
     const { id } = req.params;
@@ -870,75 +874,44 @@ const updateBookingStatus = async (req, res) => {
   }
 };
 
-    // Prepare update fields
-    const updateFields = { status };
-    if (status === APPOINTMENT_STATUS.COMPLETED && numericRating) {
-      updateFields.feedback = {
-        rating: numericRating,
-        comment: String(comment || '').trim(),
-        createdAt: new Date()
-      };
+/**
+ * Customer rates a completed booking they made.
+ * Body: { rating, comment }
+ */
+const submitBookingFeedback = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { rating, comment } = req.body;
+
+    const appointment = await Appointment.findById(id);
+    if (!appointment) return errorResponse(res, 'Booking not found.', 404);
+
+    const isOwner = appointment.customerId.toString() === req.user.id;
+    if (!isOwner) {
+      return errorResponse(res, 'Only the customer who booked this appointment can rate it.', 403);
+    }
+    if (appointment.status !== APPOINTMENT_STATUS.COMPLETED) {
+      return errorResponse(res, 'Only completed bookings can be rated.', 400);
+    }
+    if (appointment.feedback?.rating) {
+      return errorResponse(res, 'This booking has already been rated.', 400);
     }
 
-    // Update the appointment
-    const updated = await Appointment.findByIdAndUpdate(
-      id,
-      { $set: updateFields },
-      { new: true, runValidators: true }
-    )
+    await appointment.addFeedback(rating, comment);
+
+    const updated = await Appointment.findById(id)
       .populate('customerId', 'firstName lastName email phone')
       .populate({
         path: 'stylistId',
         select: 'userId specialties rating serviceIds',
-        populate: {
-          path: 'userId',
-          select: 'firstName lastName email phone isActive'
-        }
+        populate: { path: 'userId', select: 'firstName lastName email phone isActive' }
       })
       .populate('serviceIds', 'name price duration description');
 
-    // CRITICAL: Update stylist rating when completed
-    if (status === APPOINTMENT_STATUS.COMPLETED && numericRating) {
-      const stylist = await Stylist.findById(appointment.stylistId);
-      if (stylist) {
-        await stylist.addRating(numericRating);
-        
-        // Force save and verify
-        await stylist.save({ validateBeforeSave: false });
-        
-        // Log for debugging
-        logger.info('Stylist rating updated on appointment completion:', {
-          appointmentId: id,
-          stylistId: stylist._id,
-          rating: numericRating,
-          newAverage: stylist.rating,
-          totalRatings: stylist.ratingCount
-        });
-        
-        // Re-fetch the appointment with updated stylist rating
-        const refreshedAppointment = await Appointment.findById(id)
-          .populate('customerId', 'firstName lastName email phone')
-          .populate({
-            path: 'stylistId',
-            select: 'userId specialties rating serviceIds',
-            populate: {
-              path: 'userId',
-              select: 'firstName lastName email phone isActive'
-            }
-          })
-          .populate('serviceIds', 'name price duration description');
-          
-        return successResponse(res, 'Booking status updated with rating.', refreshedAppointment);
-      }
-    }
-
-    return successResponse(res, 'Booking status updated.', updated);
+    return successResponse(res, 'Thanks for your feedback!', updated);
   } catch (error) {
-    logger.error('Update booking status error:', {
-      message: error.message,
-      stack: error.stack
-    });
-    return errorResponse(res, 'Failed to update booking status.', 500);
+    logger.error('Submit booking feedback error:', error);
+    return errorResponse(res, error.message || 'Failed to submit feedback.', error.statusCode || 500);
   }
 };
 
@@ -951,5 +924,6 @@ module.exports = {
   getAllBookings,
   getStylistBookings,
   updateBookingStatus,
+  submitBookingFeedback,
   hasAppointmentConflict
 };
