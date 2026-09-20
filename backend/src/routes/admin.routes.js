@@ -6,7 +6,7 @@ const express = require('express');
 const router = express.Router();
 const { authenticate, authorize } = require('../middleware/auth');
 const { validate } = require('../middleware/validation');
-const { idParamValidation } = require('../validators');
+const { idParamValidation, guestBookingValidation } = require('../validators');
 const bookingController = require('../controllers/booking.controller');
 const availabilityController = require('../controllers/availability.controller');
 const reportController = require('../controllers/report.controller');
@@ -29,6 +29,7 @@ router.put('/bookings/:id/status', validate(idParamValidation), bookingControlle
 router.get('/bookings', bookingController.getAllBookings);
 router.get('/bookings/stylist/:id', validate(idParamValidation), bookingController.getStylistBookings);
 router.post('/bookings', guestController.createGuestBooking);
+router.post('/bookings', validate(guestBookingValidation), guestController.createGuestBooking);
 
 // Availability
 router.get('/availability', availabilityController.checkAvailability);
