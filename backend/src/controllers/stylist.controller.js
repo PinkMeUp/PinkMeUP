@@ -5,6 +5,7 @@
 
 const Stylist = require('../models/Stylist.model');
 const User = require('../models/User.model');
+const Appointment = require('../models/Appointment.model');
 const { successResponse, errorResponse } = require('../utils/response');
 const { USER_ROLES } = require('../utils/constants');
 const logger = require('../config/logger');
@@ -149,7 +150,21 @@ const deleteStylist = async (req, res) => {
   try {
     const stylist = await Stylist.findById(req.params.id);
     if (!stylist) return errorResponse(res, 'Stylist not found.', 404);
+
+    const bookingCount = await Appointment.countDocuments({ stylistId: stylist._id });
+    if (bookingCount > 0) {
+      return errorResponse(
+        res,
+        `This stylist has ${bookingCount} booking(s) and cannot be deleted. Set the status to "disabled" instead.`,
+        409
+      );
+    }
+
+    // Deactivate the login before removing the profile so the account
+    // does not stay usable after deletion.
+    await User.findByIdAndUpdate(stylist.userId, { isActive: false });
     await stylist.deleteOne();
+
     return successResponse(res, 'Stylist deleted.');
   } catch (error) {
     logger.error('Delete stylist error:', error);
@@ -189,13 +204,19 @@ const getStylistAvailability = async (req, res) => {
  */
 const createStylistByAdmin = async (req, res) => {
   try {
-    const { firstName, lastName, email, password, phone, specialties, serviceIds, workingHours } = req.body;
+    const { firstName, lastName, email, password, phone, specialties, serviceIds, workingHours, status } = req.body;
 
     if (!firstName || !lastName || !email || !password || !phone) {
       return errorResponse(res, 'First name, last name, email, password, and phone number are required.', 400);
     }
     if (!/^\+?[0-9\s\-()]{7,25}$/.test(phone)) {
       return errorResponse(res, 'Please provide a valid phone number.', 400);
+    }
+
+    const validStatuses = ['active', 'inactive', 'disabled'];
+    const resolvedStatus = status === undefined || status === null || status === '' ? 'active' : status;
+    if (!validStatuses.includes(resolvedStatus)) {
+      return errorResponse(res, 'Status must be active, inactive, or disabled.', 400);
     }
 
     const existingUser = await User.findOne({ email: email.toLowerCase() });
@@ -210,7 +231,8 @@ const createStylistByAdmin = async (req, res) => {
       password,
       phone,
       role: 'stylist',
-      isActive: true
+      // A 'disabled' stylist gets an inactive account so they cannot log in.
+      isActive: resolvedStatus !== 'disabled'
     });
 
     const stylist = await Stylist.create({
@@ -218,7 +240,7 @@ const createStylistByAdmin = async (req, res) => {
       specialties: specialties || [],
       serviceIds: serviceIds || [],
       workingHours: workingHours || {},
-      isAvailable: true
+      isAvailable: resolvedStatus === 'active'
     });
 
     const populated = await Stylist.findById(stylist._id)

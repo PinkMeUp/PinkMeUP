@@ -9,14 +9,15 @@ const Stylist = require('../models/Stylist.model');
 const User = require('../models/User.model');
 const { successResponse, errorResponse } = require('../utils/response');
 const { APPOINTMENT_STATUS } = require('../utils/constants');
+const { parseCalendarDate } = require('../utils/helpers');
 const logger = require('../config/logger');
 
 const buildDateFilter = (startDate, endDate) => {
   const filter = {};
   if (startDate || endDate) {
     filter.date = {};
-    if (startDate) filter.date.$gte = new Date(startDate);
-    if (endDate) filter.date.$lte = new Date(endDate);
+    if (startDate) filter.date.$gte = parseCalendarDate(startDate);
+    if (endDate) filter.date.$lte = parseCalendarDate(endDate);
   }
   return filter;
 };

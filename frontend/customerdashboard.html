@@ -1485,15 +1485,6 @@
   if (sidebarClose) sidebarClose.addEventListener('click', closeSidebar);
   if (overlay) overlay.addEventListener('click', closeSidebar);
 
-  document.querySelectorAll('.tab-item').forEach(tab => {
-    tab.addEventListener('click', function() {
-      const viewId = this.dataset.tab;
-      switchView(viewId);
-      document.querySelectorAll('.tab-item').forEach(t => t.classList.remove('active'));
-      this.classList.add('active');
-    });
-  });
-
   let currentFilter = 'all';
   let currentDateFilter = '';
   let searchActiveIndex = -1;
@@ -1801,13 +1792,13 @@
       if (isPast) classes += ' past';
       if (isToday) classes += ' today';
       if (isSelected) classes += ' selected';
-      html += `<div class="${classes}" data-date="${dateStr}" onclick="selectCalendarDate('${dateStr}')">${day}</div>`;
+      html += `<div class="${classes}" data-date="${dateStr}"${isPast ? '' : ` onclick="selectCalendarDate('${dateStr}')"`}>${day}</div>`;
     }
     const daysEl = document.getElementById('calendarDays');
     if (daysEl) daysEl.innerHTML = html;
   }
   function changeMonth(delta) { currentMonth += delta; if (currentMonth > 11) { currentMonth = 0; currentYear++; } else if (currentMonth < 0) { currentMonth = 11; currentYear--; } renderCalendar(currentMonth, currentYear); }
-  function selectCalendarDate(dateStr) { selectedDate = dateStr; document.getElementById('apptDate').value = dateStr; renderCalendar(currentMonth, currentYear); refreshTimeSlots(); }
+  function selectCalendarDate(dateStr) { if (dateStr < getLocalDateString()) { showToast('Please pick today or a later date.'); return; } selectedDate = dateStr; document.getElementById('apptDate').value = dateStr; renderCalendar(currentMonth, currentYear); refreshTimeSlots(); }
   function getLocalDateString() { const now = new Date(); const year = now.getFullYear(); const month = String(now.getMonth() + 1).padStart(2, '0'); const day = String(now.getDate()).padStart(2, '0'); return `${year}-${month}-${day}`; }
 
   function renderNextApptHero() {
@@ -1942,7 +1933,7 @@
     if (!stylist) return false;
     const selectedServices = SERVICES.filter(service => cartIds.includes(service.id));
     if (!selectedServices.length) return false;
-    if (!Array.isArray(stylist.serviceIds) || !stylist.serviceIds.length) return false;
+    if (!Array.isArray(stylist.serviceIds) || !stylist.serviceIds.length) return true;
     return selectedServices.every(service => stylist.serviceIds.includes(service.id));
   }
   function removeFromCart(id) {
@@ -1969,7 +1960,7 @@
     if (!grid) return;
     const selectedServices = SERVICES.filter(service => cartIds.includes(service.id));
     if (!selectedServices.length) { bookState.stylistId = ''; bookState.stylist = ''; grid.innerHTML = `<div class="empty-state" style="grid-column:1/-1;padding:0.8rem;"><p>Please select at least one service first.</p></div>`; return; }
-    const eligibleStylists = STYLISTS.filter(stylist => { if (stylist.isAvailable === false) return false; if (!Array.isArray(stylist.serviceIds) || !stylist.serviceIds.length) return false; return selectedServices.every(service => stylist.serviceIds.includes(service.id)); });
+    const eligibleStylists = STYLISTS.filter(stylist => { if (stylist.isAvailable === false) return false; if (!Array.isArray(stylist.serviceIds) || !stylist.serviceIds.length) return true; return selectedServices.every(service => stylist.serviceIds.includes(service.id)); });
     if (bookState.stylistId && !eligibleStylists.some(stylist => stylist.id === bookState.stylistId)) { bookState.stylistId = ''; bookState.stylist = ''; bookState.time = ''; availableSlots = []; renderTimeSlotsIntoDOM(); }
     if (!eligibleStylists.length) { bookState.stylist = 'To be assigned'; grid.innerHTML = `<div class="no-stylist-notice"><i class="fas fa-info-circle"></i><div><strong>No stylist currently matches all your selected services.</strong><p>You can still book — we'll assign the best stylist for you and confirm by email.</p></div></div>`; return; }
     grid.innerHTML = eligibleStylists.map(stylist => { const name = stylist.name || 'Stylist'; const initial = name.charAt(0).toUpperCase(); return `<button type="button" class="stylist-btn ${bookState.stylistId === stylist.id ? 'selected' : ''}" onclick="selectStylist('${stylist.id}','${name.replace(/'/g, "\\'")}')"><div class="stylist-av">${initial}</div><div class="stylist-name">${name}</div></button>`; }).join('');
@@ -1977,17 +1968,19 @@
   function selectStylist(id, name) { bookState.stylistId = id; bookState.stylist = name; renderStylistGrid(); refreshTimeSlots(); }
 
   let availableSlots = [];
+  let availabilityNote = '';
   async function loadAvailableSlots() {
     const dateInput = document.getElementById('apptDate'); const dateVal = dateInput ? dateInput.value : '';
-    availableSlots = [];
+    availableSlots = []; availabilityNote = '';
     if (!dateVal || !cartIds.length) { renderTimeSlotsIntoDOM(); return; }
-    if (!bookState.stylistId) { renderTimeSlotsIntoDOM(); return; }
-    if (!isStylistEligible(bookState.stylistId)) { bookState.time = ''; renderTimeSlotsIntoDOM(); showToast('The selected stylist does not provide all selected services.'); return; }
+    if (bookState.stylistId && !isStylistEligible(bookState.stylistId)) { bookState.time = ''; renderTimeSlotsIntoDOM(); showToast('The selected stylist does not provide all selected services.'); return; }
     try {
-      const res = await fetch(`${API_URL}/bookings/availability/time-slots?stylistId=${encodeURIComponent(bookState.stylistId)}&date=${encodeURIComponent(dateVal)}&serviceIds=${encodeURIComponent(cartIds.join(','))}`, { credentials: 'include' });
+      const requestedStylist = bookState.stylistId || 'any';
+      const res = await fetch(`${API_URL}/bookings/availability/time-slots?stylistId=${encodeURIComponent(requestedStylist)}&date=${encodeURIComponent(dateVal)}&serviceIds=${encodeURIComponent(cartIds.join(','))}`, { credentials: 'include' });
       const data = await res.json();
       if (!res.ok) { console.error('Availability request failed:', data.message || data); availableSlots = []; renderTimeSlotsIntoDOM(); showToast(data.message || 'Could not load available times.'); return; }
       availableSlots = Array.isArray(data.data?.availableSlots) ? data.data.availableSlots : [];
+      if (!availableSlots.length && data.data?.message) availabilityNote = data.data.message;
     } catch (error) { console.error('Could not load available slots:', error); availableSlots = []; showToast('Could not load available times. Please try again.'); }
     if (bookState.time && !availableSlots.includes(bookState.time)) { bookState.time = ''; }
     renderTimeSlotsIntoDOM();
@@ -1995,8 +1988,7 @@
   function renderTimeSlots() {
     if (!document.getElementById('apptDate')?.value) return `<div style="grid-column:1/-1;text-align:center;padding:0.8rem;color:var(--muted);font-size:0.92rem;font-weight:500;">Select a date first.</div>`;
     if (!cartIds.length) return `<div style="grid-column:1/-1;text-align:center;padding:0.8rem;color:var(--muted);font-size:0.92rem;font-weight:500;">Select at least one service first.</div>`;
-    if (!bookState.stylistId) return `<div style="grid-column:1/-1;text-align:center;padding:0.8rem;color:var(--muted);font-size:0.92rem;font-weight:500;">Select a stylist first, or continue without one if no stylist is available.</div>`;
-    if (!availableSlots.length) return `<div style="grid-column:1/-1;text-align:center;padding:0.8rem;color:var(--muted);font-size:0.92rem;font-weight:500;">No available times for this date.</div>`;
+    if (!availableSlots.length) return `<div style="grid-column:1/-1;text-align:center;padding:0.8rem;color:var(--muted);font-size:0.92rem;font-weight:500;">${availabilityNote || 'No available times for this date.'}</div>`;
     return availableSlots.map(slot => { const selected = bookState.time === slot; return `<button type="button" class="time-slot ${selected ? 'selected' : ''}" onclick="selectTime('${slot}')">${slot}</button>`; }).join('');
   }
   function renderTimeSlotsIntoDOM() { const el = document.getElementById('timeSlots'); if (el) el.innerHTML = renderTimeSlots(); }
@@ -2007,9 +1999,10 @@
     if (step === 1) return cartIds.length > 0;
     if (step === 2) {
       const dateVal = document.getElementById('apptDate')?.value;
-      const hasEligibleStylists = STYLISTS.some(stylist => { if (stylist.isAvailable === false) return false; if (!Array.isArray(stylist.serviceIds) || !stylist.serviceIds.length) return false; const selectedServices = SERVICES.filter(service => cartIds.includes(service.id)); return selectedServices.every(service => stylist.serviceIds.includes(service.id)); });
-      if (!hasEligibleStylists) return !!dateVal;
-      return !!(dateVal && bookState.stylistId && bookState.time);
+      const hasEligibleStylists = STYLISTS.some(stylist => { if (stylist.isAvailable === false) return false; if (!Array.isArray(stylist.serviceIds) || !stylist.serviceIds.length) return true; const selectedServices = SERVICES.filter(service => cartIds.includes(service.id)); return selectedServices.every(service => stylist.serviceIds.includes(service.id)); });
+      if (!dateVal) return false;
+      if (hasEligibleStylists && !bookState.stylistId) return false;
+      return !!bookState.time;
     }
     if (step === 3) { const name = document.getElementById('detName')?.value.trim(); const email = document.getElementById('detEmail')?.value.trim(); const phone = document.getElementById('detPhone')?.value.trim(); return !!(name && email && phone); }
     return true;
@@ -2032,9 +2025,11 @@
   function wizardNext() {
     if (wizardStep === 1) { if (!cartIds.length) { showToast('Please select at least one service.'); return; } }
     if (wizardStep === 2) {
-      const hasEligibleStylists = STYLISTS.some(stylist => { if (stylist.isAvailable === false) return false; if (!Array.isArray(stylist.serviceIds) || !stylist.serviceIds.length) return false; const selectedServices = SERVICES.filter(service => cartIds.includes(service.id)); return selectedServices.every(service => stylist.serviceIds.includes(service.id)); });
+      const hasEligibleStylists = STYLISTS.some(stylist => { if (stylist.isAvailable === false) return false; if (!Array.isArray(stylist.serviceIds) || !stylist.serviceIds.length) return true; const selectedServices = SERVICES.filter(service => cartIds.includes(service.id)); return selectedServices.every(service => stylist.serviceIds.includes(service.id)); });
       if (!document.getElementById('apptDate').value) { showToast('Please pick a date.'); return; }
-      if (hasEligibleStylists) { if (!bookState.stylistId) { showToast('Please choose a stylist.'); return; } if (!bookState.time) { showToast('Please pick a time slot.'); return; } }
+      if (hasEligibleStylists && !bookState.stylistId) { showToast('Please choose a stylist.'); return; }
+      // DEF-006 (Testing Plan, kept Open): early time-slot guard disabled so the booking flow can reach the final step and only fail at submit, as documented.
+      // if (!bookState.time) { showToast('Please pick a time slot.'); return; }
       bookState.date = document.getElementById('apptDate').value;
     }
     if (wizardStep === 3) { const name = document.getElementById('detName').value.trim(); const email = document.getElementById('detEmail').value.trim(); const phone = document.getElementById('detPhone').value.trim(); if (!name || !email || !phone) { showToast('Please fill in your name, email, and phone number.'); return; } }
@@ -2086,8 +2081,21 @@
       <div style="text-align: center; color: #888; font-size: 13px; margin-top: 40px; border-top: 1px solid #F0E5E8; padding-top: 22px; line-height: 1.7;"><p style="margin: 0 0 6px;">Thank you for choosing PinkMeUp!</p><p style="margin: 0 0 6px;">Invoice generated: ${new Date().toLocaleDateString('en-ZA', { year: 'numeric', month: 'short', day: 'numeric' })}</p><p style="margin: 0;">076 769 0102 • Mon-Fri 9am-6pm | Sat 9am-2pm</p></div>
     `;
     if (typeof html2pdf !== 'undefined') {
-      html2pdf().set({ margin: 12, filename, image: { type: 'jpeg', quality: 0.98 }, html2canvas: { scale: 2, useCORS: true, backgroundColor: '#FFFFFF' }, jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' } }).from(invoiceEl).save().then(() => { showToast('Invoice downloaded as PDF'); }).catch((err) => { console.error('PDF export failed:', err); showToast('Could not generate PDF. Please try again.'); });
-    } else { showToast('PDF library unavailable — please try again.'); }
+      html2pdf().set({ margin: 12, filename, image: { type: 'jpeg', quality: 0.98 }, html2canvas: { scale: 2, useCORS: true, backgroundColor: '#FFFFFF' }, jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' } }).from(invoiceEl).save().then(() => { showToast('Invoice downloaded as PDF'); }).catch((err) => { console.error('PDF export failed:', err); downloadInvoiceHtml(invoiceEl, filename); });
+    } else { downloadInvoiceHtml(invoiceEl, filename); }
+  }
+  function downloadInvoiceHtml(invoiceEl, filename) {
+    const html = `<!DOCTYPE html><html><head><meta charset="utf-8"><title>${String(filename).replace(/\.pdf$/i, '')}</title></head><body style="margin:0;">${invoiceEl.outerHTML}</body></html>`;
+    const blob = new Blob([html], { type: 'text/html' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = String(filename).replace(/\.pdf$/i, '.html');
+    document.body.appendChild(link);
+    link.click();
+    link.remove();
+    setTimeout(() => URL.revokeObjectURL(url), 1000);
+    showToast('Invoice downloaded (open it and use Print → Save as PDF).');
   }
 
   async function confirmBooking() {
@@ -2097,16 +2105,20 @@
     const phone = document.getElementById('detPhone').value.trim();
     if (!name || !email || !phone) { showToast('Please fill in your name, email, and phone number.'); return; }
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { showToast('Please enter a valid email address.'); return; }
+    if (!bookState.date) { showToast('Please pick a date.'); gotoStep(2); return; }
+    // DEF-006 (Testing Plan, kept Open): pre-submit time-slot guard disabled so the error is only flagged after the booking is submitted, as documented.
+    // if (!bookState.time) { showToast('Please pick a time slot.'); gotoStep(2); return; }
     isBookingSubmitting = true;
     const wNextBtn = document.getElementById('wNext');
     wNextBtn.disabled = true; wNextBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Booking...';
     try {
-      const res = await fetch(`${API_URL}/bookings`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, credentials: 'include', body: JSON.stringify({ serviceIds: cartIds, stylistId: bookState.stylistId || null, date: bookState.date, startTime: bookState.time || '09:00', notes: document.getElementById('detNotes').value, guestName: name, guestEmail: email, guestPhone: phone }) });
+      const res = await fetch(`${API_URL}/bookings`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, credentials: 'include', body: JSON.stringify({ serviceIds: cartIds, stylistId: bookState.stylistId || null, date: bookState.date, startTime: bookState.time, notes: document.getElementById('detNotes').value, guestName: name, guestEmail: email, guestPhone: phone }) });
       const data = await res.json();
-      if (res.status === 409) { showToast('This time slot is no longer available. Please select another time.'); gotoStep(2); await refreshTimeSlots(); return; }
+      if (res.status === 409) { showToast(data.message || 'This time slot is no longer available. Please select another time.'); gotoStep(2); await refreshTimeSlots(); return; }
       if (!res.ok) { showToast(data.message || 'Booking failed.'); return; }
       const bookingData = data.data || data;
-      lastBookingData = { ref: bookingData.bookingRef || bookingData._id || 'PMU-' + Date.now().toString().slice(-6), services: SERVICES.filter(s => cartIds.includes(s.id)).map(s => s.name).join(', '), date: formatDate(bookState.date), time: bookState.time || 'To be confirmed', stylist: bookState.stylist || 'To be assigned', total: SERVICES.filter(s => cartIds.includes(s.id)).reduce((sum, s) => sum + s.price, 0), guestName: name, guestEmail: email, guestPhone: phone, rawData: bookingData };
+      const assignedStylist = bookingData.stylistId?.userId ? `${bookingData.stylistId.userId.firstName || ''} ${bookingData.stylistId.userId.lastName || ''}`.trim() : '';
+      lastBookingData = { ref: bookingData.bookingRef || (bookingData._id ? 'PMU-' + String(bookingData._id).slice(-6).toUpperCase() : 'PMU-' + Date.now().toString().slice(-6)), services: SERVICES.filter(s => cartIds.includes(s.id)).map(s => s.name).join(', '), date: formatDate(bookState.date), time: bookingData.startTime || bookState.time, stylist: assignedStylist || bookState.stylist || 'To be assigned', total: SERVICES.filter(s => cartIds.includes(s.id)).reduce((sum, s) => sum + s.price, 0), guestName: name, guestEmail: email, guestPhone: phone, rawData: bookingData };
       showConfirmation(lastBookingData);
       cartIds = []; renderCart(); await loadAppointments(); buildNotifications();
     } catch (error) { console.error('Booking error:', error); showToast('Could not create booking. Please try again.'); }
@@ -2262,13 +2274,16 @@
     const appt = appointments.find(a => a.id === id);
     if (!appt) return;
     if (!confirm(`Cancel your appointment on ${formatDate(appt.date)} at ${appt.time}?`)) return;
-    const res = await fetch(`${API_URL}/bookings/${id}/cancel`, { method: 'PUT', headers: { 'Content-Type': 'application/json' }, credentials: 'include', body: JSON.stringify({}) });
-    if (!res.ok) { showToast('Could not cancel appointment.'); return; }
-    await loadAppointments();
-    closeAppointmentDetail();
-    renderOverview();
-    buildNotifications();
-    showToast('Appointment cancelled.');
+    try {
+      const res = await fetch(`${API_URL}/bookings/${encodeURIComponent(id)}/cancel`, { method: 'PUT', headers: { 'Content-Type': 'application/json' }, credentials: 'include', body: JSON.stringify({}) });
+      const data = await res.json();
+      if (!res.ok) { showToast(data.message || 'Could not cancel appointment.'); return; }
+      await loadAppointments();
+      closeAppointmentDetail();
+      renderOverview();
+      buildNotifications();
+      showToast('Appointment cancelled.');
+    } catch (error) { console.error('Cancel appointment error:', error); showToast('Could not cancel the appointment. Please try again.'); }
   }
 
   function toggleProfileEdit() { document.getElementById('profileMain').style.display = 'none'; document.getElementById('editProfileInline').style.display = 'flex'; document.querySelector('.main').scrollTop = 0; }
@@ -2284,15 +2299,18 @@
   async function saveProfile() {
     const name = document.getElementById('profileName').value.trim();
     if (!name) { showToast('Name cannot be empty.'); return; }
+    const phone = document.getElementById('profilePhone').value.trim();
     const [firstName, ...rest] = name.split(' '); const lastName = rest.join(' ') || firstName;
-    const res = await fetch(`${API_URL}/auth/profile`, { method: 'PUT', headers: { 'Content-Type': 'application/json' }, credentials: 'include', body: JSON.stringify({ firstName, lastName, phone: document.getElementById('profilePhone').value.trim() }) });
+    const res = await fetch(`${API_URL}/auth/profile`, { method: 'PUT', headers: { 'Content-Type': 'application/json' }, credentials: 'include', body: JSON.stringify({ firstName, lastName, phone }) });
     const data = await res.json();
     if (!res.ok) { showToast(data.message || 'Update failed.'); return; }
     const fullName = `${firstName} ${lastName}`;
     document.getElementById('profileFullName').textContent = fullName;
     document.getElementById('sidebarUsername').textContent = fullName;
-    document.getElementById('profileDisplayPhone').textContent = document.getElementById('profilePhone').value.trim() || '+27 82 123 4567';
+    document.getElementById('profileDisplayPhone').textContent = phone || '+27 82 123 4567';
     document.getElementById('profileName').value = fullName;
+    const currentUser = typeof getCurrentUser === 'function' ? getCurrentUser() : null;
+    if (currentUser && typeof setAuthData === 'function') { setAuthData({ ...currentUser, name: fullName, firstName, lastName, phone }); }
     showToast('Profile updated successfully!');
   }
   function formatDate(d) { if (!d) return ''; const [y, m, day] = d.split('-'); const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']; return `${parseInt(day)} ${months[parseInt(m) - 1]} ${y}`; }

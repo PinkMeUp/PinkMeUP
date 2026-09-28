@@ -15,6 +15,7 @@
  */
 
 const mongoose = require('mongoose');
+const { parseCalendarDate } = require('../utils/helpers');
 
 const AppointmentSchema = new mongoose.Schema(
   {
@@ -248,25 +249,22 @@ const makeAppointmentDate = (
     return null;
   }
 
-  const appointmentDate =
-    new Date(date);
+  const calendarDate =
+    parseCalendarDate(date);
 
-  if (
-    Number.isNaN(
-      appointmentDate.getTime()
-    )
-  ) {
+  if (!calendarDate) {
     return null;
   }
 
-  appointmentDate.setHours(
+  return new Date(
+    calendarDate.getFullYear(),
+    calendarDate.getMonth(),
+    calendarDate.getDate(),
     hours,
     minutes,
     0,
     0
   );
-
-  return appointmentDate;
 };
 
 
@@ -660,19 +658,12 @@ AppointmentSchema.statics.getForDate =
     includeInactive = false
   ) {
     const start =
-      new Date(date);
+      parseCalendarDate(date);
 
     const end =
-      new Date(date);
+      parseCalendarDate(date);
 
-    if (
-      Number.isNaN(
-        start.getTime()
-      ) ||
-      Number.isNaN(
-        end.getTime()
-      )
-    ) {
+    if (!start || !end) {
       return this.find({
         _id: null
       });
@@ -729,13 +720,11 @@ AppointmentSchema.pre(
       return;
     }
 
-    const normalizedDate = new Date(this.date);
+    const normalizedDate = parseCalendarDate(this.date);
 
-    if (Number.isNaN(normalizedDate.getTime())) {
+    if (!normalizedDate) {
       return;
     }
-
-    normalizedDate.setHours(0, 0, 0, 0);
 
     this.date = normalizedDate;
   }

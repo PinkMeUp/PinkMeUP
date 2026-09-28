@@ -1126,6 +1126,16 @@
     }
     .service-actions button:hover { color: var(--rose); background: var(--rose-pale); }
     .service-actions .delete-service:hover { color: var(--danger); background: var(--danger-bg); }
+    .service-actions .restore-service { color: var(--rose); }
+    .service-actions .restore-service:hover { color: var(--rose); background: var(--rose-pale); }
+    .service-archived .service-name { color: var(--muted); }
+    .service-archived .service-price { opacity: 0.7; }
+    .service-archived-tag {
+      display: inline-block; margin-left: 0.45rem; vertical-align: middle;
+      font-size: 0.65rem; font-weight: 600; letter-spacing: 0.05em; text-transform: uppercase;
+      color: var(--muted); background: var(--hover-surface-strong);
+      padding: 0.15rem 0.5rem; border-radius: var(--radius-pill);
+    }
 
     /* STYLISTS */
     .stylist-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(360px, 1fr)); gap: 1.1rem; }
@@ -2069,7 +2079,7 @@
             <option value="lastYear">Last 12 months</option>
             <option value="custom">Custom range</option>
           </select>
-          <div id="customDateRange" style="display:none; display:flex; gap:0.6rem; align-items:center; flex-wrap:wrap;">
+          <div id="customDateRange" style="display:none; gap:0.6rem; align-items:center; flex-wrap:wrap;">
             <input type="date" id="startDate" />
             <span style="font-size:0.88rem;color:var(--muted);">to</span>
             <input type="date" id="endDate" />
@@ -2373,6 +2383,7 @@
     </select>
     <label>Services Offered (select all that apply)</label>
     <div id="stylistServicesCheckboxes" class="specialties-list"></div>
+    <p style="font-size:0.8rem;color:var(--muted);font-weight:300;margin:0.4rem 0 0.4rem;">Leave all unchecked to make this stylist available for every service.</p>
     <input type="hidden" id="stylistId" />
     <div class="modal-footer">
       <button class="btn-outline" id="cancelStylistModalBtn">Cancel</button>
@@ -2514,6 +2525,12 @@
     const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
     return `${date.getDate()} ${months[date.getMonth()]} ${date.getFullYear()}`;
   }
+  function toLocalDateStr(d) {
+    const y = d.getFullYear();
+    const m = String(d.getMonth() + 1).padStart(2, '0');
+    const day = String(d.getDate()).padStart(2, '0');
+    return `${y}-${m}-${day}`;
+  }
   function formatRelativeTime(date) {
     const now = new Date();
     const diff = now - date;
@@ -2596,12 +2613,13 @@
   }
 
   function exportServicesPDF() {
-    if (!services.length) { showToast('No services to export.', true); return; }
+    const activeServices = services.filter(s => s.isActive !== false);
+    if (!activeServices.length) { showToast('No services to export.', true); return; }
     showLoading('Generating PDF...');
-    const categories = [...new Set(services.map(s => s.category))];
+    const categories = [...new Set(activeServices.map(s => s.category))];
     let bodyHtml = '';
     categories.forEach(cat => {
-      const catServices = services.filter(s => s.category === cat);
+      const catServices = activeServices.filter(s => s.category === cat);
       bodyHtml += `<tr style="background: #fdf2f5;">
         <td colspan="3" style="padding: 12px 10px; font-weight: 600; color: #D43F6B; font-size: 14px; letter-spacing: 0.3px; border-bottom: 1px solid #f0d5dd;">
           ${escapeHtml(cat)} <span style="font-weight: 400; color: #999; font-size: 11px;">· ${catServices.length} service${catServices.length !== 1 ? 's' : ''}</span>
@@ -2615,7 +2633,7 @@
         </tr>`;
       });
     });
-    const html = buildPdfHeader('Services Menu', `Total: ${services.length} service${services.length !== 1 ? 's' : ''} across ${categories.length} categories`) + `
+    const html = buildPdfHeader('Services Menu', `Total: ${activeServices.length} service${activeServices.length !== 1 ? 's' : ''} across ${categories.length} categories`) + `
       <table style="width: 100%; border-collapse: collapse; font-size: 13px;">
         <thead>
           <tr style="background: #f5f5f5;">
@@ -2626,7 +2644,7 @@
         </thead>
         <tbody>${bodyHtml}</tbody>
       </table>` + buildPdfFooter();
-    downloadPDF('Services', html, `PinkMeUp_Services_${new Date().toISOString().slice(0,10)}.pdf`)
+    downloadPDF('Services', html, `PinkMeUp_Services_${toLocalDateStr(new Date())}.pdf`)
       .then(() => { hideLoading(); showToast('Services PDF downloaded.'); })
       .catch(() => { hideLoading(); showToast('Failed to generate PDF.', true); });
   }
@@ -2659,7 +2677,7 @@
         </thead>
         <tbody>${rows}</tbody>
       </table>` + buildPdfFooter();
-    downloadPDF('Stylists', html, `PinkMeUp_Stylists_${new Date().toISOString().slice(0,10)}.pdf`)
+    downloadPDF('Stylists', html, `PinkMeUp_Stylists_${toLocalDateStr(new Date())}.pdf`)
       .then(() => { hideLoading(); showToast('Stylists PDF downloaded.'); })
       .catch(() => { hideLoading(); showToast('Failed to generate PDF.', true); });
   }
@@ -2693,7 +2711,7 @@
         </thead>
         <tbody>${rows}</tbody>
       </table>` + buildPdfFooter();
-    downloadPDF('Bookings', html, `PinkMeUp_Bookings_${new Date().toISOString().slice(0,10)}.pdf`)
+    downloadPDF('Bookings', html, `PinkMeUp_Bookings_${toLocalDateStr(new Date())}.pdf`)
       .then(() => { hideLoading(); showToast('Bookings PDF downloaded.'); })
       .catch(() => { hideLoading(); showToast('Failed to generate PDF.', true); });
   }
@@ -2822,7 +2840,7 @@
       return d.getTime() === today.getTime();
     });
     if (todaysBookings.length > 0) {
-      built.push({ id: 'auto_today_' + today.toISOString().slice(0,10), type: 'info',
+      built.push({ id: 'auto_today_' + toLocalDateStr(today), type: 'info',
         title: `${todaysBookings.length} booking${todaysBookings.length > 1 ? 's' : ''} today`,
         text: `You have ${todaysBookings.length} appointment${todaysBookings.length > 1 ? 's' : ''} scheduled for today.`,
         time: new Date(), action: { view: 'bookings', bookingId: todaysBookings[0]._id } });
@@ -3017,14 +3035,90 @@
     email: 'hello@pinkmeup.com', support: 'leonthendo88@gmail.com',
     weekday: '9am – 5pm', saturday: '9am – 2pm', sunday: 'Closed'
   };
+  let settingsFormDirty = false;
   function loadSettings() {
     try {
       const saved = localStorage.getItem(SETTINGS_KEY);
       return saved ? { ...DEFAULT_SETTINGS, ...JSON.parse(saved) } : { ...DEFAULT_SETTINGS };
     } catch (e) { return { ...DEFAULT_SETTINGS }; }
   }
-  function populateSettingsForm() {
-    const s = loadSettings();
+  function cacheSettings(s) {
+    try { localStorage.setItem(SETTINGS_KEY, JSON.stringify(s)); } catch (e) {}
+  }
+  function formatHour12(hhmm) {
+    const m = /^(\d{1,2}):(\d{2})$/.exec(String(hhmm || '').trim());
+    if (!m) return '';
+    let h = parseInt(m[1], 10);
+    const mins = parseInt(m[2], 10);
+    if (isNaN(h) || h > 23 || mins > 59) return '';
+    const suffix = h >= 12 ? 'pm' : 'am';
+    h = h % 12; if (h === 0) h = 12;
+    return mins ? `${h}:${String(mins).padStart(2, '0')}${suffix}` : `${h}${suffix}`;
+  }
+  function formatHoursRange(day) {
+    if (!day || day.isOpen === false) return 'Closed';
+    const start = formatHour12(day.start);
+    const end = formatHour12(day.end);
+    if (!start || !end) return '';
+    return `${start} – ${end}`;
+  }
+  function parseHourToken(raw) {
+    const t = String(raw || '').trim().toLowerCase().replace(/\s+/g, '').replace(/\./g, ':');
+    if (!t) return null;
+    const ampm = /^(\d{1,2})(?::(\d{2}))?(am|pm)$/.exec(t);
+    if (ampm) {
+      let h = parseInt(ampm[1], 10);
+      const m = ampm[2] ? parseInt(ampm[2], 10) : 0;
+      if (h < 1 || h > 12 || m > 59) return null;
+      if (ampm[3] === 'pm' && h !== 12) h += 12;
+      if (ampm[3] === 'am' && h === 12) h = 0;
+      return `${String(h).padStart(2, '0')}:${String(m).padStart(2, '0')}`;
+    }
+    const hm = /^(\d{1,2}):(\d{2})$/.exec(t);
+    if (hm) {
+      const h = parseInt(hm[1], 10);
+      const m = parseInt(hm[2], 10);
+      if (h > 23 || m > 59) return null;
+      return `${String(h).padStart(2, '0')}:${String(m).padStart(2, '0')}`;
+    }
+    const bare = /^(\d{1,2})$/.exec(t);
+    if (bare) {
+      const h = parseInt(bare[1], 10);
+      if (h > 23) return null;
+      return `${String(h).padStart(2, '0')}:00`;
+    }
+    return null;
+  }
+  function parseHoursRange(text) {
+    const trimmed = String(text || '').trim();
+    if (!trimmed) return null;
+    if (/^closed$/i.test(trimmed)) return { isOpen: false, start: '', end: '' };
+    const parts = trimmed.split(/–|—|-|\bto\b/i).map(p => p.trim()).filter(Boolean);
+    if (parts.length !== 2) return null;
+    const start = parseHourToken(parts[0]);
+    let end = parseHourToken(parts[1]);
+    if (!start || !end) return null;
+    if (!/[:a-z]/i.test(parts[1]) && end <= start) {
+      const h = parseInt(end.slice(0, 2), 10) + 12;
+      if (h <= 23) end = `${String(h).padStart(2, '0')}:${end.slice(3)}`;
+    }
+    if (end <= start) return null;
+    return { isOpen: true, start, end };
+  }
+  function settingsFromServer(remote) {
+    const hours = (remote && remote.businessHours) || {};
+    return {
+      salonName: remote.businessName || DEFAULT_SETTINGS.salonName,
+      phone: remote.phone || DEFAULT_SETTINGS.phone,
+      address: remote.address || DEFAULT_SETTINGS.address,
+      email: remote.email || DEFAULT_SETTINGS.email,
+      support: remote.supportEmail || DEFAULT_SETTINGS.support,
+      weekday: formatHoursRange(hours.monday) || DEFAULT_SETTINGS.weekday,
+      saturday: formatHoursRange(hours.saturday) || DEFAULT_SETTINGS.saturday,
+      sunday: formatHoursRange(hours.sunday) || DEFAULT_SETTINGS.sunday
+    };
+  }
+  function setSettingsFormValues(s) {
     const setVal = (id, val) => { const el = document.getElementById(id); if (el) el.value = val; };
     setVal('settingSalonName', s.salonName);
     setVal('settingPhone', s.phone);
@@ -3034,7 +3128,31 @@
     setVal('settingWeekday', s.weekday);
     setVal('settingSaturday', s.saturday);
     setVal('settingSunday', s.sunday);
-    applySettingsToUI(s);
+  }
+  function markSettingsFormDirty() {
+    ['settingSalonName','settingPhone','settingAddress','settingEmail','settingSupport','settingWeekday','settingSaturday','settingSunday'].forEach(id => {
+      const el = document.getElementById(id);
+      if (el && !el.dataset.dirtyWired) {
+        el.dataset.dirtyWired = 'true';
+        el.addEventListener('input', () => { settingsFormDirty = true; });
+      }
+    });
+  }
+  async function populateSettingsForm() {
+    const cached = loadSettings();
+    if (!settingsFormDirty) setSettingsFormValues(cached);
+    applySettingsToUI(cached);
+    markSettingsFormDirty();
+    try {
+      const res = await fetch(`${API_BASE}/admin/settings`, { credentials: 'include' });
+      if (!res.ok) return;
+      const data = await res.json();
+      if (!data.success || !data.data) return;
+      const s = settingsFromServer(data.data);
+      cacheSettings(s);
+      if (!settingsFormDirty) setSettingsFormValues(s);
+      applySettingsToUI(s);
+    } catch (e) {}
   }
   function applySettingsToUI(s) {
     const sub = document.querySelector('.page-subtitle');
@@ -3062,27 +3180,68 @@
     clearTimeout(indicator._timeout);
     indicator._timeout = setTimeout(() => indicator.classList.remove('show'), 4000);
   }
-  function saveSettings() {
+  async function saveSettings() {
+    const weekday = parseHoursRange(document.getElementById('settingWeekday').value);
+    const saturday = parseHoursRange(document.getElementById('settingSaturday').value);
+    const sunday = parseHoursRange(document.getElementById('settingSunday').value);
+    if (!weekday || !saturday || !sunday) {
+      showToast('Hours must look like "9am – 5pm", "09:00 - 17:00", or "Closed".', true);
+      return;
+    }
     const s = {
       salonName: document.getElementById('settingSalonName').value.trim() || 'PinkMeUp',
       phone: document.getElementById('settingPhone').value.trim(),
       address: document.getElementById('settingAddress').value.trim(),
       email: document.getElementById('settingEmail').value.trim(),
       support: document.getElementById('settingSupport').value.trim(),
-      weekday: document.getElementById('settingWeekday').value.trim(),
-      saturday: document.getElementById('settingSaturday').value.trim(),
-      sunday: document.getElementById('settingSunday').value.trim()
+      weekday: formatHoursRange(weekday),
+      saturday: formatHoursRange(saturday),
+      sunday: formatHoursRange(sunday)
     };
-    try { localStorage.setItem(SETTINGS_KEY, JSON.stringify(s)); } catch (e) {}
-    applySettingsToUI(s);
-    showSettingsSavedIndicator();
-    showToast('Settings saved.');
+    showLoading('Saving settings...');
+    try {
+      const res = await fetch(`${API_BASE}/admin/settings`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        credentials: 'include',
+        body: JSON.stringify({
+          businessName: s.salonName,
+          phone: s.phone,
+          email: s.email,
+          address: s.address,
+          supportEmail: s.support,
+          businessHours: {
+            monday: weekday, tuesday: weekday, wednesday: weekday, thursday: weekday, friday: weekday,
+            saturday: saturday, sunday: sunday
+          }
+        })
+      });
+      const data = await res.json();
+      if (!res.ok) { showToast(data.message || 'Failed to save settings.', true); return; }
+      settingsFormDirty = false;
+      cacheSettings(s);
+      setSettingsFormValues(s);
+      applySettingsToUI(s);
+      showSettingsSavedIndicator();
+      showToast('Settings saved.');
+    } catch (err) { showToast('Error saving settings.', true); }
+    finally { hideLoading(); }
   }
-  function resetSettings() {
-    try { localStorage.removeItem(SETTINGS_KEY); } catch (e) {}
-    populateSettingsForm();
-    showToast('Settings reset to defaults.');
-    showSettingsSavedIndicator();
+  async function resetSettings() {
+    showLoading('Resetting...');
+    try {
+      const res = await fetch(`${API_BASE}/admin/settings/reset`, { method: 'POST', credentials: 'include' });
+      const data = await res.json();
+      if (!res.ok || !data.success) { showToast(data.message || 'Failed to reset settings.', true); return; }
+      const s = settingsFromServer(data.data || {});
+      settingsFormDirty = false;
+      cacheSettings(s);
+      setSettingsFormValues(s);
+      applySettingsToUI(s);
+      showToast('Settings reset to defaults.');
+      showSettingsSavedIndicator();
+    } catch (err) { showToast('Error resetting settings.', true); }
+    finally { hideLoading(); }
   }
 
   document.addEventListener('DOMContentLoaded', function() {
@@ -3474,7 +3633,7 @@
       });
       const options = {
         margin: [10, 10, 10, 10],
-        filename: `PinkMeUp_Report_${new Date().toISOString().slice(0, 10)}.pdf`,
+        filename: `PinkMeUp_Report_${toLocalDateStr(new Date())}.pdf`,
         image: { type: 'jpeg', quality: 0.98 },
         html2canvas: { scale: 2, useCORS: true, letterRendering: true, scrollY: 0, windowHeight: element.scrollHeight + 100 },
         jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
@@ -3515,7 +3674,7 @@
       const res = await fetch(`${API_BASE}/services?limit=100`, { credentials: 'include' });
       const data = await res.json();
       if (data.success) {
-        services = (data.data.services || []).filter(s => s.isActive !== false);
+        services = data.data.services || [];
         renderServices();
         populateStylistServiceOptions();
         populateBookingServiceOptions();
@@ -3536,16 +3695,21 @@
       html += `<div class="category-group"><div class="category-header"><span>${cat}</span><span class="cat-count">${catServices.length} service${catServices.length !== 1 ? 's' : ''}</span></div>`;
       catServices.forEach(s => {
         const sid = s._id || s.id;
+        const archived = s.isActive === false;
         html += `
-          <div class="service-row" data-service-id="${sid}">
+          <div class="service-row${archived ? ' service-archived' : ''}" data-service-id="${sid}">
             <div class="service-info">
-              <span class="service-name">${escapeHtml(s.name)}</span>
+              <span class="service-name">${escapeHtml(s.name)}${archived ? ' <span class="service-archived-tag">Archived</span>' : ''}</span>
               <span class="service-duration">${s.duration} min</span>
             </div>
             <div class="service-price">R${s.price}</div>
             <div class="service-actions">
-              <button class="edit-service" data-id="${sid}" title="Edit" aria-label="Edit service"><i class="fas fa-edit"></i></button>
-              <button class="delete-service" data-id="${sid}" title="Delete" aria-label="Delete service"><i class="fas fa-trash-alt"></i></button>
+              ${archived ? `
+                <button class="restore-service" data-id="${sid}" title="Restore" aria-label="Restore service"><i class="fas fa-rotate-left"></i></button>
+              ` : `
+                <button class="edit-service" data-id="${sid}" title="Edit" aria-label="Edit service"><i class="fas fa-edit"></i></button>
+                <button class="delete-service" data-id="${sid}" title="Archive" aria-label="Archive service"><i class="fas fa-trash-alt"></i></button>
+              `}
             </div>
           </div>
         `;
@@ -3559,15 +3723,19 @@
     document.querySelectorAll('.delete-service').forEach(btn =>
       btn.addEventListener('click', (e) => { e.stopPropagation(); deleteService(btn.dataset.id); })
     );
+    document.querySelectorAll('.restore-service').forEach(btn =>
+      btn.addEventListener('click', (e) => { e.stopPropagation(); restoreService(btn.dataset.id); })
+    );
   }
   function populateStylistServiceOptions() {
     const container = document.getElementById('stylistServicesCheckboxes');
     if (!container) return;
-    if (!services.length) {
+    const activeServices = services.filter(s => s.isActive !== false);
+    if (!activeServices.length) {
       container.innerHTML = '<p style="color:var(--muted);font-size:0.9rem;padding:0.5rem;font-weight:300;">No services available.</p>';
       return;
     }
-    container.innerHTML = services.map(s => {
+    container.innerHTML = activeServices.map(s => {
       const sid = s._id || s.id;
       return `<label class="specialty-item"><input type="checkbox" value="${sid}" class="stylist-service-checkbox"><span>${escapeHtml(s.name)}</span><span class="sp-cat">${escapeHtml(s.category)}</span></label>`;
     }).join('');
@@ -3575,8 +3743,9 @@
   function populateBookingServiceOptions() {
     const select = document.getElementById('bookingService');
     if (!select) return;
+    const activeServices = services.filter(s => s.isActive !== false);
     select.innerHTML = '<option value="">Select a service...</option>' +
-      services.map(s => `<option value="${s._id || s.id}">${escapeHtml(s.name)} — R${s.price}</option>`).join('');
+      activeServices.map(s => `<option value="${s._id || s.id}">${escapeHtml(s.name)} — R${s.price}</option>`).join('');
   }
   function populateBookingStylistOptions() {
     const select = document.getElementById('bookingStylist');
@@ -3631,25 +3800,41 @@
     const svc = services.find(s => s._id === id || s.id === id);
     if (!svc) return;
     showConfirm(
-      'Delete this service?',
-      `"${svc.name}" will no longer be visible to customers. This action cannot be undone.`,
+      'Archive this service?',
+      `"${svc.name}" will no longer be offered to customers for new bookings. You can restore it later from the services list.`,
       async () => {
-        showLoading('Deleting...');
+        showLoading('Archiving...');
         try {
           const res = await fetch(`${API_BASE}/services/${id}`, { method: 'DELETE', credentials: 'include' });
           const data = await res.json();
-          if (!res.ok) { showToast(data.message || 'Failed to delete.', true); return; }
-          services = services.filter(s => (s._id || s.id) !== id);
-          renderServices();
-          updateHomeStats();
+          if (!res.ok) { showToast(data.message || 'Failed to archive.', true); return; }
           closeServiceDetail();
-          showToast('Service deleted.');
-          setTimeout(loadServices, 400);
-        } catch (err) { showToast('Error deleting service.', true); }
+          showToast('Service archived. You can restore it from the list.');
+          await loadServices();
+        } catch (err) { showToast('Error archiving service.', true); }
         finally { hideLoading(); }
       },
-      'Yes, Delete'
+      'Yes, Archive'
     );
+  }
+  async function restoreService(id) {
+    const svc = services.find(s => s._id === id || s.id === id);
+    if (!svc) return;
+    showLoading('Restoring...');
+    try {
+      const res = await fetch(`${API_BASE}/services/${id}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        credentials: 'include',
+        body: JSON.stringify({ isActive: true })
+      });
+      const data = await res.json();
+      if (!res.ok) { showToast(data.message || 'Failed to restore service.', true); return; }
+      showToast('Service restored.');
+      await loadServices();
+      if (document.getElementById('serviceDetail').style.display === 'block') openServiceDetail(id);
+    } catch (err) { showToast('Error restoring service.', true); }
+    finally { hideLoading(); }
   }
   function closeServiceModal() { document.getElementById('serviceModal').classList.remove('active'); }
   function openServiceDetail(id) {
@@ -3725,7 +3910,8 @@
       return;
     }
     container.innerHTML = stylists.map(st => {
-      const serviceNames = st.serviceIds.map(id => getServiceName(id)).filter(Boolean);
+      const hasServiceIds = Array.isArray(st.serviceIds) && st.serviceIds.length > 0;
+      const serviceNames = hasServiceIds ? st.serviceIds.map(id => getServiceName(id)).filter(Boolean) : [];
       const initials = (st.firstName[0] || st.name[0] || '') + (st.lastName[0] || '');
       const visibleServices = serviceNames.slice(0, 3);
       const hiddenServices = serviceNames.slice(3);
@@ -3749,7 +3935,7 @@
           <div class="stylist-card-divider"></div>
           <div class="stylist-meta">
             <div class="stylist-rating"><span class="stars">${starsHTML}</span><strong>${ratingNum.toFixed(1)}</strong></div>
-            <div class="stylist-count">${serviceNames.length} specialt${serviceNames.length === 1 ? 'y' : 'ies'}</div>
+            <div class="stylist-count">${hasServiceIds ? `${serviceNames.length} specialt${serviceNames.length === 1 ? 'y' : 'ies'}` : 'All services'}</div>
           </div>
           <div>
             <div class="stylist-services-label">Specialties</div>
@@ -3758,7 +3944,9 @@
                 ? visibleServices.map(n => `<span class="chip">${escapeHtml(n)}</span>`).join('') +
                   hiddenServices.map(n => `<span class="chip hidden-chip">${escapeHtml(n)}</span>`).join('') +
                   (hiddenServices.length ? `<span class="chip more-chip">+${hiddenServices.length} more</span>` : '')
-                : '<span style="font-size:0.82rem;color:var(--muted);font-weight:300;">No services assigned</span>'}
+                : (hasServiceIds
+                  ? '<span style="font-size:0.82rem;color:var(--muted);font-weight:300;">No services assigned</span>'
+                  : '<span class="chip">All services</span>')}
             </div>
           </div>
           <div class="stylist-actions">
@@ -3889,7 +4077,7 @@
     if (!st) return;
     showConfirm(
       'Delete this stylist?',
-      `${st.name} will be removed from your team. This action cannot be undone.`,
+      `${st.name} will be removed from your team. Stylists with existing bookings cannot be deleted — disable them instead.`,
       async () => {
         showLoading('Deleting...');
         try {
@@ -3916,7 +4104,8 @@
     if (!st.isActive) currentStatus = 'disabled';
     else if (!st.isAvailable) currentStatus = 'inactive';
     const statusLabel = currentStatus === 'active' ? 'Active' : (currentStatus === 'inactive' ? 'Inactive' : 'Disabled');
-    const serviceNames = st.serviceIds.map(sid => getServiceName(sid)).filter(Boolean);
+    const hasServiceIds = Array.isArray(st.serviceIds) && st.serviceIds.length > 0;
+    const serviceNames = hasServiceIds ? st.serviceIds.map(sid => getServiceName(sid)).filter(Boolean) : [];
     const initials = (st.firstName[0] || st.name[0] || '') + (st.lastName[0] || '');
     document.getElementById('stylistsContainer').style.display = 'none';
     document.getElementById('stylistsEmptySearch').classList.remove('show');
@@ -3947,11 +4136,11 @@
           <div class="detail-row"><span>Email</span><span>${escapeHtml(st.email || '—')}</span></div>
           <div class="detail-row"><span>Phone</span><span>${escapeHtml(st.phone || '—')}</span></div>
           <div class="detail-row"><span>Average Rating</span><span>${Number(st.rating).toFixed(1)} / 5</span></div>
-          <div class="detail-row"><span>Services Offered</span><span>${serviceNames.length}</span></div>
+          <div class="detail-row"><span>Services Offered</span><span>${hasServiceIds ? serviceNames.length : 'All services'}</span></div>
         </div>
         <div class="detail-section">
           <div class="detail-section-label">Services Offered</div>
-          ${serviceNames.length ? serviceNames.map(n => `<div class="detail-row"><span>${escapeHtml(n)}</span><span></span></div>`).join('') : '<p style="color:var(--muted);font-weight:300;font-size:0.9rem;">No services assigned yet.</p>'}
+          ${serviceNames.length ? serviceNames.map(n => `<div class="detail-row"><span>${escapeHtml(n)}</span><span></span></div>`).join('') : (hasServiceIds ? '<p style="color:var(--muted);font-weight:300;font-size:0.9rem;">No services assigned yet.</p>' : '<p style="color:var(--muted);font-weight:300;font-size:0.9rem;">Available for all services.</p>')}
         </div>
         <div class="detail-section">
           <div class="detail-section-label">Actions</div>
@@ -3984,13 +4173,25 @@
   async function loadAllBookings() {
     showLoading('Loading bookings...');
     try {
-      const res = await fetch(`${API_BASE}/admin/bookings?limit=500`, { credentials: 'include' });
-      const data = await res.json();
-      if (!res.ok) { showToast(data.message || 'Failed to load bookings.', true); return; }
-      allBookings = data.data.bookings || [];
-      if (data.data.pagination && typeof data.data.pagination.total === 'number') {
-        totalBookingsAllTime = data.data.pagination.total;
+      const PAGE_SIZE = 500;
+      let page = 1;
+      let collected = [];
+      let total = null;
+      while (page <= 20) {
+        const res = await fetch(`${API_BASE}/admin/bookings?limit=${PAGE_SIZE}&page=${page}`, { credentials: 'include' });
+        const data = await res.json();
+        if (!res.ok) { showToast(data.message || 'Failed to load bookings.', true); return; }
+        const batch = data.data.bookings || [];
+        collected = collected.concat(batch);
+        if (data.data.pagination && typeof data.data.pagination.total === 'number') {
+          total = data.data.pagination.total;
+        }
+        const morePages = (total === null || collected.length < total) && batch.length === PAGE_SIZE;
+        page += 1;
+        if (!morePages) break;
       }
+      allBookings = collected;
+      if (total !== null) totalBookingsAllTime = total;
       renderBookings();
       updateBookingCounts();
       updateTodayBar();
@@ -4006,7 +4207,7 @@
       const now = new Date();
       const monthStart = new Date(now.getFullYear(), now.getMonth(), 1);
       const monthEnd = new Date(now.getFullYear(), now.getMonth() + 1, 0, 23, 59, 59);
-      const fmt = (d) => d.toISOString().slice(0, 10);
+      const fmt = (d) => toLocalDateStr(d);
       const monthRes = await fetch(
         `${API_BASE}/admin/bookings?limit=1&page=1&startDate=${fmt(monthStart)}&endDate=${fmt(monthEnd)}`,
         { credentials: 'include' }
@@ -4054,6 +4255,42 @@
   }
   function markComplete(id) {
     setBookingStatus(id, 'completed');
+  }
+  function adminCancelBooking(id) {
+    const b = allBookings.find(x => x._id === id);
+    if (!b) return;
+    showConfirm(
+      'Cancel this booking?',
+      'The appointment will be cancelled and the customer will be notified by email. This cannot be undone.',
+      async () => {
+        showLoading('Cancelling...');
+        try {
+          const res = await fetch(`${API_BASE}/bookings/${id}/cancel`, {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            credentials: 'include',
+            body: JSON.stringify({ reason: 'Cancelled by salon admin' })
+          });
+          const data = await res.json();
+          if (!res.ok) { showToast(data.message || 'Failed to cancel booking.', true); return; }
+          const bk = allBookings.find(x => x._id === id);
+          if (bk) bk.status = 'cancelled';
+          renderBookings();
+          updateHomeStats();
+          updateBookingCounts();
+          updateTodayBar();
+          renderActivityFeed();
+          showToast('Booking cancelled.');
+          setTimeout(loadAllBookings, 400);
+          if (document.getElementById('reports-view').classList.contains('active')) updateReports();
+          if (document.getElementById('bookingDetail').style.display === 'block') {
+            openBookingDetail(id);
+          }
+        } catch (err) { showToast('Error cancelling booking.', true); }
+        finally { hideLoading(); }
+      },
+      'Yes, Cancel Booking'
+    );
   }
   async function setBookingStatus(id, status) {
     showLoading('Updating...');
@@ -4139,6 +4376,7 @@
             ${canAct ? `
               <button class="action-link" onclick="markComplete('${b._id}')"><i class="fas fa-check"></i> Mark as completed</button>
               <button class="action-link danger" onclick="setBookingStatus('${b._id}', 'no_show')"><i class="fas fa-user-slash"></i> Flag as no-show</button>
+              <button class="action-link danger" onclick="adminCancelBooking('${b._id}')"><i class="fas fa-ban"></i> Cancel booking</button>
             ` : ''}
             <button class="action-link pink" onclick="history.back()"><i class="fas fa-arrow-left"></i> Back to all bookings</button>
           </div>
@@ -4219,7 +4457,7 @@
         startDate = new Date(now); startDate.setDate(now.getDate() - 30); startDate.setHours(0, 0, 0, 0); endDate = endOfToday;
       }
     }
-    const qs = `?startDate=${startDate.toISOString().slice(0, 10)}&endDate=${endDate.toISOString().slice(0, 10)}`;
+    const qs = `?startDate=${toLocalDateStr(startDate)}&endDate=${toLocalDateStr(endDate)}`;
     showLoading('Loading reports...');
     try {
       const [trendsRes, popularityRes, performanceRes] = await Promise.all([
@@ -4346,7 +4584,7 @@
     const bEl = document.getElementById('homeStatBookings');
     const mEl = document.getElementById('homeStatThisMonth');
     if (!sEl) return;
-    sEl.textContent = services.length;
+    sEl.textContent = services.filter(s => s.isActive !== false).length;
     stEl.textContent = stylists.length;
     bEl.textContent = totalBookingsAllTime || allBookings.length;
     mEl.textContent = totalBookingsThisMonth;
@@ -4378,6 +4616,7 @@
       if (stored) user = JSON.parse(stored);
     } catch (e) {}
     if (!user) { window.location.replace('login.html'); return; }
+    if (user.role === 'customer') { window.location.replace('customerdashboard.html'); return; }
     const initials = (user.firstName ? user.firstName[0] : '') + (user.lastName ? user.lastName[0] : '');
     if (initials) document.getElementById('adminAvatarText').textContent = initials.toUpperCase();
     const greeting = document.getElementById('greetingName');
@@ -4442,10 +4681,10 @@
       showToast('Analytics updated.');
     });
 
-    const todayStr = new Date().toISOString().slice(0, 10);
+    const todayStr = toLocalDateStr(new Date());
     const thirtyAgo = new Date();
     thirtyAgo.setDate(thirtyAgo.getDate() - 30);
-    document.getElementById('startDate').value = thirtyAgo.toISOString().slice(0, 10);
+    document.getElementById('startDate').value = toLocalDateStr(thirtyAgo);
     document.getElementById('endDate').value = todayStr;
 
     await loadServices();

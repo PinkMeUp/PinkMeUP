@@ -123,13 +123,27 @@ const getProfile = async (req, res) => {
  */
 const updateProfile = async (req, res) => {
   try {
-    const { firstName, lastName, phone } = req.body;
+    const { firstName, lastName, phone, email } = req.body;
     const user = await User.findById(req.user.id);
     if (!user) return errorResponse(res, 'User not found.', 404);
 
     if (firstName) user.firstName = firstName;
     if (lastName) user.lastName = lastName;
     if (phone) user.phone = phone;
+
+    if (email) {
+      const normalizedEmail = String(email).trim().toLowerCase();
+      if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(normalizedEmail)) {
+        return errorResponse(res, 'Please provide a valid email address.', 400);
+      }
+
+      if (normalizedEmail !== user.email) {
+        const existingUser = await User.findOne({ email: normalizedEmail, _id: { $ne: user._id } });
+        if (existingUser) return errorResponse(res, 'An account with this email already exists.', 409);
+        user.email = normalizedEmail;
+      }
+    }
+
     await user.save();
 
    return successResponse(res, 'Profile updated.', { user: buildUserPayload(user) });
