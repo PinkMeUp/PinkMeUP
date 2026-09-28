@@ -195,6 +195,59 @@ const getDayOfWeek = (date) => {
 
 
 /**
+ * Parse a date input into local midnight of the intended calendar day.
+ *
+ * 'YYYY-MM-DD' strings are treated as calendar dates so the result does
+ * not shift with the server timezone. Date objects contribute their
+ * local calendar parts.
+ */
+const parseCalendarDate = (dateInput) => {
+  if (!dateInput) {
+    return null;
+  }
+
+  if (typeof dateInput === 'string') {
+    const match =
+      /^(\d{4})-(\d{2})-(\d{2})/.exec(dateInput.trim());
+
+    if (match) {
+      const year = Number(match[1]);
+      const month = Number(match[2]);
+      const day = Number(match[3]);
+
+      const calendarDate =
+        new Date(year, month - 1, day);
+
+      if (
+        calendarDate.getFullYear() !== year ||
+        calendarDate.getMonth() !== month - 1 ||
+        calendarDate.getDate() !== day
+      ) {
+        return null;
+      }
+
+      return calendarDate;
+    }
+  }
+
+  const parsedDate =
+    dateInput instanceof Date
+      ? dateInput
+      : new Date(dateInput);
+
+  if (Number.isNaN(parsedDate.getTime())) {
+    return null;
+  }
+
+  return new Date(
+    parsedDate.getFullYear(),
+    parsedDate.getMonth(),
+    parsedDate.getDate()
+  );
+};
+
+
+/**
  * Calculate the end time of an appointment.
  *
  * Returns null if the resulting time would pass midnight.
@@ -310,6 +363,34 @@ const isTimeWithinRange = (
 
 /*
 |--------------------------------------------------------------------------
+| STYLIST ELIGIBILITY
+|--------------------------------------------------------------------------
+*/
+
+/**
+ * Whether a stylist can perform every selected service.
+ *
+ * A stylist with no serviceIds configured is treated as a generic stylist
+ * covering the whole catalog. Once services are assigned, the stylist is
+ * restricted to those services only.
+ */
+const stylistCoversServices = (stylist, serviceIds) => {
+  if (!Array.isArray(serviceIds) || serviceIds.length === 0) {
+    return true;
+  }
+
+  if (!Array.isArray(stylist?.serviceIds) || stylist.serviceIds.length === 0) {
+    return true;
+  }
+
+  return serviceIds.every(serviceId =>
+    stylist.serviceIds.some(assignedId => String(assignedId) === String(serviceId))
+  );
+};
+
+
+/*
+|--------------------------------------------------------------------------
 | EXPORTS
 |--------------------------------------------------------------------------
 */
@@ -323,5 +404,7 @@ module.exports = {
   generateTimeSlots,
   isValidTimeFormat,
   getDayOfWeek,
-  calculateEndTime
+  parseCalendarDate,
+  calculateEndTime,
+  stylistCoversServices
 };

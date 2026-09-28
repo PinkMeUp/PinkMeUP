@@ -12,7 +12,7 @@ const guestService = require('../services/guest.service');
 const emailService = require('../services/email.service');
 const { successResponse, errorResponse } = require('../utils/response');
 const { APPOINTMENT_STATUS } = require('../utils/constants');
-const { calculateEndTime, isValidTimeFormat, getDayOfWeek, parseTimeToMinutes } = require('../utils/helpers');
+const { calculateEndTime, isValidTimeFormat, getDayOfWeek, parseTimeToMinutes, parseCalendarDate, stylistCoversServices } = require('../utils/helpers');
 const logger = require('../config/logger');
 
 const getSettings = async () => await BusinessSetting.getSettings();
@@ -68,18 +68,17 @@ const createGuestBooking = async (req, res) => {
       totalPrice += s.price;
     });
 
-    const stylist = await Stylist.findById(stylistId);
-    if (!stylist) {
-      return errorResponse(res, 'Stylist not found.', 404);
-    }
-    if (!stylist.isAvailable) {
-      return errorResponse(res, 'Stylist is not available.', 400);
-    }
-    if (stylist.serviceIds && stylist.serviceIds.length > 0) {
-      const providesAllServices = serviceIds.every((serviceId) =>
-        stylist.serviceIds.some((id) => id.toString() === serviceId.toString())
-      );
-      if (!providesAllServices) {
+    let stylist = null;
+
+    if (stylistId) {
+      stylist = await Stylist.findById(stylistId);
+      if (!stylist) {
+        return errorResponse(res, 'Stylist not found.', 404);
+      }
+      if (!stylist.isAvailable) {
+        return errorResponse(res, 'Stylist is not available.', 400);
+      }
+      if (!stylistCoversServices(stylist, serviceIds)) {
         return errorResponse(res, 'Selected stylist does not provide one or more selected services.', 400);
       }
     }
@@ -88,7 +87,10 @@ const createGuestBooking = async (req, res) => {
     }
 
     const settings = await getSettings();
-    const bookingDate = new Date(date);
+    const bookingDate = parseCalendarDate(date);
+    if (!bookingDate) {
+      return errorResponse(res, 'Invalid date.', 400);
+    }
     const dayOfWeek = getDayOfWeek(bookingDate);
     if (!dayOfWeek) {
       return errorResponse(res, 'Invalid date.', 400);
@@ -117,8 +119,42 @@ const createGuestBooking = async (req, res) => {
       return errorResponse(res, `Bookings must be made ${settings.bookingLeadTime} minutes in advance.`, 400);
     }
 
+    if (!stylist) {
+      const candidates = await Stylist.find({
+        isAvailable: true
+      }).populate('userId', 'isActive');
+
+      const eligible = candidates.filter(
+        (candidate) =>
+          candidate.userId?.isActive &&
+          stylistCoversServices(candidate, serviceIds)
+      );
+
+      if (eligible.length === 0) {
+        return errorResponse(res, 'No stylist is available for the selected services. Please adjust your booking or try another day.', 409);
+      }
+
+      for (const candidate of eligible) {
+        const candidateConflict = await hasAppointmentConflict({
+          stylistId: candidate._id,
+          date: bookingDate,
+          startTime,
+          duration: totalDuration
+        });
+
+        if (!candidateConflict) {
+          stylist = candidate;
+          break;
+        }
+      }
+
+      if (!stylist) {
+        return errorResponse(res, 'No stylist is available at the selected time. Please choose another time.', 409);
+      }
+    }
+
     const hasConflict = await hasAppointmentConflict({
-      stylistId,
+      stylistId: stylist._id,
       date: bookingDate,
       startTime,
       duration: totalDuration
@@ -131,7 +167,7 @@ const createGuestBooking = async (req, res) => {
     const endTime = calculateEndTime(startTime, totalDuration);
     const appointment = await Appointment.create({
       customerId: guest._id,
-      stylistId,
+      stylistId: stylist._id,
       serviceIds,
       date: bookingDate,
       startTime,

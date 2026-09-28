@@ -28,7 +28,11 @@ const BusinessSettingSchema = new mongoose.Schema({
   bookingLeadTime: { type: Number, default: 60, min: 0 },
   cancellationWindow: { type: Number, default: 60, min: 0 },
   timezone: { type: String, default: 'Africa/Johannesburg' },
-  businessName: { type: String, default: 'PinkMeUP Beauty Spa & Academy' }
+  businessName: { type: String, default: 'PinkMeUP Beauty Spa & Academy' },
+  phone: { type: String, default: '' },
+  email: { type: String, default: '' },
+  address: { type: String, default: '' },
+  supportEmail: { type: String, default: '' }
 }, { timestamps: true });
 
 // Ensure only one settings document exists

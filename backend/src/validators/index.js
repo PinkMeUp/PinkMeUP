@@ -92,8 +92,7 @@ const bookingValidation = [
     .withMessage('Invalid service ID'),
 
   body('stylistId')
-    .notEmpty()
-    .withMessage('Stylist ID is required')
+    .optional({ values: 'null' })
     .isMongoId()
     .withMessage('Invalid stylist ID'),
 
@@ -261,8 +260,7 @@ const guestBookingValidation = [
     .withMessage('Invalid service ID'),
 
   body('stylistId')
-    .notEmpty()
-    .withMessage('Stylist ID is required')
+    .optional({ values: 'null' })
     .isMongoId()
     .withMessage('Invalid stylist ID'),
 

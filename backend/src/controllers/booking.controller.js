@@ -12,7 +12,7 @@ const BusinessSetting = require('../models/BusinessSetting.model');
 const User = require('../models/User.model');
 const { successResponse, errorResponse } = require('../utils/response');
 const { APPOINTMENT_STATUS } = require('../utils/constants');
-const { calculateEndTime, isValidTimeFormat, getDayOfWeek, parseTimeToMinutes } = require('../utils/helpers');
+const { calculateEndTime, isValidTimeFormat, getDayOfWeek, parseTimeToMinutes, parseCalendarDate, stylistCoversServices } = require('../utils/helpers');
 const logger = require('../config/logger');
 const emailService = require('../services/email.service');
 
@@ -206,62 +206,47 @@ const createBooking = async (req, res) => {
 
     /*
      * ---------------------------------------------------------
-     * VALIDATE STYLIST
+     * VALIDATE STYLIST (optional - auto-assigned when omitted)
      * ---------------------------------------------------------
      */
 
-    const stylist = await Stylist.findById(stylistId)
-      .populate('userId', 'isActive');
+    let stylist = null;
 
-    if (!stylist) {
-      return errorResponse(
-        res,
-        'Stylist not found.',
-        404
-      );
-    }
+    if (stylistId) {
+      stylist = await Stylist.findById(stylistId)
+        .populate('userId', 'isActive');
 
-    if (!stylist.userId?.isActive) {
-      return errorResponse(
-        res,
-        'Stylist is disabled.',
-        400
-      );
-    }
+      if (!stylist) {
+        return errorResponse(
+          res,
+          'Stylist not found.',
+          404
+        );
+      }
 
-    if (!stylist.isAvailable) {
-      return errorResponse(
-        res,
-        'Stylist is not available.',
-        400
-      );
-    }
+      if (!stylist.userId?.isActive) {
+        return errorResponse(
+          res,
+          'Stylist is disabled.',
+          400
+        );
+      }
 
-    if (
-      !Array.isArray(stylist.serviceIds) ||
-      stylist.serviceIds.length === 0
-    ) {
-      return errorResponse(
-        res,
-        'Selected stylist has no services assigned.',
-        400
-      );
-    }
+      if (!stylist.isAvailable) {
+        return errorResponse(
+          res,
+          'Stylist is not available.',
+          400
+        );
+      }
 
-    const providesAllServices = serviceIds.every(
-      serviceId =>
-        stylist.serviceIds.some(
-          assignedId =>
-            String(assignedId) === String(serviceId)
-        )
-    );
-
-    if (!providesAllServices) {
-      return errorResponse(
-        res,
-        'Selected stylist does not provide one or more selected services.',
-        400
-      );
+      if (!stylistCoversServices(stylist, serviceIds)) {
+        return errorResponse(
+          res,
+          'Selected stylist does not provide one or more selected services.',
+          400
+        );
+      }
     }
 
     /*
@@ -286,9 +271,9 @@ const createBooking = async (req, res) => {
       );
     }
 
-    const bookingDate = new Date(date);
+    const bookingDate = parseCalendarDate(date);
 
-    if (Number.isNaN(bookingDate.getTime())) {
+    if (!bookingDate) {
       return errorResponse(
         res,
         'Invalid date.',
@@ -296,14 +281,8 @@ const createBooking = async (req, res) => {
       );
     }
 
-    /*
-     * Normalize date to midnight.
-     */
-    bookingDate.setHours(0, 0, 0, 0);
-
     // Validate date is not in the past
-    const today = new Date();
-    today.setHours(0, 0, 0, 0);
+    const today = parseCalendarDate(new Date());
     if (bookingDate < today) {
       return errorResponse(
         res,
@@ -409,13 +388,62 @@ const createBooking = async (req, res) => {
 
     /*
      * ---------------------------------------------------------
+     * AUTO-ASSIGN STYLIST
+     * ---------------------------------------------------------
+     */
+
+    if (!stylist) {
+      const candidates = await Stylist.find({
+        isAvailable: true
+      }).populate('userId', 'isActive');
+
+      const eligible = candidates.filter(
+        candidate =>
+          candidate.userId?.isActive &&
+          stylistCoversServices(candidate, serviceIds)
+      );
+
+      if (eligible.length === 0) {
+        return errorResponse(
+          res,
+          'No stylist is available for the selected services. Please adjust your booking or try another day.',
+          409
+        );
+      }
+
+      for (const candidate of eligible) {
+        const candidateConflict =
+          await hasAppointmentConflict({
+            stylistId: candidate._id,
+            date: bookingDate,
+            startTime,
+            duration: totalDuration
+          });
+
+        if (!candidateConflict) {
+          stylist = candidate;
+          break;
+        }
+      }
+
+      if (!stylist) {
+        return errorResponse(
+          res,
+          'No stylist is available at the selected time. Please choose another time.',
+          409
+        );
+      }
+    }
+
+    /*
+     * ---------------------------------------------------------
      * CONFLICT CHECK
      * ---------------------------------------------------------
      */
 
     const hasConflict =
       await hasAppointmentConflict({
-        stylistId,
+        stylistId: stylist._id,
         date: bookingDate,
         startTime,
         duration: totalDuration
@@ -444,7 +472,7 @@ const createBooking = async (req, res) => {
     const appointment =
       await Appointment.create({
         customerId,
-        stylistId,
+        stylistId: stylist._id,
         serviceIds,
         date: bookingDate,
         startTime,
@@ -668,11 +696,12 @@ const rescheduleBooking = async (req, res) => {
     if (!isValidTimeFormat(startTime)) return errorResponse(res, 'Invalid time format.', 400);
 
     const settings = await getSettings();
-    const bookingDate = new Date(date);
-    
+    const bookingDate = parseCalendarDate(date);
+
+    if (!bookingDate) return errorResponse(res, 'Invalid date.', 400);
+
     // Validate date is not in the past
-    const today = new Date();
-    today.setHours(0, 0, 0, 0);
+    const today = parseCalendarDate(new Date());
     if (bookingDate < today) {
       return errorResponse(res, 'Cannot reschedule to a past date.', 400);
     }
@@ -737,8 +766,8 @@ const getAllBookings = async (req, res) => {
     if (status) filter.status = status;
     if (startDate || endDate) {
       filter.date = {};
-      if (startDate) filter.date.$gte = new Date(startDate);
-      if (endDate) filter.date.$lte = new Date(endDate);
+      if (startDate) filter.date.$gte = parseCalendarDate(startDate);
+      if (endDate) filter.date.$lte = parseCalendarDate(endDate);
     }
 
     const { page: pageNum, limit: limitNum } = parsePageLimit(page, limit);
@@ -791,8 +820,8 @@ const getStylistBookings = async (req, res) => {
     
     if (startDate || endDate) {
       filter.date = {};
-      if (startDate) filter.date.$gte = new Date(startDate);
-      if (endDate) filter.date.$lte = new Date(endDate);
+      if (startDate) filter.date.$gte = parseCalendarDate(startDate);
+      if (endDate) filter.date.$lte = parseCalendarDate(endDate);
     }
 
     const { page: pageNum, limit: limitNum } = parsePageLimit(page, limit);

@@ -28,7 +28,6 @@ router.put('/settings/hours', settingController.updateBusinessHours);
 router.put('/bookings/:id/status', validate(idParamValidation), bookingController.updateBookingStatus);
 router.get('/bookings', bookingController.getAllBookings);
 router.get('/bookings/stylist/:id', validate(idParamValidation), bookingController.getStylistBookings);
-router.post('/bookings', guestController.createGuestBooking);
 router.post('/bookings', validate(guestBookingValidation), guestController.createGuestBooking);
 
 // Availability

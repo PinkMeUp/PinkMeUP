@@ -26,7 +26,7 @@ const getSettings = async (req, res) => {
  */
 const updateSettings = async (req, res) => {
   try {
-    const { businessHours, slotInterval, maxBookingsPerSlot, bookingLeadTime, cancellationWindow, timezone, businessName } = req.body;
+    const { businessHours, slotInterval, maxBookingsPerSlot, bookingLeadTime, cancellationWindow, timezone, businessName, phone, email, address, supportEmail } = req.body;
     let settings = await BusinessSetting.findOne();
     if (!settings) settings = new BusinessSetting();
 
@@ -67,6 +67,10 @@ const updateSettings = async (req, res) => {
     }
     if (timezone) settings.timezone = timezone;
     if (businessName) settings.businessName = businessName;
+    if (phone !== undefined) settings.phone = phone;
+    if (email !== undefined) settings.email = email;
+    if (address !== undefined) settings.address = address;
+    if (supportEmail !== undefined) settings.supportEmail = supportEmail;
 
     await settings.save();
     return successResponse(res, 'Settings updated.', settings);
