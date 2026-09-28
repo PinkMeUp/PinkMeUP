@@ -89,8 +89,12 @@ async function syncAuthFromServer() {
         });
 
         if (!response.ok) {
-            if (token) {
+            // The server rejected the session (expired cookie / stale bearer
+            // token). Clear every cached credential so repeat visits do not
+            // retry an invalid session and log another 401 for every page load.
+            if (response.status === 401 || response.status === 403) {
                 clearAuthToken();
+                localStorage.removeItem('user');
             }
             return false;
         }
