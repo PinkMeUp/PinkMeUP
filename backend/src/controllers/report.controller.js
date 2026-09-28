@@ -12,14 +12,21 @@ const { APPOINTMENT_STATUS } = require('../utils/constants');
 const { parseCalendarDate } = require('../utils/helpers');
 const logger = require('../config/logger');
 
+// Match appointments whose scheduled date OR creation date falls inside the
+// window. Admin "last 30 days" reports must mirror the bookings list totals
+// immediately: a booking created today for a future date is real activity now,
+// and scheduling it ahead would otherwise hide it from every report window.
+// The end bound is extended to end-of-day so the final day is fully included.
 const buildDateFilter = (startDate, endDate) => {
-  const filter = {};
-  if (startDate || endDate) {
-    filter.date = {};
-    if (startDate) filter.date.$gte = parseCalendarDate(startDate);
-    if (endDate) filter.date.$lte = parseCalendarDate(endDate);
+  if (!startDate && !endDate) return {};
+  const range = {};
+  if (startDate) range.$gte = parseCalendarDate(startDate);
+  if (endDate) {
+    const end = parseCalendarDate(endDate);
+    end.setHours(23, 59, 59, 999);
+    range.$lte = end;
   }
-  return filter;
+  return { $or: [{ date: { ...range } }, { createdAt: { ...range } }] };
 };
 
 /**
@@ -42,7 +49,9 @@ const getBookingTrends = async (req, res) => {
 
     const bookingsByDay = await Appointment.aggregate([
       { $match: filter },
-      { $group: { _id: { $dayOfWeek: '$date' }, count: { $sum: 1 } } },
+      // Group in the business timezone; stored dates are local midnights, so the
+      // default UTC grouping would shift every booking to the previous day.
+      { $group: { _id: { $dayOfWeek: { date: '$date', timezone: 'Africa/Johannesburg' } }, count: { $sum: 1 } } },
       { $sort: { _id: 1 } }
     ]);
 
@@ -245,7 +254,7 @@ const getRevenueReport = async (req, res) => {
       { $match: filter },
       {
         $group: {
-          _id: { $dateToString: { format: '%Y-%m-%d', date: '$date' } },
+          _id: { $dateToString: { format: '%Y-%m-%d', date: '$date', timezone: 'Africa/Johannesburg' } },
           revenue: { $sum: '$totalPrice' },
           bookings: { $sum: 1 }
         }
