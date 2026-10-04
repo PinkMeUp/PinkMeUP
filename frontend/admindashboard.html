@@ -10,9 +10,6 @@
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js" integrity="sha512-GsLlZN/3F2ErC5ifS5QtgpiJtWd43JWSuIgh7mbzZ8zBps+dvLusV+eNQATqgA/HdeKFVgA5v3S/cIrLF7QnIg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
   <style>
-    /* ============================================================
-       TOKENS — dark editorial theme (matches the screenshot)
-       ============================================================ */
     :root {
       --rose: #F4B6C8;
       --rose-light: #FCE1E8;
@@ -160,15 +157,14 @@
       color: var(--muted); text-transform: uppercase; margin-top: 0.45rem;
     }
 
-    /* Greeting card — subtle framed block */
+    /* Greeting — no card, just text over a divider */
     .sidebar-greeting {
       margin-bottom: 1.5rem;
-      padding: 0.95rem 1rem;
-      border: 1px solid var(--border);
-      border-radius: var(--radius-md);
-      background: rgba(255, 255, 255, 0.015);
+      padding: 0 0.8rem 1rem;
+      border-bottom: 1px solid var(--border);
+      background: none;
+      border-radius: 0;
     }
-    body.light .sidebar-greeting { background: rgba(0, 0, 0, 0.015); }
     .greeting-name { font-size: 1rem; font-weight: 600; color: var(--ink); letter-spacing: 0.1px; }
     .greeting-sub {
       font-size: 0.72rem; color: var(--muted); margin-top: 0.2rem;
@@ -273,7 +269,6 @@
     }
     .search-bar .search-clear:hover { color: var(--rose-hot); background: rgba(255, 61, 119, 0.1); }
     .search-bar.has-text .search-clear { display: flex; }
-    /* Alt + F keyboard hint pill on the right */
     .search-bar::after {
       content: 'Alt F';
       font-size: 0.62rem; font-weight: 600; color: var(--muted-soft);
@@ -304,7 +299,6 @@
       50% { transform: scale(1.2); opacity: 0.7; }
     }
 
-    /* "New booking" button — hot pink solid like in screenshot */
     .btn-primary {
       background: var(--gradient-hot); color: #FFFFFF; border: none;
       padding: 0.62rem 1.25rem; border-radius: var(--radius-pill);
@@ -463,7 +457,7 @@
     }
 
     /* ============================================================
-       OVERVIEW — matches the screenshot exactly
+       OVERVIEW
        ============================================================ */
     .home-header {
       display: flex;
@@ -545,7 +539,6 @@
     }
     .home-meta-item i { color: var(--rose-hot); font-size: 0.66rem; }
 
-    /* Big overview card wrapper */
     .overview-card {
       background: var(--card-bg);
       border: 1px solid var(--border);
@@ -610,7 +603,6 @@
       animation: pulse 1.5s infinite;
     }
 
-    /* Today bar — 4 rounded cards in a row */
     .today-bar {
       display: grid;
       grid-template-columns: repeat(4, 1fr);
@@ -671,7 +663,6 @@
     .today-item:hover .today-value { color: var(--rose-hot); }
     .today-item:hover .today-label { color: var(--ink-soft); }
 
-    /* KPI — 4 rounded cards in a row */
     .admin-stats-grid {
       display: grid;
       grid-template-columns: repeat(4, 1fr);
@@ -745,7 +736,6 @@
     .admin-stat:hover .admin-stat-number { color: var(--rose-hot); }
     .admin-stat:hover .admin-stat-label { color: var(--ink-soft); }
 
-    /* Dashboard grid */
     .dashboard-grid {
       display: grid;
       grid-template-columns: 1.5fr 1fr;
@@ -814,7 +804,6 @@
       min-height: 0;
     }
 
-    /* Activity list */
     .activity-list { display: flex; flex-direction: column; gap: 0.15rem; }
     .activity-item {
       display: flex;
@@ -907,7 +896,6 @@
       margin-bottom: 0.5rem;
     }
 
-    /* Quick Access */
     .quick-access-grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
@@ -1108,7 +1096,7 @@
     .badge-no_show { background: var(--violet-bg); color: var(--violet); }
 
     /* ============================================================
-       SERVICES
+       SERVICES — aligned grid
        ============================================================ */
     .category-group {
       background: transparent;
@@ -1140,19 +1128,37 @@
       padding: 0.2rem 0.65rem; border-radius: var(--radius-pill);
       text-transform: uppercase;
     }
+    /* FIX: grid layout so price & actions always line up */
     .service-row {
-      display: flex; justify-content: space-between; align-items: center;
-      padding: 0.85rem 0.5rem; border-bottom: 1px solid var(--border);
-      flex-wrap: wrap; gap: 1rem; transition: 0.15s; cursor: pointer;
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 110px auto;
+      align-items: center;
+      padding: 0.85rem 0.5rem;
+      border-bottom: 1px solid var(--border);
+      gap: 1rem;
+      transition: 0.15s;
+      cursor: pointer;
       border-radius: var(--radius-sm);
     }
     .service-row:last-child { border-bottom: none; padding-bottom: 0.5rem; }
     .service-row:hover { background: var(--hover-surface); padding-left: 0.85rem; padding-right: 0.85rem; }
-    .service-info { display: flex; flex-direction: column; gap: 0.18rem; flex: 1; }
+    .service-info { display: flex; flex-direction: column; gap: 0.18rem; min-width: 0; }
     .service-name { font-weight: 500; font-size: 0.94rem; color: var(--ink); }
     .service-duration { font-size: 0.76rem; color: var(--muted); font-weight: 400; }
-    .service-price { font-weight: 600; color: var(--ink); font-size: 0.94rem; min-width: 80px; text-align: right; font-feature-settings: 'tnum'; }
-    .service-actions { display: flex; gap: 0.3rem; }
+    .service-price {
+      font-weight: 600;
+      color: var(--ink);
+      font-size: 0.94rem;
+      text-align: right;
+      font-feature-settings: 'tnum';
+      white-space: nowrap;
+    }
+    .service-actions {
+      display: flex;
+      gap: 0.3rem;
+      justify-content: flex-end;
+      min-width: 72px;
+    }
     .service-actions button {
       background: none; border: none; padding: 0.35rem;
       border-radius: var(--radius-sm); cursor: pointer; color: var(--muted);
@@ -1813,6 +1819,8 @@
       .overview-card-header::after { left: 1.15rem; }
       .today-bar { padding: 1rem 1.15rem 1.2rem; }
       .admin-stats-grid { padding: 1rem 1.15rem 1.2rem; }
+      .service-row { grid-template-columns: minmax(0, 1fr) auto auto; gap: 0.6rem; }
+      .service-price { font-size: 0.86rem; }
     }
     @media (max-width: 480px) {
       .admin-stats-grid { grid-template-columns: 1fr; }
@@ -1825,7 +1833,6 @@
 <body>
 
 <div class="app">
-  <!-- SIDEBAR -->
   <div class="sidebar-overlay" id="sidebarOverlay"></div>
   <aside class="sidebar" id="sidebar">
     <button class="sidebar-close" id="sidebarClose" aria-label="Close menu"><i class="fas fa-times"></i></button>
@@ -1873,7 +1880,6 @@
     </div>
   </aside>
 
-  <!-- MAIN -->
   <div class="main-wrapper">
     <header class="header">
       <div class="header-left">
@@ -1900,7 +1906,6 @@
     </header>
 
     <main class="main">
-      <!-- HOME / OVERVIEW -->
       <section id="home-view" class="view active">
         <div class="home-header">
           <div class="home-header-left">
@@ -1915,7 +1920,6 @@
           </div>
         </div>
 
-        <!-- BIG CARD 1: TODAY SNAPSHOT -->
         <div class="overview-card">
           <div class="overview-card-header">
             <div class="overview-card-title"><i class="fas fa-sun"></i> Today's Snapshot</div>
@@ -1941,7 +1945,6 @@
           </div>
         </div>
 
-        <!-- BIG CARD 2: SALON OVERVIEW -->
         <div class="overview-card">
           <div class="overview-card-header">
             <div class="overview-card-title"><i class="fas fa-chart-pie"></i> Salon Overview</div>
@@ -2011,7 +2014,6 @@
         </div>
       </section>
 
-      <!-- SERVICES -->
       <section id="services-view" class="view">
         <div class="view-header">
           <div>
@@ -2032,7 +2034,6 @@
         <div id="serviceDetail" style="display:none;"></div>
       </section>
 
-      <!-- STYLISTS -->
       <section id="stylists-view" class="view">
         <div class="view-header">
           <div>
@@ -2053,7 +2054,6 @@
         <div id="stylistDetail" style="display:none;"></div>
       </section>
 
-      <!-- BOOKINGS -->
       <section id="bookings-view" class="view">
         <div class="view-header">
           <div>
@@ -2120,7 +2120,6 @@
         <div id="bookingDetail" style="display:none;"></div>
       </section>
 
-      <!-- ANALYTICS -->
       <section id="reports-view" class="view">
         <div class="view-header">
           <div>
@@ -2180,7 +2179,6 @@
         </div>
       </section>
 
-      <!-- PROFILE -->
       <section id="profile-view" class="view">
         <div class="profile-container" id="adminProfileMain">
           <div class="profile-header">
@@ -2234,7 +2232,6 @@
         </div>
       </section>
 
-      <!-- SETTINGS -->
       <section id="settings-view" class="view">
         <div class="view-header">
           <div>
@@ -2293,7 +2290,6 @@
         </div>
       </section>
 
-      <!-- HELP -->
       <section id="help-view" class="view">
         <div class="view-header">
           <div>
@@ -2379,7 +2375,6 @@
   </div>
 </div>
 
-<!-- NOTIFICATION PANEL -->
 <div class="notif-panel" id="notifPanel">
   <div class="notif-header">
     <h4>Notifications <span class="unread-badge" id="notifUnreadBadge" style="display:none;">0</span></h4>
@@ -2391,7 +2386,6 @@
   <div class="notif-list" id="notifList"></div>
 </div>
 
-<!-- MODALS -->
 <div id="serviceModal" class="modal">
   <div class="modal-content">
     <h3 id="serviceModalTitle">Add Service</h3>
@@ -2502,7 +2496,6 @@
   <div id="loadingOverlayText">Loading...</div>
 </div>
 
-<!-- THEME TOGGLE -->
 <script>
   function applyAdminTheme(theme) {
     const icon = document.getElementById('themeIcon');
@@ -2533,7 +2526,6 @@
   } catch (e) { applyAdminTheme('dark'); }
 </script>
 
-<!-- MAIN LOGIC -->
 <script>
   const API_BASE = window.API_URL || 'https://pinkmeup-api.onrender.com/api/v1';
   let services = [];
@@ -3547,18 +3539,18 @@
             const rows = group.querySelectorAll('.service-row');
             let groupVisible = false;
             if (query === '') {
-              rows.forEach(row => { row.style.display = 'flex'; });
+              rows.forEach(row => { row.style.display = 'grid'; });
               group.style.display = '';
               return;
             }
             if (categoryName.includes(query)) {
-              rows.forEach(row => { row.style.display = 'flex'; });
+              rows.forEach(row => { row.style.display = 'grid'; });
               groupVisible = true;
             } else {
               rows.forEach(row => {
                 const text = row.innerText.toLowerCase();
                 const visible = text.includes(query);
-                row.style.display = visible ? 'flex' : 'none';
+                row.style.display = visible ? 'grid' : 'none';
                 if (visible) groupVisible = true;
               });
             }
