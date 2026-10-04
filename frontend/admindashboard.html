@@ -57,7 +57,7 @@
       --radius-pill: 100px;
       --ease: cubic-bezier(0.4, 0, 0.2, 1);
       --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
-    }
+      --hero-image: url('frontend/Icons/nails2.jpg');    }
     body.light {
       --rose: #D43F6B;
       --rose-light: #FFB6C1;
@@ -419,9 +419,10 @@
     }
     .notif-empty i { display: block; font-size: 1.7rem; color: var(--rose-mid); margin-bottom: 0.55rem; }
 
-    .main { flex: 1; overflow-y: auto; padding: 2rem 2.2rem; }
+    .main { flex: 1; overflow-y: auto; padding: 0; }
     .view { display: none; animation: viewFade 0.3s var(--ease); }
     .view.active { display: block; }
+    .view:not(#home-view) { padding: 2rem 2.2rem; }
     @keyframes viewFade {
       from { opacity: 0; transform: translateY(8px); }
       to { opacity: 1; transform: translateY(0); }
@@ -442,44 +443,181 @@
       font-weight: 400; max-width: 720px; line-height: 1.6;
     }
 
-    .home-header {
-      display: flex; justify-content: space-between; align-items: flex-end;
-      gap: 2rem; flex-wrap: wrap;
-      margin-bottom: 1.8rem; padding-bottom: 1.4rem;
-      border-bottom: 1px solid var(--border); position: relative;
+    /* ============================================================
+       LUXURY HERO HEADER — Overview
+       ============================================================ */
+    .home-hero {
+      position: relative;
+      padding: 3.2rem 2.2rem 2.6rem;
+      margin-bottom: 2rem;
+      overflow: hidden;
+      isolation: isolate;
+      border-bottom: 1px solid var(--border);
+      min-height: 320px;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      background-image: var(--hero-image);
+      background-size: cover;
+      background-position: center 30%;
+      background-repeat: no-repeat;
+      animation: heroSlowDrift 30s ease-in-out infinite alternate;
     }
-    .home-header::after {
-      content: ''; position: absolute; bottom: -1px; left: 0;
-      width: 60px; height: 1px; background: var(--gradient-hot); border-radius: 2px;
+    body.light .home-hero {
+      background-image:
+        linear-gradient(180deg, rgba(255, 250, 251, 0.55) 0%, rgba(255, 250, 251, 0.82) 55%, rgba(255, 250, 251, 0.98) 100%),
+        var(--hero-image);
+      background-size: cover, cover;
+      background-position: center, center 30%;
     }
-    .home-header-left { flex: 1; min-width: 260px; }
+    @keyframes heroSlowDrift {
+      from { background-position: center 30%; }
+      to   { background-position: center 42%; }
+    }
+    /* Dark fade overlay so text is crisp */
+    .home-hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      z-index: 0;
+      pointer-events: none;
+      background:
+        linear-gradient(180deg, rgba(5, 5, 5, 0.35) 0%, rgba(5, 5, 5, 0.6) 55%, rgba(5, 5, 5, 0.97) 100%),
+        linear-gradient(90deg, rgba(5, 5, 5, 0.7) 0%, rgba(5, 5, 5, 0.15) 60%, rgba(5, 5, 5, 0.7) 100%);
+    }
+    body.light .home-hero::before {
+      background:
+        linear-gradient(180deg, rgba(255, 250, 251, 0.05) 0%, rgba(255, 250, 251, 0.15) 55%, rgba(255, 250, 251, 0.9) 100%),
+        linear-gradient(90deg, rgba(255, 250, 251, 0.55) 0%, rgba(255, 250, 251, 0.05) 60%, rgba(255, 250, 251, 0.55) 100%);
+    }
+    /* Subtle pink bloom in the corners */
+    .home-hero::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      z-index: 1;
+      pointer-events: none;
+      background:
+        radial-gradient(circle at 12% 15%, rgba(255, 61, 119, 0.28), transparent 45%),
+        radial-gradient(circle at 88% 85%, rgba(255, 61, 119, 0.18), transparent 50%);
+    }
+    /* The pink accent bar under the hero */
+    .home-hero .hero-accent {
+      position: absolute;
+      bottom: -1px;
+      left: 2.2rem;
+      width: 90px;
+      height: 2px;
+      background: var(--gradient-hot);
+      border-radius: 2px;
+      z-index: 3;
+      box-shadow: 0 0 20px rgba(255, 61, 119, 0.6);
+    }
+
+    .home-hero-inner {
+      position: relative;
+      z-index: 2;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      gap: 2rem;
+      flex-wrap: wrap;
+      width: 100%;
+    }
+    .home-hero-left { flex: 1; min-width: 260px; }
     .home-eyebrow {
       display: inline-flex; align-items: center; gap: 0.5rem;
       font-size: 0.62rem; font-weight: 700; letter-spacing: 2.6px;
-      text-transform: uppercase; color: var(--rose-hot); margin-bottom: 0.85rem;
+      text-transform: uppercase; color: #FFFFFF;
+      margin-bottom: 1.1rem;
+      padding: 0.42rem 0.9rem;
+      background: rgba(255, 61, 119, 0.22);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 61, 119, 0.4);
+      border-radius: var(--radius-pill);
+      box-shadow: 0 4px 20px rgba(255, 61, 119, 0.25);
     }
-    .home-eyebrow i { font-size: 0.66rem; }
+    .home-eyebrow i { font-size: 0.66rem; color: #FFFFFF; }
+    body.light .home-eyebrow {
+      color: var(--rose-hot);
+      background: rgba(255, 255, 255, 0.75);
+      border: 1px solid rgba(224, 53, 112, 0.3);
+      box-shadow: 0 4px 20px rgba(224, 53, 112, 0.12);
+    }
+    body.light .home-eyebrow i { color: var(--rose-hot); }
+
     .home-greeting {
       font-family: 'Cormorant Garamond', serif;
-      font-size: 2.2rem; font-weight: 600; color: var(--ink);
-      line-height: 1.1; letter-spacing: 0.2px; margin-bottom: 0.45rem;
+      font-size: 2.6rem; font-weight: 600;
+      color: #FFFFFF;
+      line-height: 1.05; letter-spacing: 0.2px;
+      margin-bottom: 0.55rem;
+      text-shadow: 0 4px 32px rgba(0, 0, 0, 0.7), 0 1px 2px rgba(0, 0, 0, 0.5);
+    }
+    body.light .home-greeting {
+      color: var(--ink);
+      text-shadow: 0 2px 20px rgba(255, 255, 255, 0.9);
     }
     .home-greeting .accent {
-      background: var(--gradient-hot);
+      background: linear-gradient(135deg, #FF9FBF 0%, #FF3D77 100%);
       -webkit-background-clip: text; background-clip: text;
       color: transparent; font-style: italic;
+      filter: drop-shadow(0 4px 24px rgba(255, 61, 119, 0.5));
     }
-    .home-sub { font-size: 0.85rem; color: var(--muted); font-weight: 400; line-height: 1.6; max-width: 520px; }
-    .home-header-right { display: flex; gap: 0.55rem; align-items: center; flex-wrap: wrap; padding-bottom: 0.35rem; }
+    body.light .home-greeting .accent {
+      background: var(--gradient-hot);
+      -webkit-background-clip: text; background-clip: text;
+      filter: drop-shadow(0 2px 12px rgba(224, 53, 112, 0.25));
+    }
+
+    .home-sub {
+      font-size: 0.92rem;
+      color: rgba(255, 255, 255, 0.9);
+      font-weight: 400;
+      line-height: 1.55;
+      max-width: 480px;
+      text-shadow: 0 1px 8px rgba(0, 0, 0, 0.5);
+    }
+    body.light .home-sub {
+      color: var(--ink-soft);
+      text-shadow: none;
+    }
+
+    .home-hero-right {
+      display: flex;
+      gap: 0.55rem;
+      align-items: center;
+      flex-wrap: wrap;
+      padding-bottom: 0.15rem;
+    }
     .home-meta-item {
       display: inline-flex; align-items: center; gap: 0.45rem;
-      font-size: 0.72rem; color: var(--muted); font-weight: 500;
+      font-size: 0.72rem; color: #FFFFFF; font-weight: 500;
       white-space: nowrap; letter-spacing: 0.1px;
-      padding: 0.4rem 0.85rem;
-      background: var(--input-bg); border: 1px solid var(--border);
+      padding: 0.45rem 0.95rem;
+      background: rgba(255, 255, 255, 0.08);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      border: 1px solid rgba(255, 255, 255, 0.18);
       border-radius: var(--radius-pill);
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
     }
-    .home-meta-item i { color: var(--rose-hot); font-size: 0.66rem; }
+    .home-meta-item i { color: #FF8FB8; font-size: 0.66rem; }
+    body.light .home-meta-item {
+      background: rgba(255, 255, 255, 0.65);
+      border: 1px solid rgba(224, 53, 112, 0.18);
+      color: var(--ink);
+      box-shadow: 0 4px 16px rgba(160, 40, 80, 0.08);
+    }
+    body.light .home-meta-item i { color: var(--rose-hot); }
+
+    /* ============================================================
+       OVERVIEW — CONTENT BELOW HERO
+       ============================================================ */
+    .home-content {
+      padding: 0 2.2rem 2rem;
+    }
 
     .overview-card {
       background: var(--card-bg); border: 1px solid var(--border);
@@ -781,7 +919,7 @@
     .badge-no_show { background: var(--violet-bg); color: var(--violet); }
 
     /* ============================================================
-       SERVICES — aligned grid (FIXED)
+       SERVICES — aligned grid
        ============================================================ */
     .category-group {
       background: transparent;
@@ -807,8 +945,6 @@
       padding: 0.2rem 0.65rem; border-radius: var(--radius-pill);
       text-transform: uppercase;
     }
-
-    /* FIXED — fixed grid columns so prices & actions align vertically */
     .service-row {
       display: grid;
       grid-template-columns: minmax(0, 1fr) 100px 72px;
@@ -822,7 +958,6 @@
     }
     .service-row:last-child { border-bottom: none; padding-bottom: 0.5rem; }
     .service-row:hover { background: var(--hover-surface); padding-left: 0.85rem; padding-right: 0.85rem; }
-
     .service-info { display: flex; flex-direction: column; gap: 0.18rem; min-width: 0; }
     .service-name { font-weight: 500; font-size: 0.94rem; color: var(--ink); }
     .service-duration { font-size: 0.76rem; color: var(--muted); font-weight: 400; }
@@ -1324,7 +1459,7 @@
       .today-bar { grid-template-columns: repeat(2, 1fr); }
     }
     @media (max-width: 1100px) {
-      .home-greeting { font-size: 1.75rem; }
+      .home-greeting { font-size: 2.2rem; }
       .dashboard-grid { grid-template-columns: 1fr; }
     }
     @media (max-width: 900px) { .search-bar { width: 240px; } }
@@ -1337,10 +1472,14 @@
       .header-right { width: 100%; flex-wrap: wrap; gap: 0.5rem; }
       .search-bar { width: 100%; order: 3; margin-top: 0.5rem; }
       .btn-text { font-size: 0.82rem; }
-      .main { padding: 1.1rem; }
-      .home-header { flex-direction: column; align-items: flex-start; }
-      .home-header-right { width: 100%; }
-      .home-greeting { font-size: 1.65rem; }
+      .view:not(#home-view) { padding: 1.1rem; }
+      .home-hero { padding: 2.2rem 1.1rem 1.8rem; min-height: 260px; }
+      .home-hero-inner { flex-direction: column; align-items: flex-start; gap: 1rem; }
+      .home-hero-right { width: 100%; }
+      .home-content { padding: 0 1.1rem 1.5rem; }
+      .home-greeting { font-size: 1.9rem; }
+      .home-sub { font-size: 0.86rem; }
+      .home-hero .hero-accent { left: 1.1rem; width: 60px; }
       .today-bar { grid-template-columns: 1fr 1fr; }
       .today-item { padding: 1rem; }
       .admin-stats-grid { grid-template-columns: 1fr 1fr; }
@@ -1364,7 +1503,6 @@
       .overview-card-header::after { left: 1.15rem; }
       .today-bar { padding: 1rem 1.15rem 1.2rem; }
       .admin-stats-grid { padding: 1rem 1.15rem 1.2rem; }
-      /* Service row narrows on mobile */
       .service-row { grid-template-columns: minmax(0, 1fr) 80px 60px; column-gap: 0.75rem; }
       .service-price { font-size: 0.86rem; }
     }
@@ -1373,6 +1511,7 @@
       .admin-stat { padding: 1rem; }
       .today-bar { grid-template-columns: 1fr; }
       .today-item { padding: 1rem; }
+      .home-greeting { font-size: 1.6rem; }
     }
   </style>
 </head>
@@ -1453,107 +1592,113 @@
 
     <main class="main">
       <section id="home-view" class="view active">
-        <div class="home-header">
-          <div class="home-header-left">
-            <div class="home-eyebrow"><i class="fas fa-sparkles"></i> Administrator Console</div>
-            <h1 class="home-greeting">Welcome back to <span class="accent">PinkMeUp</span></h1>
-            <p class="home-sub">Here's what's happening across your salon today.</p>
+        <!-- LUXURY HERO HEADER -->
+        <div class="home-hero">
+          <div class="home-hero-inner">
+            <div class="home-hero-left">
+              <div class="home-eyebrow"><i class="fas fa-sparkles"></i> Administrator Console</div>
+              <h1 class="home-greeting">Welcome back to <span class="accent">PinkMeUp</span></h1>
+              <p class="home-sub">Here's what's happening across your salon today.</p>
+            </div>
+            <div class="home-hero-right">
+              <div class="home-meta-item"><i class="fas fa-map-marker-alt"></i> 1 Jun Smuts Ave, Braamfontein</div>
+              <div class="home-meta-item"><i class="fas fa-clock"></i> Mon–Sat · Open today</div>
+              <div class="home-meta-item"><i class="fas fa-crown"></i> Administrator</div>
+            </div>
           </div>
-          <div class="home-header-right">
-            <div class="home-meta-item"><i class="fas fa-map-marker-alt"></i> 1 Jun Smuts Ave, Braamfontein</div>
-            <div class="home-meta-item"><i class="fas fa-clock"></i> Mon–Sat · Open today</div>
-            <div class="home-meta-item"><i class="fas fa-crown"></i> Administrator</div>
-          </div>
+          <div class="hero-accent"></div>
         </div>
 
-        <div class="overview-card">
-          <div class="overview-card-header">
-            <div class="overview-card-title"><i class="fas fa-sun"></i> Today's Snapshot</div>
-            <div class="overview-card-sub"><span class="dot-live"></span> Live · <span id="todayDateLabel">—</span></div>
-          </div>
-          <div class="today-bar">
-            <div class="today-item">
-              <div class="today-label"><i class="fas fa-calendar-day"></i> Today</div>
-              <div class="today-value" id="todayBookings">0 bookings</div>
+        <div class="home-content">
+          <div class="overview-card">
+            <div class="overview-card-header">
+              <div class="overview-card-title"><i class="fas fa-sun"></i> Today's Snapshot</div>
+              <div class="overview-card-sub"><span class="dot-live"></span> Live · <span id="todayDateLabel">—</span></div>
             </div>
-            <div class="today-item">
-              <div class="today-label"><i class="fas fa-clock"></i> Next Appointment</div>
-              <div class="today-value" id="todayNext">—</div>
-            </div>
-            <div class="today-item">
-              <div class="today-label"><i class="fas fa-coins"></i> Est. Revenue</div>
-              <div class="today-value" id="todayRevenue">R0</div>
-            </div>
-            <div class="today-item">
-              <div class="today-label"><i class="fas fa-user-check"></i> Active Stylists</div>
-              <div class="today-value" id="todayStylists">0</div>
-            </div>
-          </div>
-        </div>
-
-        <div class="overview-card">
-          <div class="overview-card-header">
-            <div class="overview-card-title"><i class="fas fa-chart-pie"></i> Salon Overview</div>
-            <div class="overview-card-sub">All-time metrics</div>
-          </div>
-          <div class="admin-stats-grid">
-            <div class="admin-stat">
-              <div class="admin-stat-label"><i class="fas fa-concierge-bell"></i> Services</div>
-              <div class="admin-stat-number" id="homeStatServices">0</div>
-              <div class="admin-stat-meta"><i class="fas fa-check-circle"></i> All active</div>
-            </div>
-            <div class="admin-stat">
-              <div class="admin-stat-label"><i class="fas fa-user-friends"></i> Stylists</div>
-              <div class="admin-stat-number" id="homeStatStylists">0</div>
-              <div class="admin-stat-meta"><i class="fas fa-users"></i> On roster</div>
-            </div>
-            <div class="admin-stat">
-              <div class="admin-stat-label"><i class="fas fa-calendar-check"></i> Total Bookings</div>
-              <div class="admin-stat-number" id="homeStatBookings">0</div>
-              <div class="admin-stat-meta"><i class="fas fa-chart-line"></i> All time</div>
-            </div>
-            <div class="admin-stat">
-              <div class="admin-stat-label"><i class="fas fa-calendar-alt"></i> This Month</div>
-              <div class="admin-stat-number" id="homeStatThisMonth">0</div>
-              <div class="admin-stat-meta"><i class="fas fa-clock"></i> Current month</div>
-            </div>
-          </div>
-        </div>
-
-        <div class="dashboard-grid">
-          <div class="dashboard-panel">
-            <div class="dashboard-panel-header">
-              <h3>Recent Activity</h3>
-              <span class="live-indicator">Live</span>
-            </div>
-            <div class="dashboard-panel-body">
-              <div class="activity-list" id="activityList">
-                <div class="activity-empty"><i class="fas fa-circle-notch"></i> Loading activity...</div>
+            <div class="today-bar">
+              <div class="today-item">
+                <div class="today-label"><i class="fas fa-calendar-day"></i> Today</div>
+                <div class="today-value" id="todayBookings">0 bookings</div>
+              </div>
+              <div class="today-item">
+                <div class="today-label"><i class="fas fa-clock"></i> Next Appointment</div>
+                <div class="today-value" id="todayNext">—</div>
+              </div>
+              <div class="today-item">
+                <div class="today-label"><i class="fas fa-coins"></i> Est. Revenue</div>
+                <div class="today-value" id="todayRevenue">R0</div>
+              </div>
+              <div class="today-item">
+                <div class="today-label"><i class="fas fa-user-check"></i> Active Stylists</div>
+                <div class="today-value" id="todayStylists">0</div>
               </div>
             </div>
           </div>
-          <div class="dashboard-panel">
-            <div class="dashboard-panel-header">
-              <h3>Quick Access</h3>
+
+          <div class="overview-card">
+            <div class="overview-card-header">
+              <div class="overview-card-title"><i class="fas fa-chart-pie"></i> Salon Overview</div>
+              <div class="overview-card-sub">All-time metrics</div>
             </div>
-            <div class="dashboard-panel-body">
-              <div class="quick-access-grid">
-                <button class="quick-card nav-item" data-view="services">
-                  <div class="quick-icon"><i class="fas fa-concierge-bell"></i></div>
-                  <h4>Services</h4>
-                </button>
-                <button class="quick-card nav-item" data-view="stylists">
-                  <div class="quick-icon"><i class="fas fa-users"></i></div>
-                  <h4>Stylists</h4>
-                </button>
-                <button class="quick-card nav-item" data-view="bookings">
-                  <div class="quick-icon"><i class="fas fa-calendar-check"></i></div>
-                  <h4>Bookings</h4>
-                </button>
-                <button class="quick-card nav-item" data-view="reports">
-                  <div class="quick-icon"><i class="fas fa-chart-line"></i></div>
-                  <h4>Analytics</h4>
-                </button>
+            <div class="admin-stats-grid">
+              <div class="admin-stat">
+                <div class="admin-stat-label"><i class="fas fa-concierge-bell"></i> Services</div>
+                <div class="admin-stat-number" id="homeStatServices">0</div>
+                <div class="admin-stat-meta"><i class="fas fa-check-circle"></i> All active</div>
+              </div>
+              <div class="admin-stat">
+                <div class="admin-stat-label"><i class="fas fa-user-friends"></i> Stylists</div>
+                <div class="admin-stat-number" id="homeStatStylists">0</div>
+                <div class="admin-stat-meta"><i class="fas fa-users"></i> On roster</div>
+              </div>
+              <div class="admin-stat">
+                <div class="admin-stat-label"><i class="fas fa-calendar-check"></i> Total Bookings</div>
+                <div class="admin-stat-number" id="homeStatBookings">0</div>
+                <div class="admin-stat-meta"><i class="fas fa-chart-line"></i> All time</div>
+              </div>
+              <div class="admin-stat">
+                <div class="admin-stat-label"><i class="fas fa-calendar-alt"></i> This Month</div>
+                <div class="admin-stat-number" id="homeStatThisMonth">0</div>
+                <div class="admin-stat-meta"><i class="fas fa-clock"></i> Current month</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="dashboard-grid">
+            <div class="dashboard-panel">
+              <div class="dashboard-panel-header">
+                <h3>Recent Activity</h3>
+                <span class="live-indicator">Live</span>
+              </div>
+              <div class="dashboard-panel-body">
+                <div class="activity-list" id="activityList">
+                  <div class="activity-empty"><i class="fas fa-circle-notch"></i> Loading activity...</div>
+                </div>
+              </div>
+            </div>
+            <div class="dashboard-panel">
+              <div class="dashboard-panel-header">
+                <h3>Quick Access</h3>
+              </div>
+              <div class="dashboard-panel-body">
+                <div class="quick-access-grid">
+                  <button class="quick-card nav-item" data-view="services">
+                    <div class="quick-icon"><i class="fas fa-concierge-bell"></i></div>
+                    <h4>Services</h4>
+                  </button>
+                  <button class="quick-card nav-item" data-view="stylists">
+                    <div class="quick-icon"><i class="fas fa-users"></i></div>
+                    <h4>Stylists</h4>
+                  </button>
+                  <button class="quick-card nav-item" data-view="bookings">
+                    <div class="quick-icon"><i class="fas fa-calendar-check"></i></div>
+                    <h4>Bookings</h4>
+                  </button>
+                  <button class="quick-card nav-item" data-view="reports">
+                    <div class="quick-icon"><i class="fas fa-chart-line"></i></div>
+                    <h4>Analytics</h4>
+                  </button>
+                </div>
               </div>
             </div>
           </div>
