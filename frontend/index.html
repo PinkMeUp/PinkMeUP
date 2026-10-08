@@ -240,7 +240,6 @@
             max-width: 540px;
         }
 
-        /* Minimal CTA — text link with underline + arrow */
         .hero-cta-min {
             display: inline-flex;
             align-items: center;
@@ -396,7 +395,6 @@
             text-shadow: 0 2px 20px rgba(0, 0, 0, 0.5);
         }
 
-        /* Dot navigation */
         .slide-dots {
             position: absolute;
             bottom: 30px;
@@ -439,7 +437,6 @@
             to   { transform: translateX(0); }
         }
 
-        /* Arrow navigation */
         .slide-arrow {
             position: absolute;
             top: 50%;
@@ -488,7 +485,6 @@
             position: relative;
         }
 
-        /* === SIMPLE DIVIDER (dot removed, line made visible) === */
         .section-divider {
             width: 100%;
             max-width: 1100px;
@@ -553,7 +549,6 @@
             font-weight: 600;
         }
 
-        /* WHY CHOOSE US */
         .why-choose-us {
             max-width: 1100px;
             margin: 0 auto;
@@ -639,7 +634,6 @@
             max-width: 260px;
         }
 
-        /* CARDS */
         .cards-container {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -955,7 +949,9 @@
 
         .contact-mini-value a:hover { color: #D43F6B; }
 
-        /* FOOTER */
+        /* ============================================================
+           FOOTER
+           ============================================================ */
         .site-footer {
             width: 100%;
             background: #0a0a0a;
@@ -1111,183 +1107,596 @@
             box-shadow: 0 8px 20px rgba(212, 63, 107, 0.35);
         }
 
-        /* MODALS */
+        /* ============================================================
+           MODALS — PRODUCTION-GRADE DESIGN
+           ============================================================ */
         .modal {
             display: none;
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.75);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
+            inset: 0;
+            background: rgba(15, 10, 15, 0.82);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
             align-items: center;
             justify-content: center;
             z-index: 2000;
-            padding: 2rem;
-            animation: fadeIn 0.25s ease;
+            padding: 1.75rem 1.25rem;
+            animation: modalFadeIn 0.3s ease;
+            overflow-y: auto;
         }
 
-        @keyframes fadeIn {
+        @keyframes modalFadeIn {
             from { opacity: 0; }
             to   { opacity: 1; }
         }
 
         .modal-content {
-            background: white;
-            max-width: 580px;
+            background: #ffffff;
+            max-width: 660px;
             width: 100%;
-            border-radius: 24px;
-            padding: 3rem 2.5rem 2rem;
+            border-radius: 26px;
             text-align: left;
-            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.25);
-            margin: 0 auto;
-            max-height: 90vh;
-            overflow-y: auto;
+            box-shadow:
+                0 40px 100px rgba(0, 0, 0, 0.4),
+                0 0 0 1px rgba(255, 255, 255, 0.06);
+            margin: auto;
+            max-height: calc(100vh - 3.5rem);
+            overflow: hidden;
             position: relative;
-            animation: modalSlide 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+            animation: modalSlideUp 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+            display: flex;
+            flex-direction: column;
         }
 
-        @keyframes modalSlide {
-            from { opacity: 0; transform: translateY(20px) scale(0.98); }
+        @keyframes modalSlideUp {
+            from { opacity: 0; transform: translateY(30px) scale(0.97); }
             to   { opacity: 1; transform: translateY(0) scale(1); }
         }
 
-        .modal-content::before {
-            content: '';
+        /* Corner close X */
+        .modal-close-x {
             position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 3px;
-            background: linear-gradient(90deg, #FFB6C1, #D43F6B);
-            border-radius: 24px 24px 0 0;
+            top: 18px;
+            right: 18px;
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.16);
+            border: 1px solid rgba(255, 255, 255, 0.22);
+            color: #ffffff;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.9rem;
+            transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+            z-index: 10;
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
         }
 
-        .modal-content h4 {
+        .modal-close-x:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: rotate(90deg) scale(1.05);
+        }
+
+        /* Gradient header */
+        .modal-header {
+            background: linear-gradient(135deg, #D43F6B 0%, #8a1a3d 55%, #5c1027 100%);
+            padding: 2.5rem 2.5rem 2.1rem;
+            color: #ffffff;
+            position: relative;
+            overflow: hidden;
+            flex-shrink: 0;
+        }
+
+        .modal-header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -20%;
+            width: 300px;
+            height: 300px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(255, 182, 193, 0.4), transparent 70%);
+            pointer-events: none;
+        }
+
+        .modal-header::after {
+            content: '';
+            position: absolute;
+            bottom: -60%;
+            left: -15%;
+            width: 260px;
+            height: 260px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.14), transparent 70%);
+            pointer-events: none;
+        }
+
+        .modal-header-inner {
+            position: relative;
+            z-index: 2;
+        }
+
+        .modal-eyebrow {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.65rem;
+            font-weight: 600;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            color: rgba(255, 255, 255, 0.88);
+            margin-bottom: 12px;
+        }
+
+        .modal-eyebrow::before {
+            content: '';
+            width: 22px;
+            height: 1px;
+            background: rgba(255, 255, 255, 0.7);
+        }
+
+        .modal-header h4 {
             font-family: 'Cormorant Garamond', serif;
-            font-size: 2.2rem;
+            font-size: 2.3rem;
+            font-weight: 600;
+            line-height: 1.08;
+            color: #ffffff;
+            margin: 0;
+            letter-spacing: -0.3px;
+            text-shadow: 0 2px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        .modal-subtitle {
+            font-size: 0.88rem;
+            color: rgba(255, 255, 255, 0.82);
+            font-weight: 300;
+            margin-top: 10px;
+            line-height: 1.5;
+            max-width: 92%;
+        }
+
+        /* Body */
+        .modal-body {
+            padding: 2rem 2.5rem 2.25rem;
+            overflow-y: auto;
+            flex: 1;
+            scrollbar-width: thin;
+            scrollbar-color: #d9d9d9 transparent;
+        }
+
+        .modal-body::-webkit-scrollbar { width: 6px; }
+        .modal-body::-webkit-scrollbar-track { background: transparent; }
+        .modal-body::-webkit-scrollbar-thumb {
+            background: #d9d9d9;
+            border-radius: 10px;
+        }
+        .modal-body::-webkit-scrollbar-thumb:hover { background: #c0c0c0; }
+
+        /* Founder card (About) */
+        .founder-card {
+            display: flex;
+            gap: 16px;
+            align-items: center;
+            padding: 18px 20px;
+            border-radius: 18px;
+            background: linear-gradient(135deg, rgba(255, 182, 193, 0.14), rgba(212, 63, 107, 0.08));
+            border: 1px solid rgba(212, 63, 107, 0.18);
+            margin-bottom: 22px;
+        }
+
+        .founder-avatar {
+            width: 56px;
+            height: 56px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #FFB6C1 0%, #D43F6B 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.55rem;
+            font-weight: 700;
+            color: #ffffff;
+            flex-shrink: 0;
+            box-shadow: 0 6px 18px rgba(212, 63, 107, 0.35);
+            letter-spacing: 0.5px;
+        }
+
+        .founder-info h5 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: #1a1a1a;
+            margin: 0 0 4px;
+            letter-spacing: -0.2px;
+        }
+
+        .founder-info p {
+            font-size: 0.7rem;
+            color: #D43F6B;
+            font-weight: 600;
+            letter-spacing: 1.2px;
+            margin: 0;
+            text-transform: uppercase;
+        }
+
+        /* About text */
+        .about-text {
+            font-size: 0.92rem;
+            color: #4a4a4a;
+            line-height: 1.75;
+            font-weight: 300;
+            margin-bottom: 14px;
+        }
+
+        .about-text strong {
+            color: #C7355E;
+            font-weight: 600;
+        }
+
+        /* Stats */
+        .about-stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+            margin: 22px 0;
+            padding: 20px 0;
+            border-top: 1px solid #f0f0f0;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .about-stat {
+            text-align: center;
+        }
+
+        .about-stat .stat-value {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.7rem;
+            font-weight: 700;
             background: linear-gradient(135deg, #FFB6C1 0%, #D43F6B 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
-            margin-bottom: 1.4rem;
-            text-align: center;
-            letter-spacing: -0.2px;
+            line-height: 1;
+            display: block;
+            margin-bottom: 6px;
         }
 
-        .modal-content p {
+        .about-stat .stat-label {
+            font-size: 0.62rem;
+            font-weight: 600;
+            letter-spacing: 1.6px;
+            text-transform: uppercase;
+            color: #7a7a7a;
+        }
+
+        /* Highlights */
+        .about-highlights {
+            display: flex;
+            flex-direction: column;
+            gap: 11px;
+            margin-top: 8px;
+        }
+
+        .about-highlight {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            font-size: 0.88rem;
+            color: #4a4a4a;
+            line-height: 1.5;
+            font-weight: 400;
+        }
+
+        .about-highlight i {
+            color: #D43F6B;
+            font-size: 0.9rem;
+            margin-top: 3px;
+            flex-shrink: 0;
+        }
+
+        /* Contact tiles */
+        .contact-tiles {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .contact-tile {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            padding: 18px 20px;
+            border-radius: 16px;
+            background: #ffffff;
+            border: 1px solid #ececec;
+            text-decoration: none;
+            color: inherit;
+            transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+            cursor: pointer;
+        }
+
+        .contact-tile:hover {
+            border-color: rgba(212, 63, 107, 0.35);
+            background: linear-gradient(135deg, rgba(255, 182, 193, 0.09), rgba(212, 63, 107, 0.04));
+            transform: translateY(-2px);
+            box-shadow: 0 12px 30px rgba(212, 63, 107, 0.12);
+        }
+
+        .contact-tile-icon {
+            width: 46px;
+            height: 46px;
+            border-radius: 12px;
+            background: linear-gradient(135deg, #FFB6C1 0%, #D43F6B 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #ffffff;
+            font-size: 1.05rem;
+            flex-shrink: 0;
+            box-shadow: 0 6px 16px rgba(212, 63, 107, 0.28);
+        }
+
+        .contact-tile-body {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .contact-tile-label {
+            font-size: 0.62rem;
+            font-weight: 600;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            color: #7a7a7a;
+            margin-bottom: 3px;
+        }
+
+        .contact-tile-value {
             font-size: 0.95rem;
-            color: #3E2A32;
-            line-height: 1.75;
-            margin-bottom: 1rem;
-            font-weight: 300;
+            font-weight: 500;
+            color: #1a1a1a;
+            line-height: 1.35;
+            word-break: break-word;
         }
 
-        .modal-content strong {
+        .contact-tile-arrow {
+            color: #D43F6B;
+            font-size: 0.8rem;
+            opacity: 0.4;
+            transition: all 0.35s ease;
+            flex-shrink: 0;
+        }
+
+        .contact-tile:hover .contact-tile-arrow {
+            opacity: 1;
+            transform: translateX(4px);
+        }
+
+        /* Hours block */
+        .modal-hours {
+            margin-top: 22px;
+            padding: 18px 20px;
+            border-radius: 16px;
+            background: #fafafa;
+            border: 1px solid #f0f0f0;
+        }
+
+        .modal-hours-title {
+            font-size: 0.68rem;
+            font-weight: 600;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: #7a7a7a;
+            margin-bottom: 14px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .modal-hours-title i { color: #D43F6B; }
+
+        .modal-hour-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 9px 0;
+            font-size: 0.86rem;
+            color: #4a4a4a;
+        }
+
+        .modal-hour-row:not(:last-child) {
+            border-bottom: 1px dashed #e9e9e9;
+        }
+
+        .modal-hour-row .day {
+            font-weight: 500;
+            color: #1a1a1a;
+        }
+
+        .modal-hour-row .time {
+            color: #7a7a7a;
+            font-weight: 400;
+        }
+
+        .modal-hour-row .time.closed {
             color: #D43F6B;
             font-weight: 600;
         }
 
-        .close-modal {
-            background: linear-gradient(135deg, #FFB6C1 0%, #D43F6B 100%);
-            border: none;
-            padding: 0.75rem 2.8rem;
-            border-radius: 2rem;
-            color: white;
+        /* Policy sections */
+        .policy-meta {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 12px 16px;
+            background: linear-gradient(135deg, rgba(255, 182, 193, 0.1), rgba(212, 63, 107, 0.05));
+            border: 1px solid rgba(212, 63, 107, 0.15);
+            border-radius: 12px;
+            font-size: 0.78rem;
+            color: #7a7a7a;
+            margin-bottom: 24px;
+        }
+
+        .policy-meta i {
+            color: #D43F6B;
+            font-size: 0.85rem;
+        }
+
+        .policy-meta strong {
+            color: #1a1a1a;
             font-weight: 600;
+        }
+
+        .policy-section {
+            margin-bottom: 22px;
+        }
+
+        .policy-section:last-child {
+            margin-bottom: 0;
+        }
+
+        .policy-section-head {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 10px;
+        }
+
+        .policy-num {
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #FFB6C1 0%, #D43F6B 100%);
+            color: #ffffff;
+            font-size: 0.72rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            box-shadow: 0 4px 12px rgba(212, 63, 107, 0.25);
+            font-family: 'Inter', sans-serif;
+        }
+
+        .policy-section h5 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.18rem;
+            font-weight: 700;
+            color: #1a1a1a;
+            margin: 0;
+            letter-spacing: -0.2px;
+        }
+
+        .policy-section p {
+            font-size: 0.88rem;
+            color: #4a4a4a;
+            line-height: 1.7;
+            font-weight: 300;
+            margin: 0;
+            padding-left: 40px;
+        }
+
+        .policy-section p strong {
+            color: #C7355E;
+            font-weight: 600;
+        }
+
+        /* Footer */
+        .modal-footer {
+            padding: 1.25rem 2.5rem 1.6rem;
+            border-top: 1px solid #f0f0f0;
+            display: flex;
+            gap: 12px;
+            justify-content: flex-end;
+            flex-wrap: wrap;
+            flex-shrink: 0;
+            background: #ffffff;
+        }
+
+        .btn-modal {
+            padding: 0.72rem 1.85rem;
+            border-radius: 50px;
+            font-size: 0.82rem;
+            font-weight: 600;
+            letter-spacing: 0.3px;
             cursor: pointer;
-            transition: all 0.3s ease;
-            display: block;
-            margin: 1.5rem auto 0.5rem;
-            font-size: 0.9rem;
-            letter-spacing: 0.5px;
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            border: none;
+            font-family: 'Inter', sans-serif;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            text-decoration: none;
+            line-height: 1;
+        }
+
+        .btn-modal-primary {
+            background: linear-gradient(135deg, #FFB6C1 0%, #D43F6B 100%);
+            color: #ffffff;
             box-shadow: 0 6px 20px rgba(212, 63, 107, 0.3);
         }
 
-        .close-modal:hover {
+        .btn-modal-primary:hover {
             transform: translateY(-2px);
             box-shadow: 0 10px 28px rgba(212, 63, 107, 0.45);
         }
 
-        .modal-contact-item {
-            display: flex;
-            align-items: center;
-            gap: 14px;
-            margin-bottom: 14px;
-            color: #555555;
-            font-size: 0.95rem;
+        .btn-modal-ghost {
+            background: #f5f5f5;
+            color: #1a1a1a;
         }
 
-        .modal-contact-item i {
-            width: 26px;
-            color: #D43F6B;
-            text-align: center;
-            font-size: 0.95rem;
+        .btn-modal-ghost:hover {
+            background: #ebebeb;
+            transform: translateY(-2px);
         }
-
-        .modal-contact-item a {
-            color: #555555;
-            text-decoration: none;
-            transition: color 0.3s ease;
-        }
-
-        .modal-contact-item a:hover { color: #D43F6B; }
 
         .modal-socials {
             display: flex;
-            gap: 14px;
+            gap: 12px;
             margin-top: 24px;
             justify-content: center;
         }
 
         .modal-socials a {
             color: #1a1a1a;
-            font-size: 1rem;
-            transition: all 0.35s ease;
-            width: 42px;
-            height: 42px;
+            font-size: 0.95rem;
+            transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+            width: 44px;
+            height: 44px;
             display: inline-flex;
             align-items: center;
             justify-content: center;
             border-radius: 50%;
             background: #f5f5f5;
+            text-decoration: none;
         }
 
         .modal-socials a:hover {
             color: #ffffff;
             background: linear-gradient(135deg, #FFB6C1 0%, #D43F6B 100%);
             transform: translateY(-3px);
+            box-shadow: 0 10px 24px rgba(212, 63, 107, 0.35);
         }
 
-        /* RESPONSIVE */
+        /* ============================================================
+           RESPONSIVE
+           ============================================================ */
         @media (max-width: 992px) and (min-width: 601px) {
             .hero-content h2 { font-size: 2.8rem; }
-
-            .cards-container {
-                grid-template-columns: 1fr;
-                gap: 22px;
-            }
-
+            .cards-container { grid-template-columns: 1fr; gap: 22px; }
             .slideshow { height: 500px; }
             .slide-caption { left: 40px; bottom: 50px; }
             .slide-caption h3 { font-size: 2.1rem; }
-
-            .footer-inner {
-                grid-template-columns: 1.4fr 1fr 1fr;
-                gap: 32px;
-            }
-
+            .footer-inner { grid-template-columns: 1.4fr 1fr 1fr; gap: 32px; }
             .footer-brand { grid-column: 1 / -1; }
             .footer-brand p { max-width: 100%; }
         }
 
-        /* ============================================================
-           PHONE — MORE SPACE (extended vertical rhythm, still tidy)
-           ============================================================ */
         @media (max-width: 600px) {
-            /* --- HERO — more padding, larger text, breathing room --- */
             .top-half {
                 padding: 30px 20px 42px 20px;
                 min-height: auto;
@@ -1325,10 +1734,7 @@
                 letter-spacing: 0.7px;
             }
 
-            .nav-divider {
-                font-size: 0.65rem;
-                margin: 0 2px;
-            }
+            .nav-divider { font-size: 0.65rem; margin: 0 2px; }
 
             .hero-content {
                 text-align: center;
@@ -1366,10 +1772,8 @@
             }
 
             .hero-cta-min i { font-size: 0.72rem; }
-
             .hero-scroll { display: none; }
 
-            /* --- SLIDESHOW — taller, more presence --- */
             .slideshow {
                 height: 42vh;
                 min-height: 260px;
@@ -1391,42 +1795,21 @@
             }
 
             .slide-caption .caption-tag::before { width: 16px; }
-
             .slide-arrow { display: none; }
 
-            .slide-dots {
-                bottom: 18px;
-                gap: 8px;
-            }
-
-            .slide-dot {
-                width: 22px;
-                height: 3px;
-            }
-
+            .slide-dots { bottom: 18px; gap: 8px; }
+            .slide-dot { width: 22px; height: 3px; }
             .slide-dot.active { width: 34px; }
 
-            /* --- BOTTOM HALF — more generous spacing --- */
             .bottom-half { padding: 70px 18px 0 18px; }
-
             .section-divider { margin-bottom: 55px; }
 
             .visible-about-section h3 { font-size: 2rem; }
             .visible-about-section p { font-size: 0.98rem; }
 
-            .why-choose-us h3 {
-                font-size: 2rem;
-                margin-bottom: 40px;
-            }
-
-            .why-grid {
-                grid-template-columns: 1fr;
-                gap: 0;
-            }
-
-            .why-item {
-                padding: 30px 20px;
-            }
+            .why-choose-us h3 { font-size: 2rem; margin-bottom: 40px; }
+            .why-grid { grid-template-columns: 1fr; gap: 0; }
+            .why-item { padding: 30px 20px; }
 
             .why-item:not(:last-child)::after {
                 right: 15%;
@@ -1450,34 +1833,66 @@
             .white-card { padding: 36px 24px; }
             .card-title { font-size: 1.7rem; }
 
-            .contact-strip {
-                grid-template-columns: 1fr;
-                gap: 18px;
-            }
+            .contact-strip { grid-template-columns: 1fr; gap: 18px; }
 
             .site-footer { padding: 56px 18px 0; }
-
-            .footer-inner {
-                grid-template-columns: 1fr;
-                gap: 40px;
-                padding-bottom: 40px;
-            }
-
+            .footer-inner { grid-template-columns: 1fr; gap: 40px; padding-bottom: 40px; }
             .footer-bottom {
                 flex-direction: column;
                 align-items: flex-start;
                 gap: 18px;
                 padding: 28px 0;
             }
-
             .footer-legal { gap: 20px; }
 
+            /* Modal mobile */
+            .modal { padding: 1rem; }
+
             .modal-content {
-                padding: 2.5rem 1.5rem 1.5rem;
-                border-radius: 20px;
+                max-height: calc(100vh - 2rem);
+                border-radius: 22px;
             }
 
-            .modal-content h4 { font-size: 1.8rem; }
+            .modal-close-x {
+                top: 14px;
+                right: 14px;
+                width: 34px;
+                height: 34px;
+                font-size: 0.82rem;
+            }
+
+            .modal-header { padding: 2rem 1.5rem 1.6rem; }
+            .modal-header h4 { font-size: 1.65rem; }
+            .modal-subtitle { font-size: 0.8rem; }
+            .modal-body { padding: 1.5rem 1.5rem 1.75rem; }
+            .modal-footer { padding: 1.1rem 1.5rem 1.35rem; gap: 10px; }
+
+            .founder-card { padding: 15px 16px; gap: 13px; }
+            .founder-avatar { width: 48px; height: 48px; font-size: 1.3rem; }
+            .founder-info h5 { font-size: 1.1rem; }
+            .founder-info p { font-size: 0.62rem; }
+
+            .about-text { font-size: 0.88rem; }
+            .about-stats { gap: 8px; padding: 16px 0; margin: 18px 0; }
+            .about-stat .stat-value { font-size: 1.4rem; }
+            .about-stat .stat-label { font-size: 0.56rem; }
+            .about-highlight { font-size: 0.84rem; }
+
+            .contact-tile { padding: 15px 16px; gap: 13px; border-radius: 14px; }
+            .contact-tile-icon { width: 42px; height: 42px; font-size: 0.95rem; border-radius: 11px; }
+            .contact-tile-value { font-size: 0.88rem; }
+            .contact-tile-label { font-size: 0.58rem; }
+
+            .modal-hours { padding: 15px 16px; }
+            .modal-hour-row { font-size: 0.8rem; padding: 8px 0; }
+
+            .policy-section p { padding-left: 36px; font-size: 0.83rem; }
+            .policy-section h5 { font-size: 1.05rem; }
+            .policy-num { width: 26px; height: 26px; font-size: 0.68rem; }
+
+            .btn-modal { padding: 0.68rem 1.5rem; font-size: 0.78rem; }
+
+            .modal-socials a { width: 40px; height: 40px; font-size: 0.9rem; }
         }
 
         @media (max-width: 400px) {
@@ -1487,6 +1902,9 @@
             .why-choose-us h3 { font-size: 1.8rem; }
             .slide-caption h3 { font-size: 1.4rem; }
             .slideshow { height: 38vh; min-height: 240px; }
+            .modal-header h4 { font-size: 1.5rem; }
+            .modal-body { padding: 1.35rem 1.25rem 1.5rem; }
+            .modal-footer { padding: 1rem 1.25rem 1.2rem; }
         }
     </style>
 </head>
@@ -1750,7 +2168,7 @@
                 <ul>
                     <li><a href="javascript:void(0)" id="contactBtn">Contact</a></li>
                     <li><a href="javascript:void(0)" id="privacyBtn">Privacy Policy</a></li>
-                    <li><a href="javascript:void(0)">Terms of Service</a></li>
+                    <li><a href="javascript:void(0)" id="termsBtn">Terms of Service</a></li>
                 </ul>
             </div>
 
@@ -1772,91 +2190,301 @@
 
             <div class="footer-legal">
                 <a href="javascript:void(0)" id="privacyBtn2">Privacy Policy</a>
-                <a href="javascript:void(0)">Terms of Service</a>
+                <a href="javascript:void(0)" id="termsBtn2">Terms of Service</a>
                 <a href="javascript:void(0)" id="contactBtn2">Contact</a>
             </div>
         </div>
     </footer>
 
-    <!-- MODALS -->
-
-    <div id="aboutModal" class="modal">
+    <!-- ============================================================
+         MODAL — ABOUT US
+         ============================================================ -->
+    <div id="aboutModal" class="modal" role="dialog" aria-modal="true" aria-labelledby="aboutTitle">
         <div class="modal-content">
-            <h4>Our Story</h4>
-            <p><strong>PinkMeUp Beauty Spa &amp; Academy</strong> was founded by <strong>Phumuzile Moyo</strong>, a self-taught beauty entrepreneur who turned her passion into a thriving business. Growing up as the only girl with four brothers, she developed resilience and a strong work ethic. After working in retail and later at Sorbet, she launched a mobile beauty service and then opened her first spa at Wits University in <strong>2021</strong>.</p>
-            <p>Today, PinkMeUp is located inside <strong>Wits University, Matrix Building, Floor 1</strong>, offering luxury facials, nail treatments, lash artistry, massage therapy, and waxing. The business also operates a <strong>QCTO and SDCC accredited academy</strong>, providing professional beauty courses and short programs.</p>
-            <p>Ms. Moyo manages daily operations with a focus on efficiency, staff development, and personalized client experiences. This web-based booking system was created to solve scheduling conflicts, reduce manual work, and give clients an easy way to book services — all while giving the manager clear insights into staff workloads and service trends.</p>
-            <p>For inquiries, reach out at <strong>pinkmeup01@gmail.com</strong> or call <strong>076 769 0102</strong>.</p>
-            <button class="close-modal" id="closeModalBtn">Close</button>
+            <button class="modal-close-x" aria-label="Close dialog" data-close="aboutModal"><i class="fas fa-times"></i></button>
+
+            <div class="modal-header">
+                <div class="modal-header-inner">
+                    <div class="modal-eyebrow">Our Story</div>
+                    <h4 id="aboutTitle">About PinkMeUp</h4>
+                    <p class="modal-subtitle">Beauty, crafted with heart — from the heart of Braamfontein.</p>
+                </div>
+            </div>
+
+            <div class="modal-body">
+                <div class="founder-card">
+                    <div class="founder-avatar">PM</div>
+                    <div class="founder-info">
+                        <h5>Phumuzile Moyo</h5>
+                        <p>Founder &amp; Lead Therapist</p>
+                    </div>
+                </div>
+
+                <p class="about-text">
+                    <strong>PinkMeUp Beauty Spa &amp; Academy</strong> was born from a simple belief — that world-class self-care should feel personal, unhurried, and genuinely warm. What started as a mobile beauty service has grown into a full spa and accredited academy inside <strong>Wits University, Matrix Building, Floor 1</strong>.
+                </p>
+
+                <p class="about-text">
+                    Founded in <strong>2021</strong> by self-taught entrepreneur <strong>Phumuzile Moyo</strong>, PinkMeUp now offers luxury facials, nail treatments, lash artistry, massage therapy, and waxing, alongside professional training accredited by <strong>QCTO</strong> and <strong>SDCC Canada</strong>.
+                </p>
+
+                <div class="about-stats">
+                    <div class="about-stat">
+                        <span class="stat-value">2021</span>
+                        <span class="stat-label">Founded</span>
+                    </div>
+                    <div class="about-stat">
+                        <span class="stat-value">5+</span>
+                        <span class="stat-label">Services</span>
+                    </div>
+                    <div class="about-stat">
+                        <span class="stat-value">2×</span>
+                        <span class="stat-label">Accredited</span>
+                    </div>
+                </div>
+
+                <div class="about-highlights">
+                    <div class="about-highlight">
+                        <i class="fas fa-check-circle"></i>
+                        <span>QCTO &amp; SDCC Canada accredited training academy</span>
+                    </div>
+                    <div class="about-highlight">
+                        <i class="fas fa-check-circle"></i>
+                        <span>Premium, skin-loving products used in every treatment</span>
+                    </div>
+                    <div class="about-highlight">
+                        <i class="fas fa-check-circle"></i>
+                        <span>Personalised service from a dedicated, growing team</span>
+                    </div>
+                    <div class="about-highlight">
+                        <i class="fas fa-check-circle"></i>
+                        <span>Easy online booking — pick a service, pick a time, done</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <button class="btn-modal btn-modal-ghost" data-close="aboutModal">Close</button>
+                <a href="login.html" class="btn-modal btn-modal-primary">Book Now <i class="fas fa-arrow-right"></i></a>
+            </div>
         </div>
     </div>
 
-    <div id="contactModal" class="modal">
+    <!-- ============================================================
+         MODAL — CONTACT
+         ============================================================ -->
+    <div id="contactModal" class="modal" role="dialog" aria-modal="true" aria-labelledby="contactTitle">
         <div class="modal-content">
-            <h4>Get in Touch</h4>
+            <button class="modal-close-x" aria-label="Close dialog" data-close="contactModal"><i class="fas fa-times"></i></button>
 
-            <div class="modal-contact-item">
-                <i class="fas fa-envelope"></i>
-                <a href="mailto:pinkmeup01@gmail.com">pinkmeup01@gmail.com</a>
-            </div>
-            <div class="modal-contact-item">
-                <i class="fas fa-phone-alt"></i>
-                <a href="tel:0767690102">076 769 0102</a>
-            </div>
-            <div class="modal-contact-item">
-                <i class="fas fa-map-marker-alt"></i>
-                <span>1 Jan Smuts Avenue, Braamfontein, Johannesburg</span>
-            </div>
-
-            <div style="margin: 22px 0 16px 0; border-top: 1px solid #f0f0f0; padding-top: 18px;">
-                <div class="modal-contact-item" style="font-size: 0.9rem;">
-                    <i class="far fa-clock"></i>
-                    <span>Mon–Fri: 9am – 5pm</span>
-                </div>
-                <div class="modal-contact-item" style="font-size: 0.9rem;">
-                    <i class="far fa-clock"></i>
-                    <span>Sat: 9am – 2pm</span>
-                </div>
-                <div class="modal-contact-item" style="font-size: 0.9rem;">
-                    <i class="fas fa-circle" style="font-size: 0.4rem;"></i>
-                    <span>Sun: Closed</span>
+            <div class="modal-header">
+                <div class="modal-header-inner">
+                    <div class="modal-eyebrow">Get in Touch</div>
+                    <h4 id="contactTitle">We'd love to hear from you</h4>
+                    <p class="modal-subtitle">Questions, bookings, or academy enquiries — reach out anytime.</p>
                 </div>
             </div>
 
-            <div class="modal-socials">
-                <a href="https://www.instagram.com/pinkmeup.beauty?igsh=MW9vM3hpYjZuc3E2bw%3D%3D" target="_blank" rel="noopener noreferrer" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
-                <a href="https://web.facebook.com/PinkxMeUp" target="_blank" rel="noopener noreferrer" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
-                <a href="https://www.tiktok.com/@pinkmeup.beauty?is_from_webapp=1&sender_device=pc" target="_blank" rel="noopener noreferrer" aria-label="TikTok"><i class="fab fa-tiktok"></i></a>
+            <div class="modal-body">
+                <div class="contact-tiles">
+                    <a href="mailto:pinkmeup01@gmail.com" class="contact-tile">
+                        <div class="contact-tile-icon"><i class="fas fa-envelope"></i></div>
+                        <div class="contact-tile-body">
+                            <div class="contact-tile-label">Email</div>
+                            <div class="contact-tile-value">pinkmeup01@gmail.com</div>
+                        </div>
+                        <i class="fas fa-arrow-right contact-tile-arrow"></i>
+                    </a>
+
+                    <a href="tel:0767690102" class="contact-tile">
+                        <div class="contact-tile-icon"><i class="fas fa-phone-alt"></i></div>
+                        <div class="contact-tile-body">
+                            <div class="contact-tile-label">Phone</div>
+                            <div class="contact-tile-value">076 769 0102</div>
+                        </div>
+                        <i class="fas fa-arrow-right contact-tile-arrow"></i>
+                    </a>
+
+                    <a href="https://maps.google.com/?q=Wits+University+Matrix+Building+Braamfontein" target="_blank" rel="noopener noreferrer" class="contact-tile">
+                        <div class="contact-tile-icon"><i class="fas fa-map-marker-alt"></i></div>
+                        <div class="contact-tile-body">
+                            <div class="contact-tile-label">Visit Us</div>
+                            <div class="contact-tile-value">Wits University, Matrix Building, Floor 1<br>Braamfontein, Johannesburg</div>
+                        </div>
+                        <i class="fas fa-arrow-right contact-tile-arrow"></i>
+                    </a>
+                </div>
+
+                <div class="modal-hours">
+                    <div class="modal-hours-title"><i class="far fa-clock"></i> Opening Hours</div>
+                    <div class="modal-hour-row">
+                        <span class="day">Monday – Friday</span>
+                        <span class="time">9:00 AM – 5:00 PM</span>
+                    </div>
+                    <div class="modal-hour-row">
+                        <span class="day">Saturday</span>
+                        <span class="time">9:00 AM – 2:00 PM</span>
+                    </div>
+                    <div class="modal-hour-row">
+                        <span class="day">Sunday</span>
+                        <span class="time closed">Closed</span>
+                    </div>
+                </div>
+
+                <div class="modal-socials">
+                    <a href="https://www.instagram.com/pinkmeup.beauty?igsh=MW9vM3hpYjZuc3E2bw%3D%3D" target="_blank" rel="noopener noreferrer" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                    <a href="https://web.facebook.com/PinkxMeUp" target="_blank" rel="noopener noreferrer" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+                    <a href="https://www.tiktok.com/@pinkmeup.beauty?is_from_webapp=1&sender_device=pc" target="_blank" rel="noopener noreferrer" aria-label="TikTok"><i class="fab fa-tiktok"></i></a>
+                </div>
             </div>
 
-            <button class="close-modal" id="closeContactBtn">Close</button>
+            <div class="modal-footer">
+                <button class="btn-modal btn-modal-primary" data-close="contactModal">Close</button>
+            </div>
         </div>
     </div>
 
-    <div id="privacyModal" class="modal">
+    <!-- ============================================================
+         MODAL — PRIVACY POLICY
+         ============================================================ -->
+    <div id="privacyModal" class="modal" role="dialog" aria-modal="true" aria-labelledby="privacyTitle">
         <div class="modal-content">
-            <h4>Privacy Policy</h4>
-            <p><strong>Effective Date:</strong> August 18, 2026</p>
-            <p><strong>PinkMeUp Beauty Spa &amp; Academy</strong> ("we", "our", "us") respects your privacy. This policy explains how we collect, use, and protect your personal information when you use our website and services.</p>
+            <button class="modal-close-x" aria-label="Close dialog" data-close="privacyModal"><i class="fas fa-times"></i></button>
 
-            <p><strong>1. Information We Collect</strong><br>
-            We collect information you provide directly, such as your name, email address, phone number, and appointment preferences. We also automatically collect certain data like your IP address and browser type to improve our site performance.</p>
+            <div class="modal-header">
+                <div class="modal-header-inner">
+                    <div class="modal-eyebrow">Legal</div>
+                    <h4 id="privacyTitle">Privacy Policy</h4>
+                    <p class="modal-subtitle">How we collect, use, and protect your information.</p>
+                </div>
+            </div>
 
-            <p><strong>2. How We Use Your Information</strong><br>
-            We use your information to book appointments, send reminders, process payments, and improve our services. We will never sell your personal data to third parties.</p>
+            <div class="modal-body">
+                <div class="policy-meta">
+                    <i class="fas fa-shield-alt"></i>
+                    <span>Last updated: <strong>18 August 2026</strong></span>
+                </div>
 
-            <p><strong>3. Data Security</strong><br>
-            We take reasonable steps to protect your data using secure servers and encryption. However, no online transmission is 100% secure.</p>
+                <div class="policy-section">
+                    <div class="policy-section-head">
+                        <div class="policy-num">1</div>
+                        <h5>Information We Collect</h5>
+                    </div>
+                    <p>We collect information you provide directly when booking or registering — such as your name, email address, phone number, and appointment preferences. We also automatically collect basic technical data like your IP address and browser type to keep the site secure and improve performance.</p>
+                </div>
 
-            <p><strong>4. Third-Party Links</strong><br>
-            Our site may contain links to social media or payment platforms. We are not responsible for their privacy practices.</p>
+                <div class="policy-section">
+                    <div class="policy-section-head">
+                        <div class="policy-num">2</div>
+                        <h5>How We Use Your Information</h5>
+                    </div>
+                    <p>Your information is used to confirm bookings, send appointment reminders, process payments, and improve our services. <strong>We never sell your personal data to third parties.</strong></p>
+                </div>
 
-            <p><strong>5. Your Rights</strong><br>
-            You may request to view, update, or delete your data at any time by emailing us at <strong>pinkmeup01@gmail.com</strong>.</p>
+                <div class="policy-section">
+                    <div class="policy-section-head">
+                        <div class="policy-num">3</div>
+                        <h5>Data Security</h5>
+                    </div>
+                    <p>We take reasonable steps to protect your data using secure servers and encryption. However, no online transmission is ever 100% secure, so we encourage you to keep your account credentials private.</p>
+                </div>
 
-            <p>By using our site, you agree to this policy. Updates will be posted here.</p>
+                <div class="policy-section">
+                    <div class="policy-section-head">
+                        <div class="policy-num">4</div>
+                        <h5>Third-Party Links</h5>
+                    </div>
+                    <p>Our site may link to social media platforms or payment providers. We are not responsible for their privacy practices — please review their policies separately.</p>
+                </div>
 
-            <button class="close-modal" id="closePrivacyBtn">Close</button>
+                <div class="policy-section">
+                    <div class="policy-section-head">
+                        <div class="policy-num">5</div>
+                        <h5>Your Rights</h5>
+                    </div>
+                    <p>You may request to view, update, or delete your personal data at any time by emailing <strong>pinkmeup01@gmail.com</strong>. We'll respond within 7 business days.</p>
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <button class="btn-modal btn-modal-primary" data-close="privacyModal">Got it</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ============================================================
+         MODAL — TERMS OF SERVICE
+         ============================================================ -->
+    <div id="termsModal" class="modal" role="dialog" aria-modal="true" aria-labelledby="termsTitle">
+        <div class="modal-content">
+            <button class="modal-close-x" aria-label="Close dialog" data-close="termsModal"><i class="fas fa-times"></i></button>
+
+            <div class="modal-header">
+                <div class="modal-header-inner">
+                    <div class="modal-eyebrow">Legal</div>
+                    <h4 id="termsTitle">Terms of Service</h4>
+                    <p class="modal-subtitle">The ground rules for using PinkMeUp services.</p>
+                </div>
+            </div>
+
+            <div class="modal-body">
+                <div class="policy-meta">
+                    <i class="fas fa-file-contract"></i>
+                    <span>Last updated: <strong>18 August 2026</strong></span>
+                </div>
+
+                <div class="policy-section">
+                    <div class="policy-section-head">
+                        <div class="policy-num">1</div>
+                        <h5>Bookings &amp; Confirmation</h5>
+                    </div>
+                    <p>All appointments are confirmed once you receive a booking confirmation via email or SMS. Please arrive 5–10 minutes early. Late arrivals may result in shortened treatment time.</p>
+                </div>
+
+                <div class="policy-section">
+                    <div class="policy-section-head">
+                        <div class="policy-num">2</div>
+                        <h5>Cancellations &amp; Rescheduling</h5>
+                    </div>
+                    <p>We kindly ask for at least <strong>24 hours' notice</strong> for cancellations or rescheduling. Late cancellations or no-shows may be subject to a fee, or loss of deposit where applicable.</p>
+                </div>
+
+                <div class="policy-section">
+                    <div class="policy-section-head">
+                        <div class="policy-num">3</div>
+                        <h5>Payments</h5>
+                    </div>
+                    <p>Services are payable at the time of booking or on the day of your appointment. Academy fees follow the agreed payment plan. All prices are in South African Rand (ZAR) and may be updated from time to time.</p>
+                </div>
+
+                <div class="policy-section">
+                    <div class="policy-section-head">
+                        <div class="policy-num">4</div>
+                        <h5>Health &amp; Safety</h5>
+                    </div>
+                    <p>Please inform us of any allergies, skin conditions, or medical concerns before your treatment. We reserve the right to refuse service where it may pose a health risk to you or our staff.</p>
+                </div>
+
+                <div class="policy-section">
+                    <div class="policy-section-head">
+                        <div class="policy-num">5</div>
+                        <h5>Academy Enrolments</h5>
+                    </div>
+                    <p>Academy programmes are subject to registration, deposit, and starter kit requirements. Course fees are non-transferable. Certification is awarded upon successful completion of all modules.</p>
+                </div>
+
+                <div class="policy-section">
+                    <div class="policy-section-head">
+                        <div class="policy-num">6</div>
+                        <h5>Contact</h5>
+                    </div>
+                    <p>For any questions about these terms, please contact us at <strong>pinkmeup01@gmail.com</strong> or call <strong>076 769 0102</strong>.</p>
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <button class="btn-modal btn-modal-primary" data-close="termsModal">I understand</button>
+            </div>
         </div>
     </div>
 
@@ -1881,7 +2509,6 @@
                 slides.forEach((s, i) => s.classList.toggle('active', i === index));
                 dots.forEach((d, i) => {
                     d.classList.remove('active');
-                    // Force reflow so the progress animation restarts
                     void d.offsetWidth;
                     if (i === index) d.classList.add('active');
                 });
@@ -1910,11 +2537,9 @@
             if (prevBtn) prevBtn.addEventListener('click', () => { prev(); startAuto(); });
             if (nextBtn) nextBtn.addEventListener('click', () => { next(); startAuto(); });
 
-            // Pause on hover (desktop)
             slideshow.addEventListener('mouseenter', stopAuto);
             slideshow.addEventListener('mouseleave', startAuto);
 
-            // Pause when tab is hidden
             document.addEventListener('visibilitychange', () => {
                 if (document.hidden) stopAuto();
                 else startAuto();
@@ -1924,37 +2549,79 @@
         })();
 
         // ============================================================
-        // MODALS
+        // MODALS — generic controller
         // ============================================================
-        const aboutModal = document.getElementById('aboutModal');
-        const aboutBtns = document.querySelectorAll('#aboutUsBtn, #aboutUsBtn2');
-        const closeAboutBtn = document.getElementById('closeModalBtn');
-        aboutBtns.forEach(btn => {
-            btn.onclick = function() { aboutModal.style.display = 'flex'; }
-        });
-        closeAboutBtn.onclick = function() { aboutModal.style.display = 'none'; }
+        (function() {
+            const modals = {
+                aboutModal: document.getElementById('aboutModal'),
+                contactModal: document.getElementById('contactModal'),
+                privacyModal: document.getElementById('privacyModal'),
+                termsModal: document.getElementById('termsModal')
+            };
 
-        const contactModal = document.getElementById('contactModal');
-        const contactBtns = document.querySelectorAll('#contactBtn, #contactBtn2');
-        const closeContactBtn = document.getElementById('closeContactBtn');
-        contactBtns.forEach(btn => {
-            btn.onclick = function() { contactModal.style.display = 'flex'; }
-        });
-        closeContactBtn.onclick = function() { contactModal.style.display = 'none'; }
+            let lastFocused = null;
 
-        const privacyModal = document.getElementById('privacyModal');
-        const privacyBtns = document.querySelectorAll('#privacyBtn, #privacyBtn2');
-        const closePrivacyBtn = document.getElementById('closePrivacyBtn');
-        privacyBtns.forEach(btn => {
-            btn.onclick = function() { privacyModal.style.display = 'flex'; }
-        });
-        closePrivacyBtn.onclick = function() { privacyModal.style.display = 'none'; }
+            function openModal(id) {
+                const m = modals[id];
+                if (!m) return;
+                lastFocused = document.activeElement;
+                m.style.display = 'flex';
+                document.body.style.overflow = 'hidden';
+                // Focus first focusable element inside modal (for a11y)
+                setTimeout(() => {
+                    const focusable = m.querySelector('button, a[href], [tabindex]:not([tabindex="-1"])');
+                    if (focusable) focusable.focus();
+                }, 60);
+            }
 
-        window.onclick = function(event) {
-            if (event.target == aboutModal) aboutModal.style.display = 'none';
-            if (event.target == contactModal) contactModal.style.display = 'none';
-            if (event.target == privacyModal) privacyModal.style.display = 'none';
-        }
+            function closeModal(id) {
+                const m = modals[id];
+                if (!m) return;
+                m.style.display = 'none';
+                // Only restore scroll if no other modal is open
+                const anyOpen = Object.values(modals).some(x => x && x.style.display === 'flex');
+                if (!anyOpen) document.body.style.overflow = '';
+                if (lastFocused && typeof lastFocused.focus === 'function') {
+                    lastFocused.focus();
+                }
+            }
+
+            function closeAll() {
+                Object.keys(modals).forEach(closeModal);
+            }
+
+            // Open triggers
+            document.querySelectorAll('#aboutUsBtn, #aboutUsBtn2').forEach(b => {
+                b.addEventListener('click', () => openModal('aboutModal'));
+            });
+            document.querySelectorAll('#contactBtn, #contactBtn2').forEach(b => {
+                b.addEventListener('click', () => openModal('contactModal'));
+            });
+            document.querySelectorAll('#privacyBtn, #privacyBtn2').forEach(b => {
+                b.addEventListener('click', () => openModal('privacyModal'));
+            });
+            document.querySelectorAll('#termsBtn, #termsBtn2').forEach(b => {
+                b.addEventListener('click', () => openModal('termsModal'));
+            });
+
+            // Close triggers (X corner + footer buttons)
+            document.querySelectorAll('[data-close]').forEach(btn => {
+                btn.addEventListener('click', () => closeModal(btn.dataset.close));
+            });
+
+            // Click outside to close
+            Object.values(modals).forEach(m => {
+                if (!m) return;
+                m.addEventListener('click', (e) => {
+                    if (e.target === m) closeModal(m.id);
+                });
+            });
+
+            // ESC to close
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape') closeAll();
+            });
+        })();
     </script>
 </body>
 </html>
