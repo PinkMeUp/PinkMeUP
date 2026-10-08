@@ -1284,19 +1284,19 @@
         }
 
         /* ============================================================
-           PHONE — BALANCED HERO + SLIDESHOW (fits one screen, but roomier)
+           PHONE — MORE SPACE (extended vertical rhythm, still tidy)
            ============================================================ */
         @media (max-width: 600px) {
-            /* --- HERO — more breathing room than ultra-compact --- */
+            /* --- HERO — more padding, larger text, breathing room --- */
             .top-half {
-                padding: 22px 18px 32px 18px;
+                padding: 30px 20px 42px 20px;
                 min-height: auto;
             }
 
             .top-row {
                 flex-direction: column;
                 align-items: center;
-                gap: 10px;
+                gap: 12px;
             }
 
             .brand {
@@ -1305,118 +1305,118 @@
                 width: 100%;
             }
 
-            .brand h1 { font-size: 2.05rem; }
+            .brand h1 { font-size: 2.35rem; }
             .brand p {
-                font-size: 0.63rem;
-                letter-spacing: 3px;
-                margin-top: 5px;
+                font-size: 0.7rem;
+                letter-spacing: 3.5px;
+                margin-top: 8px;
             }
 
             .top-nav {
                 justify-content: center;
                 width: 100%;
-                gap: 2px;
+                gap: 4px;
             }
 
             .top-nav a,
             .top-nav .nav-btn {
-                font-size: 0.67rem;
-                padding: 4px 3px;
-                letter-spacing: 0.6px;
+                font-size: 0.72rem;
+                padding: 5px 3px;
+                letter-spacing: 0.7px;
             }
 
             .nav-divider {
-                font-size: 0.6rem;
-                margin: 0 1px;
+                font-size: 0.65rem;
+                margin: 0 2px;
             }
 
             .hero-content {
                 text-align: center;
-                margin-top: 18px;
+                margin-top: 30px;
                 margin-bottom: 0;
                 align-items: center;
                 flex: 0 0 auto;
             }
 
             .hero-text-label {
-                font-size: 0.58rem;
-                letter-spacing: 3px;
-                margin-bottom: 8px;
+                font-size: 0.65rem;
+                letter-spacing: 3.5px;
+                margin-bottom: 12px;
             }
 
             .hero-content h2 {
-                font-size: 1.95rem;
-                margin-bottom: 10px;
+                font-size: 2.2rem;
+                margin-bottom: 16px;
                 line-height: 1.08;
             }
 
             .hero-content p {
-                font-size: 0.86rem;
-                line-height: 1.5;
-                margin-bottom: 20px;
+                font-size: 0.95rem;
+                line-height: 1.6;
+                margin-bottom: 28px;
                 max-width: 100%;
             }
 
             .hero-cta-min {
                 align-self: center;
-                font-size: 0.74rem;
-                letter-spacing: 1.4px;
-                padding-bottom: 5px;
-                gap: 9px;
+                font-size: 0.8rem;
+                letter-spacing: 1.6px;
+                padding-bottom: 8px;
+                gap: 10px;
             }
 
-            .hero-cta-min i { font-size: 0.68rem; }
+            .hero-cta-min i { font-size: 0.72rem; }
 
             .hero-scroll { display: none; }
 
-            /* --- SLIDESHOW — taller than ultra-compact --- */
+            /* --- SLIDESHOW — taller, more presence --- */
             .slideshow {
-                height: 36vh;
-                min-height: 220px;
+                height: 42vh;
+                min-height: 260px;
             }
 
             .slide-caption {
-                left: 18px;
-                right: 18px;
-                bottom: 46px;
+                left: 20px;
+                right: 20px;
+                bottom: 55px;
                 max-width: none;
             }
 
-            .slide-caption h3 { font-size: 1.4rem; }
+            .slide-caption h3 { font-size: 1.6rem; }
 
             .slide-caption .caption-tag {
-                font-size: 0.54rem;
-                letter-spacing: 1.8px;
-                margin-bottom: 5px;
+                font-size: 0.6rem;
+                letter-spacing: 2px;
+                margin-bottom: 8px;
             }
 
-            .slide-caption .caption-tag::before { width: 14px; }
+            .slide-caption .caption-tag::before { width: 16px; }
 
             .slide-arrow { display: none; }
 
             .slide-dots {
-                bottom: 14px;
-                gap: 6px;
+                bottom: 18px;
+                gap: 8px;
             }
 
             .slide-dot {
-                width: 18px;
-                height: 2.5px;
+                width: 22px;
+                height: 3px;
             }
 
-            .slide-dot.active { width: 28px; }
+            .slide-dot.active { width: 34px; }
 
-            /* --- BOTTOM HALF --- */
-            .bottom-half { padding: 54px 16px 0 16px; }
+            /* --- BOTTOM HALF — more generous spacing --- */
+            .bottom-half { padding: 70px 18px 0 18px; }
 
-            .section-divider { margin-bottom: 44px; }
+            .section-divider { margin-bottom: 55px; }
 
-            .visible-about-section h3 { font-size: 1.85rem; }
-            .visible-about-section p { font-size: 0.92rem; }
+            .visible-about-section h3 { font-size: 2rem; }
+            .visible-about-section p { font-size: 0.98rem; }
 
             .why-choose-us h3 {
-                font-size: 1.85rem;
-                margin-bottom: 30px;
+                font-size: 2rem;
+                margin-bottom: 40px;
             }
 
             .why-grid {
@@ -1425,7 +1425,7 @@
             }
 
             .why-item {
-                padding: 24px 16px;
+                padding: 30px 20px;
             }
 
             .why-item:not(:last-child)::after {
@@ -1438,55 +1438,55 @@
                 background: linear-gradient(90deg, transparent, #dcdcdc 20%, #dcdcdc 80%, transparent);
             }
 
-            .why-icon-wrap i { font-size: 1.75rem; }
-            .why-item h4 { font-size: 1.25rem; }
+            .why-icon-wrap i { font-size: 1.9rem; }
+            .why-item h4 { font-size: 1.35rem; }
 
             .cards-container {
                 grid-template-columns: 1fr;
-                gap: 18px;
-                margin-bottom: 50px;
+                gap: 24px;
+                margin-bottom: 60px;
             }
 
-            .white-card { padding: 30px 20px; }
-            .card-title { font-size: 1.55rem; }
+            .white-card { padding: 36px 24px; }
+            .card-title { font-size: 1.7rem; }
 
             .contact-strip {
                 grid-template-columns: 1fr;
-                gap: 14px;
+                gap: 18px;
             }
 
-            .site-footer { padding: 44px 16px 0; }
+            .site-footer { padding: 56px 18px 0; }
 
             .footer-inner {
                 grid-template-columns: 1fr;
-                gap: 32px;
-                padding-bottom: 32px;
+                gap: 40px;
+                padding-bottom: 40px;
             }
 
             .footer-bottom {
                 flex-direction: column;
                 align-items: flex-start;
-                gap: 14px;
-                padding: 20px 0;
+                gap: 18px;
+                padding: 28px 0;
             }
 
-            .footer-legal { gap: 16px; }
+            .footer-legal { gap: 20px; }
 
             .modal-content {
-                padding: 2rem 1.25rem 1.25rem;
-                border-radius: 18px;
+                padding: 2.5rem 1.5rem 1.5rem;
+                border-radius: 20px;
             }
 
-            .modal-content h4 { font-size: 1.6rem; }
+            .modal-content h4 { font-size: 1.8rem; }
         }
 
         @media (max-width: 400px) {
-            .brand h1 { font-size: 1.8rem; }
-            .hero-content h2 { font-size: 1.7rem; }
+            .brand h1 { font-size: 2rem; }
+            .hero-content h2 { font-size: 1.9rem; }
             .visible-about-section h3,
-            .why-choose-us h3 { font-size: 1.6rem; }
-            .slide-caption h3 { font-size: 1.2rem; }
-            .slideshow { height: 32vh; min-height: 200px; }
+            .why-choose-us h3 { font-size: 1.8rem; }
+            .slide-caption h3 { font-size: 1.4rem; }
+            .slideshow { height: 38vh; min-height: 240px; }
         }
     </style>
 </head>
