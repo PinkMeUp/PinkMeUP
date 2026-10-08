@@ -1283,16 +1283,20 @@
             .footer-brand p { max-width: 100%; }
         }
 
+        /* ============================================================
+           PHONE — BALANCED HERO + SLIDESHOW (fits one screen, but roomier)
+           ============================================================ */
         @media (max-width: 600px) {
+            /* --- HERO — more breathing room than ultra-compact --- */
             .top-half {
-                padding: 25px 20px 70px 20px;
-                min-height: 90vh;
+                padding: 22px 18px 32px 18px;
+                min-height: auto;
             }
 
             .top-row {
                 flex-direction: column;
                 align-items: center;
-                gap: 16px;
+                gap: 10px;
             }
 
             .brand {
@@ -1301,77 +1305,118 @@
                 width: 100%;
             }
 
-            .brand h1 { font-size: 2.4rem; }
-            .brand p { font-size: 0.68rem; letter-spacing: 3px; }
+            .brand h1 { font-size: 2.05rem; }
+            .brand p {
+                font-size: 0.63rem;
+                letter-spacing: 3px;
+                margin-top: 5px;
+            }
 
             .top-nav {
                 justify-content: center;
                 width: 100%;
-                gap: 4px;
+                gap: 2px;
             }
 
             .top-nav a,
             .top-nav .nav-btn {
-                font-size: 0.7rem;
-                padding: 6px 3px;
+                font-size: 0.67rem;
+                padding: 4px 3px;
+                letter-spacing: 0.6px;
+            }
+
+            .nav-divider {
+                font-size: 0.6rem;
+                margin: 0 1px;
             }
 
             .hero-content {
                 text-align: center;
-                margin-top: 40px;
-                margin-left: auto;
-                margin-right: auto;
+                margin-top: 18px;
+                margin-bottom: 0;
                 align-items: center;
+                flex: 0 0 auto;
             }
 
-            .hero-text-label { font-size: 0.62rem; letter-spacing: 3px; }
-            .hero-content h2 { font-size: 2.1rem; }
+            .hero-text-label {
+                font-size: 0.58rem;
+                letter-spacing: 3px;
+                margin-bottom: 8px;
+            }
+
+            .hero-content h2 {
+                font-size: 1.95rem;
+                margin-bottom: 10px;
+                line-height: 1.08;
+            }
+
             .hero-content p {
-                font-size: 0.92rem;
-                margin-left: auto;
-                margin-right: auto;
-                margin-bottom: 30px;
+                font-size: 0.86rem;
+                line-height: 1.5;
+                margin-bottom: 20px;
+                max-width: 100%;
             }
 
             .hero-cta-min {
                 align-self: center;
-                font-size: 0.8rem;
+                font-size: 0.74rem;
+                letter-spacing: 1.4px;
+                padding-bottom: 5px;
+                gap: 9px;
             }
+
+            .hero-cta-min i { font-size: 0.68rem; }
 
             .hero-scroll { display: none; }
 
-            .slideshow { height: 380px; }
+            /* --- SLIDESHOW — taller than ultra-compact --- */
+            .slideshow {
+                height: 36vh;
+                min-height: 220px;
+            }
 
             .slide-caption {
-                left: 24px;
-                right: 24px;
-                bottom: 70px;
+                left: 18px;
+                right: 18px;
+                bottom: 46px;
                 max-width: none;
             }
 
-            .slide-caption h3 { font-size: 1.65rem; }
-            .slide-caption .caption-tag { font-size: 0.6rem; letter-spacing: 2px; }
+            .slide-caption h3 { font-size: 1.4rem; }
+
+            .slide-caption .caption-tag {
+                font-size: 0.54rem;
+                letter-spacing: 1.8px;
+                margin-bottom: 5px;
+            }
+
+            .slide-caption .caption-tag::before { width: 14px; }
 
             .slide-arrow { display: none; }
 
             .slide-dots {
-                bottom: 22px;
-                gap: 8px;
+                bottom: 14px;
+                gap: 6px;
             }
 
-            .slide-dot { width: 22px; }
-            .slide-dot.active { width: 34px; }
+            .slide-dot {
+                width: 18px;
+                height: 2.5px;
+            }
 
-            .bottom-half { padding: 60px 18px 0 18px; }
+            .slide-dot.active { width: 28px; }
 
-            .section-divider { margin-bottom: 50px; }
+            /* --- BOTTOM HALF --- */
+            .bottom-half { padding: 54px 16px 0 16px; }
 
-            .visible-about-section h3 { font-size: 2rem; }
-            .visible-about-section p { font-size: 0.94rem; }
+            .section-divider { margin-bottom: 44px; }
+
+            .visible-about-section h3 { font-size: 1.85rem; }
+            .visible-about-section p { font-size: 0.92rem; }
 
             .why-choose-us h3 {
-                font-size: 2rem;
-                margin-bottom: 35px;
+                font-size: 1.85rem;
+                margin-bottom: 30px;
             }
 
             .why-grid {
@@ -1380,7 +1425,7 @@
             }
 
             .why-item {
-                padding: 26px 20px;
+                padding: 24px 16px;
             }
 
             .why-item:not(:last-child)::after {
@@ -1393,54 +1438,55 @@
                 background: linear-gradient(90deg, transparent, #dcdcdc 20%, #dcdcdc 80%, transparent);
             }
 
-            .why-icon-wrap i { font-size: 1.9rem; }
-            .why-item h4 { font-size: 1.3rem; }
+            .why-icon-wrap i { font-size: 1.75rem; }
+            .why-item h4 { font-size: 1.25rem; }
 
             .cards-container {
                 grid-template-columns: 1fr;
-                gap: 20px;
-                margin-bottom: 55px;
+                gap: 18px;
+                margin-bottom: 50px;
             }
 
-            .white-card { padding: 32px 24px; }
-            .card-title { font-size: 1.6rem; }
+            .white-card { padding: 30px 20px; }
+            .card-title { font-size: 1.55rem; }
 
             .contact-strip {
                 grid-template-columns: 1fr;
-                gap: 16px;
+                gap: 14px;
             }
 
-            .site-footer { padding: 48px 20px 0; }
+            .site-footer { padding: 44px 16px 0; }
 
             .footer-inner {
                 grid-template-columns: 1fr;
-                gap: 36px;
-                padding-bottom: 36px;
+                gap: 32px;
+                padding-bottom: 32px;
             }
 
             .footer-bottom {
                 flex-direction: column;
                 align-items: flex-start;
-                gap: 16px;
-                padding: 22px 0;
+                gap: 14px;
+                padding: 20px 0;
             }
 
-            .footer-legal { gap: 18px; }
+            .footer-legal { gap: 16px; }
 
             .modal-content {
-                padding: 2.2rem 1.5rem 1.5rem;
-                border-radius: 20px;
+                padding: 2rem 1.25rem 1.25rem;
+                border-radius: 18px;
             }
 
-            .modal-content h4 { font-size: 1.75rem; }
+            .modal-content h4 { font-size: 1.6rem; }
         }
 
         @media (max-width: 400px) {
-            .brand h1 { font-size: 2rem; }
-            .hero-content h2 { font-size: 1.8rem; }
+            .brand h1 { font-size: 1.8rem; }
+            .hero-content h2 { font-size: 1.7rem; }
             .visible-about-section h3,
-            .why-choose-us h3 { font-size: 1.7rem; }
-            .slide-caption h3 { font-size: 1.4rem; }
+            .why-choose-us h3 { font-size: 1.6rem; }
+            .slide-caption h3 { font-size: 1.2rem; }
+            .slideshow { height: 32vh; min-height: 200px; }
         }
     </style>
 </head>
