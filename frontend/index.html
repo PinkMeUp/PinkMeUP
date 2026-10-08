@@ -26,7 +26,7 @@
         }
 
         /* ============================================================
-           TOP HALF — HERO (lighter overlays so photo shows through)
+           TOP HALF — HERO (single background image, lighter overlay)
            ============================================================ */
         .top-half {
             width: 100%;
@@ -37,7 +37,7 @@
             overflow: hidden;
             background: #000000;
             isolation: isolate;
-            min-height: 80vh;
+            min-height: 78vh;
         }
 
         .top-half::before {
@@ -312,170 +312,6 @@
         }
 
         /* ============================================================
-           SLIDESHOW — FULL BLEED (lighter gradient)
-           ============================================================ */
-        .slideshow {
-            position: relative;
-            width: 100%;
-            height: 620px;
-            overflow: hidden;
-            background: #0a0a0a;
-        }
-
-        @media (min-width: 1200px) {
-            .slideshow { height: 700px; }
-        }
-
-        .slide {
-            position: absolute;
-            inset: 0;
-            background-size: cover;
-            background-position: center;
-            opacity: 0;
-            transition: opacity 1.2s ease-in-out,
-                        transform 8s ease-out;
-            transform: scale(1.05);
-            z-index: 1;
-        }
-
-        .slide.active {
-            opacity: 1;
-            z-index: 2;
-            transform: scale(1);
-        }
-
-        .slide::after {
-            content: '';
-            position: absolute;
-            inset: 0;
-            background:
-                linear-gradient(180deg, rgba(0, 0, 0, 0.02) 0%, transparent 35%, transparent 60%, rgba(0, 0, 0, 0.55) 100%);
-            pointer-events: none;
-        }
-
-        .slide-1 { background-image: url('Icons/lashes-brows.png'); }
-        .slide-2 { background-image: url('Icons/hot-stones.png'); }
-        .slide-3 { background-image: url('Icons/nails2.jpg'); }
-
-        .slide-caption {
-            position: absolute;
-            left: 60px;
-            bottom: 60px;
-            z-index: 5;
-            color: #ffffff;
-            max-width: 520px;
-        }
-
-        .slide-caption .caption-tag {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            font-size: 0.66rem;
-            font-weight: 600;
-            letter-spacing: 3px;
-            color: #FFB6C1;
-            text-transform: uppercase;
-            margin-bottom: 14px;
-            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.8);
-        }
-
-        .slide-caption .caption-tag::before {
-            content: '';
-            width: 20px;
-            height: 1px;
-            background: linear-gradient(90deg, #FFB6C1, #D43F6B);
-            box-shadow: 0 1px 6px rgba(0, 0, 0, 0.6);
-        }
-
-        .slide-caption h3 {
-            font-family: 'Cormorant Garamond', serif;
-            font-size: 2.6rem;
-            font-weight: 600;
-            line-height: 1.1;
-            letter-spacing: -0.3px;
-            color: #ffffff;
-            text-shadow: 0 3px 24px rgba(0, 0, 0, 0.75), 0 1px 4px rgba(0, 0, 0, 0.5);
-        }
-
-        .slide-dots {
-            position: absolute;
-            bottom: 30px;
-            left: 50%;
-            transform: translateX(-50%);
-            z-index: 6;
-            display: flex;
-            gap: 12px;
-            align-items: center;
-        }
-
-        .slide-dot {
-            width: 32px;
-            height: 3px;
-            border-radius: 3px;
-            background: rgba(255, 255, 255, 0.45);
-            border: none;
-            cursor: pointer;
-            padding: 0;
-            transition: all 0.4s ease;
-            position: relative;
-            overflow: hidden;
-            box-shadow: 0 1px 6px rgba(0, 0, 0, 0.4);
-        }
-
-        .slide-dot.active {
-            background: rgba(255, 255, 255, 0.95);
-            width: 48px;
-        }
-
-        .slide-dot.active::after {
-            content: '';
-            position: absolute;
-            inset: 0;
-            background: linear-gradient(90deg, #FFB6C1 0%, #D43F6B 100%);
-            animation: dotProgress 6s linear forwards;
-        }
-
-        @keyframes dotProgress {
-            from { transform: translateX(-100%); }
-            to   { transform: translateX(0); }
-        }
-
-        .slide-arrow {
-            position: absolute;
-            top: 50%;
-            transform: translateY(-50%);
-            z-index: 6;
-            width: 48px;
-            height: 48px;
-            border-radius: 50%;
-            background: rgba(0, 0, 0, 0.28);
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.28);
-            color: #ffffff;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 0.9rem;
-            transition: all 0.35s ease;
-            opacity: 0;
-        }
-
-        .slideshow:hover .slide-arrow {
-            opacity: 1;
-        }
-
-        .slide-arrow:hover {
-            background: linear-gradient(135deg, #FFB6C1 0%, #D43F6B 100%);
-            border-color: transparent;
-            transform: translateY(-50%) scale(1.08);
-        }
-
-        .slide-arrow.prev { left: 30px; }
-        .slide-arrow.next { right: 30px; }
-
-        /* ============================================================
            BOTTOM HALF
            ============================================================ */
         .bottom-half {
@@ -486,20 +322,6 @@
             flex-direction: column;
             padding: 80px 40px 0 40px;
             position: relative;
-        }
-
-        .section-divider {
-            width: 100%;
-            max-width: 1100px;
-            margin: 0 auto 70px auto;
-            height: 1px;
-            background: linear-gradient(
-                90deg,
-                rgba(212, 63, 107, 0) 0%,
-                rgba(212, 63, 107, 0.45) 18%,
-                rgba(212, 63, 107, 0.45) 82%,
-                rgba(212, 63, 107, 0) 100%
-            );
         }
 
         .visible-about-section {
@@ -552,6 +374,201 @@
             font-weight: 600;
         }
 
+        /* ============================================================
+           SLIDESHOW — now lives inside the story section
+           ============================================================ */
+        .slideshow-wrap {
+            width: 100%;
+            max-width: 1100px;
+            margin: 55px auto 0;
+            padding: 0;
+            position: relative;
+        }
+
+        .slideshow {
+            position: relative;
+            width: 100%;
+            height: 500px;
+            overflow: hidden;
+            background: #0a0a0a;
+            border-radius: 26px;
+            box-shadow: 0 24px 60px rgba(0, 0, 0, 0.16), 0 6px 18px rgba(212, 63, 107, 0.1);
+            border: 1px solid rgba(212, 63, 107, 0.12);
+        }
+
+        @media (min-width: 1200px) {
+            .slideshow { height: 560px; }
+        }
+
+        .slide {
+            position: absolute;
+            inset: 0;
+            background-size: cover;
+            background-position: center;
+            opacity: 0;
+            transition: opacity 1.2s ease-in-out,
+                        transform 8s ease-out;
+            transform: scale(1.05);
+            z-index: 1;
+        }
+
+        .slide.active {
+            opacity: 1;
+            z-index: 2;
+            transform: scale(1);
+        }
+
+        .slide::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background:
+                linear-gradient(180deg, rgba(0, 0, 0, 0.02) 0%, transparent 35%, transparent 60%, rgba(0, 0, 0, 0.62) 100%);
+            pointer-events: none;
+        }
+
+        .slide-1 { background-image: url('Icons/lashes-brows.png'); }
+        .slide-2 { background-image: url('Icons/hot-stones.png'); }
+        .slide-3 { background-image: url('Icons/nails2.jpg'); }
+
+        .slide-caption {
+            position: absolute;
+            left: 44px;
+            bottom: 46px;
+            z-index: 5;
+            color: #ffffff;
+            max-width: 520px;
+        }
+
+        .slide-caption .caption-tag {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.66rem;
+            font-weight: 600;
+            letter-spacing: 3px;
+            color: #FFB6C1;
+            text-transform: uppercase;
+            margin-bottom: 14px;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.8);
+        }
+
+        .slide-caption .caption-tag::before {
+            content: '';
+            width: 20px;
+            height: 1px;
+            background: linear-gradient(90deg, #FFB6C1, #D43F6B);
+            box-shadow: 0 1px 6px rgba(0, 0, 0, 0.6);
+        }
+
+        .slide-caption h3 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 2.3rem;
+            font-weight: 600;
+            line-height: 1.1;
+            letter-spacing: -0.3px;
+            color: #ffffff;
+            text-shadow: 0 3px 24px rgba(0, 0, 0, 0.75), 0 1px 4px rgba(0, 0, 0, 0.5);
+        }
+
+        .slide-dots {
+            position: absolute;
+            bottom: 24px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 6;
+            display: flex;
+            gap: 12px;
+            align-items: center;
+        }
+
+        .slide-dot {
+            width: 32px;
+            height: 3px;
+            border-radius: 3px;
+            background: rgba(255, 255, 255, 0.45);
+            border: none;
+            cursor: pointer;
+            padding: 0;
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 1px 6px rgba(0, 0, 0, 0.4);
+        }
+
+        .slide-dot.active {
+            background: rgba(255, 255, 255, 0.95);
+            width: 48px;
+        }
+
+        .slide-dot.active::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(90deg, #FFB6C1 0%, #D43F6B 100%);
+            animation: dotProgress 6s linear forwards;
+        }
+
+        @keyframes dotProgress {
+            from { transform: translateX(-100%); }
+            to   { transform: translateX(0); }
+        }
+
+        .slide-arrow {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            z-index: 6;
+            width: 46px;
+            height: 46px;
+            border-radius: 50%;
+            background: rgba(0, 0, 0, 0.32);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            color: #ffffff;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.88rem;
+            transition: all 0.35s ease;
+            opacity: 0;
+        }
+
+        .slideshow:hover .slide-arrow {
+            opacity: 1;
+        }
+
+        .slide-arrow:hover {
+            background: linear-gradient(135deg, #FFB6C1 0%, #D43F6B 100%);
+            border-color: transparent;
+            transform: translateY(-50%) scale(1.08);
+        }
+
+        .slide-arrow.prev { left: 20px; }
+        .slide-arrow.next { right: 20px; }
+
+        /* ============================================================
+           SECTION DIVIDER
+           ============================================================ */
+        .section-divider {
+            width: 100%;
+            max-width: 1100px;
+            margin: 80px auto 70px auto;
+            height: 1px;
+            background: linear-gradient(
+                90deg,
+                rgba(212, 63, 107, 0) 0%,
+                rgba(212, 63, 107, 0.45) 18%,
+                rgba(212, 63, 107, 0.45) 82%,
+                rgba(212, 63, 107, 0) 100%
+            );
+        }
+
+        /* ============================================================
+           WHY CHOOSE US
+           ============================================================ */
         .why-choose-us {
             max-width: 1100px;
             margin: 0 auto;
@@ -637,6 +654,9 @@
             max-width: 260px;
         }
 
+        /* ============================================================
+           CARDS
+           ============================================================ */
         .cards-container {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -952,7 +972,9 @@
 
         .contact-mini-value a:hover { color: #D43F6B; }
 
-        /* FOOTER */
+        /* ============================================================
+           FOOTER
+           ============================================================ */
         .site-footer {
             width: 100%;
             background: #0a0a0a;
@@ -1108,7 +1130,9 @@
             box-shadow: 0 8px 20px rgba(212, 63, 107, 0.35);
         }
 
-        /* MODALS */
+        /* ============================================================
+           MODALS
+           ============================================================ */
         .modal {
             display: none;
             position: fixed;
@@ -1608,9 +1632,9 @@
         @media (max-width: 992px) and (min-width: 601px) {
             .hero-content h2 { font-size: 2.8rem; }
             .cards-container { grid-template-columns: 1fr; gap: 22px; }
-            .slideshow { height: 500px; }
-            .slide-caption { left: 40px; bottom: 50px; }
-            .slide-caption h3 { font-size: 2.1rem; }
+            .slideshow { height: 440px; border-radius: 22px; }
+            .slide-caption { left: 32px; bottom: 42px; }
+            .slide-caption h3 { font-size: 1.9rem; }
             .footer-inner { grid-template-columns: 1.4fr 1fr 1fr; gap: 32px; }
             .footer-brand { grid-column: 1 / -1; }
             .footer-brand p { max-width: 100%; }
@@ -1694,38 +1718,41 @@
             .hero-cta-min i { font-size: 0.72rem; }
             .hero-scroll { display: none; }
 
+            .bottom-half { padding: 60px 18px 0 18px; }
+
+            .visible-about-section h3 { font-size: 2rem; }
+            .visible-about-section p { font-size: 0.98rem; }
+
+            .slideshow-wrap { margin-top: 38px; }
+
             .slideshow {
-                height: 42vh;
-                min-height: 260px;
+                height: 320px;
+                border-radius: 20px;
             }
 
             .slide-caption {
                 left: 20px;
                 right: 20px;
-                bottom: 55px;
+                bottom: 48px;
                 max-width: none;
             }
 
-            .slide-caption h3 { font-size: 1.6rem; }
+            .slide-caption h3 { font-size: 1.4rem; }
 
             .slide-caption .caption-tag {
-                font-size: 0.6rem;
+                font-size: 0.58rem;
                 letter-spacing: 2px;
-                margin-bottom: 8px;
+                margin-bottom: 6px;
             }
 
-            .slide-caption .caption-tag::before { width: 16px; }
+            .slide-caption .caption-tag::before { width: 14px; }
             .slide-arrow { display: none; }
 
-            .slide-dots { bottom: 18px; gap: 8px; }
+            .slide-dots { bottom: 14px; gap: 8px; }
             .slide-dot { width: 22px; height: 3px; }
             .slide-dot.active { width: 34px; }
 
-            .bottom-half { padding: 70px 18px 0 18px; }
-            .section-divider { margin-bottom: 55px; }
-
-            .visible-about-section h3 { font-size: 2rem; }
-            .visible-about-section p { font-size: 0.98rem; }
+            .section-divider { margin: 56px auto 50px auto; }
 
             .why-choose-us h3 { font-size: 2rem; margin-bottom: 40px; }
             .why-grid { grid-template-columns: 1fr; gap: 0; }
@@ -1801,8 +1828,8 @@
             .hero-content h2 { font-size: 1.9rem; }
             .visible-about-section h3,
             .why-choose-us h3 { font-size: 1.8rem; }
-            .slide-caption h3 { font-size: 1.4rem; }
-            .slideshow { height: 38vh; min-height: 240px; }
+            .slide-caption h3 { font-size: 1.25rem; }
+            .slideshow { height: 280px; }
             .modal-header h4 { font-size: 1.5rem; }
             .modal-body { padding: 1.35rem 1.25rem 1.5rem; }
             .modal-footer { padding: 1rem 1.25rem 1.2rem; }
@@ -1811,7 +1838,9 @@
 </head>
 <body>
 
-    <!-- HERO -->
+    <!-- ============================================================
+         HERO — single clean background, no slideshow competing
+         ============================================================ -->
     <div class="top-half">
         <div class="top-row">
             <div class="brand">
@@ -1844,38 +1873,9 @@
         </div>
     </div>
 
-    <!-- FULL-BLEED SLIDESHOW -->
-    <div class="slideshow" id="slideshow">
-        <div class="slide slide-1 active">
-            <div class="slide-caption">
-                <div class="caption-tag">Signature</div>
-                <h3>Lash &amp; Brow Artistry</h3>
-            </div>
-        </div>
-        <div class="slide slide-2">
-            <div class="slide-caption">
-                <div class="caption-tag">Restore</div>
-                <h3>Massage Therapy</h3>
-            </div>
-        </div>
-        <div class="slide slide-3">
-            <div class="slide-caption">
-                <div class="caption-tag">Craft</div>
-                <h3>Nail Design</h3>
-            </div>
-        </div>
-
-        <button class="slide-arrow prev" id="slidePrev" aria-label="Previous slide"><i class="fas fa-chevron-left"></i></button>
-        <button class="slide-arrow next" id="slideNext" aria-label="Next slide"><i class="fas fa-chevron-right"></i></button>
-
-        <div class="slide-dots" id="slideDots">
-            <button class="slide-dot active" data-index="0" aria-label="Go to slide 1"></button>
-            <button class="slide-dot" data-index="1" aria-label="Go to slide 2"></button>
-            <button class="slide-dot" data-index="2" aria-label="Go to slide 3"></button>
-        </div>
-    </div>
-
-    <!-- BOTTOM HALF -->
+    <!-- ============================================================
+         BOTTOM HALF
+         ============================================================ -->
     <div class="bottom-half">
 
         <!-- OUR STORY -->
@@ -1885,9 +1885,42 @@
             <p>
                 <strong>PinkMeUp Beauty Spa &amp; Academy</strong> was founded by <strong>Phumuzile Moyo</strong>, a self-taught beauty entrepreneur who turned her passion into a thriving business. Located inside <strong>Wits University, Matrix Building, Floor 1</strong>, we offer luxury facials, nail treatments, lash artistry, massage therapy, and waxing — <strong>and many more</strong>. We also operate a <strong>QCTO and SDCC accredited academy</strong>, empowering the next generation of beauty professionals.
             </p>
+
+            <!-- SLIDESHOW — now inside Our Story -->
+            <div class="slideshow-wrap">
+                <div class="slideshow" id="slideshow">
+                    <div class="slide slide-1 active">
+                        <div class="slide-caption">
+                            <div class="caption-tag">Signature</div>
+                            <h3>Lash &amp; Brow Artistry</h3>
+                        </div>
+                    </div>
+                    <div class="slide slide-2">
+                        <div class="slide-caption">
+                            <div class="caption-tag">Restore</div>
+                            <h3>Massage Therapy</h3>
+                        </div>
+                    </div>
+                    <div class="slide slide-3">
+                        <div class="slide-caption">
+                            <div class="caption-tag">Craft</div>
+                            <h3>Nail Design</h3>
+                        </div>
+                    </div>
+
+                    <button class="slide-arrow prev" id="slidePrev" aria-label="Previous slide"><i class="fas fa-chevron-left"></i></button>
+                    <button class="slide-arrow next" id="slideNext" aria-label="Next slide"><i class="fas fa-chevron-right"></i></button>
+
+                    <div class="slide-dots" id="slideDots">
+                        <button class="slide-dot active" data-index="0" aria-label="Go to slide 1"></button>
+                        <button class="slide-dot" data-index="1" aria-label="Go to slide 2"></button>
+                        <button class="slide-dot" data-index="2" aria-label="Go to slide 3"></button>
+                    </div>
+                </div>
+            </div>
         </div>
 
-        <div class="section-divider" style="margin-top: 70px;"></div>
+        <div class="section-divider"></div>
 
         <!-- WHY CHOOSE US -->
         <div class="why-choose-us">
@@ -1912,7 +1945,7 @@
             </div>
         </div>
 
-        <div class="section-divider" style="margin-top: 70px;"></div>
+        <div class="section-divider"></div>
 
         <!-- THE TWO CARDS -->
         <div class="cards-container">
@@ -2039,7 +2072,9 @@
         </div>
     </div>
 
-    <!-- FOOTER -->
+    <!-- ============================================================
+         FOOTER
+         ============================================================ -->
     <footer class="site-footer">
         <div class="footer-inner">
 
