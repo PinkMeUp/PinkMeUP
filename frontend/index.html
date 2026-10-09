@@ -33,7 +33,7 @@
         }
 
         /* ============================================================
-           TOP HALF — HERO
+           TOP HALF — HERO (clearer pink gradient)
            ============================================================ */
         .top-half {
             width: 100%;
@@ -52,8 +52,18 @@
             position: absolute;
             inset: 0;
             background-image:
-                linear-gradient(180deg, rgba(0, 0, 0, 0.82) 0%, rgba(0, 0, 0, 0.72) 40%, rgba(0, 0, 0, 0.95) 100%),
-                linear-gradient(90deg, rgba(0, 0, 0, 0.75) 0%, rgba(0, 0, 0, 0.35) 60%, rgba(0, 0, 0, 0.75) 100%),
+                /* warmer pink-to-black vertical gradient for clarity */
+                linear-gradient(180deg,
+                    rgba(92, 16, 39, 0.72) 0%,
+                    rgba(138, 26, 61, 0.48) 35%,
+                    rgba(30, 5, 15, 0.72) 70%,
+                    rgba(0, 0, 0, 0.94) 100%),
+                /* side vignette with brand tone */
+                linear-gradient(90deg,
+                    rgba(92, 16, 39, 0.75) 0%,
+                    rgba(138, 26, 61, 0.25) 35%,
+                    rgba(138, 26, 61, 0.25) 65%,
+                    rgba(92, 16, 39, 0.75) 100%),
                 url('Icons/nails2.jpg');
             background-size: cover, cover, cover;
             background-position: center, center, center 40%;
@@ -74,8 +84,8 @@
             z-index: 1;
             pointer-events: none;
             background:
-                radial-gradient(circle at 15% 25%, rgba(255, 182, 193, 0.15), transparent 50%),
-                radial-gradient(circle at 85% 75%, rgba(212, 63, 107, 0.18), transparent 55%);
+                radial-gradient(circle at 15% 25%, rgba(255, 182, 193, 0.22), transparent 55%),
+                radial-gradient(circle at 85% 75%, rgba(212, 63, 107, 0.28), transparent 55%);
         }
 
         .top-row,
@@ -110,7 +120,7 @@
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
-            filter: drop-shadow(0 4px 24px rgba(212, 63, 107, 0.35));
+            filter: drop-shadow(0 4px 24px rgba(212, 63, 107, 0.5));
         }
 
         .brand p {
@@ -121,7 +131,8 @@
             color: #ffffff;
             margin-top: 10px;
             text-transform: uppercase;
-            opacity: 0.85;
+            opacity: 0.9;
+            text-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
         }
 
         .top-nav {
@@ -151,6 +162,7 @@
             margin: 0;
             line-height: normal;
             position: relative;
+            text-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
         }
 
         .top-nav a::after,
@@ -178,9 +190,10 @@
         }
 
         .nav-divider {
-            color: rgba(255, 255, 255, 0.35);
+            color: rgba(255, 255, 255, 0.5);
             margin: 0 4px;
             font-size: 0.7rem;
+            text-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
         }
 
         .hero-content {
@@ -209,7 +222,7 @@
             text-transform: uppercase;
             color: #FFB6C1;
             margin-bottom: 18px;
-            opacity: 0.9;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.6);
         }
 
         .hero-content h2 {
@@ -220,6 +233,7 @@
             line-height: 1.05;
             color: #ffffff;
             letter-spacing: -0.5px;
+            text-shadow: 0 3px 20px rgba(0, 0, 0, 0.55);
         }
 
         .hero-content h2 em {
@@ -228,16 +242,18 @@
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
+            filter: drop-shadow(0 2px 12px rgba(0, 0, 0, 0.5));
         }
 
         .hero-content p {
             font-family: 'Inter', sans-serif;
             font-size: 1.05rem;
-            color: rgba(255, 255, 255, 0.85);
+            color: rgba(255, 255, 255, 0.92);
             line-height: 1.65;
-            font-weight: 300;
+            font-weight: 400;
             margin-bottom: 40px;
             max-width: 540px;
+            text-shadow: 0 2px 12px rgba(0, 0, 0, 0.55);
         }
 
         .hero-cta-min {
@@ -255,6 +271,7 @@
             padding-bottom: 8px;
             position: relative;
             transition: color 0.3s ease, gap 0.3s ease;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
         }
 
         .hero-cta-min::after {
@@ -293,7 +310,7 @@
             left: 50%;
             transform: translateX(-50%);
             z-index: 2;
-            color: rgba(255, 255, 255, 0.5);
+            color: rgba(255, 255, 255, 0.65);
             font-size: 0.7rem;
             letter-spacing: 2px;
             text-transform: uppercase;
@@ -302,6 +319,7 @@
             align-items: center;
             gap: 8px;
             animation: heroBounce 2.4s ease-in-out infinite;
+            text-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
         }
 
         .hero-scroll i { font-size: 0.85rem; color: #FFB6C1; }
@@ -310,167 +328,6 @@
             0%, 100% { transform: translateX(-50%) translateY(0); opacity: 0.6; }
             50% { transform: translateX(-50%) translateY(6px); opacity: 1; }
         }
-
-        /* ============================================================
-           SLIDESHOW — FULL BLEED
-           ============================================================ */
-        .slideshow {
-            position: relative;
-            width: 100%;
-            height: 620px;
-            overflow: hidden;
-            background: #0a0a0a;
-        }
-
-        @media (min-width: 1200px) {
-            .slideshow { height: 700px; }
-        }
-
-        .slide {
-            position: absolute;
-            inset: 0;
-            background-size: cover;
-            background-position: center;
-            opacity: 0;
-            transition: opacity 1.2s ease-in-out,
-                        transform 8s ease-out;
-            transform: scale(1.05);
-            z-index: 1;
-        }
-
-        .slide.active {
-            opacity: 1;
-            z-index: 2;
-            transform: scale(1);
-        }
-
-        .slide::after {
-            content: '';
-            position: absolute;
-            inset: 0;
-            background:
-                linear-gradient(180deg, rgba(0, 0, 0, 0.15) 0%, transparent 30%, transparent 55%, rgba(0, 0, 0, 0.75) 100%);
-            pointer-events: none;
-        }
-
-        .slide-1 { background-image: url('Icons/lashes-brows.png'); }
-        .slide-2 { background-image: url('Icons/hot-stones.png'); }
-        .slide-3 { background-image: url('Icons/nails2.jpg'); }
-
-        .slide-caption {
-            position: absolute;
-            left: 60px;
-            bottom: 60px;
-            z-index: 5;
-            color: #ffffff;
-            max-width: 520px;
-        }
-
-        .slide-caption .caption-tag {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            font-size: 0.66rem;
-            font-weight: 600;
-            letter-spacing: 3px;
-            color: #FFB6C1;
-            text-transform: uppercase;
-            margin-bottom: 14px;
-        }
-
-        .slide-caption .caption-tag::before {
-            content: '';
-            width: 20px;
-            height: 1px;
-            background: linear-gradient(90deg, #FFB6C1, #D43F6B);
-        }
-
-        .slide-caption h3 {
-            font-family: 'Cormorant Garamond', serif;
-            font-size: 2.6rem;
-            font-weight: 600;
-            line-height: 1.1;
-            letter-spacing: -0.3px;
-            color: #ffffff;
-            text-shadow: 0 2px 20px rgba(0, 0, 0, 0.5);
-        }
-
-        .slide-dots {
-            position: absolute;
-            bottom: 30px;
-            left: 50%;
-            transform: translateX(-50%);
-            z-index: 6;
-            display: flex;
-            gap: 12px;
-            align-items: center;
-        }
-
-        .slide-dot {
-            width: 32px;
-            height: 3px;
-            border-radius: 3px;
-            background: rgba(255, 255, 255, 0.3);
-            border: none;
-            cursor: pointer;
-            padding: 0;
-            transition: all 0.4s ease;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .slide-dot.active {
-            background: rgba(255, 255, 255, 0.9);
-            width: 48px;
-        }
-
-        .slide-dot.active::after {
-            content: '';
-            position: absolute;
-            inset: 0;
-            background: linear-gradient(90deg, #FFB6C1 0%, #D43F6B 100%);
-            animation: dotProgress 6s linear forwards;
-        }
-
-        @keyframes dotProgress {
-            from { transform: translateX(-100%); }
-            to   { transform: translateX(0); }
-        }
-
-        .slide-arrow {
-            position: absolute;
-            top: 50%;
-            transform: translateY(-50%);
-            z-index: 6;
-            width: 48px;
-            height: 48px;
-            border-radius: 50%;
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.15);
-            color: #ffffff;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 0.9rem;
-            transition: all 0.35s ease;
-            opacity: 0;
-        }
-
-        .slideshow:hover .slide-arrow {
-            opacity: 1;
-        }
-
-        .slide-arrow:hover {
-            background: linear-gradient(135deg, #FFB6C1 0%, #D43F6B 100%);
-            border-color: transparent;
-            transform: translateY(-50%) scale(1.08);
-        }
-
-        .slide-arrow.prev { left: 30px; }
-        .slide-arrow.next { right: 30px; }
 
         /* ============================================================
            BOTTOM HALF
@@ -634,6 +491,218 @@
             max-width: 260px;
         }
 
+        /* ============================================================
+           SERVICE GALLERY — horizontally scrollable
+           ============================================================ */
+        .service-gallery-section {
+            max-width: 1200px;
+            margin: 70px auto 0;
+            padding: 0 40px;
+            position: relative;
+        }
+
+        .gallery-head {
+            display: flex;
+            align-items: flex-end;
+            justify-content: space-between;
+            gap: 20px;
+            margin-bottom: 26px;
+            flex-wrap: wrap;
+        }
+
+        .gallery-head-text h4 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.9rem;
+            font-weight: 600;
+            color: #1a1a1a;
+            letter-spacing: -0.3px;
+            line-height: 1.15;
+            margin-bottom: 6px;
+        }
+
+        .gallery-head-text p {
+            font-size: 0.88rem;
+            color: #7a7a7a;
+            font-weight: 300;
+            line-height: 1.5;
+        }
+
+        .gallery-nav {
+            display: flex;
+            gap: 10px;
+            flex-shrink: 0;
+        }
+
+        .gallery-nav button {
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            background: #ffffff;
+            border: 1px solid #e8e8e8;
+            color: #1a1a1a;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.85rem;
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+        }
+
+        .gallery-nav button:hover:not(:disabled) {
+            background: linear-gradient(135deg, #FFB6C1 0%, #D43F6B 100%);
+            border-color: transparent;
+            color: #ffffff;
+            transform: translateY(-2px);
+            box-shadow: 0 10px 22px rgba(212, 63, 107, 0.28);
+        }
+
+        .gallery-nav button:disabled {
+            opacity: 0.35;
+            cursor: not-allowed;
+        }
+
+        .service-gallery {
+            display: flex;
+            gap: 22px;
+            overflow-x: auto;
+            scroll-snap-type: x mandatory;
+            scroll-behavior: smooth;
+            padding-bottom: 20px;
+            margin: 0 -6px;
+            padding-left: 6px;
+            padding-right: 6px;
+            /* elegant thin scrollbar */
+            scrollbar-width: thin;
+            scrollbar-color: rgba(212, 63, 107, 0.35) transparent;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .service-gallery::-webkit-scrollbar {
+            height: 6px;
+        }
+
+        .service-gallery::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        .service-gallery::-webkit-scrollbar-thumb {
+            background: linear-gradient(90deg, #FFB6C1, #D43F6B);
+            border-radius: 10px;
+            opacity: 0.6;
+        }
+
+        .service-card {
+            position: relative;
+            flex: 0 0 auto;
+            width: calc((100% - 44px) / 2.4);
+            min-width: 300px;
+            max-width: 480px;
+            height: 420px;
+            border-radius: 22px;
+            overflow: hidden;
+            background-size: cover;
+            background-position: center;
+            scroll-snap-align: start;
+            display: flex;
+            align-items: flex-end;
+            cursor: pointer;
+            box-shadow: 0 8px 28px rgba(0, 0, 0, 0.1);
+            transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .service-card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 24px 46px rgba(212, 63, 107, 0.22);
+        }
+
+        .service-card::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(
+                180deg,
+                rgba(0, 0, 0, 0.05) 0%,
+                rgba(0, 0, 0, 0.15) 45%,
+                rgba(0, 0, 0, 0.78) 100%
+            );
+            z-index: 1;
+            transition: all 0.5s ease;
+        }
+
+        .service-card:hover::after {
+            background: linear-gradient(
+                180deg,
+                rgba(138, 26, 61, 0.15) 0%,
+                rgba(92, 16, 39, 0.42) 45%,
+                rgba(92, 16, 39, 0.9) 100%
+            );
+        }
+
+        .service-card.s-card-1 { background-image: url('Icons/lashes-brows.png'); }
+        .service-card.s-card-2 { background-image: url('Icons/hot-stones.png'); }
+        .service-card.s-card-3 { background-image: url('Icons/nails2.jpg'); }
+
+        .service-card-content {
+            position: relative;
+            z-index: 2;
+            padding: 34px 30px;
+            width: 100%;
+            color: #ffffff;
+        }
+
+        .service-card-tag {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.62rem;
+            font-weight: 700;
+            letter-spacing: 3px;
+            color: #FFB6C1;
+            text-transform: uppercase;
+            margin-bottom: 12px;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.7);
+        }
+
+        .service-card-tag::before {
+            content: '';
+            width: 18px;
+            height: 1px;
+            background: linear-gradient(90deg, #FFB6C1, #D43F6B);
+        }
+
+        .service-card h4 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 2rem;
+            font-weight: 600;
+            line-height: 1.1;
+            letter-spacing: -0.3px;
+            color: #ffffff;
+            text-shadow: 0 3px 20px rgba(0, 0, 0, 0.65);
+            margin-bottom: 12px;
+        }
+
+        .service-card-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.76rem;
+            font-weight: 500;
+            letter-spacing: 0.4px;
+            color: rgba(255, 255, 255, 0.85);
+            transition: all 0.35s ease;
+        }
+
+        .service-card:hover .service-card-link {
+            color: #FFB6C1;
+            gap: 13px;
+        }
+
+        .service-card-link i { font-size: 0.68rem; transition: transform 0.35s ease; }
+
+        /* ============================================================
+           CARDS
+           ============================================================ */
         .cards-container {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -949,9 +1018,7 @@
 
         .contact-mini-value a:hover { color: #D43F6B; }
 
-        /* ============================================================
-           FOOTER
-           ============================================================ */
+        /* FOOTER */
         .site-footer {
             width: 100%;
             background: #0a0a0a;
@@ -1153,7 +1220,6 @@
             to   { opacity: 1; transform: translateY(0) scale(1); }
         }
 
-        /* Corner close X */
         .modal-close-x {
             position: absolute;
             top: 18px;
@@ -1180,7 +1246,6 @@
             transform: rotate(90deg) scale(1.05);
         }
 
-        /* Gradient header */
         .modal-header {
             background: linear-gradient(135deg, #D43F6B 0%, #8a1a3d 55%, #5c1027 100%);
             padding: 2.5rem 2.5rem 2.1rem;
@@ -1258,7 +1323,6 @@
             max-width: 92%;
         }
 
-        /* Body */
         .modal-body {
             padding: 2rem 2.5rem 2.25rem;
             overflow-y: auto;
@@ -1275,7 +1339,6 @@
         }
         .modal-body::-webkit-scrollbar-thumb:hover { background: #c0c0c0; }
 
-        /* Founder card (About) */
         .founder-card {
             display: flex;
             gap: 16px;
@@ -1322,7 +1385,6 @@
             text-transform: uppercase;
         }
 
-        /* About text */
         .about-text {
             font-size: 0.92rem;
             color: #4a4a4a;
@@ -1336,7 +1398,6 @@
             font-weight: 600;
         }
 
-        /* Stats */
         .about-stats {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
@@ -1372,7 +1433,6 @@
             color: #7a7a7a;
         }
 
-        /* Highlights */
         .about-highlights {
             display: flex;
             flex-direction: column;
@@ -1397,7 +1457,6 @@
             flex-shrink: 0;
         }
 
-        /* Contact tiles */
         .contact-tiles {
             display: flex;
             flex-direction: column;
@@ -1474,7 +1533,6 @@
             transform: translateX(4px);
         }
 
-        /* Hours block */
         .modal-hours {
             margin-top: 22px;
             padding: 18px 20px;
@@ -1525,7 +1583,6 @@
             font-weight: 600;
         }
 
-        /* Policy sections */
         .policy-meta {
             display: flex;
             align-items: center;
@@ -1603,7 +1660,6 @@
             font-weight: 600;
         }
 
-        /* Footer */
         .modal-footer {
             padding: 1.25rem 2.5rem 1.6rem;
             border-top: 1px solid #f0f0f0;
@@ -1688,12 +1744,14 @@
         @media (max-width: 992px) and (min-width: 601px) {
             .hero-content h2 { font-size: 2.8rem; }
             .cards-container { grid-template-columns: 1fr; gap: 22px; }
-            .slideshow { height: 500px; }
-            .slide-caption { left: 40px; bottom: 50px; }
-            .slide-caption h3 { font-size: 2.1rem; }
             .footer-inner { grid-template-columns: 1.4fr 1fr 1fr; gap: 32px; }
             .footer-brand { grid-column: 1 / -1; }
             .footer-brand p { max-width: 100%; }
+
+            .service-card {
+                width: calc((100% - 22px) / 1.7);
+                height: 380px;
+            }
         }
 
         @media (max-width: 600px) {
@@ -1774,34 +1832,7 @@
             .hero-cta-min i { font-size: 0.72rem; }
             .hero-scroll { display: none; }
 
-            .slideshow {
-                height: 42vh;
-                min-height: 260px;
-            }
-
-            .slide-caption {
-                left: 20px;
-                right: 20px;
-                bottom: 55px;
-                max-width: none;
-            }
-
-            .slide-caption h3 { font-size: 1.6rem; }
-
-            .slide-caption .caption-tag {
-                font-size: 0.6rem;
-                letter-spacing: 2px;
-                margin-bottom: 8px;
-            }
-
-            .slide-caption .caption-tag::before { width: 16px; }
-            .slide-arrow { display: none; }
-
-            .slide-dots { bottom: 18px; gap: 8px; }
-            .slide-dot { width: 22px; height: 3px; }
-            .slide-dot.active { width: 34px; }
-
-            .bottom-half { padding: 70px 18px 0 18px; }
+            .bottom-half { padding: 60px 18px 0 18px; }
             .section-divider { margin-bottom: 55px; }
 
             .visible-about-section h3 { font-size: 2rem; }
@@ -1824,6 +1855,40 @@
             .why-icon-wrap i { font-size: 1.9rem; }
             .why-item h4 { font-size: 1.35rem; }
 
+            /* Service gallery — mobile */
+            .service-gallery-section {
+                margin-top: 46px;
+                padding: 0;
+            }
+
+            .gallery-head {
+                padding: 0 18px;
+                margin-bottom: 20px;
+            }
+
+            .gallery-head-text h4 { font-size: 1.5rem; }
+            .gallery-head-text p { font-size: 0.82rem; }
+
+            .gallery-nav { display: none; }
+
+            .service-gallery {
+                padding-left: 18px;
+                padding-right: 18px;
+                gap: 16px;
+            }
+
+            .service-card {
+                width: 78%;
+                min-width: 260px;
+                max-width: 320px;
+                height: 340px;
+                border-radius: 18px;
+            }
+
+            .service-card-content { padding: 24px 22px; }
+            .service-card h4 { font-size: 1.55rem; }
+            .service-card-tag { font-size: 0.56rem; letter-spacing: 2.4px; }
+
             .cards-container {
                 grid-template-columns: 1fr;
                 gap: 24px;
@@ -1845,14 +1910,11 @@
             }
             .footer-legal { gap: 20px; }
 
-            /* Modal mobile */
             .modal { padding: 1rem; }
-
             .modal-content {
                 max-height: calc(100vh - 2rem);
                 border-radius: 22px;
             }
-
             .modal-close-x {
                 top: 14px;
                 right: 14px;
@@ -1860,7 +1922,6 @@
                 height: 34px;
                 font-size: 0.82rem;
             }
-
             .modal-header { padding: 2rem 1.5rem 1.6rem; }
             .modal-header h4 { font-size: 1.65rem; }
             .modal-subtitle { font-size: 0.8rem; }
@@ -1900,8 +1961,8 @@
             .hero-content h2 { font-size: 1.9rem; }
             .visible-about-section h3,
             .why-choose-us h3 { font-size: 1.8rem; }
-            .slide-caption h3 { font-size: 1.4rem; }
-            .slideshow { height: 38vh; min-height: 240px; }
+            .service-card { width: 86%; height: 300px; }
+            .service-card h4 { font-size: 1.35rem; }
             .modal-header h4 { font-size: 1.5rem; }
             .modal-body { padding: 1.35rem 1.25rem 1.5rem; }
             .modal-footer { padding: 1rem 1.25rem 1.2rem; }
@@ -1943,37 +2004,6 @@
         </div>
     </div>
 
-    <!-- FULL-BLEED SLIDESHOW -->
-    <div class="slideshow" id="slideshow">
-        <div class="slide slide-1 active">
-            <div class="slide-caption">
-                <div class="caption-tag">Signature</div>
-                <h3>Lash &amp; Brow Artistry</h3>
-            </div>
-        </div>
-        <div class="slide slide-2">
-            <div class="slide-caption">
-                <div class="caption-tag">Restore</div>
-                <h3>Massage Therapy</h3>
-            </div>
-        </div>
-        <div class="slide slide-3">
-            <div class="slide-caption">
-                <div class="caption-tag">Craft</div>
-                <h3>Nail Design</h3>
-            </div>
-        </div>
-
-        <button class="slide-arrow prev" id="slidePrev" aria-label="Previous slide"><i class="fas fa-chevron-left"></i></button>
-        <button class="slide-arrow next" id="slideNext" aria-label="Next slide"><i class="fas fa-chevron-right"></i></button>
-
-        <div class="slide-dots" id="slideDots">
-            <button class="slide-dot active" data-index="0" aria-label="Go to slide 1"></button>
-            <button class="slide-dot" data-index="1" aria-label="Go to slide 2"></button>
-            <button class="slide-dot" data-index="2" aria-label="Go to slide 3"></button>
-        </div>
-    </div>
-
     <!-- BOTTOM HALF -->
     <div class="bottom-half">
 
@@ -2008,6 +2038,48 @@
                     <h4>Certified Academy</h4>
                     <p>QCTO &amp; SDCC accredited training programs for aspiring beauty therapists.</p>
                 </div>
+            </div>
+        </div>
+
+        <!-- ============================================================
+             SERVICE GALLERY — scrollable
+             ============================================================ -->
+        <div class="service-gallery-section">
+            <div class="gallery-head">
+                <div class="gallery-head-text">
+                    <h4>Explore our treatments</h4>
+                    <p>Swipe or scroll to discover each signature service.</p>
+                </div>
+                <div class="gallery-nav">
+                    <button type="button" id="galleryPrev" aria-label="Scroll gallery left"><i class="fas fa-chevron-left"></i></button>
+                    <button type="button" id="galleryNext" aria-label="Scroll gallery right"><i class="fas fa-chevron-right"></i></button>
+                </div>
+            </div>
+
+            <div class="service-gallery" id="serviceGallery">
+                <a href="login.html" class="service-card s-card-1">
+                    <div class="service-card-content">
+                        <div class="service-card-tag">Signature</div>
+                        <h4>Lash &amp; Brow Artistry</h4>
+                        <span class="service-card-link">Explore <i class="fas fa-arrow-right"></i></span>
+                    </div>
+                </a>
+
+                <a href="login.html" class="service-card s-card-2">
+                    <div class="service-card-content">
+                        <div class="service-card-tag">Restore</div>
+                        <h4>Massage Therapy</h4>
+                        <span class="service-card-link">Explore <i class="fas fa-arrow-right"></i></span>
+                    </div>
+                </a>
+
+                <a href="login.html" class="service-card s-card-3">
+                    <div class="service-card-content">
+                        <div class="service-card-tag">Craft</div>
+                        <h4>Nail Design</h4>
+                        <span class="service-card-link">Explore <i class="fas fa-arrow-right"></i></span>
+                    </div>
+                </a>
             </div>
         </div>
 
@@ -2493,59 +2565,40 @@
         if (yearEl) yearEl.textContent = new Date().getFullYear();
 
         // ============================================================
-        // SLIDESHOW
+        // SERVICE GALLERY — horizontal scroll controls
         // ============================================================
         (function() {
-            const slides = document.querySelectorAll('.slide');
-            const dots = document.querySelectorAll('.slide-dot');
-            const prevBtn = document.getElementById('slidePrev');
-            const nextBtn = document.getElementById('slideNext');
-            const slideshow = document.getElementById('slideshow');
-            let current = 0;
-            let autoTimer = null;
-            const INTERVAL = 6000;
+            const gallery = document.getElementById('serviceGallery');
+            const prevBtn = document.getElementById('galleryPrev');
+            const nextBtn = document.getElementById('galleryNext');
 
-            function goTo(index) {
-                slides.forEach((s, i) => s.classList.toggle('active', i === index));
-                dots.forEach((d, i) => {
-                    d.classList.remove('active');
-                    void d.offsetWidth;
-                    if (i === index) d.classList.add('active');
-                });
-                current = index;
+            if (!gallery || !prevBtn || !nextBtn) return;
+
+            const scrollAmount = () => {
+                const first = gallery.querySelector('.service-card');
+                if (!first) return 320;
+                const styles = getComputedStyle(gallery);
+                const gap = parseFloat(styles.columnGap || styles.gap) || 22;
+                return first.offsetWidth + gap;
+            };
+
+            function updateNav() {
+                const maxScroll = gallery.scrollWidth - gallery.clientWidth - 2;
+                prevBtn.disabled = gallery.scrollLeft <= 2;
+                nextBtn.disabled = gallery.scrollLeft >= maxScroll;
             }
 
-            function next() { goTo((current + 1) % slides.length); }
-            function prev() { goTo((current - 1 + slides.length) % slides.length); }
-
-            function startAuto() {
-                stopAuto();
-                autoTimer = setInterval(next, INTERVAL);
-            }
-
-            function stopAuto() {
-                if (autoTimer) { clearInterval(autoTimer); autoTimer = null; }
-            }
-
-            dots.forEach(dot => {
-                dot.addEventListener('click', () => {
-                    goTo(parseInt(dot.dataset.index, 10));
-                    startAuto();
-                });
+            prevBtn.addEventListener('click', () => {
+                gallery.scrollBy({ left: -scrollAmount(), behavior: 'smooth' });
             });
 
-            if (prevBtn) prevBtn.addEventListener('click', () => { prev(); startAuto(); });
-            if (nextBtn) nextBtn.addEventListener('click', () => { next(); startAuto(); });
-
-            slideshow.addEventListener('mouseenter', stopAuto);
-            slideshow.addEventListener('mouseleave', startAuto);
-
-            document.addEventListener('visibilitychange', () => {
-                if (document.hidden) stopAuto();
-                else startAuto();
+            nextBtn.addEventListener('click', () => {
+                gallery.scrollBy({ left: scrollAmount(), behavior: 'smooth' });
             });
 
-            startAuto();
+            gallery.addEventListener('scroll', updateNav, { passive: true });
+            window.addEventListener('resize', updateNav);
+            updateNav();
         })();
 
         // ============================================================
@@ -2567,7 +2620,6 @@
                 lastFocused = document.activeElement;
                 m.style.display = 'flex';
                 document.body.style.overflow = 'hidden';
-                // Focus first focusable element inside modal (for a11y)
                 setTimeout(() => {
                     const focusable = m.querySelector('button, a[href], [tabindex]:not([tabindex="-1"])');
                     if (focusable) focusable.focus();
@@ -2578,7 +2630,6 @@
                 const m = modals[id];
                 if (!m) return;
                 m.style.display = 'none';
-                // Only restore scroll if no other modal is open
                 const anyOpen = Object.values(modals).some(x => x && x.style.display === 'flex');
                 if (!anyOpen) document.body.style.overflow = '';
                 if (lastFocused && typeof lastFocused.focus === 'function') {
@@ -2590,7 +2641,6 @@
                 Object.keys(modals).forEach(closeModal);
             }
 
-            // Open triggers
             document.querySelectorAll('#aboutUsBtn, #aboutUsBtn2').forEach(b => {
                 b.addEventListener('click', () => openModal('aboutModal'));
             });
@@ -2604,12 +2654,10 @@
                 b.addEventListener('click', () => openModal('termsModal'));
             });
 
-            // Close triggers (X corner + footer buttons)
             document.querySelectorAll('[data-close]').forEach(btn => {
                 btn.addEventListener('click', () => closeModal(btn.dataset.close));
             });
 
-            // Click outside to close
             Object.values(modals).forEach(m => {
                 if (!m) return;
                 m.addEventListener('click', (e) => {
@@ -2617,7 +2665,6 @@
                 });
             });
 
-            // ESC to close
             document.addEventListener('keydown', (e) => {
                 if (e.key === 'Escape') closeAll();
             });
