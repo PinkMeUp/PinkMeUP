@@ -1744,8 +1744,22 @@
   let activeCat = CATEGORIES[0];
   let bookState = { date: "", time: "", stylistId: "", stylist: "" };
   let lastBookingData = null;
+  let currentViewId = 'overview';
+
+  function bookingInProgress() { return cartIds.length > 0 || !!bookState.date || !!bookState.time; }
+
+  window.addEventListener('beforeunload', (e) => {
+    if (!bookingInProgress()) return;
+    e.preventDefault();
+    e.returnValue = '';
+  });
 
   function switchView(viewId) {
+    if (currentViewId === 'book' && viewId !== 'book' && bookingInProgress()) {
+      if (!confirm('You have an unfinished booking. If you leave, your progress will be lost. Leave anyway?')) return;
+      resetWizard();
+    }
+    currentViewId = viewId;
     document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
     const target = document.getElementById(`${viewId}-view`);
     if (target) target.classList.add('active');
@@ -2029,11 +2043,19 @@
       const hasEligibleStylists = STYLISTS.some(stylist => { if (stylist.isAvailable === false) return false; if (!Array.isArray(stylist.serviceIds) || !stylist.serviceIds.length) return true; const selectedServices = SERVICES.filter(service => cartIds.includes(service.id)); return selectedServices.every(service => stylist.serviceIds.includes(service.id)); });
       if (!document.getElementById('apptDate').value) { showToast('Please pick a date.'); return; }
       if (hasEligibleStylists && !bookState.stylistId) { showToast('Please choose a stylist.'); return; }
-      // DEF-006 (Testing Plan, kept Open): early time-slot guard disabled so the booking flow can reach the final step and only fail at submit, as documented.
-      // if (!bookState.time) { showToast('Please pick a time slot.'); return; }
+      if (!bookState.time) { showToast(availabilityNote || 'Please pick a time slot.'); return; }
       bookState.date = document.getElementById('apptDate').value;
     }
-    if (wizardStep === 3) { const name = document.getElementById('detName').value.trim(); const email = document.getElementById('detEmail').value.trim(); const phone = document.getElementById('detPhone').value.trim(); if (!name || !email || !phone) { showToast('Please fill in your name, email, and phone number.'); return; } }
+    if (wizardStep === 3) {
+      const name = document.getElementById('detName').value.trim();
+      const email = document.getElementById('detEmail').value.trim();
+      const phone = document.getElementById('detPhone').value.trim();
+      if (!name || !email || !phone) {
+        const missing = [!name && 'name', !email && 'email', !phone && 'phone number'].filter(Boolean);
+        showToast(`Please fill in: ${missing.join(', ')}.`);
+        return;
+      }
+    }
     if (wizardStep === 4) { confirmBooking(); return; }
     gotoStep(wizardStep + 1);
   }
@@ -2104,11 +2126,16 @@
     const name = document.getElementById('detName').value.trim();
     const email = document.getElementById('detEmail').value.trim();
     const phone = document.getElementById('detPhone').value.trim();
-    if (!name || !email || !phone) { showToast('Please fill in your name, email, and phone number.'); return; }
-    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { showToast('Please enter a valid email address.'); return; }
+    if (!name || !email || !phone) {
+      const missing = [!name && 'name', !email && 'email', !phone && 'phone number'].filter(Boolean);
+      showToast(`Please fill in: ${missing.join(', ')}.`);
+      return;
+    }
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { showToast('Please enter a valid email address (e.g. name@example.com).'); return; }
+    const phoneDigits = phone.replace(/\D/g, '');
+    if (!/^[+\d\s()-]+$/.test(phone) || phoneDigits.length < 10 || phoneDigits.length > 15 || /^(\d)\1+$/.test(phoneDigits)) { showToast('Please enter a valid phone number (10-15 digits, e.g. 062 034 4647).'); return; }
     if (!bookState.date) { showToast('Please pick a date.'); gotoStep(2); return; }
-    // DEF-006 (Testing Plan, kept Open): pre-submit time-slot guard disabled so the error is only flagged after the booking is submitted, as documented.
-    // if (!bookState.time) { showToast('Please pick a time slot.'); gotoStep(2); return; }
+    if (!bookState.time) { showToast(availabilityNote || 'Please pick a time slot.'); gotoStep(2); return; }
     isBookingSubmitting = true;
     const wNextBtn = document.getElementById('wNext');
     wNextBtn.disabled = true; wNextBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Booking...';
@@ -2121,7 +2148,7 @@
       const assignedStylist = bookingData.stylistId?.userId ? `${bookingData.stylistId.userId.firstName || ''} ${bookingData.stylistId.userId.lastName || ''}`.trim() : '';
       lastBookingData = { ref: bookingData.bookingRef || (bookingData._id ? 'PMU-' + String(bookingData._id).slice(-6).toUpperCase() : 'PMU-' + Date.now().toString().slice(-6)), services: SERVICES.filter(s => cartIds.includes(s.id)).map(s => s.name).join(', '), date: formatDate(bookState.date), time: bookingData.startTime || bookState.time, stylist: assignedStylist || bookState.stylist || 'To be assigned', total: SERVICES.filter(s => cartIds.includes(s.id)).reduce((sum, s) => sum + s.price, 0), guestName: name, guestEmail: email, guestPhone: phone, rawData: bookingData };
       showConfirmation(lastBookingData);
-      cartIds = []; renderCart(); await loadAppointments(); buildNotifications();
+      cartIds = []; bookState = { date: '', time: '', stylistId: '', stylist: '' }; renderCart(); await loadAppointments(); buildNotifications();
     } catch (error) { console.error('Booking error:', error); showToast('Could not create booking. Please try again.'); }
     finally { isBookingSubmitting = false; wNextBtn.disabled = false; wNextBtn.innerHTML = 'Confirm <i class="fas fa-check"></i>'; }
   }
@@ -2317,6 +2344,7 @@
   function formatDate(d) { if (!d) return ''; const [y, m, day] = d.split('-'); const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']; return `${parseInt(day)} ${months[parseInt(m) - 1]} ${y}`; }
   function formatDur(mins) { if (mins < 60) return `${mins} min`; const h = Math.floor(mins / 60), m = mins % 60; return m ? `${h}h ${m}min` : `${h}h`; }
   async function signOut() {
+    resetWizard();
     try { await fetch(`${API_URL}/auth/logout`, { method: 'POST', credentials: 'include' }); } catch (error) { console.warn('Logout request failed:', error); }
     localStorage.removeItem('user'); localStorage.removeItem('authToken'); sessionStorage.removeItem('user'); sessionStorage.removeItem('authToken');
     document.cookie.split(';').forEach(cookie => { const name = cookie.split('=')[0].trim(); if (name) { document.cookie = `${name}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/`; } });

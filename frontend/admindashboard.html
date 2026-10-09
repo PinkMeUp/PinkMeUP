@@ -2090,10 +2090,12 @@
     </select>
     <label>Service Name</label>
     <input type="text" id="serviceName" placeholder="e.g. Gel Manicure" />
+    <p style="font-size:0.76rem;color:var(--muted);font-weight:400;margin:0.4rem 0 0;">Letters, numbers and simple punctuation only (e.g. "Gel Manicure", "Men's Cut") — no symbols like : " # @.</p>
     <label>Price (R)</label>
     <input type="number" id="servicePrice" placeholder="350" />
     <label>Duration (minutes)</label>
-    <input type="number" id="serviceDuration" placeholder="45" />
+    <input type="number" id="serviceDuration" placeholder="45" min="15" />
+    <p style="font-size:0.76rem;color:var(--muted);font-weight:400;margin:0.4rem 0 0;">Enter minutes, not hours — minimum 15 minutes (e.g. 60 = 1 hour).</p>
     <input type="hidden" id="serviceId" />
     <div class="modal-footer">
       <button class="btn-outline" id="cancelModalBtn">Cancel</button>
@@ -3494,22 +3496,62 @@
     const svc = services.find(s => s._id === id || s.id === id);
     if (!svc) return;
     document.getElementById('serviceModalTitle').textContent = 'Edit Service';
-    document.getElementById('serviceCategory').value = svc.category;
+    const categorySelect = document.getElementById('serviceCategory');
+    if (svc.category && ![...categorySelect.options].some(o => o.value === svc.category)) {
+      categorySelect.appendChild(new Option(svc.category, svc.category));
+    }
+    categorySelect.value = svc.category;
     document.getElementById('serviceName').value = svc.name;
     document.getElementById('servicePrice').value = svc.price;
     document.getElementById('serviceDuration').value = svc.duration;
     document.getElementById('serviceId').value = svc._id || svc.id;
     document.getElementById('serviceModal').classList.add('active');
   }
+  const SERVICE_NAME_PATTERN = /^[A-Za-z0-9][A-Za-z0-9 &'()+\-.\/]*$/;
   async function saveService() {
     const category = document.getElementById('serviceCategory').value;
     const name = document.getElementById('serviceName').value.trim();
-    const price = parseFloat(document.getElementById('servicePrice').value);
-    const duration = parseInt(document.getElementById('serviceDuration').value);
+    const priceText = document.getElementById('servicePrice').value.trim();
+    const durationText = document.getElementById('serviceDuration').value.trim();
+    const price = Number(priceText);
+    const duration = Number(durationText);
     const editId = document.getElementById('serviceId').value;
-    if (!name || isNaN(price) || price <= 0 || isNaN(duration) || duration < 15) {
-      showToast('Please fill all fields correctly.', true);
+
+    const missing = [];
+    if (!name) missing.push('service name');
+    if (!priceText) missing.push('price');
+    if (!durationText) missing.push('duration');
+    if (missing.length) {
+      showToast(`Please fill in: ${missing.join(', ')}.`, true);
       return;
+    }
+    if (name.length < 2 || name.length > 100) {
+      showToast('Service name must be 2-100 characters.', true);
+      return;
+    }
+    if (!SERVICE_NAME_PATTERN.test(name)) {
+      showToast("Service name may only contain letters, numbers, spaces and & ' ( ) + - . / (e.g. Gel Manicure).", true);
+      return;
+    }
+    if (!Number.isFinite(price) || price <= 0) {
+      showToast('Price must be a number greater than 0 (e.g. 350).', true);
+      return;
+    }
+    if (!Number.isInteger(duration) || duration < 15) {
+      showToast('Duration must be a whole number of minutes, at least 15 (e.g. 60 = 1 hour).', true);
+      return;
+    }
+    if (editId) {
+      const original = services.find(s => (s._id || s.id) === editId);
+      if (original &&
+          original.name === name &&
+          Number(original.price) === price &&
+          Number(original.duration) === duration &&
+          original.category === category) {
+        closeServiceModal();
+        showToast('No changes were made — the service was not updated.');
+        return;
+      }
     }
     const method = editId ? 'PUT' : 'POST';
     const url = editId ? `${API_BASE}/services/${editId}` : `${API_BASE}/services`;
@@ -4139,8 +4181,27 @@
     const date = document.getElementById('bookingDate').value;
     const time = document.getElementById('bookingTime').value;
     if (!clientName || !clientEmail || !serviceId || !stylistId || !date || !time) {
-      showToast('Please fill in all required fields.', true);
+      const missing = [
+        !clientName && 'client name',
+        !clientEmail && 'client email',
+        !serviceId && 'service',
+        !stylistId && 'stylist',
+        !date && 'date',
+        !time && 'time'
+      ].filter(Boolean);
+      showToast(`Please fill in: ${missing.join(', ')}.`, true);
       return;
+    }
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(clientEmail)) {
+      showToast('Enter a valid client email address (e.g. name@example.com).', true);
+      return;
+    }
+    if (clientPhone) {
+      const phoneDigits = clientPhone.replace(/\D/g, '');
+      if (!/^[+\d\s()-]+$/.test(clientPhone) || phoneDigits.length < 10 || phoneDigits.length > 15 || /^(\d)\1+$/.test(phoneDigits)) {
+        showToast('Enter a valid phone number (10-15 digits, e.g. 062 034 4647).', true);
+        return;
+      }
     }
     showLoading('Creating booking...');
     try {

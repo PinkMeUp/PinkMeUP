@@ -650,6 +650,7 @@ const cancelBooking = async (req, res) => {
     }
 
     appointment.status = APPOINTMENT_STATUS.CANCELLED;
+    appointment.cancellationReason = String(reason || 'Cancelled by user').trim();
     if (reason) appointment.notes = (appointment.notes || '') + '\nCancellation reason: ' + reason;
     await appointment.save();
 
@@ -746,6 +747,12 @@ const rescheduleBooking = async (req, res) => {
       .populate('customerId', 'firstName lastName email phone')
       .populate({ path: 'stylistId', select: 'userId specialties rating', populate: { path: 'userId', select: 'firstName lastName email phone isActive' } })
       .populate('serviceIds', 'name price duration description');
+
+    try {
+      await emailService.sendRescheduleEmail(updated, updated.customerId);
+    } catch (error) {
+      logger.warn('Reschedule email failed:', error.message);
+    }
 
     return successResponse(res, 'Booking rescheduled.', updated);
   } catch (error) {

@@ -23,14 +23,45 @@ form.addEventListener('submit', async (e) => {
     const password = document.getElementById('password').value;
 
     // Validate fields
-    if (!firstName || !lastName || !email || !phone || !password) {
-        errorEl.textContent = 'All fields are required';
+    const missing = [];
+    if (!firstName) missing.push('first name');
+    if (!lastName) missing.push('last name');
+    if (!email) missing.push('email');
+    if (!phone) missing.push('phone');
+    if (!password) missing.push('password');
+    if (missing.length) {
+        errorEl.textContent = `Please fill in: ${missing.join(', ')}.`;
         errorEl.classList.add('show');
         return;
     }
 
-    if (password.length < 6) {
-        errorEl.textContent = 'Password must be at least 6 characters';
+    const NAME_PATTERN = /^\p{L}+(?:['\u2019 -]\p{L}+)*$/u;
+    if (!NAME_PATTERN.test(firstName)) {
+        errorEl.textContent = 'First name may only contain letters, spaces, hyphens and apostrophes.';
+        errorEl.classList.add('show');
+        return;
+    }
+    if (!NAME_PATTERN.test(lastName)) {
+        errorEl.textContent = 'Last name may only contain letters, spaces, hyphens and apostrophes.';
+        errorEl.classList.add('show');
+        return;
+    }
+
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+        errorEl.textContent = 'Enter a valid email address (e.g. name@example.com).';
+        errorEl.classList.add('show');
+        return;
+    }
+
+    const phoneDigits = phone.replace(/\D/g, '');
+    if (!/^[+\d\s()-]+$/.test(phone) || phoneDigits.length < 10 || phoneDigits.length > 15 || /^(\d)\1+$/.test(phoneDigits)) {
+        errorEl.textContent = 'Enter a valid phone number (10-15 digits, e.g. 062 034 4647).';
+        errorEl.classList.add('show');
+        return;
+    }
+
+    if (password.length < 6 || !/[A-Za-z]/.test(password) || !/\d/.test(password)) {
+        errorEl.textContent = 'Password must be at least 6 characters and include at least one letter and one number.';
         errorEl.classList.add('show');
         return;
     }

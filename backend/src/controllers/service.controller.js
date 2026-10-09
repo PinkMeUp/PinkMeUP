@@ -13,6 +13,17 @@ const parsePageLimit = (page, limit) => ({
   limit: Math.max(parseInt(limit, 10) || 10, 1)
 });
 
+const escapeRegExp = (value) => String(value).replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+
+// Case-insensitive duplicate-name lookup.
+const findServiceByName = async (name, excludeId = null) => {
+  const filter = {
+    name: { $regex: `^${escapeRegExp(String(name).trim())}$`, $options: 'i' }
+  };
+  if (excludeId) filter._id = { $ne: excludeId };
+  return Service.findOne(filter);
+};
+
 /**
  * Create a new service.
  * Admin only.
@@ -20,9 +31,13 @@ const parsePageLimit = (page, limit) => ({
  */
 const createService = async (req, res) => {
   try {
-    const { name, description, price, duration, category } = req.body;
-    const existing = await Service.findOne({ name });
-    if (existing) return errorResponse(res, 'Service already exists.', 409);
+    const { description, price, duration, category } = req.body;
+    const name = String(req.body.name).trim();
+
+    const existing = await findServiceByName(name);
+    if (existing) {
+      return errorResponse(res, `A service named "${existing.name}" already exists.`, 409);
+    }
 
     const service = await Service.create({ name, description, price, duration, category });
     return successResponse(res, 'Service created.', service, 201);
@@ -85,9 +100,12 @@ const updateService = async (req, res) => {
     if (!service) return errorResponse(res, 'Service not found.', 404);
 
     if (name) {
-      const existing = await Service.findOne({ name, _id: { $ne: id } });
-      if (existing) return errorResponse(res, 'Service name already exists.', 409);
-      service.name = name;
+      const trimmedName = String(name).trim();
+      const existing = await findServiceByName(trimmedName, id);
+      if (existing) {
+        return errorResponse(res, `A service named "${existing.name}" already exists.`, 409);
+      }
+      service.name = trimmedName;
     }
     if (description !== undefined) service.description = description;
     if (price !== undefined) service.price = price;

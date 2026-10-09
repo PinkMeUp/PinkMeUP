@@ -73,8 +73,12 @@ const login = async (req, res) => {
     const { email, password } = req.body;
 
     const user = await User.findOne({ email }).select('+password');
-    if (!user || !(await user.comparePassword(password))) {
-      return errorResponse(res, 'Invalid email or password.', 401);
+    if (!user) {
+      return errorResponse(res, 'No account found with this email address. Please check the email or sign up.', 404);
+    }
+
+    if (!(await user.comparePassword(password))) {
+      return errorResponse(res, 'Incorrect password. Please try again.', 401);
     }
 
     if (!user.isActive) {
