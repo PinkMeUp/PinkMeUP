@@ -1732,6 +1732,9 @@
             .footer-bottom { padding: 24px 32px; }
         }
 
+        /* ============================================================
+           PHONE — LEFT-ALIGNED HERO & CONTENT
+           ============================================================ */
         @media (max-width: 600px) {
             .top-half {
                 padding: 26px 20px 40px 20px;
@@ -1744,15 +1747,16 @@
                 height: 340px;
             }
 
+            /* Hero row stays stacked but aligned to the left */
             .top-row {
                 flex-direction: column;
-                align-items: center;
+                align-items: flex-start;
                 gap: 14px;
             }
 
             .brand {
-                text-align: center;
-                align-items: center;
+                text-align: left;
+                align-items: flex-start;
                 width: 100%;
             }
 
@@ -1764,9 +1768,12 @@
             }
 
             .top-nav {
-                justify-content: center;
+                justify-content: flex-start;
+                align-items: center;
                 width: 100%;
                 gap: 4px;
+                text-align: left;
+                flex-wrap: wrap;
             }
 
             .top-nav a,
@@ -1778,19 +1785,21 @@
 
             .nav-divider { font-size: 0.62rem; margin: 0 2px; }
 
+            /* Hero content left aligned */
             .hero-content {
-                text-align: center;
+                text-align: left;
                 margin-top: 30px;
                 margin-bottom: 0;
-                align-items: center;
+                align-items: flex-start;
                 flex: 0 0 auto;
+                max-width: 100%;
             }
 
             .hero-text-label {
                 font-size: 0.62rem;
                 letter-spacing: 3px;
                 margin-bottom: 12px;
-                justify-content: center;
+                justify-content: flex-start;
             }
 
             .hero-text-label::before { width: 20px; }
@@ -1809,7 +1818,7 @@
             }
 
             .hero-cta-min {
-                align-self: center;
+                align-self: flex-start;
                 font-size: 0.78rem;
                 letter-spacing: 1.4px;
                 padding-bottom: 6px;
@@ -1824,8 +1833,21 @@
 
             .section-divider { margin-bottom: 45px; }
 
+            /* Left-align story + why us content on phone */
+            .visible-about-section {
+                text-align: left;
+            }
+
+            .visible-about-section .section-eyebrow {
+                justify-content: flex-start;
+            }
+
+            .visible-about-section .section-eyebrow::before {
+                display: none;
+            }
+
             .visible-about-section h3 { font-size: 1.95rem; }
-            .visible-about-section p { font-size: 0.95rem; line-height: 1.75; }
+            .visible-about-section p { font-size: 0.95rem; line-height: 1.75; margin: 0; }
 
             .service-gallery-section { margin: 0 0 55px 0; }
 
@@ -1853,13 +1875,30 @@
             .service-card-tag { font-size: 0.56rem; letter-spacing: 2.4px; }
             .service-card-link { font-size: 0.72rem; }
 
+            /* Why us left aligned */
+            .why-choose-us {
+                text-align: left;
+            }
+
+            .why-choose-us .section-eyebrow {
+                justify-content: flex-start;
+            }
+
+            .why-choose-us .section-eyebrow::before {
+                display: none;
+            }
+
             .why-choose-us h3 { font-size: 1.95rem; margin-bottom: 34px; }
             .why-grid { grid-template-columns: 1fr; gap: 0; }
-            .why-item { padding: 26px 18px; }
+            .why-item {
+                padding: 26px 0;
+                align-items: flex-start;
+                text-align: left;
+            }
 
             .why-item:not(:last-child)::after {
-                right: 15%;
-                left: 15%;
+                right: 0;
+                left: 0;
                 top: auto;
                 bottom: 0;
                 width: auto;
@@ -1867,9 +1906,10 @@
                 background: linear-gradient(90deg, transparent, #dcdcdc 20%, #dcdcdc 80%, transparent);
             }
 
+            .why-icon-wrap { margin-bottom: 14px; }
             .why-icon-wrap i { font-size: 1.85rem; }
             .why-item h4 { font-size: 1.3rem; }
-            .why-item p { font-size: 0.88rem; }
+            .why-item p { font-size: 0.88rem; max-width: 100%; }
 
             .cards-container {
                 grid-template-columns: 1fr;
@@ -2022,12 +2062,12 @@
 
         <div class="bottom-half-inner">
 
-            <!-- OUR STORY -->
+            <!-- OUR STORY — SHORTER -->
             <div class="visible-about-section" style="padding-top: 0;">
                 <div class="section-eyebrow">Our Story</div>
                 <h3>Crafted with care,<br>inside Wits University</h3>
                 <p>
-                    <strong>PinkMeUp Beauty Spa &amp; Academy</strong> was founded by <strong>Phumuzile Moyo</strong>, a self-taught beauty entrepreneur who turned her passion into a thriving business. Located inside <strong>Wits University, Matrix Building, Floor 1</strong>, we offer luxury facials, nail treatments, lash artistry, massage therapy, and waxing — <strong>and many more</strong>. We also operate a <strong>QCTO and SDCC accredited academy</strong>, empowering the next generation of beauty professionals.
+                    <strong>PinkMeUp Beauty Spa &amp; Academy</strong> was founded by <strong>Phumuzile Moyo</strong> and is based inside <strong>Wits University, Matrix Building, Floor 1</strong>. We offer luxury facials, nail treatments, lash artistry, massage therapy, and waxing — plus a <strong>QCTO and SDCC accredited academy</strong> training the next generation of beauty professionals.
                 </p>
             </div>
 
