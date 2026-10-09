@@ -1760,36 +1760,37 @@
             .brand h1 { font-size: 2.35rem; }
             .brand p { font-size: 0.68rem; letter-spacing: 3.5px; margin-top: 8px; }
 
-            /* Nav wraps cleanly — hide dividers on mobile, use gap spacing */
+            /* Nav — plain text separated by vertical bars (no bubbles) */
             .top-nav {
                 justify-content: flex-start;
                 align-items: center;
                 width: 100%;
-                gap: 6px;
+                gap: 2px;
                 text-align: left;
                 flex-wrap: wrap;
             }
 
             .top-nav a,
             .top-nav .nav-btn {
-                font-size: 0.72rem;
-                padding: 8px 10px;
-                letter-spacing: 0.5px;
-                background: rgba(255, 255, 255, 0.06);
-                border-radius: 50px;
-                border: 1px solid rgba(255, 182, 193, 0.18);
+                font-size: 0.7rem;
+                padding: 6px 3px;
+                letter-spacing: 0.6px;
+                background: none;
+                border: none;
+                border-radius: 0;
             }
 
             .top-nav a::after,
             .top-nav .nav-btn::after { display: none; }
 
             .top-nav a:hover,
-            .top-nav .nav-btn:hover {
-                background: rgba(255, 182, 193, 0.14);
-                border-color: rgba(255, 182, 193, 0.4);
-            }
+            .top-nav .nav-btn:hover { color: #FFB6C1; }
 
-            .nav-divider { display: none; }
+            .nav-divider {
+                display: inline;
+                font-size: 0.62rem;
+                margin: 0 2px;
+            }
 
             .hero-content {
                 text-align: left;
@@ -1982,7 +1983,9 @@
             .brand p { font-size: 0.62rem; letter-spacing: 3px; }
 
             .top-nav a,
-            .top-nav .nav-btn { font-size: 0.66rem; padding: 7px 9px; }
+            .top-nav .nav-btn { font-size: 0.64rem; padding: 5px 3px; }
+
+            .nav-divider { font-size: 0.58rem; margin: 0 1px; }
 
             .hero-content h2 { font-size: 1.85rem; }
             .hero-content p { font-size: 0.88rem; }
