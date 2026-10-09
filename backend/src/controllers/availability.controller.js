@@ -16,10 +16,24 @@ const logger = require('../config/logger');
 const getSettings = async () => await BusinessSetting.getSettings();
 
 /**
+ * Minutes from midnight before which no slot may start on the given date.
+ * Applies the business lead time when the booking date is today so past
+ * slots (and slots the booking endpoint would reject) are never offered.
+ */
+const getMinStartMinutes = (bookingDate, settings) => {
+  const today = parseCalendarDate(new Date());
+  if (!bookingDate || !today || bookingDate.getTime() !== today.getTime()) return 0;
+
+  const now = new Date();
+  const nowMinutes = now.getHours() * 60 + now.getMinutes() + (now.getSeconds() > 0 ? 1 : 0);
+  return nowMinutes + (Number(settings.bookingLeadTime) || 0);
+};
+
+/**
  * Return only slots whose full appointment duration does not overlap an
  * existing appointment and still fits inside the business day.
  */
-const findAvailableSlots = ({ appointments, daySchedule, slotInterval, requiredDuration }) => {
+const findAvailableSlots = ({ appointments, daySchedule, slotInterval, requiredDuration, minStartMinutes = 0 }) => {
   const appointmentDuration = requiredDuration || slotInterval;
   const closingTime = parseTimeToMinutes(daySchedule.end);
 
@@ -29,6 +43,7 @@ const findAvailableSlots = ({ appointments, daySchedule, slotInterval, requiredD
       const slotEnd = slotStart + appointmentDuration;
 
       if (slotEnd > closingTime) return false;
+      if (slotStart < minStartMinutes) return false;
 
       return !appointments.some((appointment) => {
         const appointmentStart = parseTimeToMinutes(appointment.startTime);
@@ -88,7 +103,8 @@ const checkAvailability = async (req, res) => {
       appointments: bookedSlots,
       daySchedule,
       slotInterval,
-      requiredDuration
+      requiredDuration,
+      minStartMinutes: getMinStartMinutes(bookingDate, settings)
     });
 
     return successResponse(res, 'Availability retrieved.', {
@@ -191,7 +207,8 @@ const getAvailableSlots = async (req, res) => {
       appointments: bookedSlots,
       daySchedule,
       slotInterval,
-      requiredDuration
+      requiredDuration,
+      minStartMinutes: getMinStartMinutes(bookingDate, settings)
     });
 
     return successResponse(res, 'Available slots retrieved.', {
@@ -269,7 +286,7 @@ const getTimeSlotsForDate = async (req, res) => {
       const slotSet = new Set();
       eligible.forEach(candidate => {
         const candidateAppointments = bookedSlots.filter(appointment => String(appointment.stylistId) === String(candidate._id));
-        findAvailableSlots({ appointments: candidateAppointments, daySchedule, slotInterval, requiredDuration })
+        findAvailableSlots({ appointments: candidateAppointments, daySchedule, slotInterval, requiredDuration, minStartMinutes: getMinStartMinutes(bookingDate, settings) })
           .forEach(slot => slotSet.add(slot));
       });
       const availableSlots = Array.from(slotSet).sort((a, b) => parseTimeToMinutes(a) - parseTimeToMinutes(b));
@@ -310,7 +327,8 @@ const getTimeSlotsForDate = async (req, res) => {
       appointments: bookedSlots,
       daySchedule,
       slotInterval,
-      requiredDuration
+      requiredDuration,
+      minStartMinutes: getMinStartMinutes(bookingDate, settings)
     });
 
     return successResponse(res, 'Time slots retrieved.', {

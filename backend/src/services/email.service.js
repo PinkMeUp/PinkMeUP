@@ -1,10 +1,29 @@
 /**
- * Email service - sends booking confirmation and cancellation emails
+ * Email service - sends booking confirmation, cancellation and reschedule emails
  */
 
 const nodemailer = require('nodemailer');
 const fs = require('fs');
 const path = require('path');
+
+const emailConfigured = Boolean(
+  process.env.EMAIL_HOST &&
+  process.env.EMAIL_USER &&
+  process.env.EMAIL_PASS
+);
+
+let missingConfigWarned = false;
+
+const warnMissingConfig = () => {
+  if (missingConfigWarned) return;
+  missingConfigWarned = true;
+  console.warn(
+    'Email service is not configured (EMAIL_HOST / EMAIL_USER / EMAIL_PASS missing). ' +
+    'No emails will be sent. Set these environment variables to enable confirmations.'
+  );
+};
+
+const emailFrom = () => process.env.EMAIL_FROM || process.env.EMAIL_USER;
 
 const transporter = nodemailer.createTransport({
   host: process.env.EMAIL_HOST,
@@ -30,15 +49,20 @@ const loadTemplate = (templateName, variables) => {
   return html;
 };
 
+const formatBookingDate = (date) => new Date(date).toLocaleDateString('en-ZA', {
+  weekday: 'long',
+  year: 'numeric',
+  month: 'long',
+  day: 'numeric'
+});
+
 const sendBookingConfirmation = async (booking, customer, services) => {
   try {
-    const bookingDate = new Date(booking.date).toLocaleDateString('en-ZA', {
-      weekday: 'long',
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric'
-    });
-    
+    if (!emailConfigured) {
+      warnMissingConfig();
+      return false;
+    }
+
     const servicesList = services.map(s => 
       `<tr>
         <td style="padding: 8px 10px; border-bottom: 1px solid #eeeeee;">${s.name}</td>
@@ -49,7 +73,7 @@ const sendBookingConfirmation = async (booking, customer, services) => {
 
     const html = loadTemplate('bookingConfirmation.html', {
       customerName: `${customer.firstName} ${customer.lastName}`,
-      bookingDate: bookingDate,
+      bookingDate: formatBookingDate(booking.date),
       bookingTime: booking.startTime,
       services: servicesList,
       totalPrice: booking.totalPrice.toFixed(2),
@@ -57,7 +81,7 @@ const sendBookingConfirmation = async (booking, customer, services) => {
     });
 
     await transporter.sendMail({
-      from: `"PinkMeUP" <${process.env.EMAIL_FROM}>`,
+      from: `"PinkMeUP" <${emailFrom()}>`,
       to: customer.email,
       subject: 'Booking Confirmed - PinkMeUP Beauty Spa',
       html: html
@@ -72,22 +96,20 @@ const sendBookingConfirmation = async (booking, customer, services) => {
 
 const sendCancellationEmail = async (booking, customer) => {
   try {
-    const bookingDate = new Date(booking.date).toLocaleDateString('en-ZA', {
-      weekday: 'long',
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric'
-    });
+    if (!emailConfigured) {
+      warnMissingConfig();
+      return false;
+    }
 
     const html = loadTemplate('bookingCancellation.html', {
       customerName: `${customer.firstName} ${customer.lastName}`,
-      bookingDate: bookingDate,
+      bookingDate: formatBookingDate(booking.date),
       bookingTime: booking.startTime,
       cancellationReason: booking.cancellationReason || 'Not provided'
     });
 
     await transporter.sendMail({
-      from: `"PinkMeUP" <${process.env.EMAIL_FROM}>`,
+      from: `"PinkMeUP" <${emailFrom()}>`,
       to: customer.email,
       subject: 'Booking Cancelled - PinkMeUP Beauty Spa',
       html: html
@@ -100,11 +122,43 @@ const sendCancellationEmail = async (booking, customer) => {
   }
 };
 
+const sendRescheduleEmail = async (booking, customer) => {
+  try {
+    if (!emailConfigured) {
+      warnMissingConfig();
+      return false;
+    }
+
+    const html = loadTemplate('bookingReschedule.html', {
+      customerName: `${customer.firstName} ${customer.lastName}`,
+      bookingDate: formatBookingDate(booking.date),
+      bookingTime: booking.startTime
+    });
+
+    await transporter.sendMail({
+      from: `"PinkMeUP" <${emailFrom()}>`,
+      to: customer.email,
+      subject: 'Booking Rescheduled - PinkMeUP Beauty Spa',
+      html: html
+    });
+
+    return true;
+  } catch (error) {
+    console.error('Reschedule email error:', error.message);
+    return false;
+  }
+};
+
 /**
  * Send password reset email
  */
 const sendPasswordResetEmail = async (email, resetToken, firstName) => {
   try {
+    if (!emailConfigured) {
+      warnMissingConfig();
+      return false;
+    }
+
     const resetLink = `${process.env.FRONTEND_URL || 'http://localhost:3000'}/reset-password?token=${resetToken}`;
     
     const html = `
@@ -126,7 +180,7 @@ const sendPasswordResetEmail = async (email, resetToken, firstName) => {
     `;
 
     await transporter.sendMail({
-      from: `"PinkMeUP" <${process.env.EMAIL_FROM}>`,
+      from: `"PinkMeUP" <${emailFrom()}>`,
       to: email,
       subject: 'Reset Your Password - PinkMeUP',
       html: html
@@ -142,5 +196,6 @@ const sendPasswordResetEmail = async (email, resetToken, firstName) => {
 module.exports = {
   sendBookingConfirmation,
   sendCancellationEmail,
+  sendRescheduleEmail,
   sendPasswordResetEmail  
 };

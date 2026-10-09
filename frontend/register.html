@@ -179,6 +179,20 @@
             box-shadow: 0 0 0 2px rgba(212, 63, 107, 0.08);
         }
 
+        .field-hint {
+            display: block;
+
+            margin-top: 6px;
+
+            color: #666666;
+
+            font-family: 'Inter', Arial, sans-serif;
+
+            font-size: 0.75rem;
+
+            line-height: 1.4;
+        }
+
         /* =====================================================
            CREATE ACCOUNT BUTTON
            ===================================================== */
@@ -415,7 +429,7 @@
 
         <div id="error" class="error"></div>
 
-        <form id="register-form">
+        <form id="register-form" novalidate>
 
             <div class="form-group">
                 <label for="firstName">First Name</label>
@@ -465,6 +479,7 @@
                     placeholder="Minimum 6 characters"
                     required
                 >
+                <span class="field-hint">At least 6 characters, including at least one letter and one number.</span>
             </div>
 
             <button

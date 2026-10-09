@@ -37,8 +37,20 @@ form.addEventListener('submit', async (e) => {
     const password = document.getElementById('password').value;
     const remember = document.getElementById('remember').checked;
 
-    if (!email || !password) {
-        errorEl.textContent = 'All fields are required';
+    if (!email && !password) {
+        errorEl.textContent = 'Please enter your email address and password.';
+        errorEl.classList.add('show');
+        return;
+    }
+
+    if (!email) {
+        errorEl.textContent = 'Please enter your email address.';
+        errorEl.classList.add('show');
+        return;
+    }
+
+    if (!password) {
+        errorEl.textContent = 'Please enter your password.';
         errorEl.classList.add('show');
         return;
     }
