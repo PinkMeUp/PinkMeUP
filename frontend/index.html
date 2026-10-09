@@ -6,7 +6,15 @@
     <link rel="icon" type="image/svg+xml" href="favicon.svg">
     <meta name="description" content="PinkMeUP is a beauty spa and academy booking platform for appointments, salon services, and customer access.">
     <meta name="application-name" content="PinkMeUP">
+    <meta name="theme-color" content="#2A0818">
     <title>PinkMeUP | Beauty Spa & Academy</title>
+
+    <!-- Performance: preconnect for faster font/icon loading -->
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="dns-prefetch" href="https://cdnjs.cloudflare.com">
+
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
 
@@ -17,11 +25,13 @@
             box-sizing: border-box;
         }
 
-        html, body {
+        html {
             width: 100%;
+            scroll-behavior: smooth;
         }
 
         body {
+            width: 100%;
             display: flex;
             flex-direction: column;
             font-family: 'Inter', sans-serif;
@@ -31,6 +41,35 @@
             -webkit-font-smoothing: antialiased;
             overflow-x: hidden;
         }
+
+        /* ============================================================
+           ACCESSIBILITY UTILITIES
+           ============================================================ */
+        .skip-link {
+            position: absolute;
+            top: -60px;
+            left: 16px;
+            z-index: 9999;
+            background: #D43F6B;
+            color: #ffffff;
+            padding: 12px 20px;
+            border-radius: 0 0 10px 10px;
+            text-decoration: none;
+            font-size: 0.85rem;
+            font-weight: 600;
+            transition: top 0.25s ease;
+            box-shadow: 0 8px 20px rgba(212, 63, 107, 0.35);
+        }
+        .skip-link:focus { top: 0; }
+
+        :focus-visible {
+            outline: 2px solid #FF7A9C;
+            outline-offset: 3px;
+            border-radius: 4px;
+        }
+
+        button:focus:not(:focus-visible),
+        a:focus:not(:focus-visible) { outline: none; }
 
         /* ============================================================
            HERO — SOLID DEEP PLUM BACKGROUND
@@ -113,8 +152,8 @@
             line-height: 1;
             background: linear-gradient(135deg, #FFD0D9 0%, #FF7A9C 45%, #D43F6B 100%);
             -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
             background-clip: text;
+            -webkit-text-fill-color: transparent;
             filter: drop-shadow(0 4px 20px rgba(212, 63, 107, 0.4));
         }
 
@@ -144,7 +183,7 @@
             color: #ffffff;
             text-decoration: none;
             text-transform: uppercase;
-            transition: all 0.3s ease;
+            transition: color 0.3s ease;
             letter-spacing: 1px;
             background: none;
             border: none;
@@ -173,14 +212,10 @@
         }
 
         .top-nav a:hover::after,
-        .top-nav .nav-btn:hover::after {
-            transform: scaleX(1);
-        }
+        .top-nav .nav-btn:hover::after { transform: scaleX(1); }
 
         .top-nav a:hover,
-        .top-nav .nav-btn:hover {
-            color: #FFB6C1;
-        }
+        .top-nav .nav-btn:hover { color: #FFB6C1; }
 
         .nav-divider {
             color: rgba(255, 182, 193, 0.5);
@@ -240,8 +275,8 @@
             font-style: italic;
             background: linear-gradient(135deg, #FFD0D9 0%, #FF7A9C 50%, #D43F6B 100%);
             -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
             background-clip: text;
+            -webkit-text-fill-color: transparent;
         }
 
         .hero-content p {
@@ -283,46 +318,55 @@
             transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
-        .hero-cta-min:hover {
-            gap: 18px;
-            color: #FFB6C1;
-        }
-
-        .hero-cta-min:hover::after {
-            transform: scaleX(1.08);
-        }
+        .hero-cta-min:hover { gap: 18px; color: #FFB6C1; }
+        .hero-cta-min:hover::after { transform: scaleX(1.08); }
 
         .hero-cta-min i {
             font-size: 0.78rem;
             transition: transform 0.35s ease;
         }
 
-        .hero-cta-min:hover i {
-            transform: translateX(4px);
-        }
+        .hero-cta-min:hover i { transform: translateX(4px); }
 
+        /* Scroll indicator — now an interactive button */
         .hero-scroll {
             position: absolute;
-            bottom: 30px;
+            bottom: 26px;
             left: 50%;
             transform: translateX(-50%);
             z-index: 2;
-            color: rgba(255, 208, 217, 0.7);
-            font-size: 0.7rem;
-            letter-spacing: 2px;
+            color: rgba(255, 208, 217, 0.75);
+            font-size: 0.68rem;
+            letter-spacing: 2.5px;
             text-transform: uppercase;
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 8px;
+            gap: 6px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 182, 193, 0.18);
+            border-radius: 50px;
+            padding: 10px 18px 8px;
+            cursor: pointer;
+            font-family: 'Inter', sans-serif;
+            font-weight: 500;
+            backdrop-filter: blur(6px);
+            -webkit-backdrop-filter: blur(6px);
+            transition: all 0.3s ease;
             animation: heroBounce 2.4s ease-in-out infinite;
         }
 
-        .hero-scroll i { font-size: 0.85rem; color: #FFB6C1; }
+        .hero-scroll:hover {
+            background: rgba(255, 182, 193, 0.12);
+            border-color: rgba(255, 182, 193, 0.4);
+            color: #FFD0D9;
+        }
+
+        .hero-scroll i { font-size: 0.8rem; color: #FFB6C1; }
 
         @keyframes heroBounce {
-            0%, 100% { transform: translateX(-50%) translateY(0); opacity: 0.65; }
-            50% { transform: translateX(-50%) translateY(6px); opacity: 1; }
+            0%, 100% { transform: translateX(-50%) translateY(0); }
+            50%      { transform: translateX(-50%) translateY(4px); }
         }
 
         /* ============================================================
@@ -405,10 +449,7 @@
             font-weight: 300;
         }
 
-        .visible-about-section strong {
-            color: #C7355E;
-            font-weight: 600;
-        }
+        .visible-about-section strong { color: #C7355E; font-weight: 600; }
 
         .why-choose-us {
             max-width: 1100px;
@@ -453,9 +494,7 @@
             background: linear-gradient(180deg, transparent, #dcdcdc 20%, #dcdcdc 80%, transparent);
         }
 
-        .why-item:hover {
-            transform: translateY(-4px);
-        }
+        .why-item:hover { transform: translateY(-4px); }
 
         .why-icon-wrap {
             display: flex;
@@ -465,16 +504,14 @@
             transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
-        .why-item:hover .why-icon-wrap {
-            transform: translateY(-3px) scale(1.06);
-        }
+        .why-item:hover .why-icon-wrap { transform: translateY(-3px) scale(1.06); }
 
         .why-icon-wrap i {
             font-size: 2.2rem;
             background: linear-gradient(135deg, #FFB6C1 0%, #D43F6B 100%);
             -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
             background-clip: text;
+            -webkit-text-fill-color: transparent;
             filter: drop-shadow(0 4px 12px rgba(212, 63, 107, 0.25));
         }
 
@@ -496,7 +533,7 @@
         }
 
         /* ============================================================
-           SERVICE GALLERY — FULL-WIDTH EDGE-TO-EDGE
+           SERVICE GALLERY
            ============================================================ */
         .service-gallery-section {
             width: 100%;
@@ -565,10 +602,7 @@
             box-shadow: 0 10px 22px rgba(212, 63, 107, 0.28);
         }
 
-        .gallery-nav button:disabled {
-            opacity: 0.35;
-            cursor: not-allowed;
-        }
+        .gallery-nav button:disabled { opacity: 0.35; cursor: not-allowed; }
 
         .service-gallery {
             display: flex;
@@ -582,15 +616,8 @@
             -webkit-overflow-scrolling: touch;
         }
 
-        .service-gallery::-webkit-scrollbar {
-            height: 6px;
-        }
-
-        .service-gallery::-webkit-scrollbar-track {
-            background: transparent;
-            margin: 0 40px;
-        }
-
+        .service-gallery::-webkit-scrollbar { height: 6px; }
+        .service-gallery::-webkit-scrollbar-track { background: transparent; margin: 0 40px; }
         .service-gallery::-webkit-scrollbar-thumb {
             background: linear-gradient(90deg, #FFB6C1, #D43F6B);
             border-radius: 10px;
@@ -612,7 +639,9 @@
             align-items: flex-end;
             cursor: pointer;
             box-shadow: 0 8px 28px rgba(0, 0, 0, 0.1);
-            transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+            transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1),
+                        box-shadow 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+            text-decoration: none;
         }
 
         .service-card:hover {
@@ -631,7 +660,7 @@
                 rgba(0, 0, 0, 0.72) 100%
             );
             z-index: 1;
-            transition: all 0.5s ease;
+            transition: background 0.5s ease;
         }
 
         .service-card:hover::after {
@@ -698,10 +727,7 @@
             text-shadow: 0 2px 8px rgba(0, 0, 0, 0.6);
         }
 
-        .service-card:hover .service-card-link {
-            color: #FFD0D9;
-            gap: 13px;
-        }
+        .service-card:hover .service-card-link { color: #FFD0D9; gap: 13px; }
 
         .service-card-link i { font-size: 0.68rem; transition: transform 0.35s ease; }
 
@@ -728,7 +754,9 @@
             border: 1px solid rgba(0, 0, 0, 0.08);
             display: flex;
             flex-direction: column;
-            transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+            transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1),
+                        box-shadow 0.5s cubic-bezier(0.16, 1, 0.3, 1),
+                        border-color 0.5s ease;
             position: relative;
             overflow: hidden;
         }
@@ -775,12 +803,7 @@
             border: none;
         }
 
-        .svc-list {
-            display: flex;
-            flex-direction: column;
-            gap: 0;
-            flex: 1;
-        }
+        .svc-list { display: flex; flex-direction: column; gap: 0; flex: 1; }
 
         .svc-row {
             display: flex;
@@ -795,11 +818,7 @@
         .svc-row:hover { padding-left: 6px; }
         .svc-row:hover .svc-name { color: #D43F6B; }
 
-        .svc-left {
-            display: flex;
-            align-items: center;
-            gap: 16px;
-        }
+        .svc-left { display: flex; align-items: center; gap: 16px; }
 
         .svc-num {
             font-family: 'Cormorant Garamond', serif;
@@ -843,12 +862,7 @@
 
         .svc-footnote i { font-size: 0.72rem; }
 
-        .academy-body {
-            display: flex;
-            flex-direction: column;
-            gap: 22px;
-            flex: 1;
-        }
+        .academy-body { display: flex; flex-direction: column; gap: 22px; flex: 1; }
 
         .accredit-block {
             display: flex;
@@ -860,12 +874,7 @@
             border-radius: 14px;
         }
 
-        .accredit-block i {
-            color: #D43F6B;
-            font-size: 1rem;
-            margin-top: 2px;
-            flex-shrink: 0;
-        }
+        .accredit-block i { color: #D43F6B; font-size: 1rem; margin-top: 2px; flex-shrink: 0; }
 
         .accredit-text {
             font-size: 0.84rem;
@@ -874,10 +883,7 @@
             font-weight: 400;
         }
 
-        .accredit-text strong {
-            color: #1a1a1a;
-            font-weight: 600;
-        }
+        .accredit-text strong { color: #1a1a1a; font-weight: 600; }
 
         .program-label {
             font-size: 0.65rem;
@@ -896,11 +902,7 @@
             margin-bottom: 14px;
         }
 
-        .program-tags {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 6px;
-        }
+        .program-tags { display: flex; flex-wrap: wrap; gap: 6px; }
 
         .program-tag {
             font-size: 0.72rem;
@@ -933,11 +935,7 @@
             gap: 12px;
         }
 
-        .price-label {
-            font-size: 0.82rem;
-            color: #5c5c5c;
-            font-weight: 400;
-        }
+        .price-label { font-size: 0.82rem; color: #5c5c5c; font-weight: 400; }
 
         .price-value {
             font-family: 'Cormorant Garamond', serif;
@@ -945,8 +943,8 @@
             font-weight: 700;
             background: linear-gradient(135deg, #FFB6C1 0%, #D43F6B 100%);
             -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
             background-clip: text;
+            -webkit-text-fill-color: transparent;
             letter-spacing: -0.3px;
             line-height: 1;
         }
@@ -987,8 +985,8 @@
             font-size: 1rem;
             background: linear-gradient(135deg, #FFB6C1 0%, #D43F6B 100%);
             -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
             background-clip: text;
+            -webkit-text-fill-color: transparent;
         }
 
         .contact-mini-body {
@@ -1024,7 +1022,7 @@
         .contact-mini-value a:hover { color: #D43F6B; }
 
         /* ============================================================
-           FOOTER — SOLID BLACK BACKGROUND
+           FOOTER
            ============================================================ */
         .site-footer {
             width: 100%;
@@ -1050,8 +1048,8 @@
             font-weight: 700;
             background: linear-gradient(135deg, #FFD0D9 0%, #FF7A9C 50%, #D43F6B 100%);
             -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
             background-clip: text;
+            -webkit-text-fill-color: transparent;
             margin-bottom: 8px;
             letter-spacing: 0.5px;
         }
@@ -1096,29 +1094,21 @@
             border-radius: 2px;
         }
 
-        .footer-col ul {
-            list-style: none;
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-        }
+        .footer-col ul { list-style: none; display: flex; flex-direction: column; gap: 12px; }
 
         .footer-col ul li a {
             color: rgba(255, 208, 217, 0.75);
             text-decoration: none;
             font-size: 0.86rem;
             font-weight: 300;
-            transition: all 0.3s ease;
+            transition: color 0.3s ease, padding 0.3s ease;
             display: inline-flex;
             align-items: center;
             gap: 8px;
             cursor: pointer;
         }
 
-        .footer-col ul li a:hover {
-            color: #FFD0D9;
-            padding-left: 3px;
-        }
+        .footer-col ul li a:hover { color: #FFD0D9; padding-left: 3px; }
 
         .footer-bottom {
             max-width: 1100px;
@@ -1138,11 +1128,7 @@
             letter-spacing: 0.3px;
         }
 
-        .footer-legal {
-            display: flex;
-            gap: 24px;
-            flex-wrap: wrap;
-        }
+        .footer-legal { display: flex; gap: 24px; flex-wrap: wrap; }
 
         .footer-legal a {
             color: rgba(255, 208, 217, 0.6);
@@ -1155,10 +1141,7 @@
 
         .footer-legal a:hover { color: #FFD0D9; }
 
-        .footer-socials {
-            display: flex;
-            gap: 10px;
-        }
+        .footer-socials { display: flex; gap: 10px; }
 
         .footer-socials a {
             width: 38px;
@@ -1179,6 +1162,43 @@
             color: #ffffff;
             transform: translateY(-3px);
             box-shadow: 0 8px 20px rgba(212, 63, 107, 0.45);
+        }
+
+        /* ============================================================
+           BACK TO TOP
+           ============================================================ */
+        .back-to-top {
+            position: fixed;
+            bottom: 28px;
+            right: 28px;
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #FFB6C1 0%, #D43F6B 100%);
+            color: #ffffff;
+            border: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.95rem;
+            box-shadow: 0 12px 28px rgba(212, 63, 107, 0.35);
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(12px);
+            transition: opacity 0.35s ease, visibility 0.35s ease, transform 0.35s ease, box-shadow 0.35s ease;
+            z-index: 500;
+        }
+
+        .back-to-top.visible {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+
+        .back-to-top:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 18px 38px rgba(212, 63, 107, 0.5);
         }
 
         /* ============================================================
@@ -1210,9 +1230,7 @@
             width: 100%;
             border-radius: 26px;
             text-align: left;
-            box-shadow:
-                0 40px 100px rgba(0, 0, 0, 0.4),
-                0 0 0 1px rgba(255, 255, 255, 0.06);
+            box-shadow: 0 40px 100px rgba(0, 0, 0, 0.4), 0 0 0 1px rgba(255, 255, 255, 0.06);
             margin: auto;
             max-height: calc(100vh - 3.5rem);
             overflow: hidden;
@@ -1337,10 +1355,7 @@
 
         .modal-body::-webkit-scrollbar { width: 6px; }
         .modal-body::-webkit-scrollbar-track { background: transparent; }
-        .modal-body::-webkit-scrollbar-thumb {
-            background: #d9d9d9;
-            border-radius: 10px;
-        }
+        .modal-body::-webkit-scrollbar-thumb { background: #d9d9d9; border-radius: 10px; }
         .modal-body::-webkit-scrollbar-thumb:hover { background: #c0c0c0; }
 
         .founder-card {
@@ -1417,8 +1432,8 @@
             font-weight: 700;
             background: linear-gradient(135deg, #FFB6C1 0%, #D43F6B 100%);
             -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
             background-clip: text;
+            -webkit-text-fill-color: transparent;
             line-height: 1;
             display: block;
             margin-bottom: 6px;
@@ -1432,12 +1447,7 @@
             color: #7a7a7a;
         }
 
-        .about-highlights {
-            display: flex;
-            flex-direction: column;
-            gap: 11px;
-            margin-top: 8px;
-        }
+        .about-highlights { display: flex; flex-direction: column; gap: 11px; margin-top: 8px; }
 
         .about-highlight {
             display: flex;
@@ -1449,18 +1459,9 @@
             font-weight: 400;
         }
 
-        .about-highlight i {
-            color: #D43F6B;
-            font-size: 0.9rem;
-            margin-top: 3px;
-            flex-shrink: 0;
-        }
+        .about-highlight i { color: #D43F6B; font-size: 0.9rem; margin-top: 3px; flex-shrink: 0; }
 
-        .contact-tiles {
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-        }
+        .contact-tiles { display: flex; flex-direction: column; gap: 12px; }
 
         .contact-tile {
             display: flex;
@@ -1692,7 +1693,7 @@
         }
 
         /* ============================================================
-           RESPONSIVE — every size
+           RESPONSIVE
            ============================================================ */
 
         @media (min-width: 1440px) {
@@ -1742,12 +1743,8 @@
             }
 
             .top-half::before,
-            .top-half::after {
-                width: 340px;
-                height: 340px;
-            }
+            .top-half::after { width: 340px; height: 340px; }
 
-            /* Hero row stays stacked but aligned to the left */
             .top-row {
                 flex-direction: column;
                 align-items: flex-start;
@@ -1761,31 +1758,39 @@
             }
 
             .brand h1 { font-size: 2.35rem; }
-            .brand p {
-                font-size: 0.68rem;
-                letter-spacing: 3.5px;
-                margin-top: 8px;
-            }
+            .brand p { font-size: 0.68rem; letter-spacing: 3.5px; margin-top: 8px; }
 
+            /* Nav wraps cleanly — hide dividers on mobile, use gap spacing */
             .top-nav {
                 justify-content: flex-start;
                 align-items: center;
                 width: 100%;
-                gap: 4px;
+                gap: 6px;
                 text-align: left;
                 flex-wrap: wrap;
             }
 
             .top-nav a,
             .top-nav .nav-btn {
-                font-size: 0.7rem;
-                padding: 6px 4px;
-                letter-spacing: 0.6px;
+                font-size: 0.72rem;
+                padding: 8px 10px;
+                letter-spacing: 0.5px;
+                background: rgba(255, 255, 255, 0.06);
+                border-radius: 50px;
+                border: 1px solid rgba(255, 182, 193, 0.18);
             }
 
-            .nav-divider { font-size: 0.62rem; margin: 0 2px; }
+            .top-nav a::after,
+            .top-nav .nav-btn::after { display: none; }
 
-            /* Hero content left aligned */
+            .top-nav a:hover,
+            .top-nav .nav-btn:hover {
+                background: rgba(255, 182, 193, 0.14);
+                border-color: rgba(255, 182, 193, 0.4);
+            }
+
+            .nav-divider { display: none; }
+
             .hero-content {
                 text-align: left;
                 margin-top: 30px;
@@ -1826,6 +1831,8 @@
             }
 
             .hero-cta-min i { font-size: 0.7rem; }
+
+            /* Hide scroll indicator on phone — it's cut off */
             .hero-scroll { display: none; }
 
             .bottom-half { padding: 55px 0 0; }
@@ -1833,19 +1840,9 @@
 
             .section-divider { margin-bottom: 45px; }
 
-            /* Left-align story + why us content on phone */
-            .visible-about-section {
-                text-align: left;
-            }
-
-            .visible-about-section .section-eyebrow {
-                justify-content: flex-start;
-            }
-
-            .visible-about-section .section-eyebrow::before {
-                display: none;
-            }
-
+            .visible-about-section { text-align: left; }
+            .visible-about-section .section-eyebrow { justify-content: flex-start; }
+            .visible-about-section .section-eyebrow::before { display: none; }
             .visible-about-section h3 { font-size: 1.95rem; }
             .visible-about-section p { font-size: 0.95rem; line-height: 1.75; margin: 0; }
 
@@ -1875,21 +1872,12 @@
             .service-card-tag { font-size: 0.56rem; letter-spacing: 2.4px; }
             .service-card-link { font-size: 0.72rem; }
 
-            /* Why us left aligned */
-            .why-choose-us {
-                text-align: left;
-            }
-
-            .why-choose-us .section-eyebrow {
-                justify-content: flex-start;
-            }
-
-            .why-choose-us .section-eyebrow::before {
-                display: none;
-            }
-
+            .why-choose-us { text-align: left; }
+            .why-choose-us .section-eyebrow { justify-content: flex-start; }
+            .why-choose-us .section-eyebrow::before { display: none; }
             .why-choose-us h3 { font-size: 1.95rem; margin-bottom: 34px; }
             .why-grid { grid-template-columns: 1fr; gap: 0; }
+
             .why-item {
                 padding: 26px 0;
                 align-items: flex-start;
@@ -1927,11 +1915,7 @@
             .contact-strip { grid-template-columns: 1fr; gap: 16px; }
 
             .site-footer { padding: 52px 18px 0; }
-            .footer-inner {
-                grid-template-columns: 1fr;
-                gap: 36px;
-                padding-bottom: 36px;
-            }
+            .footer-inner { grid-template-columns: 1fr; gap: 36px; padding-bottom: 36px; }
             .footer-brand p { font-size: 0.84rem; }
             .footer-bottom {
                 flex-direction: column;
@@ -1940,6 +1924,15 @@
                 padding: 22px 0;
             }
             .footer-legal { gap: 18px; flex-wrap: wrap; }
+
+            /* Back-to-top smaller on mobile */
+            .back-to-top {
+                width: 42px;
+                height: 42px;
+                bottom: 20px;
+                right: 20px;
+                font-size: 0.85rem;
+            }
 
             .modal { padding: 1rem; }
             .modal-content { max-height: calc(100vh - 2rem); border-radius: 22px; }
@@ -1989,7 +1982,7 @@
             .brand p { font-size: 0.62rem; letter-spacing: 3px; }
 
             .top-nav a,
-            .top-nav .nav-btn { font-size: 0.66rem; padding: 5px 3px; }
+            .top-nav .nav-btn { font-size: 0.66rem; padding: 7px 9px; }
 
             .hero-content h2 { font-size: 1.85rem; }
             .hero-content p { font-size: 0.88rem; }
@@ -2018,13 +2011,33 @@
             .hero-content p { font-size: 0.85rem; }
             .service-card { width: 90%; min-width: 210px; }
         }
+
+        /* ============================================================
+           REDUCED MOTION — respect user preference
+           ============================================================ */
+        @media (prefers-reduced-motion: reduce) {
+            *,
+            *::before,
+            *::after {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+                scroll-behavior: auto !important;
+            }
+
+            .hero-scroll { animation: none; }
+            html { scroll-behavior: auto; }
+        }
     </style>
 </head>
 <body>
 
+    <!-- Accessibility skip link -->
+    <a href="#main-content" class="skip-link">Skip to main content</a>
+
     <!-- HERO -->
-    <div class="top-half">
-        <div class="hero-glow"></div>
+    <div class="top-half" id="top">
+        <div class="hero-glow" aria-hidden="true"></div>
 
         <div class="top-row">
             <div class="brand">
@@ -2032,15 +2045,15 @@
                 <p>Book &bull; Glow &bull; Relax</p>
             </div>
 
-            <div class="top-nav">
+            <nav class="top-nav" aria-label="Primary">
                 <a href="login.html">LOG IN</a>
-                <span class="nav-divider">|</span>
+                <span class="nav-divider" aria-hidden="true">|</span>
                 <a href="register.html">SIGN UP</a>
-                <span class="nav-divider">|</span>
+                <span class="nav-divider" aria-hidden="true">|</span>
                 <a href="customerdashboard.html">QUICK BOOK</a>
-                <span class="nav-divider">|</span>
-                <button class="nav-btn" id="aboutUsBtn">ABOUT US</button>
-            </div>
+                <span class="nav-divider" aria-hidden="true">|</span>
+                <button class="nav-btn" id="aboutUsBtn" type="button">ABOUT US</button>
+            </nav>
         </div>
 
         <div class="hero-content">
@@ -2048,43 +2061,43 @@
             <h2>Your beauty journey<br>starts <em>here</em></h2>
             <p>Book any service in under 30 seconds. Choose your favourite treatment, pick a time, and show up to pure relaxation. No stress, no hidden fees — just honest, luxurious self-care.</p>
 
-            <a href="login.html" class="hero-cta-min">Book Your Appointment <i class="fas fa-arrow-right"></i></a>
+            <a href="login.html" class="hero-cta-min">Book Your Appointment <i class="fas fa-arrow-right" aria-hidden="true"></i></a>
         </div>
 
-        <div class="hero-scroll">
+        <button class="hero-scroll" id="heroScrollBtn" type="button" aria-label="Scroll to content">
             <span>Scroll</span>
-            <i class="fas fa-chevron-down"></i>
-        </div>
+            <i class="fas fa-chevron-down" aria-hidden="true"></i>
+        </button>
     </div>
 
     <!-- BOTTOM HALF -->
-    <div class="bottom-half">
+    <main class="bottom-half" id="main-content">
 
         <div class="bottom-half-inner">
 
-            <!-- OUR STORY — SHORTER -->
-            <div class="visible-about-section" style="padding-top: 0;">
+            <!-- OUR STORY -->
+            <section class="visible-about-section" style="padding-top: 0;">
                 <div class="section-eyebrow">Our Story</div>
                 <h3>Crafted with care,<br>inside Wits University</h3>
                 <p>
                     <strong>PinkMeUp Beauty Spa &amp; Academy</strong> was founded by <strong>Phumuzile Moyo</strong> and is based inside <strong>Wits University, Matrix Building, Floor 1</strong>. We offer luxury facials, nail treatments, lash artistry, massage therapy, and waxing — plus a <strong>QCTO and SDCC accredited academy</strong> training the next generation of beauty professionals.
                 </p>
-            </div>
+            </section>
 
         </div>
 
         <div class="section-divider" style="margin-top: 70px;"></div>
 
         <!-- SERVICE GALLERY -->
-        <div class="service-gallery-section">
+        <section class="service-gallery-section" aria-labelledby="galleryTitle">
             <div class="gallery-head">
                 <div class="gallery-head-text">
-                    <h4>Explore our treatments</h4>
+                    <h4 id="galleryTitle">Explore our treatments</h4>
                     <p>Swipe or scroll to discover each signature service.</p>
                 </div>
                 <div class="gallery-nav">
-                    <button type="button" id="galleryPrev" aria-label="Scroll gallery left"><i class="fas fa-chevron-left"></i></button>
-                    <button type="button" id="galleryNext" aria-label="Scroll gallery right"><i class="fas fa-chevron-right"></i></button>
+                    <button type="button" id="galleryPrev" aria-label="Scroll gallery left"><i class="fas fa-chevron-left" aria-hidden="true"></i></button>
+                    <button type="button" id="galleryNext" aria-label="Scroll gallery right"><i class="fas fa-chevron-right" aria-hidden="true"></i></button>
                 </div>
             </div>
 
@@ -2093,7 +2106,7 @@
                     <div class="service-card-content">
                         <div class="service-card-tag">Signature</div>
                         <h4>Lash &amp; Brow Artistry</h4>
-                        <span class="service-card-link">Explore <i class="fas fa-arrow-right"></i></span>
+                        <span class="service-card-link">Explore <i class="fas fa-arrow-right" aria-hidden="true"></i></span>
                     </div>
                 </a>
 
@@ -2101,7 +2114,7 @@
                     <div class="service-card-content">
                         <div class="service-card-tag">Restore</div>
                         <h4>Massage Therapy</h4>
-                        <span class="service-card-link">Explore <i class="fas fa-arrow-right"></i></span>
+                        <span class="service-card-link">Explore <i class="fas fa-arrow-right" aria-hidden="true"></i></span>
                     </div>
                 </a>
 
@@ -2109,38 +2122,38 @@
                     <div class="service-card-content">
                         <div class="service-card-tag">Craft</div>
                         <h4>Nail Design</h4>
-                        <span class="service-card-link">Explore <i class="fas fa-arrow-right"></i></span>
+                        <span class="service-card-link">Explore <i class="fas fa-arrow-right" aria-hidden="true"></i></span>
                     </div>
                 </a>
             </div>
-        </div>
+        </section>
 
         <div class="section-divider"></div>
 
         <div class="bottom-half-inner">
 
             <!-- WHY CHOOSE US -->
-            <div class="why-choose-us">
+            <section class="why-choose-us" aria-labelledby="whyTitle">
                 <div class="section-eyebrow">Why Us</div>
-                <h3>Why Choose PinkMeUp?</h3>
+                <h3 id="whyTitle">Why Choose PinkMeUp?</h3>
                 <div class="why-grid">
                     <div class="why-item">
-                        <div class="why-icon-wrap"><i class="fas fa-clock"></i></div>
+                        <div class="why-icon-wrap"><i class="fas fa-clock" aria-hidden="true"></i></div>
                         <h4>30-Second Booking</h4>
                         <p>Pick your service, choose a time, and confirm in under half a minute.</p>
                     </div>
                     <div class="why-item">
-                        <div class="why-icon-wrap"><i class="fas fa-gem"></i></div>
+                        <div class="why-icon-wrap"><i class="fas fa-gem" aria-hidden="true"></i></div>
                         <h4>Luxury Products</h4>
                         <p>We use only premium, skin-loving products for every treatment.</p>
                     </div>
                     <div class="why-item">
-                        <div class="why-icon-wrap"><i class="fas fa-graduation-cap"></i></div>
+                        <div class="why-icon-wrap"><i class="fas fa-graduation-cap" aria-hidden="true"></i></div>
                         <h4>Certified Academy</h4>
                         <p>QCTO &amp; SDCC accredited training programs for aspiring beauty therapists.</p>
                     </div>
                 </div>
-            </div>
+            </section>
 
         </div>
 
@@ -2163,40 +2176,40 @@
                                 <span class="svc-num">01</span>
                                 <span class="svc-name">Luxury Facial</span>
                             </div>
-                            <span class="svc-dot"></span>
+                            <span class="svc-dot" aria-hidden="true"></span>
                         </div>
                         <div class="svc-row">
                             <div class="svc-left">
                                 <span class="svc-num">02</span>
                                 <span class="svc-name">Nail Treatment</span>
                             </div>
-                            <span class="svc-dot"></span>
+                            <span class="svc-dot" aria-hidden="true"></span>
                         </div>
                         <div class="svc-row">
                             <div class="svc-left">
                                 <span class="svc-num">03</span>
                                 <span class="svc-name">Lash Treatment</span>
                             </div>
-                            <span class="svc-dot"></span>
+                            <span class="svc-dot" aria-hidden="true"></span>
                         </div>
                         <div class="svc-row">
                             <div class="svc-left">
                                 <span class="svc-num">04</span>
                                 <span class="svc-name">Massage Therapy</span>
                             </div>
-                            <span class="svc-dot"></span>
+                            <span class="svc-dot" aria-hidden="true"></span>
                         </div>
                         <div class="svc-row">
                             <div class="svc-left">
                                 <span class="svc-num">05</span>
                                 <span class="svc-name">Thread &amp; Wax</span>
                             </div>
-                            <span class="svc-dot"></span>
+                            <span class="svc-dot" aria-hidden="true"></span>
                         </div>
                     </div>
 
                     <div class="svc-footnote">
-                        <i class="fas fa-sparkles"></i> Custom packages available
+                        <i class="fas fa-sparkles" aria-hidden="true"></i> Custom packages available
                     </div>
                 </div>
 
@@ -2208,7 +2221,7 @@
 
                     <div class="academy-body">
                         <div class="accredit-block">
-                            <i class="fas fa-certificate"></i>
+                            <i class="fas fa-certificate" aria-hidden="true"></i>
                             <div class="accredit-text">
                                 <strong>National &amp; International Accredited</strong><br>
                                 QCTO &amp; SDCC Canada
@@ -2244,21 +2257,21 @@
 
                         <div class="contact-strip">
                             <div class="contact-mini">
-                                <div class="contact-mini-icon"><i class="fas fa-envelope"></i></div>
+                                <div class="contact-mini-icon"><i class="fas fa-envelope" aria-hidden="true"></i></div>
                                 <div class="contact-mini-body">
                                     <span class="contact-mini-label">Email</span>
                                     <span class="contact-mini-value"><a href="mailto:pinkmeup01@gmail.com">pinkmeup01@gmail.com</a></span>
                                 </div>
                             </div>
                             <div class="contact-mini">
-                                <div class="contact-mini-icon"><i class="fas fa-phone-alt"></i></div>
+                                <div class="contact-mini-icon"><i class="fas fa-phone-alt" aria-hidden="true"></i></div>
                                 <div class="contact-mini-body">
                                     <span class="contact-mini-label">Phone</span>
                                     <span class="contact-mini-value"><a href="tel:0767690102">076 769 0102</a></span>
                                 </div>
                             </div>
                             <div class="contact-mini" style="grid-column: 1 / -1;">
-                                <div class="contact-mini-icon"><i class="fas fa-map-marker-alt"></i></div>
+                                <div class="contact-mini-icon"><i class="fas fa-map-marker-alt" aria-hidden="true"></i></div>
                                 <div class="contact-mini-body">
                                     <span class="contact-mini-label">Visit Us</span>
                                     <span class="contact-mini-value">Wits University, Matrix Building, Floor 1</span>
@@ -2272,9 +2285,9 @@
 
         </div>
 
-    </div>
+    </main>
 
-    <!-- FOOTER — SOLID BLACK -->
+    <!-- FOOTER -->
     <footer class="site-footer">
         <div class="footer-inner">
 
@@ -2283,9 +2296,9 @@
                 <div class="footer-tagline">Book · Glow · Relax</div>
                 <p>Luxury beauty treatments and accredited professional training, delivered with care from the heart of Braamfontein.</p>
                 <div class="footer-socials">
-                    <a href="https://www.instagram.com/pinkmeup.beauty?igsh=MW9vM3hpYjZuc3E2bw%3D%3D" target="_blank" rel="noopener noreferrer" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
-                    <a href="https://web.facebook.com/PinkxMeUp" target="_blank" rel="noopener noreferrer" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
-                    <a href="https://www.tiktok.com/@pinkmeup.beauty?is_from_webapp=1&sender_device=pc" target="_blank" rel="noopener noreferrer" aria-label="TikTok"><i class="fab fa-tiktok"></i></a>
+                    <a href="https://www.instagram.com/pinkmeup.beauty?igsh=MW9vM3hpYjZuc3E2bw%3D%3D" target="_blank" rel="noopener noreferrer" aria-label="Instagram"><i class="fab fa-instagram" aria-hidden="true"></i></a>
+                    <a href="https://web.facebook.com/PinkxMeUp" target="_blank" rel="noopener noreferrer" aria-label="Facebook"><i class="fab fa-facebook-f" aria-hidden="true"></i></a>
+                    <a href="https://www.tiktok.com/@pinkmeup.beauty?is_from_webapp=1&sender_device=pc" target="_blank" rel="noopener noreferrer" aria-label="TikTok"><i class="fab fa-tiktok" aria-hidden="true"></i></a>
                 </div>
             </div>
 
@@ -2332,10 +2345,17 @@
         </div>
     </footer>
 
-    <!-- MODALS -->
+    <!-- Back to top button -->
+    <button class="back-to-top" id="backToTop" type="button" aria-label="Back to top">
+        <i class="fas fa-arrow-up" aria-hidden="true"></i>
+    </button>
+
+    <!-- ============================================================
+         MODAL — ABOUT US
+         ============================================================ -->
     <div id="aboutModal" class="modal" role="dialog" aria-modal="true" aria-labelledby="aboutTitle">
         <div class="modal-content">
-            <button class="modal-close-x" aria-label="Close dialog" data-close="aboutModal"><i class="fas fa-times"></i></button>
+            <button class="modal-close-x" aria-label="Close dialog" data-close="aboutModal"><i class="fas fa-times" aria-hidden="true"></i></button>
 
             <div class="modal-header">
                 <div class="modal-header-inner">
@@ -2347,7 +2367,7 @@
 
             <div class="modal-body">
                 <div class="founder-card">
-                    <div class="founder-avatar">PM</div>
+                    <div class="founder-avatar" aria-hidden="true">PM</div>
                     <div class="founder-info">
                         <h5>Phumuzile Moyo</h5>
                         <p>Founder &amp; Lead Therapist</p>
@@ -2379,34 +2399,37 @@
 
                 <div class="about-highlights">
                     <div class="about-highlight">
-                        <i class="fas fa-check-circle"></i>
+                        <i class="fas fa-check-circle" aria-hidden="true"></i>
                         <span>QCTO &amp; SDCC Canada accredited training academy</span>
                     </div>
                     <div class="about-highlight">
-                        <i class="fas fa-check-circle"></i>
+                        <i class="fas fa-check-circle" aria-hidden="true"></i>
                         <span>Premium, skin-loving products used in every treatment</span>
                     </div>
                     <div class="about-highlight">
-                        <i class="fas fa-check-circle"></i>
+                        <i class="fas fa-check-circle" aria-hidden="true"></i>
                         <span>Personalised service from a dedicated, growing team</span>
                     </div>
                     <div class="about-highlight">
-                        <i class="fas fa-check-circle"></i>
+                        <i class="fas fa-check-circle" aria-hidden="true"></i>
                         <span>Easy online booking — pick a service, pick a time, done</span>
                     </div>
                 </div>
             </div>
 
             <div class="modal-footer">
-                <button class="btn-modal btn-modal-ghost" data-close="aboutModal">Close</button>
-                <a href="login.html" class="btn-modal btn-modal-primary">Book Now <i class="fas fa-arrow-right"></i></a>
+                <button class="btn-modal btn-modal-ghost" type="button" data-close="aboutModal">Close</button>
+                <a href="login.html" class="btn-modal btn-modal-primary">Book Now <i class="fas fa-arrow-right" aria-hidden="true"></i></a>
             </div>
         </div>
     </div>
 
+    <!-- ============================================================
+         MODAL — CONTACT
+         ============================================================ -->
     <div id="contactModal" class="modal" role="dialog" aria-modal="true" aria-labelledby="contactTitle">
         <div class="modal-content">
-            <button class="modal-close-x" aria-label="Close dialog" data-close="contactModal"><i class="fas fa-times"></i></button>
+            <button class="modal-close-x" aria-label="Close dialog" data-close="contactModal"><i class="fas fa-times" aria-hidden="true"></i></button>
 
             <div class="modal-header">
                 <div class="modal-header-inner">
@@ -2419,35 +2442,35 @@
             <div class="modal-body">
                 <div class="contact-tiles">
                     <a href="mailto:pinkmeup01@gmail.com" class="contact-tile">
-                        <div class="contact-tile-icon"><i class="fas fa-envelope"></i></div>
+                        <div class="contact-tile-icon"><i class="fas fa-envelope" aria-hidden="true"></i></div>
                         <div class="contact-tile-body">
                             <div class="contact-tile-label">Email</div>
                             <div class="contact-tile-value">pinkmeup01@gmail.com</div>
                         </div>
-                        <i class="fas fa-arrow-right contact-tile-arrow"></i>
+                        <i class="fas fa-arrow-right contact-tile-arrow" aria-hidden="true"></i>
                     </a>
 
                     <a href="tel:0767690102" class="contact-tile">
-                        <div class="contact-tile-icon"><i class="fas fa-phone-alt"></i></div>
+                        <div class="contact-tile-icon"><i class="fas fa-phone-alt" aria-hidden="true"></i></div>
                         <div class="contact-tile-body">
                             <div class="contact-tile-label">Phone</div>
                             <div class="contact-tile-value">076 769 0102</div>
                         </div>
-                        <i class="fas fa-arrow-right contact-tile-arrow"></i>
+                        <i class="fas fa-arrow-right contact-tile-arrow" aria-hidden="true"></i>
                     </a>
 
                     <a href="https://maps.google.com/?q=Wits+University+Matrix+Building+Braamfontein" target="_blank" rel="noopener noreferrer" class="contact-tile">
-                        <div class="contact-tile-icon"><i class="fas fa-map-marker-alt"></i></div>
+                        <div class="contact-tile-icon"><i class="fas fa-map-marker-alt" aria-hidden="true"></i></div>
                         <div class="contact-tile-body">
                             <div class="contact-tile-label">Visit Us</div>
                             <div class="contact-tile-value">Wits University, Matrix Building, Floor 1<br>Braamfontein, Johannesburg</div>
                         </div>
-                        <i class="fas fa-arrow-right contact-tile-arrow"></i>
+                        <i class="fas fa-arrow-right contact-tile-arrow" aria-hidden="true"></i>
                     </a>
                 </div>
 
                 <div class="modal-hours">
-                    <div class="modal-hours-title"><i class="far fa-clock"></i> Opening Hours</div>
+                    <div class="modal-hours-title"><i class="far fa-clock" aria-hidden="true"></i> Opening Hours</div>
                     <div class="modal-hour-row">
                         <span class="day">Monday – Friday</span>
                         <span class="time">9:00 AM – 5:00 PM</span>
@@ -2463,21 +2486,24 @@
                 </div>
 
                 <div class="modal-socials">
-                    <a href="https://www.instagram.com/pinkmeup.beauty?igsh=MW9vM3hpYjZuc3E2bw%3D%3D" target="_blank" rel="noopener noreferrer" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
-                    <a href="https://web.facebook.com/PinkxMeUp" target="_blank" rel="noopener noreferrer" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
-                    <a href="https://www.tiktok.com/@pinkmeup.beauty?is_from_webapp=1&sender_device=pc" target="_blank" rel="noopener noreferrer" aria-label="TikTok"><i class="fab fa-tiktok"></i></a>
+                    <a href="https://www.instagram.com/pinkmeup.beauty?igsh=MW9vM3hpYjZuc3E2bw%3D%3D" target="_blank" rel="noopener noreferrer" aria-label="Instagram"><i class="fab fa-instagram" aria-hidden="true"></i></a>
+                    <a href="https://web.facebook.com/PinkxMeUp" target="_blank" rel="noopener noreferrer" aria-label="Facebook"><i class="fab fa-facebook-f" aria-hidden="true"></i></a>
+                    <a href="https://www.tiktok.com/@pinkmeup.beauty?is_from_webapp=1&sender_device=pc" target="_blank" rel="noopener noreferrer" aria-label="TikTok"><i class="fab fa-tiktok" aria-hidden="true"></i></a>
                 </div>
             </div>
 
             <div class="modal-footer">
-                <button class="btn-modal btn-modal-primary" data-close="contactModal">Close</button>
+                <button class="btn-modal btn-modal-primary" type="button" data-close="contactModal">Close</button>
             </div>
         </div>
     </div>
 
+    <!-- ============================================================
+         MODAL — PRIVACY POLICY
+         ============================================================ -->
     <div id="privacyModal" class="modal" role="dialog" aria-modal="true" aria-labelledby="privacyTitle">
         <div class="modal-content">
-            <button class="modal-close-x" aria-label="Close dialog" data-close="privacyModal"><i class="fas fa-times"></i></button>
+            <button class="modal-close-x" aria-label="Close dialog" data-close="privacyModal"><i class="fas fa-times" aria-hidden="true"></i></button>
 
             <div class="modal-header">
                 <div class="modal-header-inner">
@@ -2489,13 +2515,13 @@
 
             <div class="modal-body">
                 <div class="policy-meta">
-                    <i class="fas fa-shield-alt"></i>
+                    <i class="fas fa-shield-alt" aria-hidden="true"></i>
                     <span>Last updated: <strong>18 August 2026</strong></span>
                 </div>
 
                 <div class="policy-section">
                     <div class="policy-section-head">
-                        <div class="policy-num">1</div>
+                        <div class="policy-num" aria-hidden="true">1</div>
                         <h5>Information We Collect</h5>
                     </div>
                     <p>We collect information you provide directly when booking or registering — such as your name, email address, phone number, and appointment preferences. We also automatically collect basic technical data like your IP address and browser type to keep the site secure and improve performance.</p>
@@ -2503,7 +2529,7 @@
 
                 <div class="policy-section">
                     <div class="policy-section-head">
-                        <div class="policy-num">2</div>
+                        <div class="policy-num" aria-hidden="true">2</div>
                         <h5>How We Use Your Information</h5>
                     </div>
                     <p>Your information is used to confirm bookings, send appointment reminders, process payments, and improve our services. <strong>We never sell your personal data to third parties.</strong></p>
@@ -2511,7 +2537,7 @@
 
                 <div class="policy-section">
                     <div class="policy-section-head">
-                        <div class="policy-num">3</div>
+                        <div class="policy-num" aria-hidden="true">3</div>
                         <h5>Data Security</h5>
                     </div>
                     <p>We take reasonable steps to protect your data using secure servers and encryption. However, no online transmission is ever 100% secure, so we encourage you to keep your account credentials private.</p>
@@ -2519,7 +2545,7 @@
 
                 <div class="policy-section">
                     <div class="policy-section-head">
-                        <div class="policy-num">4</div>
+                        <div class="policy-num" aria-hidden="true">4</div>
                         <h5>Third-Party Links</h5>
                     </div>
                     <p>Our site may link to social media platforms or payment providers. We are not responsible for their privacy practices — please review their policies separately.</p>
@@ -2527,7 +2553,7 @@
 
                 <div class="policy-section">
                     <div class="policy-section-head">
-                        <div class="policy-num">5</div>
+                        <div class="policy-num" aria-hidden="true">5</div>
                         <h5>Your Rights</h5>
                     </div>
                     <p>You may request to view, update, or delete your personal data at any time by emailing <strong>pinkmeup01@gmail.com</strong>. We'll respond within 7 business days.</p>
@@ -2535,14 +2561,17 @@
             </div>
 
             <div class="modal-footer">
-                <button class="btn-modal btn-modal-primary" data-close="privacyModal">Got it</button>
+                <button class="btn-modal btn-modal-primary" type="button" data-close="privacyModal">Got it</button>
             </div>
         </div>
     </div>
 
+    <!-- ============================================================
+         MODAL — TERMS OF SERVICE
+         ============================================================ -->
     <div id="termsModal" class="modal" role="dialog" aria-modal="true" aria-labelledby="termsTitle">
         <div class="modal-content">
-            <button class="modal-close-x" aria-label="Close dialog" data-close="termsModal"><i class="fas fa-times"></i></button>
+            <button class="modal-close-x" aria-label="Close dialog" data-close="termsModal"><i class="fas fa-times" aria-hidden="true"></i></button>
 
             <div class="modal-header">
                 <div class="modal-header-inner">
@@ -2554,13 +2583,13 @@
 
             <div class="modal-body">
                 <div class="policy-meta">
-                    <i class="fas fa-file-contract"></i>
+                    <i class="fas fa-file-contract" aria-hidden="true"></i>
                     <span>Last updated: <strong>18 August 2026</strong></span>
                 </div>
 
                 <div class="policy-section">
                     <div class="policy-section-head">
-                        <div class="policy-num">1</div>
+                        <div class="policy-num" aria-hidden="true">1</div>
                         <h5>Bookings &amp; Confirmation</h5>
                     </div>
                     <p>All appointments are confirmed once you receive a booking confirmation via email or SMS. Please arrive 5–10 minutes early. Late arrivals may result in shortened treatment time.</p>
@@ -2568,7 +2597,7 @@
 
                 <div class="policy-section">
                     <div class="policy-section-head">
-                        <div class="policy-num">2</div>
+                        <div class="policy-num" aria-hidden="true">2</div>
                         <h5>Cancellations &amp; Rescheduling</h5>
                     </div>
                     <p>We kindly ask for at least <strong>24 hours' notice</strong> for cancellations or rescheduling. Late cancellations or no-shows may be subject to a fee, or loss of deposit where applicable.</p>
@@ -2576,7 +2605,7 @@
 
                 <div class="policy-section">
                     <div class="policy-section-head">
-                        <div class="policy-num">3</div>
+                        <div class="policy-num" aria-hidden="true">3</div>
                         <h5>Payments</h5>
                     </div>
                     <p>Services are payable at the time of booking or on the day of your appointment. Academy fees follow the agreed payment plan. All prices are in South African Rand (ZAR) and may be updated from time to time.</p>
@@ -2584,7 +2613,7 @@
 
                 <div class="policy-section">
                     <div class="policy-section-head">
-                        <div class="policy-num">4</div>
+                        <div class="policy-num" aria-hidden="true">4</div>
                         <h5>Health &amp; Safety</h5>
                     </div>
                     <p>Please inform us of any allergies, skin conditions, or medical concerns before your treatment. We reserve the right to refuse service where it may pose a health risk to you or our staff.</p>
@@ -2592,7 +2621,7 @@
 
                 <div class="policy-section">
                     <div class="policy-section-head">
-                        <div class="policy-num">5</div>
+                        <div class="policy-num" aria-hidden="true">5</div>
                         <h5>Academy Enrolments</h5>
                     </div>
                     <p>Academy programmes are subject to registration, deposit, and starter kit requirements. Course fees are non-transferable. Certification is awarded upon successful completion of all modules.</p>
@@ -2600,7 +2629,7 @@
 
                 <div class="policy-section">
                     <div class="policy-section-head">
-                        <div class="policy-num">6</div>
+                        <div class="policy-num" aria-hidden="true">6</div>
                         <h5>Contact</h5>
                     </div>
                     <p>For any questions about these terms, please contact us at <strong>pinkmeup01@gmail.com</strong> or call <strong>076 769 0102</strong>.</p>
@@ -2608,119 +2637,203 @@
             </div>
 
             <div class="modal-footer">
-                <button class="btn-modal btn-modal-primary" data-close="termsModal">I understand</button>
+                <button class="btn-modal btn-modal-primary" type="button" data-close="termsModal">I understand</button>
             </div>
         </div>
     </div>
 
     <script>
-        const yearEl = document.getElementById('year');
-        if (yearEl) yearEl.textContent = new Date().getFullYear();
+        (function () {
+            'use strict';
 
-        // ============================================================
-        // SERVICE GALLERY — horizontal scroll controls
-        // ============================================================
-        (function() {
-            const gallery = document.getElementById('serviceGallery');
-            const prevBtn = document.getElementById('galleryPrev');
-            const nextBtn = document.getElementById('galleryNext');
+            const yearEl = document.getElementById('year');
+            if (yearEl) yearEl.textContent = new Date().getFullYear();
 
-            if (!gallery || !prevBtn || !nextBtn) return;
+            /* ============================================================
+               SERVICE GALLERY — horizontal scroll controls
+               ============================================================ */
+            (function () {
+                const gallery = document.getElementById('serviceGallery');
+                const prevBtn = document.getElementById('galleryPrev');
+                const nextBtn = document.getElementById('galleryNext');
 
-            const scrollAmount = () => {
-                const first = gallery.querySelector('.service-card');
-                if (!first) return 320;
-                const styles = getComputedStyle(gallery);
-                const gap = parseFloat(styles.columnGap || styles.gap) || 22;
-                return first.offsetWidth + gap;
-            };
+                if (!gallery || !prevBtn || !nextBtn) return;
 
-            function updateNav() {
-                const maxScroll = gallery.scrollWidth - gallery.clientWidth - 2;
-                prevBtn.disabled = gallery.scrollLeft <= 2;
-                nextBtn.disabled = gallery.scrollLeft >= maxScroll;
-            }
+                const scrollAmount = () => {
+                    const first = gallery.querySelector('.service-card');
+                    if (!first) return 320;
+                    const styles = getComputedStyle(gallery);
+                    const gap = parseFloat(styles.columnGap || styles.gap) || 22;
+                    return first.offsetWidth + gap;
+                };
 
-            prevBtn.addEventListener('click', () => {
-                gallery.scrollBy({ left: -scrollAmount(), behavior: 'smooth' });
-            });
-
-            nextBtn.addEventListener('click', () => {
-                gallery.scrollBy({ left: scrollAmount(), behavior: 'smooth' });
-            });
-
-            gallery.addEventListener('scroll', updateNav, { passive: true });
-            window.addEventListener('resize', updateNav);
-            updateNav();
-        })();
-
-        // ============================================================
-        // MODALS
-        // ============================================================
-        (function() {
-            const modals = {
-                aboutModal: document.getElementById('aboutModal'),
-                contactModal: document.getElementById('contactModal'),
-                privacyModal: document.getElementById('privacyModal'),
-                termsModal: document.getElementById('termsModal')
-            };
-
-            let lastFocused = null;
-
-            function openModal(id) {
-                const m = modals[id];
-                if (!m) return;
-                lastFocused = document.activeElement;
-                m.style.display = 'flex';
-                document.body.style.overflow = 'hidden';
-                setTimeout(() => {
-                    const focusable = m.querySelector('button, a[href], [tabindex]:not([tabindex="-1"])');
-                    if (focusable) focusable.focus();
-                }, 60);
-            }
-
-            function closeModal(id) {
-                const m = modals[id];
-                if (!m) return;
-                m.style.display = 'none';
-                const anyOpen = Object.values(modals).some(x => x && x.style.display === 'flex');
-                if (!anyOpen) document.body.style.overflow = '';
-                if (lastFocused && typeof lastFocused.focus === 'function') {
-                    lastFocused.focus();
+                function updateNav() {
+                    const maxScroll = gallery.scrollWidth - gallery.clientWidth - 2;
+                    prevBtn.disabled = gallery.scrollLeft <= 2;
+                    nextBtn.disabled = gallery.scrollLeft >= maxScroll;
                 }
-            }
 
-            function closeAll() {
-                Object.keys(modals).forEach(closeModal);
-            }
-
-            document.querySelectorAll('#aboutUsBtn, #aboutUsBtn2').forEach(b => {
-                b.addEventListener('click', () => openModal('aboutModal'));
-            });
-            document.querySelectorAll('#contactBtn, #contactBtn2').forEach(b => {
-                b.addEventListener('click', () => openModal('contactModal'));
-            });
-            document.querySelectorAll('#privacyBtn, #privacyBtn2').forEach(b => {
-                b.addEventListener('click', () => openModal('privacyModal'));
-            });
-            document.querySelectorAll('#termsBtn, #termsBtn2').forEach(b => {
-                b.addEventListener('click', () => openModal('termsModal'));
-            });
-
-            document.querySelectorAll('[data-close]').forEach(btn => {
-                btn.addEventListener('click', () => closeModal(btn.dataset.close));
-            });
-
-            Object.values(modals).forEach(m => {
-                if (!m) return;
-                m.addEventListener('click', (e) => {
-                    if (e.target === m) closeModal(m.id);
+                prevBtn.addEventListener('click', () => {
+                    gallery.scrollBy({ left: -scrollAmount(), behavior: 'smooth' });
                 });
-            });
 
-            document.addEventListener('keydown', (e) => {
-                if (e.key === 'Escape') closeAll();
-            });
+                nextBtn.addEventListener('click', () => {
+                    gallery.scrollBy({ left: scrollAmount(), behavior: 'smooth' });
+                });
+
+                gallery.addEventListener('scroll', updateNav, { passive: true });
+                window.addEventListener('resize', updateNav);
+                updateNav();
+            })();
+
+            /* ============================================================
+               HERO SCROLL — jump to content
+               ============================================================ */
+            (function () {
+                const btn = document.getElementById('heroScrollBtn');
+                const target = document.getElementById('main-content');
+                if (!btn || !target) return;
+
+                btn.addEventListener('click', () => {
+                    const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+                    target.scrollIntoView({ behavior: prefersReduced ? 'auto' : 'smooth', block: 'start' });
+                });
+            })();
+
+            /* ============================================================
+               BACK TO TOP
+               ============================================================ */
+            (function () {
+                const btn = document.getElementById('backToTop');
+                if (!btn) return;
+                let ticking = false;
+
+                function updateVisibility() {
+                    const show = window.scrollY > 600;
+                    btn.classList.toggle('visible', show);
+                    ticking = false;
+                }
+
+                window.addEventListener('scroll', () => {
+                    if (!ticking) {
+                        window.requestAnimationFrame(updateVisibility);
+                        ticking = true;
+                    }
+                }, { passive: true });
+
+                btn.addEventListener('click', () => {
+                    const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+                    window.scrollTo({ top: 0, behavior: prefersReduced ? 'auto' : 'smooth' });
+                });
+
+                updateVisibility();
+            })();
+
+            /* ============================================================
+               MODALS — accessible dialog controller
+               ============================================================ */
+            (function () {
+                const modals = {
+                    aboutModal: document.getElementById('aboutModal'),
+                    contactModal: document.getElementById('contactModal'),
+                    privacyModal: document.getElementById('privacyModal'),
+                    termsModal: document.getElementById('termsModal')
+                };
+
+                const FOCUSABLE_SELECTOR = 'a[href], button:not([disabled]), [tabindex]:not([tabindex="-1"]), input, select, textarea';
+                let lastFocused = null;
+                let activeModalId = null;
+
+                function focusablesIn(el) {
+                    return Array.from(el.querySelectorAll(FOCUSABLE_SELECTOR)).filter(node =>
+                        !node.hasAttribute('disabled') && node.offsetParent !== null
+                    );
+                }
+
+                function trapFocus(e) {
+                    if (e.key !== 'Tab' || !activeModalId) return;
+                    const modal = modals[activeModalId];
+                    if (!modal) return;
+                    const list = focusablesIn(modal);
+                    if (list.length === 0) return;
+                    const first = list[0];
+                    const last = list[list.length - 1];
+
+                    if (e.shiftKey && document.activeElement === first) {
+                        e.preventDefault();
+                        last.focus();
+                    } else if (!e.shiftKey && document.activeElement === last) {
+                        e.preventDefault();
+                        first.focus();
+                    }
+                }
+
+                function openModal(id) {
+                    const m = modals[id];
+                    if (!m) return;
+                    lastFocused = document.activeElement;
+                    activeModalId = id;
+                    m.style.display = 'flex';
+                    document.body.style.overflow = 'hidden';
+
+                    setTimeout(() => {
+                        const list = focusablesIn(m);
+                        if (list.length) list[0].focus();
+                    }, 60);
+                }
+
+                function closeModal(id) {
+                    const m = modals[id];
+                    if (!m) return;
+                    m.style.display = 'none';
+
+                    if (activeModalId === id) activeModalId = null;
+
+                    const anyOpen = Object.values(modals).some(x => x && x.style.display === 'flex');
+                    if (!anyOpen) document.body.style.overflow = '';
+
+                    if (lastFocused && typeof lastFocused.focus === 'function') {
+                        lastFocused.focus();
+                    }
+                }
+
+                function closeAll() {
+                    Object.keys(modals).forEach(closeModal);
+                }
+
+                // Open triggers
+                document.querySelectorAll('#aboutUsBtn, #aboutUsBtn2').forEach(b => {
+                    b.addEventListener('click', () => openModal('aboutModal'));
+                });
+                document.querySelectorAll('#contactBtn, #contactBtn2').forEach(b => {
+                    b.addEventListener('click', () => openModal('contactModal'));
+                });
+                document.querySelectorAll('#privacyBtn, #privacyBtn2').forEach(b => {
+                    b.addEventListener('click', () => openModal('privacyModal'));
+                });
+                document.querySelectorAll('#termsBtn, #termsBtn2').forEach(b => {
+                    b.addEventListener('click', () => openModal('termsModal'));
+                });
+
+                // Close buttons
+                document.querySelectorAll('[data-close]').forEach(btn => {
+                    btn.addEventListener('click', () => closeModal(btn.dataset.close));
+                });
+
+                // Click outside to close
+                Object.values(modals).forEach(m => {
+                    if (!m) return;
+                    m.addEventListener('click', (e) => {
+                        if (e.target === m) closeModal(m.id);
+                    });
+                });
+
+                // ESC to close + Tab focus trap
+                document.addEventListener('keydown', (e) => {
+                    if (e.key === 'Escape') closeAll();
+                    trapFocus(e);
+                });
+            })();
         })();
     </script>
 </body>
