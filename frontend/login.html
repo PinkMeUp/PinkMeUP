@@ -4,8 +4,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" type="image/svg+xml" href="favicon.svg">
+    <meta name="theme-color" content="#2A0818">
 
     <title>Sign In - PinkMeUP</title>
+
+    <!-- Performance hints -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
     <!-- PinkMeUP Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
@@ -36,14 +41,39 @@
 
             font-family: 'Inter', Arial, sans-serif;
 
-            background: #ffffff;
-            color: #000000;
+            background-color: #ffffff;
+
+            /* Soft plum/pink radial glows — echoes the hero on the landing page */
+            background-image:
+                radial-gradient(circle at 12% 15%, rgba(212, 63, 107, 0.055), transparent 42%),
+                radial-gradient(circle at 88% 85%, rgba(255, 182, 193, 0.10), transparent 46%);
+            background-attachment: fixed;
+
+            color: #1a1a1a;
 
             display: flex;
             align-items: center;
             justify-content: center;
 
             padding: 40px 25px;
+
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* =====================================================
+           ACCESSIBILITY
+           ===================================================== */
+
+        :focus-visible {
+            outline: 2px solid #FF7A9C;
+            outline-offset: 3px;
+            border-radius: 4px;
+        }
+
+        button:focus:not(:focus-visible),
+        a:focus:not(:focus-visible),
+        input:focus:not(:focus-visible) {
+            outline: none;
         }
 
         /* =====================================================
@@ -78,7 +108,8 @@
 
             background: linear-gradient(
                 135deg,
-                #FFB6C1 0%,
+                #FFD0D9 0%,
+                #FF7A9C 45%,
                 #D43F6B 100%
             );
 
@@ -86,7 +117,9 @@
             -webkit-text-fill-color: transparent;
             background-clip: text;
 
-            margin-bottom: 8px;
+            filter: drop-shadow(0 4px 18px rgba(212, 63, 107, 0.18));
+
+            margin-bottom: 10px;
         }
 
         .auth-container h2 {
@@ -95,9 +128,11 @@
             font-size: 2rem;
             font-weight: 600;
 
-            color: #000000;
+            color: #1a1a1a;
 
             text-align: center;
+
+            letter-spacing: -0.2px;
 
             margin-bottom: 32px;
         }
@@ -111,18 +146,29 @@
             width: 100%;
 
             font-size: 0.85rem;
+            font-weight: 500;
 
-            margin-bottom: 15px;
+            padding: 12px 16px;
+
+            border-radius: 10px;
+
+            margin-bottom: 18px;
 
             display: none;
+
+            line-height: 1.5;
         }
 
         .error {
-            color: #dc3545;
+            color: #a01a35;
+            background: rgba(212, 63, 107, 0.08);
+            border: 1px solid rgba(212, 63, 107, 0.22);
         }
 
         .success {
-            color: #28a745;
+            color: #1e7a3e;
+            background: rgba(40, 167, 69, 0.08);
+            border: 1px solid rgba(40, 167, 69, 0.22);
         }
 
         .error.show,
@@ -148,10 +194,12 @@
 
             font-family: 'Inter', Arial, sans-serif;
 
-            font-size: 0.85rem;
-            font-weight: 500;
+            font-size: 0.8rem;
+            font-weight: 600;
 
-            color: #000000;
+            letter-spacing: 0.4px;
+
+            color: #1a1a1a;
 
             margin-bottom: 8px;
         }
@@ -159,17 +207,17 @@
         .form-group input {
             width: 100%;
 
-            padding: 13px 14px;
+            padding: 14px 16px;
 
             background: #ffffff;
 
-            border: 1px solid #cfcfcf;
-            border-radius: 0;
+            border: 1px solid rgba(212, 63, 107, 0.28);
+            border-radius: 10px;
 
             font-family: 'Inter', Arial, sans-serif;
-            font-size: 0.9rem;
+            font-size: 0.92rem;
 
-            color: #000000;
+            color: #1a1a1a;
 
             transition:
                 border-color 0.25s ease,
@@ -177,7 +225,11 @@
         }
 
         .form-group input::placeholder {
-            color: #999999;
+            color: #a8a8a8;
+        }
+
+        .form-group input:hover {
+            border-color: rgba(212, 63, 107, 0.45);
         }
 
         .form-group input:focus {
@@ -185,7 +237,7 @@
 
             border-color: #D43F6B;
 
-            box-shadow: 0 0 0 2px rgba(212, 63, 107, 0.08);
+            box-shadow: 0 0 0 3px rgba(212, 63, 107, 0.12);
         }
 
         /* =====================================================
@@ -198,13 +250,13 @@
         }
 
         .password-wrapper input {
-            padding-right: 55px;
+            padding-right: 70px;
         }
 
         #toggle-password {
             position: absolute;
 
-            right: 12px;
+            right: 16px;
             top: 50%;
 
             transform: translateY(-50%);
@@ -213,10 +265,19 @@
 
             color: #D43F6B;
 
-            font-size: 0.8rem;
-            font-weight: 500;
+            font-size: 0.75rem;
+            font-weight: 600;
+
+            letter-spacing: 0.6px;
+            text-transform: uppercase;
 
             user-select: none;
+
+            transition: color 0.2s ease;
+        }
+
+        #toggle-password:hover {
+            color: #1a1a1a;
         }
 
         /* =====================================================
@@ -231,7 +292,10 @@
             justify-content: space-between;
             align-items: center;
 
-            margin-bottom: 20px;
+            margin-bottom: 22px;
+
+            gap: 12px;
+            flex-wrap: wrap;
         }
 
         .remember-label {
@@ -239,32 +303,41 @@
 
             align-items: center;
 
-            gap: 6px;
+            gap: 8px;
 
             margin-bottom: 0 !important;
 
-            color: #666666 !important;
+            color: #4a4a4a !important;
 
-            font-size: 0.8rem !important;
+            font-size: 0.82rem !important;
 
             font-weight: 400 !important;
 
             cursor: pointer;
+
+            transition: color 0.2s ease;
+        }
+
+        .remember-label:hover {
+            color: #1a1a1a !important;
         }
 
         #remember {
-            width: 14px;
-            height: 14px;
+            width: 15px;
+            height: 15px;
 
             accent-color: #D43F6B;
 
             cursor: pointer;
+
+            flex-shrink: 0;
         }
 
         .forgot-password {
             color: #D43F6B;
 
-            font-size: 0.8rem;
+            font-size: 0.82rem;
+            font-weight: 500;
 
             text-decoration: none;
 
@@ -272,51 +345,63 @@
         }
 
         .forgot-password:hover {
-            color: #000000;
+            color: #1a1a1a;
 
             text-decoration: underline;
         }
 
         /* =====================================================
-           SIGN IN BUTTON
+           SIGN IN BUTTON — gradient pill, matches landing page CTA
            ===================================================== */
 
         #login-btn {
             width: 100%;
 
-            padding: 13px 20px;
+            padding: 15px 24px;
 
-            background: #ffffff;
+            background: linear-gradient(135deg, #FFB6C1 0%, #D43F6B 100%);
+            color: #ffffff;
 
-            color: #000000;
-
-            border: 1.5px solid #D43F6B;
-            border-radius: 0;
+            border: none;
+            border-radius: 50px;
 
             font-family: 'Inter', Arial, sans-serif;
 
-            font-size: 0.9rem;
+            font-size: 0.88rem;
             font-weight: 600;
 
-            letter-spacing: 0.3px;
+            letter-spacing: 0.6px;
+            text-transform: uppercase;
 
             cursor: pointer;
 
-            transition: all 0.25s ease;
+            box-shadow: 0 6px 20px rgba(212, 63, 107, 0.30);
+
+            transition:
+                transform 0.3s cubic-bezier(0.16, 1, 0.3, 1),
+                box-shadow 0.3s ease,
+                opacity 0.25s ease;
         }
 
-        #login-btn:hover {
-            background: #D43F6B;
-            color: #ffffff;
+        #login-btn:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 30px rgba(212, 63, 107, 0.45);
+        }
+
+        #login-btn:active:not(:disabled) {
+            transform: translateY(0);
+            box-shadow: 0 4px 14px rgba(212, 63, 107, 0.32);
         }
 
         #login-btn:disabled {
             background: #eeeeee;
             color: #999999;
 
-            border-color: #cccccc;
+            box-shadow: none;
 
             cursor: not-allowed;
+
+            transform: none;
         }
 
         /* =====================================================
@@ -326,7 +411,7 @@
         .google-section {
             width: 100%;
 
-            margin-top: 25px;
+            margin-top: 28px;
         }
 
         .google-divider {
@@ -338,7 +423,7 @@
 
             position: relative;
 
-            margin-bottom: 18px;
+            margin-bottom: 20px;
         }
 
         .google-divider::before {
@@ -351,43 +436,54 @@
 
             height: 1px;
 
-            background: #dddddd;
+            background: linear-gradient(
+                90deg,
+                transparent 0%,
+                rgba(212, 63, 107, 0.30) 20%,
+                rgba(212, 63, 107, 0.30) 80%,
+                transparent 100%
+            );
         }
 
         .google-divider span {
             position: relative;
             z-index: 1;
 
-            background: #ffffff;
+            background-color: #ffffff;
 
-            padding: 0 14px;
+            padding: 0 16px;
 
-            color: #888888;
+            color: #7a7a7a;
 
-            font-size: 0.8rem;
+            font-size: 0.78rem;
+            font-weight: 500;
+
+            letter-spacing: 0.4px;
+            text-transform: uppercase;
         }
 
         /* =====================================================
-           GOOGLE BUTTON
+           GOOGLE BUTTON — dark plum pill
            ===================================================== */
 
         .btn-google {
             width: 100%;
 
-            display: block;
+            display: flex;
+            align-items: center;
+            justify-content: center;
 
-            padding: 13px 20px;
+            padding: 14px 24px;
 
-            background: #000000;
+            background: #1a1a1a;
+            color: #FFD0D9;
 
-            color: #D43F6B;
-
-            border: 1.5px solid #000000;
-            border-radius: 0;
+            border: 1.5px solid #1a1a1a;
+            border-radius: 50px;
 
             font-family: 'Inter', Arial, sans-serif;
 
-            font-size: 0.9rem;
+            font-size: 0.88rem;
             font-weight: 600;
 
             letter-spacing: 0.3px;
@@ -395,15 +491,25 @@
             text-align: center;
             text-decoration: none;
 
-            transition: all 0.25s ease;
+            transition:
+                transform 0.3s cubic-bezier(0.16, 1, 0.3, 1),
+                background-color 0.3s ease,
+                color 0.3s ease,
+                border-color 0.3s ease,
+                box-shadow 0.3s ease;
         }
 
         .btn-google:hover {
-            background: #D43F6B;
+            background: #2A0818;
+            color: #FFB6C1;
+            border-color: #2A0818;
 
-            color: #000000;
+            transform: translateY(-2px);
+            box-shadow: 0 10px 26px rgba(26, 5, 16, 0.22);
+        }
 
-            border-color: #D43F6B;
+        .btn-google:active {
+            transform: translateY(0);
         }
 
         /* =====================================================
@@ -415,13 +521,15 @@
 
             text-align: center;
 
-            margin-top: 24px;
+            margin-top: 26px;
 
-            color: #666666;
+            color: #7a7a7a;
 
             font-family: 'Inter', Arial, sans-serif;
 
-            font-size: 0.8rem;
+            font-size: 0.82rem;
+
+            line-height: 1.5;
         }
 
         .auth-footer a {
@@ -435,7 +543,7 @@
         }
 
         .auth-footer a:hover {
-            color: #000000;
+            color: #1a1a1a;
 
             text-decoration: underline;
         }
@@ -469,14 +577,18 @@
             }
 
             .form-group input {
-                padding: 14px;
+                padding: 14px 16px;
 
                 font-size: 16px;
             }
 
+            .password-wrapper input {
+                padding-right: 68px;
+            }
+
             #login-btn,
             .btn-google {
-                padding: 14px 18px;
+                padding: 15px 22px;
             }
         }
 
@@ -496,14 +608,33 @@
 
             .auth-container h2 {
                 font-size: 1.6rem;
+                margin-bottom: 24px;
             }
 
             .form-group label {
-                font-size: 0.8rem;
+                font-size: 0.78rem;
+            }
+
+            .login-options {
+                gap: 8px;
             }
 
             .auth-footer {
-                font-size: 0.75rem;
+                font-size: 0.78rem;
+            }
+        }
+
+        /* =====================================================
+           REDUCED MOTION
+           ===================================================== */
+
+        @media (prefers-reduced-motion: reduce) {
+            *,
+            *::before,
+            *::after {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
             }
         }
     </style>
@@ -517,9 +648,9 @@
 
         <h2>Welcome Back</h2>
 
-        <div id="error" class="error"></div>
+        <div id="error" class="error" role="alert" aria-live="polite"></div>
 
-        <div id="success" class="success"></div>
+        <div id="success" class="success" role="status" aria-live="polite"></div>
 
         <form id="login-form" novalidate>
 
@@ -530,6 +661,7 @@
                     type="email"
                     id="email"
                     placeholder="Enter your email"
+                    autocomplete="email"
                     required
                 >
             </div>
@@ -544,10 +676,11 @@
                         type="password"
                         id="password"
                         placeholder="Enter your password"
+                        autocomplete="current-password"
                         required
                     >
 
-                    <span id="toggle-password">
+                    <span id="toggle-password" role="button" tabindex="0" aria-label="Show password">
                         Show
                     </span>
 
@@ -591,7 +724,7 @@
 
         <div class="google-section">
 
-            <div class="google-divider">
+            <div class="google-divider" aria-hidden="true">
                 <span>or</span>
             </div>
 
