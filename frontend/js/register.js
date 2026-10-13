@@ -55,7 +55,7 @@ form.addEventListener('submit', async (e) => {
 
     const phoneDigits = phone.replace(/\D/g, '');
     if (!/^[+\d\s()-]+$/.test(phone) || phoneDigits.length < 10 || phoneDigits.length > 15 || /^(\d)\1+$/.test(phoneDigits)) {
-        errorEl.textContent = 'Enter a valid phone number (10-15 digits, e.g. 062 034 4647).';
+        errorEl.textContent = 'Enter a valid phone number (10-15 digits).';
         errorEl.classList.add('show');
         return;
     }

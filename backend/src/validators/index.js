@@ -34,7 +34,7 @@ const LAST_NAME_FORMAT_MESSAGE =
   'Last name may only contain letters, spaces, hyphens and apostrophes';
 
 const PHONE_FORMAT_MESSAGE =
-  'Enter a valid phone number (10-15 digits, e.g. 062 034 4647)';
+  'Enter a valid phone number (10-15 digits)';
 
 const isValidPhone = (value) => {
   const raw = String(value).trim();

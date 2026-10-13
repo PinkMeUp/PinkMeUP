@@ -2304,7 +2304,7 @@
     }
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { showToast('Please enter a valid email address (e.g. name@example.com).'); return; }
     const phoneDigits = phone.replace(/\D/g, '');
-    if (!/^[+\d\s()-]+$/.test(phone) || phoneDigits.length < 10 || phoneDigits.length > 15 || /^(\d)\1+$/.test(phoneDigits)) { showToast('Please enter a valid phone number (10-15 digits, e.g. 062 034 4647).'); return; }
+    if (!/^[+\d\s()-]+$/.test(phone) || phoneDigits.length < 10 || phoneDigits.length > 15 || /^(\d)\1+$/.test(phoneDigits)) { showToast('Please enter a valid phone number (10-15 digits).'); return; }
     if (!bookState.date) { showToast('Please pick a date.'); gotoStep(2); return; }
     if (!bookState.time) { showToast(availabilityNote || 'Please pick a time slot.'); gotoStep(2); return; }
     isBookingSubmitting = true;

@@ -4474,7 +4474,7 @@
     if (clientPhone) {
       const phoneDigits = clientPhone.replace(/\D/g, '');
       if (!/^[+\d\s()-]+$/.test(clientPhone) || phoneDigits.length < 10 || phoneDigits.length > 15 || /^(\d)\1+$/.test(phoneDigits)) {
-        showToast('Enter a valid phone number (10-15 digits, e.g. 062 034 4647).', true);
+        showToast('Enter a valid phone number (10-15 digits).', true);
         return;
       }
     }
