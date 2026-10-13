@@ -28,7 +28,7 @@ const emailFrom = () => process.env.EMAIL_FROM || process.env.EMAIL_USER;
 const transporter = nodemailer.createTransport({
   host: process.env.EMAIL_HOST,
   port: parseInt(process.env.EMAIL_PORT, 10) || 587,
-  secure: false,
+  secure: process.env.EMAIL_SECURE === 'true' || Number(process.env.EMAIL_PORT) === 465,
   auth: {
     user: process.env.EMAIL_USER,
     pass: process.env.EMAIL_PASS
@@ -159,7 +159,7 @@ const sendPasswordResetEmail = async (email, resetToken, firstName) => {
       return false;
     }
 
-    const resetLink = `${process.env.FRONTEND_URL || 'http://localhost:3000'}/reset-password?token=${resetToken}`;
+    const resetLink = `${process.env.FRONTEND_URL.replace(/\/$/, '')}/reset.html?token=${encodeURIComponent(resetToken)}`;
     
     const html = `
       <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">

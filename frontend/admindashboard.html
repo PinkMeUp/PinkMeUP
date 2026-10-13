@@ -2491,8 +2491,11 @@
   } catch (e) { applyAdminTheme('light'); }
 </script>
 
+<script src="js/runtime-config.js"></script>
+<script src="js/config.js"></script>
+<script src="js/auth.js"></script>
 <script>
-  const API_BASE = window.API_URL || 'https://pinkmeup-api.onrender.com/api/v1';
+  const API_BASE = window.API_URL;
   let services = [];
   let stylists = [];
   let allBookings = [];
@@ -3157,7 +3160,7 @@
     applySettingsToUI(cached);
     markSettingsFormDirty();
     try {
-      const res = await fetch(`${API_BASE}/admin/settings`, { credentials: 'include' });
+      const res = await apiFetch(`${API_BASE}/admin/settings`, { credentials: 'include' });
       if (!res.ok) return;
       const data = await res.json();
       if (!data.success || !data.data) return;
@@ -3213,7 +3216,7 @@
     };
     showLoading('Saving settings...');
     try {
-      const res = await fetch(`${API_BASE}/admin/settings`, {
+      const res = await apiFetch(`${API_BASE}/admin/settings`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         credentials: 'include',
@@ -3243,7 +3246,7 @@
   async function resetSettings() {
     showLoading('Resetting...');
     try {
-      const res = await fetch(`${API_BASE}/admin/settings/reset`, { method: 'POST', credentials: 'include' });
+      const res = await apiFetch(`${API_BASE}/admin/settings/reset`, { method: 'POST', credentials: 'include' });
       const data = await res.json();
       if (!res.ok || !data.success) { showToast(data.message || 'Failed to reset settings.', true); return; }
       const s = settingsFromServer(data.data || {});
@@ -3681,7 +3684,7 @@
 
   async function loadServices() {
     try {
-      const res = await fetch(`${API_BASE}/services?limit=100`, { credentials: 'include' });
+      const res = await apiFetch(`${API_BASE}/services?limit=100`, { credentials: 'include' });
       const data = await res.json();
       if (data.success) {
         services = data.data.services || [];
@@ -3829,7 +3832,7 @@
     const url = editId ? `${API_BASE}/services/${editId}` : `${API_BASE}/services`;
     showLoading(editId ? 'Saving...' : 'Creating...');
     try {
-      const res = await fetch(url, {
+      const res = await apiFetch(url, {
         method,
         headers: { 'Content-Type': 'application/json' },
         credentials: 'include',
@@ -3855,7 +3858,7 @@
       async () => {
         showLoading('Archiving...');
         try {
-          const res = await fetch(`${API_BASE}/services/${id}`, { method: 'DELETE', credentials: 'include' });
+          const res = await apiFetch(`${API_BASE}/services/${id}`, { method: 'DELETE', credentials: 'include' });
           const data = await res.json();
           if (!res.ok) { showToast(data.message || 'Failed to archive.', true); return; }
           closeServiceDetail();
@@ -3872,7 +3875,7 @@
     if (!svc) return;
     showLoading('Restoring...');
     try {
-      const res = await fetch(`${API_BASE}/services/${id}`, {
+      const res = await apiFetch(`${API_BASE}/services/${id}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         credentials: 'include',
@@ -3932,7 +3935,7 @@
 
   async function loadStylists() {
     try {
-      const res = await fetch(`${API_BASE}/stylists?limit=100`, { credentials: 'include' });
+      const res = await apiFetch(`${API_BASE}/stylists?limit=100`, { credentials: 'include' });
       const data = await res.json();
       if (data.success) {
         stylists = (data.data.stylists || []).map(st => ({
@@ -4016,7 +4019,7 @@
   async function updateStylistStatus(id, status) {
     showLoading('Updating status...');
     try {
-      const res = await fetch(`${API_BASE}/stylists/${id}`, {
+      const res = await apiFetch(`${API_BASE}/stylists/${id}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         credentials: 'include',
@@ -4075,7 +4078,7 @@
     if (editId) {
       showLoading('Saving...');
       try {
-        const res = await fetch(`${API_BASE}/stylists/${editId}`, {
+        const res = await apiFetch(`${API_BASE}/stylists/${editId}`, {
           method: 'PUT',
           headers: { 'Content-Type': 'application/json' },
           credentials: 'include',
@@ -4103,7 +4106,7 @@
       showLoading('Creating...');
       try {
         const password = 'Stylist@123';
-        const res = await fetch(`${API_BASE}/admin/stylists`, {
+        const res = await apiFetch(`${API_BASE}/admin/stylists`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           credentials: 'include',
@@ -4131,7 +4134,7 @@
       async () => {
         showLoading('Deleting...');
         try {
-          const res = await fetch(`${API_BASE}/stylists/${id}`, { method: 'DELETE', credentials: 'include' });
+          const res = await apiFetch(`${API_BASE}/stylists/${id}`, { method: 'DELETE', credentials: 'include' });
           const data = await res.json();
           if (!res.ok) { showToast(data.message || 'Failed to delete.', true); return; }
           stylists = stylists.filter(s => s.id !== id);
@@ -4228,7 +4231,7 @@
       let collected = [];
       let total = null;
       while (page <= 20) {
-        const res = await fetch(`${API_BASE}/admin/bookings?limit=${PAGE_SIZE}&page=${page}`, { credentials: 'include' });
+        const res = await apiFetch(`${API_BASE}/admin/bookings?limit=${PAGE_SIZE}&page=${page}`, { credentials: 'include' });
         const data = await res.json();
         if (!res.ok) { showToast(data.message || 'Failed to load bookings.', true); return; }
         const batch = data.data.bookings || [];
@@ -4258,7 +4261,7 @@
       const monthStart = new Date(now.getFullYear(), now.getMonth(), 1);
       const monthEnd = new Date(now.getFullYear(), now.getMonth() + 1, 0, 23, 59, 59);
       const fmt = (d) => toLocalDateStr(d);
-      const monthRes = await fetch(
+      const monthRes = await apiFetch(
         `${API_BASE}/admin/bookings?limit=1&page=1&startDate=${fmt(monthStart)}&endDate=${fmt(monthEnd)}`,
         { credentials: 'include' }
       );
@@ -4315,7 +4318,7 @@
       async () => {
         showLoading('Cancelling...');
         try {
-          const res = await fetch(`${API_BASE}/bookings/${id}/cancel`, {
+          const res = await apiFetch(`${API_BASE}/bookings/${id}/cancel`, {
             method: 'PUT',
             headers: { 'Content-Type': 'application/json' },
             credentials: 'include',
@@ -4345,7 +4348,7 @@
   async function setBookingStatus(id, status) {
     showLoading('Updating...');
     try {
-      const res = await fetch(`${API_BASE}/admin/bookings/${id}/status`, {
+      const res = await apiFetch(`${API_BASE}/admin/bookings/${id}/status`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         credentials: 'include',
@@ -4479,7 +4482,7 @@
     try {
       const [firstName, ...lastNameParts] = clientName.split(' ');
       const lastName = lastNameParts.join(' ') || '';
-      const res = await fetch(`${API_BASE}/admin/bookings`, {
+      const res = await apiFetch(`${API_BASE}/admin/bookings`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         credentials: 'include',
@@ -4531,9 +4534,9 @@
     showLoading('Loading reports...');
     try {
       const [trendsRes, popularityRes, performanceRes] = await Promise.all([
-        fetch(`${API_BASE}/admin/reports/booking-trends${qs}`, { credentials: 'include' }),
-        fetch(`${API_BASE}/admin/reports/service-popularity${qs}`, { credentials: 'include' }),
-        fetch(`${API_BASE}/admin/reports/stylist-performance${qs}`, { credentials: 'include' })
+        apiFetch(`${API_BASE}/admin/reports/booking-trends${qs}`, { credentials: 'include' }),
+        apiFetch(`${API_BASE}/admin/reports/service-popularity${qs}`, { credentials: 'include' }),
+        apiFetch(`${API_BASE}/admin/reports/stylist-performance${qs}`, { credentials: 'include' })
       ]);
       const trends = await trendsRes.json();
       const popularity = await popularityRes.json();
@@ -4613,7 +4616,7 @@
     const email = document.getElementById('adminProfileEmailInput').value.trim();
     showLoading('Saving...');
     try {
-      const res = await fetch(`${API_BASE}/auth/profile`, {
+      const res = await apiFetch(`${API_BASE}/auth/profile`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         credentials: 'include',
@@ -4666,7 +4669,7 @@
       'You will be returned to the login screen.',
       async () => {
         showLoading('Signing out...');
-        try { await fetch(`${API_BASE}/auth/logout`, { method: 'POST', credentials: 'include' }); } catch (e) {}
+        try { await apiFetch(`${API_BASE}/auth/logout`, { method: 'POST', credentials: 'include' }); } catch (e) {}
         localStorage.removeItem('user');
         localStorage.removeItem('authToken');
         sessionStorage.clear();
@@ -4680,11 +4683,8 @@
   }
 
   document.addEventListener('DOMContentLoaded', async function() {
-    let user = null;
-    try {
-      const stored = localStorage.getItem('user') || sessionStorage.getItem('user');
-      if (stored) user = JSON.parse(stored);
-    } catch (e) {}
+    const authenticated = await syncAuthFromServer();
+    const user = authenticated ? getCurrentUser() : null;
     if (!user) { window.location.replace('login.html'); return; }
     if (user.role === 'customer') { window.location.replace('customerdashboard.html'); return; }
     const initials = (user.firstName ? user.firstName[0] : '') + (user.lastName ? user.lastName[0] : '');

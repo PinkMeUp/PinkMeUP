@@ -35,7 +35,7 @@ let SERVICES = [];
 let CATEGORIES = [];
 
 async function loadServices() {
-  const res = await fetch(`${API_URL}/services?limit=100`, { credentials: 'include' });
+  const res = await apiFetch(`${API_URL}/services?limit=100`, { credentials: 'include' });
   const data = await res.json();
   SERVICES = data.data.services.map(s => ({ id: s._id, category: s.category, name: s.name, price: s.price, duration: s.duration }));
   CATEGORIES = [...new Set(SERVICES.map(s => s.category))];
@@ -45,7 +45,7 @@ async function loadServices() {
 let STYLISTS = [];
 
 async function loadStylists() {
-  const res = await fetch(`${API_URL}/stylists?limit=100`, { credentials: 'include' });
+  const res = await apiFetch(`${API_URL}/stylists?limit=100`, { credentials: 'include' });
   const data = await res.json();
   STYLISTS = (data.data.stylists || []).map(s => ({
     id: s._id,
@@ -59,7 +59,7 @@ let appointments = [];
 
 async function loadAppointments() {
   try {
-    const res = await fetch(`${API_URL}/bookings/my?limit=100`, { credentials: 'include' });
+    const res = await apiFetch(`${API_URL}/bookings/my?limit=100`, { credentials: 'include' });
     const data = await res.json();
     if (!res.ok || !data?.data?.bookings) {
       appointments = [];
@@ -300,7 +300,7 @@ async function loadRescheduleSlots() {
   if (message) message.textContent = 'Loading available times...';
 
   try {
-    const res = await fetch(
+    const res = await apiFetch(
       `${API_URL}/bookings/availability/time-slots?stylistId=${encodeURIComponent(appointment.stylistId || '')}&date=${encodeURIComponent(date)}&serviceIds=${encodeURIComponent(serviceIds.join(','))}&excludeAppointmentId=${encodeURIComponent(rescheduleApptId)}`,
       { credentials: 'include' }
     );
@@ -391,7 +391,7 @@ async function confirmReschedule() {
   }
 
   try {
-    const res = await fetch(`${API_URL}/bookings/${encodeURIComponent(rescheduleApptId)}/reschedule`, {
+    const res = await apiFetch(`${API_URL}/bookings/${encodeURIComponent(rescheduleApptId)}/reschedule`, {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
       credentials: 'include',
@@ -432,7 +432,7 @@ async function cancelAppointment(id) {
   if (!appt) return;
   if (!confirm(`Cancel your appointment on ${formatDate(appt.date)} at ${appt.time}?`)) return;
 
-  const res = await fetch(`${API_URL}/bookings/${id}/cancel`, {
+  const res = await apiFetch(`${API_URL}/bookings/${id}/cancel`, {
     method: 'PUT',
     headers: { 'Content-Type': 'application/json' },
     credentials: 'include',
@@ -713,7 +713,7 @@ async function loadAvailableSlots() {
   }
 
   try {
-    const res = await fetch(
+    const res = await apiFetch(
       `${API_URL}/bookings/availability/time-slots?stylistId=${encodeURIComponent(bookState.stylistId)}&date=${encodeURIComponent(dateVal)}&serviceIds=${encodeURIComponent(cartIds.join(','))}`,
       { credentials: 'include' }
     );
@@ -886,7 +886,7 @@ async function confirmBooking() {
   wNextBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Booking...';
 
   try {
-    const res = await fetch(`${API_URL}/bookings`, {
+    const res = await apiFetch(`${API_URL}/bookings`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       credentials: 'include',
@@ -938,7 +938,7 @@ async function saveProfile() {
   const [firstName, ...rest] = name.split(' ');
   const lastName = rest.join(' ') || firstName;
 
-  const res = await fetch(`${API_URL}/auth/profile`, {
+  const res = await apiFetch(`${API_URL}/auth/profile`, {
     method: 'PUT',
     headers: { 'Content-Type': 'application/json' },
     credentials: 'include',
@@ -971,7 +971,7 @@ function formatDur(mins) {
 
 async function signOut() {
   try {
-    await fetch(`${API_URL}/auth/logout`, {
+    await apiFetch(`${API_URL}/auth/logout`, {
       method: 'POST',
       credentials: 'include'
     });
@@ -1015,7 +1015,7 @@ function showToast(msg) {
     if (currentUser.role.toLowerCase() === 'admin') {
       window.location.replace('admindashboard.html');
     } else if (currentUser.role.toLowerCase() === 'stylist') {
-      window.location.replace('stylistdashboard.html');
+      window.location.replace('admindashboard.html');
     } else {
       window.location.replace('login.html');
     }

@@ -67,10 +67,13 @@ const checkAvailability = async (req, res) => {
     if (serviceIds) {
       serviceIdArray = (Array.isArray(serviceIds) ? serviceIds : [serviceIds]).flatMap(v => String(v).split(',')).map(v => v.trim()).filter(Boolean);
       const services = await Service.find({ _id: { $in: serviceIdArray } });
+      if (services.length !== new Set(serviceIdArray).size || services.some(service => !service.isActive)) {
+        return errorResponse(res, 'One or more selected services are unavailable.', 400);
+      }
       services.forEach(s => requiredDuration += s.duration);
     }
 
-    const stylist = await Stylist.findById(stylistId).populate('userId', 'isActive');
+    const stylist = await Stylist.findById(stylistId).populate('userId', 'isActive firstName lastName');
     if (!stylist) return errorResponse(res, 'Stylist not found.', 404);
     
     if (!stylist.userId?.isActive) {
@@ -144,6 +147,9 @@ const getAvailableSlots = async (req, res) => {
         .filter(Boolean);
         
       const services = await Service.find({ _id: { $in: serviceIdArray } });
+      if (services.length !== new Set(serviceIdArray).size || services.some(service => !service.isActive)) {
+        return errorResponse(res, 'One or more selected services are unavailable.', 400);
+      }
       services.forEach(s => requiredDuration += s.duration);
     }
 
@@ -251,6 +257,9 @@ const getTimeSlotsForDate = async (req, res) => {
     if (serviceIds) {
       serviceIdArray = (Array.isArray(serviceIds) ? serviceIds : [serviceIds]).flatMap(v => String(v).split(',')).map(v => v.trim()).filter(Boolean);
       const services = await Service.find({ _id: { $in: serviceIdArray } });
+      if (services.length !== new Set(serviceIdArray).size || services.some(service => !service.isActive)) {
+        return errorResponse(res, 'One or more selected services are unavailable.', 400);
+      }
       services.forEach(s => requiredDuration += s.duration);
     }
 
@@ -267,7 +276,7 @@ const getTimeSlotsForDate = async (req, res) => {
 
     if (anyStylist) {
       const candidates = await Stylist.find({ isAvailable: true })
-        .populate('userId', 'isActive');
+        .populate('userId', 'isActive firstName lastName');
       const eligible = candidates.filter(candidate => candidate.userId?.isActive && stylistCoversServices(candidate, serviceIdArray));
       if (!eligible.length) {
         return successResponse(res, 'Time slots retrieved.', {
@@ -300,7 +309,7 @@ const getTimeSlotsForDate = async (req, res) => {
     }
 
     const stylist = await Stylist.findById(stylistId)
-      .populate('userId', 'isActive');
+      .populate('userId', 'isActive firstName lastName');
       
     if (!stylist) return errorResponse(res, 'Stylist not found.', 404);
 

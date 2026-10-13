@@ -3,9 +3,14 @@
   "version": "1.0.0",
   "description": "PinkMeUP Beauty Spa Booking System Frontend",
   "scripts": {
-    "start": "serve ."
+    "start": "serve dist -l 3000",
+    "test": "node --test ../tests/regression.test.cjs",
+    "build": "node scripts/build.cjs"
   },
   "dependencies": {
     "serve": "^14.2.0"
+  },
+  "devDependencies": {
+    "playwright": "^1.64.0"
   }
 }

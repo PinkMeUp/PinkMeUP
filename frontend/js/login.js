@@ -67,7 +67,7 @@ form.addEventListener('submit', async (e) => {
     btn.textContent = 'Signing In...';
 
     try {
-        const response = await fetch(`${API_URL}/auth/login`, {
+        const response = await apiFetch(`${API_URL}/auth/login`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             credentials: 'include',
@@ -84,6 +84,7 @@ form.addEventListener('submit', async (e) => {
             return;
         }
 
+        clearAuthToken();
         setAuthData(data.data.user);
 
 window.location.href = getDashboardPath(data.data.user);

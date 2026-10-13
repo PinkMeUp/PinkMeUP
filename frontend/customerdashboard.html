@@ -922,7 +922,7 @@
 
     <div class="sidebar-greeting">
       <div class="greeting-sub">Hello,</div>
-      <div class="greeting-name" id="sidebarUsername">Sarah Mokoena</div>
+      <div class="greeting-name" id="sidebarUsername"></div>
     </div>
 
     <div class="nav-group">
@@ -1200,7 +1200,7 @@
             <div class="booking-panel date-panel">
               <div class="panel-label">Pick Your Appointment Date</div>
               <div class="panel-hint">Choose any available day that suits you. Past dates can't be selected.</div>
-              <div class="month-label" id="currentMonthLabel">April, 2031</div>
+              <div class="month-label" id="currentMonthLabel"></div>
               <div class="calendar-weekdays"><span>Mo</span><span>Tu</span><span>We</span><span>Th</span><span>Fr</span><span>Sa</span><span>Su</span></div>
               <div class="calendar-days" id="calendarDays"></div>
               <div class="date-nav">
@@ -1226,7 +1226,7 @@
         <div class="wizard-body hidden" id="wbody3">
           <div class="details-form">
             <div style="background: var(--rose-pale); padding: 0.9rem 1.1rem; border-radius: var(--radius-sm); border: 1px solid var(--rose-mid); margin-bottom: 1.4rem;">
-              <p style="font-size: 0.92rem; color: var(--ink); font-weight: 500;"><i class="fas fa-info-circle" style="color:var(--rose);"></i> <strong style="font-weight:700;">Quick Book:</strong> no account needed. Enter your details below and we'll send a confirmation email.</p>
+              <p style="font-size: 0.92rem; color: var(--ink); font-weight: 500;"><i class="fas fa-info-circle" style="color:var(--rose);"></i> <strong style="font-weight:700;">Quick Book:</strong> Enter your details below to receive your booking confirmation.</p>
             </div>
             <div class="form-group"><label class="form-label">Full Name <span style="color: var(--rose);">*</span></label><input class="form-input" id="detName" type="text" placeholder="Your full name"></div>
             <div class="form-group"><label class="form-label">Email Address <span style="color: var(--rose);">*</span></label><input class="form-input" id="detEmail" type="email" placeholder="you@example.com"></div>
@@ -1274,15 +1274,15 @@
       <section id="profile-view" class="view">
         <div class="profile-container" id="profileMain">
           <div class="profile-header">
-            <div class="profile-avatar-large" id="profileAvatar">SM</div>
-            <div class="profile-name" id="profileFullName">Sarah Mokoena</div>
-            <div class="profile-email" id="profileEmail">sarah@example.com</div>
-            <div class="profile-member-badge"><i class="fas fa-crown"></i> Member since May 2026</div>
+            <div class="profile-avatar-large" id="profileAvatar"></div>
+            <div class="profile-name" id="profileFullName"></div>
+            <div class="profile-email" id="profileEmail"></div>
+            <div class="profile-member-badge"><i class="fas fa-crown"></i> <span id="profileMemberBadge">Member</span></div>
           </div>
           <div class="profile-divider"></div>
           <div class="profile-details-list">
-            <div class="profile-detail-item"><span class="detail-label">Phone</span><span class="detail-value" id="profileDisplayPhone">+27 82 123 4567</span></div>
-            <div class="profile-detail-item"><span class="detail-label">Member Since</span><span class="detail-value">May 2026</span></div>
+            <div class="profile-detail-item"><span class="detail-label">Phone</span><span class="detail-value" id="profileDisplayPhone"></span></div>
+            <div class="profile-detail-item"><span class="detail-label">Member Since</span><span class="detail-value" id="profileMemberSince">Not available</span></div>
             <div class="profile-detail-item"><span class="detail-label">Total Bookings</span><span class="detail-value" id="profileStatBookings">0</span></div>
             <div class="profile-detail-item"><span class="detail-label">Upcoming</span><span class="detail-value" id="profileStatUpcoming">0</span></div>
             <div class="profile-detail-item"><span class="detail-label">Total Spent</span><span class="detail-value" id="profileStatSpent">R0</span></div>
@@ -1527,12 +1527,12 @@
     <div class="confirmation-title">Booking Confirmed</div>
     <div class="confirmation-sub">Your appointment has been successfully booked.</div>
     <div class="confirmation-details">
-      <div class="confirmation-row"><span class="confirmation-label">Reference</span><span class="confirmation-value" id="confirmRef">PMU-2026-0001</span></div>
-      <div class="confirmation-row"><span class="confirmation-label">Services</span><span class="confirmation-value" id="confirmServices">Hair Cut, Facial</span></div>
-      <div class="confirmation-row"><span class="confirmation-label">Date &amp; Time</span><span class="confirmation-value" id="confirmDateTime">15 May 2026, 2:30 PM</span></div>
-      <div class="confirmation-row"><span class="confirmation-label">Stylist</span><span class="confirmation-value" id="confirmStylist">Sarah Mokoena</span></div>
-      <div class="confirmation-row"><span class="confirmation-label">Total</span><span class="confirmation-value" id="confirmTotal">R450</span></div>
-      <div class="confirmation-row"><span class="confirmation-label">Guest</span><span class="confirmation-value" id="confirmGuest">John Doe</span></div>
+      <div class="confirmation-row"><span class="confirmation-label">Reference</span><span class="confirmation-value" id="confirmRef"></span></div>
+      <div class="confirmation-row"><span class="confirmation-label">Services</span><span class="confirmation-value" id="confirmServices"></span></div>
+      <div class="confirmation-row"><span class="confirmation-label">Date &amp; Time</span><span class="confirmation-value" id="confirmDateTime"></span></div>
+      <div class="confirmation-row"><span class="confirmation-label">Stylist</span><span class="confirmation-value" id="confirmStylist"></span></div>
+      <div class="confirmation-row"><span class="confirmation-label">Total</span><span class="confirmation-value" id="confirmTotal"></span></div>
+      <div class="confirmation-row"><span class="confirmation-label">Guest</span><span class="confirmation-value" id="confirmGuest"></span></div>
     </div>
     <div class="confirmation-actions">
       <button class="btn-primary" onclick="autoDownloadInvoice()">Download Invoice <i class="fas fa-arrow-right"></i></button>
@@ -1543,6 +1543,7 @@
 
 <div id="toast"></div>
 
+<script src="js/runtime-config.js"></script>
 <script src="js/config.js"></script>
 <script src="js/auth.js"></script>
 
@@ -1776,25 +1777,33 @@
     if (clearNotifsBtn) clearNotifsBtn.addEventListener('click', clearAllNotifs);
   });
 
+  const guestRequested = new URLSearchParams(window.location.search).get('guest') === '1';
+  let isGuestMode = false;
+  function escapeHtml(value) {
+    return String(value ?? '').replace(/[&<>"']/g, char => ({'&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;'}[char]));
+  }
   let SERVICES = [];
   let CATEGORIES = [];
   async function loadServices() {
-    const res = await fetch(`${API_URL}/services?limit=100`, { credentials: 'include' });
+    const res = await apiFetch(`${API_URL}/services?limit=100`, { credentials: 'include' });
     const data = await res.json();
+    if (!res.ok || !Array.isArray(data.data?.services)) throw new Error(data.message || 'Could not load services.');
     SERVICES = data.data.services.filter(s => s.isActive !== false).map(s => ({ id: s._id, category: s.category, name: s.name, price: s.price, duration: s.duration }));
     CATEGORIES = [...new Set(SERVICES.map(s => s.category))];
     activeCat = CATEGORIES[0];
   }
   let STYLISTS = [];
   async function loadStylists() {
-    const res = await fetch(`${API_URL}/stylists?limit=100`, { credentials: 'include' });
+    const res = await apiFetch(`${API_URL}/stylists?limit=100`, { credentials: 'include' });
     const data = await res.json();
-    STYLISTS = (data.data.stylists || []).map(s => ({ id: s._id, name: [s.userId?.firstName, s.userId?.lastName].filter(Boolean).join(' ') || 'Stylist', isAvailable: s.isAvailable !== false, serviceIds: (s.serviceIds || []).map(id => id.toString ? id.toString() : id) }));
+    if (!res.ok || !Array.isArray(data.data?.stylists)) throw new Error(data.message || 'Could not load stylists.');
+    STYLISTS = data.data.stylists.map(s => ({ id: s._id, name: [s.userId?.firstName, s.userId?.lastName].filter(Boolean).join(' ') || 'Stylist', isAvailable: s.isAvailable !== false && s.userId?.isActive !== false, serviceIds: (s.serviceIds || []).map(id => id.toString ? id.toString() : id) }));
   }
   let appointments = [];
   async function loadAppointments() {
+    if (isGuestMode) { appointments = []; return; }
     try {
-      const res = await fetch(`${API_URL}/bookings/my?limit=100`, { credentials: 'include' });
+      const res = await apiFetch(`${API_URL}/bookings/my?limit=100`, { credentials: 'include' });
       const data = await res.json();
       if (!res.ok || !data?.data?.bookings) { appointments = []; return; }
       const now = new Date();
@@ -1903,6 +1912,7 @@
   });
 
   function switchView(viewId) {
+    if (isGuestMode && !['book', 'help'].includes(viewId)) { window.location.assign('login.html'); return; }
     if (currentViewId === 'book' && viewId !== 'book' && bookingInProgress()) {
       if (!confirm('You have an unfinished booking. If you leave, your progress will be lost. Leave anyway?')) return;
       resetWizard();
@@ -2068,6 +2078,7 @@
   }
 
   function resetWizard() {
+    ++availabilityRequestId;
     wizardStep = 1; cartIds = []; activeCat = CATEGORIES[0] || ''; bookState = { date: '', time: '', stylistId: '', stylist: '' };
     renderCatNav(); renderSvcGrid(); renderCart(); gotoStep(1);
     const today = getLocalDateString(); document.getElementById('apptDate').min = today; document.getElementById('apptDate').value = '';
@@ -2083,13 +2094,14 @@
     const svcs = SERVICES.filter(s => s.category === activeCat);
     const gridEl = document.getElementById('svcGrid');
     if (!svcs.length) { gridEl.innerHTML = `<div class="empty-state" style="grid-column:1/-1;padding:1.5rem;"><i class="fas fa-spa"></i><p>No services in this category.</p></div>`; return; }
-    gridEl.innerHTML = svcs.map(s => `<div class="svc-card ${cartIds.includes(s.id) ? 'selected' : ''}" onclick="toggleService('${s.id}')"><div class="svc-card-name">${s.name}</div><div class="svc-card-meta"><span class="svc-card-price">R${s.price}</span><span class="svc-card-dur">${s.duration} min</span></div></div>`).join('');
+    gridEl.innerHTML = svcs.map(s => `<div class="svc-card ${cartIds.includes(s.id) ? 'selected' : ''}" onclick="toggleService('${s.id}')"><div class="svc-card-name">${escapeHtml(s.name)}</div><div class="svc-card-meta"><span class="svc-card-price">R${s.price}</span><span class="svc-card-dur">${s.duration} min</span></div></div>`).join('');
   }
   function toggleService(id) {
     if (cartIds.includes(id)) { cartIds = cartIds.filter(serviceId => serviceId !== id); } else { cartIds.push(id); }
     if (bookState.stylistId && !isStylistEligible(bookState.stylistId)) { bookState.stylistId = ''; bookState.stylist = ''; bookState.time = ''; }
+    ++availabilityRequestId; bookState.time = '';
     availableSlots = []; renderSvcGrid(); renderCart(); renderStylistGrid(); renderTimeSlotsIntoDOM();
-    if (cartIds.length && bookState.stylistId && document.getElementById('apptDate')?.value) { refreshTimeSlots(); }
+    if (cartIds.length && document.getElementById('apptDate')?.value) { refreshTimeSlots(); }
   }
   function isStylistEligible(stylistId) {
     const stylist = STYLISTS.find(s => s.id === stylistId && s.isAvailable !== false);
@@ -2100,10 +2112,11 @@
     return selectedServices.every(service => stylist.serviceIds.includes(service.id));
   }
   function removeFromCart(id) {
+    ++availabilityRequestId; bookState.time = '';
     cartIds = cartIds.filter(serviceId => serviceId !== id);
     if (bookState.stylistId && !isStylistEligible(bookState.stylistId)) { bookState.stylistId = ''; bookState.stylist = ''; bookState.time = ''; }
     renderSvcGrid(); renderCart(); renderStylistGrid(); availableSlots = []; renderTimeSlotsIntoDOM();
-    if (cartIds.length && bookState.stylistId && document.getElementById('apptDate')?.value) { refreshTimeSlots(); }
+    if (cartIds.length && document.getElementById('apptDate')?.value) { refreshTimeSlots(); }
   }
   function renderCart() {
     const items = SERVICES.filter(s => cartIds.includes(s.id));
@@ -2116,7 +2129,7 @@
     let emptyMsg = document.getElementById('cartEmpty');
     if (!emptyMsg) { emptyMsg = document.createElement('div'); emptyMsg.className = 'cart-empty-msg'; emptyMsg.id = 'cartEmpty'; emptyMsg.textContent = 'Tap a service above to add it here'; container.appendChild(emptyMsg); }
     if (count === 0) { emptyMsg.style.display = 'block'; document.getElementById('cartSummary').style.display = 'none'; }
-    else { emptyMsg.style.display = 'none'; items.forEach(sv => { const chip = document.createElement('div'); chip.className = 'cart-chip'; chip.innerHTML = `${sv.name} <button class="cart-chip-remove" onclick="removeFromCart('${sv.id}')"><i class="fas fa-times"></i></button>`; container.appendChild(chip); }); document.getElementById('cartSummary').style.display = 'flex'; document.getElementById('cartTotal').textContent = `R${total.toLocaleString()}`; document.getElementById('cartDuration').textContent = `~${formatDur(dur)} total`; document.getElementById('totalDurLabel').textContent = formatDur(dur); }
+    else { emptyMsg.style.display = 'none'; items.forEach(sv => { const chip = document.createElement('div'); chip.className = 'cart-chip'; chip.innerHTML = `${escapeHtml(sv.name)} <button class="cart-chip-remove" onclick="removeFromCart('${sv.id}')"><i class="fas fa-times"></i></button>`; container.appendChild(chip); }); document.getElementById('cartSummary').style.display = 'flex'; document.getElementById('cartTotal').textContent = `R${total.toLocaleString()}`; document.getElementById('cartDuration').textContent = `~${formatDur(dur)} total`; document.getElementById('totalDurLabel').textContent = formatDur(dur); }
   }
   function renderStylistGrid() {
     const grid = document.getElementById('stylistGrid');
@@ -2125,26 +2138,38 @@
     if (!selectedServices.length) { bookState.stylistId = ''; bookState.stylist = ''; grid.innerHTML = `<div class="empty-state" style="grid-column:1/-1;padding:0.8rem;"><p>Please select at least one service first.</p></div>`; return; }
     const eligibleStylists = STYLISTS.filter(stylist => { if (stylist.isAvailable === false) return false; if (!Array.isArray(stylist.serviceIds) || !stylist.serviceIds.length) return true; return selectedServices.every(service => stylist.serviceIds.includes(service.id)); });
     if (bookState.stylistId && !eligibleStylists.some(stylist => stylist.id === bookState.stylistId)) { bookState.stylistId = ''; bookState.stylist = ''; bookState.time = ''; availableSlots = []; renderTimeSlotsIntoDOM(); }
-    if (!eligibleStylists.length) { bookState.stylist = 'To be assigned'; grid.innerHTML = `<div class="no-stylist-notice"><i class="fas fa-info-circle"></i><div><strong>No stylist currently matches all your selected services.</strong><p>You can still book — we'll assign the best stylist for you and confirm by email.</p></div></div>`; return; }
-    grid.innerHTML = eligibleStylists.map(stylist => { const name = stylist.name || 'Stylist'; const initial = name.charAt(0).toUpperCase(); return `<button type="button" class="stylist-btn ${bookState.stylistId === stylist.id ? 'selected' : ''}" onclick="selectStylist('${stylist.id}','${name.replace(/'/g, "\\'")}')"><div class="stylist-av">${initial}</div><div class="stylist-name">${name}</div></button>`; }).join('');
+    if (!eligibleStylists.length) { bookState.stylist = 'To be assigned'; grid.innerHTML = `<div class="no-stylist-notice"><i class="fas fa-info-circle"></i><div><strong>No stylist currently matches all your selected services.</strong><p>Please adjust your services or try again when a stylist is available.</p></div></div>`; return; }
+    grid.innerHTML = `<button type="button" class="stylist-btn ${!bookState.stylistId ? 'selected' : ''}" data-stylist-id=""><div class="stylist-av"><i class="fas fa-users"></i></div><div class="stylist-name">Any available stylist</div></button>` + eligibleStylists.map(stylist => {
+      const name = stylist.name || 'Stylist';
+      return `<button type="button" class="stylist-btn ${bookState.stylistId === stylist.id ? 'selected' : ''}" data-stylist-id="${stylist.id}"><div class="stylist-av">${escapeHtml(name.charAt(0).toUpperCase())}</div><div class="stylist-name">${escapeHtml(name)}</div></button>`;
+    }).join('');
+    grid.querySelectorAll('[data-stylist-id]').forEach(button => {
+      button.addEventListener('click', () => {
+        const stylist = eligibleStylists.find(item => item.id === button.dataset.stylistId);
+        selectStylist(stylist?.id || '', stylist?.name || 'Any available stylist');
+      });
+    });
   }
   function selectStylist(id, name) { bookState.stylistId = id; bookState.stylist = name; renderStylistGrid(); refreshTimeSlots(); }
 
   let availableSlots = [];
   let availabilityNote = '';
+  let availabilityRequestId = 0;
   async function loadAvailableSlots() {
+    const requestId = ++availabilityRequestId;
     const dateInput = document.getElementById('apptDate'); const dateVal = dateInput ? dateInput.value : '';
     availableSlots = []; availabilityNote = '';
     if (!dateVal || !cartIds.length) { renderTimeSlotsIntoDOM(); return; }
     if (bookState.stylistId && !isStylistEligible(bookState.stylistId)) { bookState.time = ''; renderTimeSlotsIntoDOM(); showToast('The selected stylist does not provide all selected services.'); return; }
     try {
       const requestedStylist = bookState.stylistId || 'any';
-      const res = await fetch(`${API_URL}/bookings/availability/time-slots?stylistId=${encodeURIComponent(requestedStylist)}&date=${encodeURIComponent(dateVal)}&serviceIds=${encodeURIComponent(cartIds.join(','))}`, { credentials: 'include' });
+      const res = await apiFetch(`${API_URL}/bookings/availability/time-slots?stylistId=${encodeURIComponent(requestedStylist)}&date=${encodeURIComponent(dateVal)}&serviceIds=${encodeURIComponent(cartIds.join(','))}`, { credentials: 'include' });
       const data = await res.json();
+      if (requestId !== availabilityRequestId) return;
       if (!res.ok) { console.error('Availability request failed:', data.message || data); availableSlots = []; renderTimeSlotsIntoDOM(); showToast(data.message || 'Could not load available times.'); return; }
       availableSlots = Array.isArray(data.data?.availableSlots) ? data.data.availableSlots : [];
       if (!availableSlots.length && data.data?.message) availabilityNote = data.data.message;
-    } catch (error) { console.error('Could not load available slots:', error); availableSlots = []; showToast('Could not load available times. Please try again.'); }
+    } catch (error) { if (requestId !== availabilityRequestId) return; console.error('Could not load available slots:', error); availableSlots = []; showToast('Could not load available times. Please try again.'); }
     if (bookState.time && !availableSlots.includes(bookState.time)) { bookState.time = ''; }
     renderTimeSlotsIntoDOM();
   }
@@ -2162,9 +2187,8 @@
     if (step === 1) return cartIds.length > 0;
     if (step === 2) {
       const dateVal = document.getElementById('apptDate')?.value;
-      const hasEligibleStylists = STYLISTS.some(stylist => { if (stylist.isAvailable === false) return false; if (!Array.isArray(stylist.serviceIds) || !stylist.serviceIds.length) return true; const selectedServices = SERVICES.filter(service => cartIds.includes(service.id)); return selectedServices.every(service => stylist.serviceIds.includes(service.id)); });
       if (!dateVal) return false;
-      if (hasEligibleStylists && !bookState.stylistId) return false;
+
       return !!bookState.time;
     }
     if (step === 3) { const name = document.getElementById('detName')?.value.trim(); const email = document.getElementById('detEmail')?.value.trim(); const phone = document.getElementById('detPhone')?.value.trim(); return !!(name && email && phone); }
@@ -2188,9 +2212,8 @@
   function wizardNext() {
     if (wizardStep === 1) { if (!cartIds.length) { showToast('Please select at least one service.'); return; } }
     if (wizardStep === 2) {
-      const hasEligibleStylists = STYLISTS.some(stylist => { if (stylist.isAvailable === false) return false; if (!Array.isArray(stylist.serviceIds) || !stylist.serviceIds.length) return true; const selectedServices = SERVICES.filter(service => cartIds.includes(service.id)); return selectedServices.every(service => stylist.serviceIds.includes(service.id)); });
       if (!document.getElementById('apptDate').value) { showToast('Please pick a date.'); return; }
-      if (hasEligibleStylists && !bookState.stylistId) { showToast('Please choose a stylist.'); return; }
+
       if (!bookState.time) { showToast(availabilityNote || 'Please pick a time slot.'); return; }
       bookState.date = document.getElementById('apptDate').value;
     }
@@ -2214,7 +2237,7 @@
     const dur = items.reduce((s, sv) => s + sv.duration, 0);
     const stylistLine = bookState.stylistId && bookState.stylist ? bookState.stylist : 'To be assigned';
     const timeLine = bookState.time || 'To be confirmed';
-    document.getElementById('reviewCard').innerHTML = `<div class="review-section-title">Selected Services</div><div class="review-services-list">${items.map(sv => `<div class="review-svc-item"><div><div style="font-weight:600;font-size:0.98rem;">${sv.name}</div><div style="font-size:0.84rem;color:var(--muted);font-weight:500;">${sv.duration} min</div></div><span style="font-weight:700;color:var(--rose);">R${sv.price}</span></div>`).join('')}</div><div class="review-total"><span>Total</span><span>R${total.toLocaleString()}</span></div><div style="margin-top:0.35rem;font-size:0.88rem;color:var(--muted);font-weight:500;">Estimated duration: ~${formatDur(dur)}</div><div class="review-section-title" style="margin-top:1.2rem;">Appointment Info</div><div class="review-row"><span>Date</span><span>${formatDate(bookState.date)}</span></div><div class="review-row"><span>Time</span><span>${timeLine}</span></div><div class="review-row"><span>Stylist</span><span>${stylistLine}</span></div><div class="review-section-title" style="margin-top:1.2rem;">Your Details</div><div class="review-row"><span>Name</span><span>${document.getElementById('detName').value}</span></div><div class="review-row"><span>Phone</span><span>${document.getElementById('detPhone').value}</span></div><div class="review-row"><span>Email</span><span>${document.getElementById('detEmail').value}</span></div>${document.getElementById('detNotes').value ? `<div class="review-row"><span>Notes</span><span>${document.getElementById('detNotes').value}</span></div>` : ''}`;
+    document.getElementById('reviewCard').innerHTML = `<div class="review-section-title">Selected Services</div><div class="review-services-list">${items.map(sv => `<div class="review-svc-item"><div><div style="font-weight:600;font-size:0.98rem;">${escapeHtml(sv.name)}</div><div style="font-size:0.84rem;color:var(--muted);font-weight:500;">${sv.duration} min</div></div><span style="font-weight:700;color:var(--rose);">R${sv.price}</span></div>`).join('')}</div><div class="review-total"><span>Total</span><span>R${total.toLocaleString()}</span></div><div style="margin-top:0.35rem;font-size:0.88rem;color:var(--muted);font-weight:500;">Estimated duration: ~${formatDur(dur)}</div><div class="review-section-title" style="margin-top:1.2rem;">Appointment Info</div><div class="review-row"><span>Date</span><span>${formatDate(bookState.date)}</span></div><div class="review-row"><span>Time</span><span>${timeLine}</span></div><div class="review-row"><span>Stylist</span><span>${escapeHtml(stylistLine)}</span></div><div class="review-section-title" style="margin-top:1.2rem;">Your Details</div><div class="review-row"><span>Name</span><span>${escapeHtml(document.getElementById('detName').value)}</span></div><div class="review-row"><span>Phone</span><span>${escapeHtml(document.getElementById('detPhone').value)}</span></div><div class="review-row"><span>Email</span><span>${escapeHtml(document.getElementById('detEmail').value)}</span></div>${document.getElementById('detNotes').value ? `<div class="review-row"><span>Notes</span><span>${escapeHtml(document.getElementById('detNotes').value)}</span></div>` : ''}`;
   }
 
   let isBookingSubmitting = false;
@@ -2227,7 +2250,7 @@
     document.getElementById('confirmGuest').textContent = data.guestName;
     document.getElementById('confirmationModal').classList.add('open');
   }
-  function closeConfirmation() { document.getElementById('confirmationModal').classList.remove('open'); switchView('appointments'); }
+  function closeConfirmation() { document.getElementById('confirmationModal').classList.remove('open'); switchView(isGuestMode ? 'book' : 'appointments'); }
 
   function autoDownloadInvoice() {
     if (!lastBookingData) return;
@@ -2240,13 +2263,13 @@
       <div style="text-align: center; border-bottom: 3px solid #D43F6B; padding-bottom: 22px; margin-bottom: 28px;"><h1 style="color: #D43F6B; margin: 0; font-size: 32px; letter-spacing: 1px; font-family: Georgia, serif;">PinkMeUp</h1><p style="color: #888; margin: 6px 0 0; font-size: 14px; letter-spacing: 3px; text-transform: uppercase;">Book · Glow · Relax</p></div>
       <div style="text-align: center; font-size: 18px; font-weight: 700; margin: 16px 0 28px; color: #D43F6B; letter-spacing: 0.5px;">Booking Reference: ${data.ref}</div>
       <div style="border: 1px solid #F0E5E8; border-radius: 10px; padding: 22px 24px; margin-bottom: 24px; background: #FFFBFC;">
-        <div style="display: flex; justify-content: space-between; padding: 9px 0; border-bottom: 1px solid #F5ECEF; font-size: 14px;"><span style="color: #888;">Services</span><span style="font-weight: 700; text-align: right; max-width: 60%;">${data.services}</span></div>
+        <div style="display: flex; justify-content: space-between; padding: 9px 0; border-bottom: 1px solid #F5ECEF; font-size: 14px;"><span style="color: #888;">Services</span><span style="font-weight: 700; text-align: right; max-width: 60%;">${escapeHtml(data.services)}</span></div>
         <div style="display: flex; justify-content: space-between; padding: 9px 0; border-bottom: 1px solid #F5ECEF; font-size: 14px;"><span style="color: #888;">Date</span><span style="font-weight: 700;">${data.date}</span></div>
         <div style="display: flex; justify-content: space-between; padding: 9px 0; border-bottom: 1px solid #F5ECEF; font-size: 14px;"><span style="color: #888;">Time</span><span style="font-weight: 700;">${data.time}</span></div>
-        <div style="display: flex; justify-content: space-between; padding: 9px 0; border-bottom: 1px solid #F5ECEF; font-size: 14px;"><span style="color: #888;">Stylist</span><span style="font-weight: 700;">${data.stylist}</span></div>
-        <div style="display: flex; justify-content: space-between; padding: 9px 0; border-bottom: 1px solid #F5ECEF; font-size: 14px;"><span style="color: #888;">Guest Name</span><span style="font-weight: 700;">${data.guestName}</span></div>
-        <div style="display: flex; justify-content: space-between; padding: 9px 0; border-bottom: 1px solid #F5ECEF; font-size: 14px;"><span style="color: #888;">Guest Email</span><span style="font-weight: 700;">${data.guestEmail}</span></div>
-        <div style="display: flex; justify-content: space-between; padding: 9px 0; font-size: 14px;"><span style="color: #888;">Guest Phone</span><span style="font-weight: 700;">${data.guestPhone}</span></div>
+        <div style="display: flex; justify-content: space-between; padding: 9px 0; border-bottom: 1px solid #F5ECEF; font-size: 14px;"><span style="color: #888;">Stylist</span><span style="font-weight: 700;">${escapeHtml(data.stylist)}</span></div>
+        <div style="display: flex; justify-content: space-between; padding: 9px 0; border-bottom: 1px solid #F5ECEF; font-size: 14px;"><span style="color: #888;">Guest Name</span><span style="font-weight: 700;">${escapeHtml(data.guestName)}</span></div>
+        <div style="display: flex; justify-content: space-between; padding: 9px 0; border-bottom: 1px solid #F5ECEF; font-size: 14px;"><span style="color: #888;">Guest Email</span><span style="font-weight: 700;">${escapeHtml(data.guestEmail)}</span></div>
+        <div style="display: flex; justify-content: space-between; padding: 9px 0; font-size: 14px;"><span style="color: #888;">Guest Phone</span><span style="font-weight: 700;">${escapeHtml(data.guestPhone)}</span></div>
         <div style="display: flex; justify-content: space-between; padding: 14px 0 0; border-top: 2px solid #D43F6B; margin-top: 10px; font-size: 20px; font-weight: 700; color: #D43F6B; font-family: Georgia, serif;"><span>Total</span><span>R${data.total.toLocaleString()}</span></div>
       </div>
       <div style="text-align: center; color: #888; font-size: 13px; margin-top: 40px; border-top: 1px solid #F0E5E8; padding-top: 22px; line-height: 1.7;"><p style="margin: 0 0 6px;">Thank you for choosing PinkMeUp!</p><p style="margin: 0 0 6px;">Invoice generated: ${new Date().toLocaleDateString('en-ZA', { year: 'numeric', month: 'short', day: 'numeric' })}</p><p style="margin: 0;">076 769 0102 • Mon-Fri 9am-6pm | Sat 9am-2pm</p></div>
@@ -2288,17 +2311,22 @@
     const wNextBtn = document.getElementById('wNext');
     wNextBtn.disabled = true; wNextBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Booking...';
     try {
-      const res = await fetch(`${API_URL}/bookings`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, credentials: 'include', body: JSON.stringify({ serviceIds: cartIds, stylistId: bookState.stylistId || null, date: bookState.date, startTime: bookState.time, notes: document.getElementById('detNotes').value, guestName: name, guestEmail: email, guestPhone: phone }) });
+      const [firstName, ...lastName] = name.split(/\s+/);
+      const payload = { serviceIds: cartIds, stylistId: bookState.stylistId || null, date: bookState.date, startTime: bookState.time, notes: document.getElementById('detNotes').value };
+      if (isGuestMode) Object.assign(payload, { firstName, lastName: lastName.join(' '), email, phone });
+      const res = await apiFetch(`${API_URL}/${isGuestMode ? 'guest-bookings' : 'bookings'}`, {
+        method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload)
+      });
       const data = await res.json();
       if (res.status === 409) { showToast(data.message || 'This time slot is no longer available. Please select another time.'); gotoStep(2); await refreshTimeSlots(); return; }
       if (!res.ok) { showToast(data.message || 'Booking failed.'); return; }
       const bookingData = data.data || data;
       const assignedStylist = bookingData.stylistId?.userId ? `${bookingData.stylistId.userId.firstName || ''} ${bookingData.stylistId.userId.lastName || ''}`.trim() : '';
-      lastBookingData = { ref: bookingData.bookingRef || (bookingData._id ? 'PMU-' + String(bookingData._id).slice(-6).toUpperCase() : 'PMU-' + Date.now().toString().slice(-6)), services: SERVICES.filter(s => cartIds.includes(s.id)).map(s => s.name).join(', '), date: formatDate(bookState.date), time: bookingData.startTime || bookState.time, stylist: assignedStylist || bookState.stylist || 'To be assigned', total: SERVICES.filter(s => cartIds.includes(s.id)).reduce((sum, s) => sum + s.price, 0), guestName: name, guestEmail: email, guestPhone: phone, rawData: bookingData };
+      lastBookingData = { ref: bookingData.bookingRef || (bookingData._id ? 'PMU-' + String(bookingData._id).slice(-6).toUpperCase() : 'PMU-' + Date.now().toString().slice(-6)), services: SERVICES.filter(s => cartIds.includes(s.id)).map(s => s.name).join(', '), date: formatDate(bookState.date), time: bookingData.startTime || bookState.time, stylist: assignedStylist || bookState.stylist || 'To be assigned', total: bookingData.totalPrice, guestName: [bookingData.customerId?.firstName, bookingData.customerId?.lastName].filter(Boolean).join(' ') || name, guestEmail: bookingData.customerId?.email || email, guestPhone: bookingData.customerId?.phone || phone, rawData: bookingData };
       showConfirmation(lastBookingData);
       cartIds = []; bookState = { date: '', time: '', stylistId: '', stylist: '' }; renderCart(); await loadAppointments(); buildNotifications();
     } catch (error) { console.error('Booking error:', error); showToast('Could not create booking. Please try again.'); }
-    finally { isBookingSubmitting = false; wNextBtn.disabled = false; wNextBtn.innerHTML = 'Confirm <i class="fas fa-check"></i>'; }
+    finally { isBookingSubmitting = false; wNextBtn.disabled = false; wNextBtn.innerHTML = wizardStep === 4 ? 'Confirm <i class="fas fa-check"></i>' : 'Next <i class="fas fa-arrow-right"></i>'; }
   }
 
   function openDetailModal(id) {
@@ -2315,11 +2343,11 @@
     document.getElementById('filterTabs').style.display = 'none';
     const dateRowEl = document.getElementById('dateFilterRow');
     if (dateRowEl) dateRowEl.hidden = true;
-    const servicesHTML = a.services.map(sv => `<div class="detail-svc-item"><div><div class="detail-svc-name">${sv.name}</div><div class="detail-svc-meta">${sv.duration} min</div></div><div class="detail-svc-price">R${sv.price}</div></div>`).join('');
+    const servicesHTML = a.services.map(sv => `<div class="detail-svc-item"><div><div class="detail-svc-name">${escapeHtml(sv.name)}</div><div class="detail-svc-meta">${sv.duration} min</div></div><div class="detail-svc-price">R${sv.price}</div></div>`).join('');
     selectedRatingStars = 0;
     const ratingHTML = a.rawStatus !== 'completed' ? '' : (
       a.feedback && a.feedback.rating
-        ? `<div class="appointment-detail-section"><div class="detail-section-label">Your Rating</div><div class="rating-summary-card"><div class="rating-summary-stars">${'★'.repeat(a.feedback.rating)}${'☆'.repeat(5 - a.feedback.rating)}</div>${a.feedback.comment ? `<div class="rating-summary-comment">"${a.feedback.comment}"</div>` : ''}</div></div>`
+        ? `<div class="appointment-detail-section"><div class="detail-section-label">Your Rating</div><div class="rating-summary-card"><div class="rating-summary-stars">${'★'.repeat(a.feedback.rating)}${'☆'.repeat(5 - a.feedback.rating)}</div>${a.feedback.comment ? `<div class="rating-summary-comment">"${escapeHtml(a.feedback.comment)}"</div>` : ''}</div></div>`
         : `<div class="appointment-detail-section"><div class="detail-section-label">Rate This Service</div><div class="rating-section"><div class="rating-header"><div class="rating-icon"><i class="fas fa-star"></i></div><div><div class="rating-title">How was your visit?</div><div class="rating-intro">Your feedback helps us keep improving.</div></div></div><div class="rating-stars-row" id="ratingStars">${[1, 2, 3, 4, 5].map(n => `<i class="far fa-star rating-star" data-star="${n}" onclick="selectRatingStar(${n})" aria-label="Rate ${n} star${n > 1 ? 's' : ''}"></i>`).join('')}</div><textarea id="ratingComment" class="rating-textarea" placeholder="Share a little about your experience (optional)..." maxlength="500"></textarea><div class="rating-submit-row"><button class="rating-submit-btn" onclick="submitRating('${a.id}')">Submit Rating <i class="fas fa-arrow-right"></i></button></div></div></div>`
     );
     const actionsHTML = `
@@ -2347,7 +2375,7 @@
           <div class="detail-total"><span>Total</span><span>R${total.toLocaleString()}</span></div>
         </div>
         ${ratingHTML}
-        ${a.notes ? `<div class="appointment-detail-section"><div class="detail-section-label">Notes</div><p style="font-size:0.94rem;color:var(--muted);font-weight:400;line-height:1.6;">${a.notes}</p></div>` : ''}
+        ${a.notes ? `<div class="appointment-detail-section"><div class="detail-section-label">Notes</div><p style="font-size:0.94rem;color:var(--muted);font-weight:400;line-height:1.6;">${escapeHtml(a.notes)}</p></div>` : ''}
         <div class="appointment-detail-section">
           <div class="detail-section-label">Actions</div>
           <div class="appointment-detail-actions">${actionsHTML}</div>
@@ -2372,7 +2400,7 @@
   async function submitRating(id) {
     if (!selectedRatingStars) { showToast('Please select a star rating.'); return; }
     try {
-      const res = await fetch(`${API_URL}/bookings/${encodeURIComponent(id)}/feedback`, { method: 'PUT', headers: { 'Content-Type': 'application/json' }, credentials: 'include', body: JSON.stringify({ rating: selectedRatingStars, comment: document.getElementById('ratingComment')?.value.trim() || '' }) });
+      const res = await apiFetch(`${API_URL}/bookings/${encodeURIComponent(id)}/feedback`, { method: 'PUT', headers: { 'Content-Type': 'application/json' }, credentials: 'include', body: JSON.stringify({ rating: selectedRatingStars, comment: document.getElementById('ratingComment')?.value.trim() || '' }) });
       const data = await res.json();
       if (!res.ok) { showToast(data.message || 'Could not submit rating.'); return; }
       showToast('Thanks for your feedback!');
@@ -2408,7 +2436,7 @@
     if (!serviceIds.length) { document.getElementById('rescheduleSlotsMessage').textContent = 'Unable to determine the services for this appointment.'; return; }
     document.getElementById('rescheduleSlotsMessage').textContent = 'Loading available times...';
     try {
-      const res = await fetch(`${API_URL}/bookings/availability/time-slots?stylistId=${encodeURIComponent(appointment.stylistId || '')}&date=${encodeURIComponent(date)}&serviceIds=${encodeURIComponent(serviceIds.join(','))}&excludeAppointmentId=${encodeURIComponent(rescheduleApptId)}`, { credentials: 'include' });
+      const res = await apiFetch(`${API_URL}/bookings/availability/time-slots?stylistId=${encodeURIComponent(appointment.stylistId || '')}&date=${encodeURIComponent(date)}&serviceIds=${encodeURIComponent(serviceIds.join(','))}&excludeAppointmentId=${encodeURIComponent(rescheduleApptId)}`, { credentials: 'include' });
       const data = await res.json();
       if (!res.ok) { rescheduleAvailableSlots = []; document.getElementById('rescheduleSlotsMessage').textContent = data.message || 'Could not load available times.'; renderRescheduleTimeSlots(); return; }
       rescheduleAvailableSlots = Array.isArray(data.data?.availableSlots) ? data.data.availableSlots : [];
@@ -2433,7 +2461,7 @@
     const confirmButton = document.getElementById('confirmRescheduleBtn');
     if (confirmButton) { confirmButton.disabled = true; confirmButton.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Rescheduling...'; }
     try {
-      const res = await fetch(`${API_URL}/bookings/${encodeURIComponent(rescheduleApptId)}/reschedule`, { method: 'PUT', headers: { 'Content-Type': 'application/json' }, credentials: 'include', body: JSON.stringify({ date, startTime: time }) });
+      const res = await apiFetch(`${API_URL}/bookings/${encodeURIComponent(rescheduleApptId)}/reschedule`, { method: 'PUT', headers: { 'Content-Type': 'application/json' }, credentials: 'include', body: JSON.stringify({ date, startTime: time }) });
       const data = await res.json();
       if (res.status === 409) { showToast('That slot is no longer available. Please select another time.'); await loadRescheduleSlots(); return; }
       if (!res.ok) { showToast(data.message || 'Reschedule failed.'); return; }
@@ -2451,7 +2479,7 @@
     if (!appt) return;
     if (!confirm(`Cancel your appointment on ${formatDate(appt.date)} at ${appt.time}?`)) return;
     try {
-      const res = await fetch(`${API_URL}/bookings/${encodeURIComponent(id)}/cancel`, { method: 'PUT', headers: { 'Content-Type': 'application/json' }, credentials: 'include', body: JSON.stringify({}) });
+      const res = await apiFetch(`${API_URL}/bookings/${encodeURIComponent(id)}/cancel`, { method: 'PUT', headers: { 'Content-Type': 'application/json' }, credentials: 'include', body: JSON.stringify({}) });
       const data = await res.json();
       if (!res.ok) { showToast(data.message || 'Could not cancel appointment.'); return; }
       await loadAppointments();
@@ -2477,13 +2505,13 @@
     if (!name) { showToast('Name cannot be empty.'); return; }
     const phone = document.getElementById('profilePhone').value.trim();
     const [firstName, ...rest] = name.split(' '); const lastName = rest.join(' ') || firstName;
-    const res = await fetch(`${API_URL}/auth/profile`, { method: 'PUT', headers: { 'Content-Type': 'application/json' }, credentials: 'include', body: JSON.stringify({ firstName, lastName, phone }) });
+    const res = await apiFetch(`${API_URL}/auth/profile`, { method: 'PUT', headers: { 'Content-Type': 'application/json' }, credentials: 'include', body: JSON.stringify({ firstName, lastName, phone }) });
     const data = await res.json();
     if (!res.ok) { showToast(data.message || 'Update failed.'); return; }
     const fullName = `${firstName} ${lastName}`;
     document.getElementById('profileFullName').textContent = fullName;
     document.getElementById('sidebarUsername').textContent = fullName;
-    document.getElementById('profileDisplayPhone').textContent = phone || '+27 82 123 4567';
+    document.getElementById('profileDisplayPhone').textContent = phone || 'Not provided';
     document.getElementById('profileName').value = fullName;
     const currentUser = typeof getCurrentUser === 'function' ? getCurrentUser() : null;
     if (currentUser && typeof setAuthData === 'function') { setAuthData({ ...currentUser, name: fullName, firstName, lastName, phone }); }
@@ -2493,7 +2521,7 @@
   function formatDur(mins) { if (mins < 60) return `${mins} min`; const h = Math.floor(mins / 60), m = mins % 60; return m ? `${h}h ${m}min` : `${h}h`; }
   async function signOut() {
     resetWizard();
-    try { await fetch(`${API_URL}/auth/logout`, { method: 'POST', credentials: 'include' }); } catch (error) { console.warn('Logout request failed:', error); }
+    try { await apiFetch(`${API_URL}/auth/logout`, { method: 'POST', credentials: 'include' }); } catch (error) { console.warn('Logout request failed:', error); }
     localStorage.removeItem('user'); localStorage.removeItem('authToken'); sessionStorage.removeItem('user'); sessionStorage.removeItem('authToken');
     document.cookie.split(';').forEach(cookie => { const name = cookie.split('=')[0].trim(); if (name) { document.cookie = `${name}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/`; } });
     history.replaceState(null, '', 'login.html');
@@ -2503,23 +2531,40 @@
   function showToast(msg) { const t = document.getElementById('toast'); t.textContent = msg; t.classList.add('show'); setTimeout(() => t.classList.remove('show'), 2800); }
 
   (async function init() {
-    const currentUser = typeof getCurrentUser === 'function' ? getCurrentUser() : null;
-    if (!currentUser) { window.location.replace('login.html'); return; }
-    if (currentUser.role && currentUser.role.toLowerCase() !== 'customer') {
+    const hasCachedSession = !!getCurrentUser() || !!getAuthToken();
+    const authenticated = (!guestRequested || hasCachedSession) ? await syncAuthFromServer() : false;
+    const currentUser = authenticated ? getCurrentUser() : null;
+    isGuestMode = guestRequested && !currentUser;
+    if (!currentUser && !isGuestMode) { window.location.replace('login.html'); return; }
+    if (isGuestMode) {
+      document.getElementById('sidebarUsername').textContent = 'Quick Book';
+      document.querySelectorAll('.tab-item[data-tab]').forEach(item => { item.hidden = !['book', 'help'].includes(item.dataset.tab); });
+      document.getElementById('notifBtn').hidden = true;
+      const signIn = document.querySelector('.signout-nav');
+      signIn.innerHTML = '<i class="fas fa-sign-in-alt"></i> Sign In';
+      signIn.onclick = () => window.location.assign('login.html');
+      document.querySelector('#confirmationModal .btn-ghost').textContent = 'Book another appointment';
+    }
+    if (currentUser?.role && currentUser.role.toLowerCase() !== 'customer') {
       if (currentUser.role.toLowerCase() === 'admin') { window.location.replace('admindashboard.html'); }
-      else if (currentUser.role.toLowerCase() === 'stylist') { window.location.replace('stylistdashboard.html'); }
+      else if (currentUser.role.toLowerCase() === 'stylist') { window.location.replace('admindashboard.html'); }
       else { window.location.replace('login.html'); }
       return;
     }
     const user = currentUser;
     if (user) {
-      const fullName = user.name || user.firstName + ' ' + user.lastName || 'User';
+      const fullName = user.name || [user.firstName, user.lastName].filter(Boolean).join(' ') || 'User';
+      const joinedAt = user.createdAt ? new Date(user.createdAt) : null;
+      const memberSince = joinedAt && !Number.isNaN(joinedAt.getTime()) ? joinedAt.toLocaleDateString('en-ZA', {month: 'long', year: 'numeric'}) : '';
+      document.getElementById('profileMemberSince').textContent = memberSince || 'Not available';
+      document.getElementById('profileMemberBadge').textContent = memberSince ? `Member since ${memberSince}` : 'Member';
       document.getElementById('profileFullName').textContent = fullName;
       document.getElementById('sidebarUsername').textContent = fullName;
       document.getElementById('profileEmail').textContent = user.email || '';
-      document.getElementById('profileDisplayPhone').textContent = user.phone || '+27 82 123 4567';
+      document.getElementById('profileDisplayPhone').textContent = user.phone || 'Not provided';
       document.getElementById('detName').value = fullName;
       document.getElementById('detEmail').value = user.email || '';
+      document.getElementById('detPhone').value = user.phone || '';
       document.getElementById('profileName').value = fullName;
       document.getElementById('profilePhone').value = user.phone || '';
       document.getElementById('profileEmailInput').value = user.email || '';
@@ -2528,13 +2573,16 @@
       const initals = (user.firstName ? user.firstName[0] : '') + (user.lastName ? user.lastName[0] : '');
       if (initals) { document.getElementById('profileAvatar').textContent = initals; }
     }
-    await Promise.all([loadServices(), loadStylists()]);
+    const results = await Promise.allSettled([loadServices(), loadStylists()]);
+    const failure = results.find(result => result.status === 'rejected');
+    if (failure) showToast(failure.reason.message || 'Could not load booking options. Please reload to try again.');
     await loadAppointments();
     buildNotifications();
     populateCustomerSettingsForm();
     renderOverview();
     resetWizard();
     updateProfileStats();
+    if (guestRequested) switchView('book');
   })();
 </script>
 </body>

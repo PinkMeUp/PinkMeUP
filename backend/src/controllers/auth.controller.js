@@ -1,4 +1,4 @@
-﻿/**
+/**
  * Authentication controller
  * Public routes: register, login, forgot/reset password, Google OAuth
  * Protected routes: profile, update profile, change password
@@ -196,7 +196,13 @@ const forgotPassword = async (req, res) => {
     user.resetPasswordExpires = Date.now() + 3600000;
     await user.save();
 
-    await emailService.sendPasswordResetEmail(email, resetToken, user.firstName);
+    const sent = await emailService.sendPasswordResetEmail(email, resetToken, user.firstName);
+    if (!sent) {
+      user.resetPasswordToken = undefined;
+      user.resetPasswordExpires = undefined;
+      await user.save();
+      return errorResponse(res, 'Password reset email could not be sent. Please contact support or try again later.', 503);
+    }
     return successResponse(res, 'Password reset link sent to your email.');
   } catch (error) {
     logger.error('Forgot password error:', error);

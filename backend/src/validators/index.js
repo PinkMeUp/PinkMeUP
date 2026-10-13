@@ -1,4 +1,4 @@
-﻿/**
+/**
  * Express-validator validation rules for all routes
  */
 
@@ -128,6 +128,11 @@ const loginValidation = [
 */
 
 const bookingValidation = [
+  body().custom((_, { req }) => {
+    if (req.user?.role === 'customer') return true;
+    return [req.body.guestName, req.body.guestEmail, req.body.guestPhone]
+      .every(value => typeof value === 'string' && value.trim().length > 0);
+  }).withMessage('Please provide your name, email, and phone number, or log in.'),
   body('serviceIds')
     .isArray({ min: 1 })
     .withMessage('At least one service is required'),
@@ -321,8 +326,10 @@ const updateServiceValidation = [
 
 const guestBookingValidation = [
   body('firstName')
-    .optional({ values: 'falsy' })
     .trim()
+    .notEmpty()
+    .withMessage('First name is required')
+    .bail()
     .isLength({ min: 2, max: 50 })
     .withMessage('First name must be 2-50 characters')
     .matches(NAME_PATTERN)
@@ -337,15 +344,19 @@ const guestBookingValidation = [
     .withMessage(LAST_NAME_FORMAT_MESSAGE),
 
   body('email')
-    .optional({ values: 'falsy' })
     .trim()
+    .notEmpty()
+    .withMessage('Email is required')
+    .bail()
     .isEmail()
     .withMessage('Enter a valid email address (e.g. name@example.com)')
     .normalizeEmail(),
 
   body('phone')
-    .optional({ values: 'falsy' })
     .trim()
+    .notEmpty()
+    .withMessage('Phone number is required')
+    .bail()
     .custom(isValidPhone)
     .withMessage(PHONE_FORMAT_MESSAGE),
 
@@ -481,6 +492,19 @@ const paginationValidation = [
  * They are included here so the validation rules are centralized.
  */
 
+const availabilityRequestValidation = [
+  query('date').notEmpty().withMessage('Date is required').bail()
+    .custom(value => /^\d{4}-\d{2}-\d{2}$/.test(value) && !!require('../utils/helpers').parseCalendarDate(value))
+    .withMessage('Use a valid YYYY-MM-DD date'),
+  query('stylistId').optional().custom(value => value === 'any' || /^[a-f\d]{24}$/i.test(value))
+    .withMessage('Invalid stylist ID'),
+  query('excludeAppointmentId').optional().isMongoId().withMessage('Invalid appointment ID'),
+  query('serviceIds').optional().custom(value => {
+    const ids = (Array.isArray(value) ? value : [value]).flatMap(item => String(item).split(','));
+    return ids.length > 0 && ids.every(id => /^[a-f\d]{24}$/i.test(id.trim()));
+  }).withMessage('Invalid service ID')
+];
+
 const availabilityValidation = [
   query('date')
     .notEmpty()
@@ -564,6 +588,7 @@ module.exports = {
   idParamValidation,
   paginationValidation,
 
+  availabilityRequestValidation,
   availabilityValidation,
   stylistAvailabilityValidation
 };

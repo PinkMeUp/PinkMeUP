@@ -9,6 +9,7 @@ const { validate } = require('../middleware/validation');
 const { idParamValidation, guestBookingValidation } = require('../validators');
 const bookingController = require('../controllers/booking.controller');
 const availabilityController = require('../controllers/availability.controller');
+const { availabilityRequestValidation } = require('../validators');
 const reportController = require('../controllers/report.controller');
 const settingController = require('../controllers/setting.controller');
 const stylistController = require('../controllers/stylist.controller');
@@ -31,9 +32,9 @@ router.get('/bookings/stylist/:id', validate(idParamValidation), bookingControll
 router.post('/bookings', validate(guestBookingValidation), guestController.createGuestBooking);
 
 // Availability
-router.get('/availability', availabilityController.checkAvailability);
-router.get('/availability/slots', availabilityController.getAvailableSlots);
-router.get('/availability/time-slots', availabilityController.getTimeSlotsForDate);
+router.get('/availability', validate(availabilityRequestValidation), availabilityController.checkAvailability);
+router.get('/availability/slots', validate(availabilityRequestValidation), availabilityController.getAvailableSlots);
+router.get('/availability/time-slots', validate(availabilityRequestValidation), availabilityController.getTimeSlotsForDate);
 
 // Reports
 router.get('/reports/booking-trends', reportController.getBookingTrends);

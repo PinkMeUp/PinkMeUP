@@ -9,7 +9,6 @@ const Appointment = require('../models/Appointment.model');
 const Service = require('../models/Service.model');
 const Stylist = require('../models/Stylist.model');
 const BusinessSetting = require('../models/BusinessSetting.model');
-const User = require('../models/User.model');
 const { successResponse, errorResponse } = require('../utils/response');
 const { APPOINTMENT_STATUS } = require('../utils/constants');
 const { calculateEndTime, isValidTimeFormat, getDayOfWeek, parseTimeToMinutes, parseCalendarDate, stylistCoversServices } = require('../utils/helpers');
@@ -88,70 +87,16 @@ const createBooking = async (req, res) => {
       date,
       startTime,
       notes,
-      guestId,
       guestName,
       guestPhone,
       guestEmail
     } = req.body;
 
-    let customerId = req.user?.id || req.user?._id;
+    let customerId = req.user?.role === 'customer' ? (req.user.id || req.user._id) : null;
     let guestData = null;
-
-    /*
-     * ---------------------------------------------------------
-     * CUSTOMER / GUEST
-     * ---------------------------------------------------------
-     */
-
-    if (!customerId && (guestId || guestName || guestPhone || guestEmail)) {
-      let guestUser = null;
-
-      if (guestEmail) {
-        guestUser = await User.findOne({
-          email: guestEmail.toLowerCase().trim()
-        });
-      }
-
-      if (!guestUser) {
-        const crypto = require('crypto');
-        const generateSecurePassword = () => crypto.randomBytes(20).toString('hex');
-
-        const nameParts = (guestName || 'Guest User')
-          .trim()
-          .split(/\s+/);
-
-        const firstName = nameParts.shift() || 'Guest';
-        const lastName = nameParts.join(' ') || 'User';
-
-        guestUser = await User.create({
-          firstName,
-          lastName,
-          email:
-            guestEmail?.toLowerCase().trim() ||
-            `guest-${Date.now()}@pinkmeup.local`,
-          phone: guestPhone || '',
-          password: generateSecurePassword(),
-          role: 'customer',
-          isActive: true
-        });
-      }
-
-      customerId = guestUser._id;
-
-      guestData = {
-        firstName: guestUser.firstName,
-        lastName: guestUser.lastName,
-        email: guestUser.email,
-        phone: guestUser.phone
-      };
-    }
-
-    if (!customerId) {
-      return errorResponse(
-        res,
-        'Please provide your name, email, and phone number, or log in.',
-        400
-      );
+    const isGuestBooking = !customerId;
+    if (isGuestBooking && (!guestName?.trim() || !guestEmail?.trim() || !guestPhone?.trim())) {
+      return errorResponse(res, 'Please provide your name, email, and phone number, or log in.', 400);
     }
 
     /*
@@ -469,6 +414,20 @@ const createBooking = async (req, res) => {
         totalDuration
       );
 
+    // Resolve guests only after validating services, time and availability.
+    // A rejected booking must not leave an unusable account behind.
+    if (isGuestBooking) {
+      const guest = await require('../services/guest.service').findOrCreateGuest(guestEmail, guestPhone, guestName);
+      if (guest.role !== 'customer') {
+        return errorResponse(res, 'Guest bookings require a customer account.', 400);
+      }
+      if (!guest.isActive) {
+        return errorResponse(res, 'Guest account is inactive.', 403);
+      }
+      customerId = guest._id;
+      guestData = guest;
+    }
+
     const appointment =
       await Appointment.create({
         customerId,
@@ -480,6 +439,7 @@ const createBooking = async (req, res) => {
         totalDuration,
         totalPrice,
         notes: notes || '',
+        isWalkIn: req.user?.role === 'admin' || req.user?.role === 'stylist',
         status:
           APPOINTMENT_STATUS.CONFIRMED
       });

@@ -22,13 +22,8 @@ app.set('trust proxy', 1);
 app.use(helmet());
 app.use(cors({
   origin: function (origin, callback) {
-    const allowedOrigins = [
-      'http://localhost:5500',
-      'http://localhost:3000',
-      'https://pink-me-up.vercel.app',
-      'https://pink-me-up-sage.vercel.app',
-      process.env.FRONTEND_URL
-    ].filter(Boolean);
+    const allowedOrigins = [process.env.FRONTEND_URL, ...(process.env.CORS_ORIGINS || '').split(',')]
+      .map(value => value?.trim().replace(/\/$/, '')).filter(Boolean);
 
     if (!origin || allowedOrigins.includes(origin)) {
       callback(null, true);

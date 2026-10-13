@@ -6,7 +6,7 @@ const User = require('../models/User.model');
 const crypto = require('crypto');
 
 const createGuestUser = async (email = null, phone = null, name = null) => {
-  const guestEmail = email || `guest_${Date.now()}@pinkmeup.com`;
+  const guestEmail = email ? email.trim().toLowerCase() : `guest_${crypto.randomUUID()}@example.invalid`;
   const guestPassword = crypto.randomBytes(16).toString('hex');
 
   const trimmedName = (name || '').trim();
@@ -29,10 +29,19 @@ const createGuestUser = async (email = null, phone = null, name = null) => {
 
 const findOrCreateGuest = async (email, phone = null, name = null) => {
   if (email) {
-    const existing = await User.findOne({ email });
+    const existing = await User.findOne({ email: email.trim().toLowerCase() });
     if (existing) return existing;
   }
-  return await createGuestUser(email, phone, name);
+  try {
+    return await createGuestUser(email, phone, name);
+  } catch (error) {
+    // Concurrent requests may both observe that the customer is missing.
+    if (error.code === 11000 && email) {
+      const existing = await User.findOne({ email: email.trim().toLowerCase() });
+      if (existing) return existing;
+    }
+    throw error;
+  }
 };
 
 const isGuestUser = (user) => {

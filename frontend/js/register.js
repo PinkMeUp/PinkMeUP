@@ -72,7 +72,7 @@ form.addEventListener('submit', async (e) => {
     btn.textContent = 'Creating Account...';
 
     try {
-        const response = await fetch(`${API_URL}/auth/register`, {
+        const response = await apiFetch(`${API_URL}/auth/register`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             credentials: 'include',
@@ -90,6 +90,7 @@ form.addEventListener('submit', async (e) => {
         }
 
         // Save user data and redirect to the correct dashboard now that the session cookie is set
+        clearAuthToken();
         setAuthData(data.data.user);
         redirectToDashboard(data.data.user);
 

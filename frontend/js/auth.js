@@ -41,6 +41,19 @@ function getAuthToken() {
     return localStorage.getItem(AUTH_TOKEN_KEY);
 }
 
+function apiFetch(url, options = {}) {
+    const headers = new Headers(options.headers || {});
+    const token = getAuthToken();
+    const target = new URL(url, window.location.href);
+    const api = new URL(API_URL, window.location.href);
+    if (token && target.origin === api.origin &&
+        (target.pathname === api.pathname || target.pathname.startsWith(api.pathname + '/')) &&
+        !headers.has('Authorization')) {
+        headers.set('Authorization', `Bearer ${token}`);
+    }
+    return fetch(url, { credentials: 'include', ...options, headers });
+}
+
 function clearAuthToken() {
     localStorage.removeItem(AUTH_TOKEN_KEY);
 }
@@ -175,7 +188,7 @@ async function requireGuest() {
  */
 async function logout() {
     try {
-        await fetch(`${API_URL}/auth/logout`, {
+        await apiFetch(`${API_URL}/auth/logout`, {
             method: 'POST',
             credentials: 'include'
         });
