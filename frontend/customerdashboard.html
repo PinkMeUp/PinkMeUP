@@ -151,6 +151,21 @@
     .header-brand { display: flex; flex-direction: column; align-items: flex-start; line-height: 1; flex: 1; min-width: 0; padding-left: 0.1rem; }
     .header-brand-name { font-family: 'Cormorant Garamond', serif; font-size: 1.95rem; font-weight: 700; background: var(--gradient); -webkit-background-clip: text; background-clip: text; color: transparent; line-height: 1; letter-spacing: 0.4px; }
     .header-brand-slogan { font-size: 0.68rem; font-weight: 600; letter-spacing: 1.8px; text-transform: uppercase; color: var(--muted); margin-top: 0.25rem; }
+    .header-brand-location {
+      font-size: 0.68rem;
+      color: var(--muted);
+      margin-top: 0.28rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      font-weight: 500;
+      letter-spacing: 0.1px;
+      max-width: 100%;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+    .header-brand-location i { color: var(--rose); font-size: 0.66rem; flex-shrink: 0; }
     .search-bar { display: flex; align-items: center; gap: 0.65rem; background: var(--input-bg); border: 1px solid var(--border); padding: 0.65rem 0.55rem 0.65rem 1.05rem; border-radius: var(--radius-pill); width: 100%; transition: 0.25s var(--ease); position: relative; min-height: 52px; min-width: 0; }
     .search-bar::before { content: ''; position: absolute; inset: -1px; border-radius: inherit; padding: 1px; background: linear-gradient(135deg, rgba(255, 208, 217, 0.5), rgba(212, 63, 107, 0.5)); -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0); -webkit-mask-composite: xor; mask-composite: exclude; opacity: 0; transition: opacity 0.25s var(--ease); pointer-events: none; }
     .search-bar:focus-within { border-color: var(--rose-mid); box-shadow: 0 0 0 4px var(--rose-pale), 0 8px 32px rgba(212, 63, 107, 0.15); background: var(--card-bg); }
@@ -385,7 +400,7 @@
       align-items: center;
       gap: 1.2rem;
       padding: 1.4rem 1.4rem 1.4rem;
-      margin-bottom: 2rem;
+      margin-bottom: 1.6rem;
       background: linear-gradient(135deg, rgba(212, 63, 107, 0.06) 0%, rgba(232, 201, 160, 0.04) 100%), var(--card-bg);
       border: 1px solid var(--border);
       border-radius: var(--radius-lg);
@@ -451,6 +466,64 @@
       background: var(--gradient);
       -webkit-background-clip: text; background-clip: text;
       color: transparent;
+    }
+
+    /* ============================================================
+       BUSINESS INFO BAND
+       ============================================================ */
+    .business-info-band {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 0;
+      margin-bottom: 2rem;
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+    }
+    .business-info-item {
+      display: flex;
+      align-items: center;
+      gap: 0.85rem;
+      padding: 0.95rem 1.15rem;
+      transition: background 0.2s var(--ease);
+    }
+    .business-info-item:hover { background: var(--hover-surface); }
+    .business-info-item + .business-info-item { border-top: 1px solid var(--border); }
+    .business-info-item > i {
+      width: 34px;
+      height: 34px;
+      border-radius: 10px;
+      background: var(--rose-pale);
+      color: var(--rose);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.82rem;
+      flex-shrink: 0;
+      border: 1px solid rgba(255, 208, 217, 0.18);
+    }
+    .business-info-body { min-width: 0; flex: 1; }
+    .business-info-label {
+      font-size: 0.62rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      color: var(--muted-soft);
+      margin-bottom: 0.15rem;
+    }
+    .business-info-value {
+      font-size: 0.88rem;
+      color: var(--ink);
+      font-weight: 500;
+      line-height: 1.45;
+      word-break: break-word;
+    }
+    @media (min-width: 480px) {
+      .business-info-band { grid-template-columns: 1fr 1fr; }
+      .business-info-item + .business-info-item { border-top: none; border-left: 1px solid var(--border); }
+      .business-info-item:nth-child(3) { border-left: none; border-top: 1px solid var(--border); }
+      .business-info-item:nth-child(4) { border-top: 1px solid var(--border); }
     }
 
     /* ============================================================
@@ -620,7 +693,7 @@
     .overview-header::after { content: ''; position: absolute; bottom: -1px; left: 0; width: 58px; height: 2px; background: var(--gradient-gold); border-radius: 2px; box-shadow: 0 0 12px rgba(232, 201, 160, 0.35); }
     .overview-title { font-family: 'Cormorant Garamond', serif; font-size: 1.85rem; font-weight: 600; color: var(--ink); line-height: 1.15; letter-spacing: 0.2px; }
     .overview-sub { font-size: 0.94rem; color: var(--muted); margin-top: 0.4rem; font-weight: 400; max-width: 620px; line-height: 1.55; }
-    .book-now-btn { background: none; border: none; color: var(--rose); font-family: inherit; font-size: 0.9rem; font-weight: 700; display: inline-flex; align-items: center; gap: 0.45rem; cursor: pointer; transition: 0.2s var(--ease); padding: 0.4rem 0; letter-spacing: 0.4px; text-transform: uppercase; white-space: nowrap; font-size: 0.78rem; }
+    .book-now-btn { background: none; border: none; color: var(--rose); font-family: inherit; font-size: 0.78rem; font-weight: 700; display: inline-flex; align-items: center; gap: 0.45rem; cursor: pointer; transition: 0.2s var(--ease); padding: 0.4rem 0; letter-spacing: 0.4px; text-transform: uppercase; white-space: nowrap; }
     .book-now-btn:hover { color: var(--rose-deep); transform: translateX(3px); }
 
     .next-appt-hero { background: var(--card-bg); border: 1px solid var(--border); border-radius: var(--radius-xl); padding: 1.5rem 1.6rem 1.6rem; margin-bottom: 1.4rem; position: relative; overflow: hidden; transition: 0.25s var(--ease); cursor: pointer; }
@@ -637,7 +710,7 @@
     .next-appt-empty { text-align: center; padding: 0.6rem 0; }
     .next-appt-empty p { font-size: 0.94rem; color: var(--muted); font-weight: 400; margin-bottom: 0.9rem; }
 
-    /* ---------- Stats Card (unified, no individual boxes) ---------- */
+    /* ---------- Stats Card (unified, no dividers, with corner thumbnails) ---------- */
     .stats-grid {
       display: grid;
       grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -650,19 +723,42 @@
       position: relative;
     }
     .stat-card {
-      padding: 1.5rem 1rem 1.4rem;
+      padding: 1.6rem 1rem 1.5rem;
       text-align: center;
-      border-right: 1px solid var(--border);
-      border-bottom: 1px solid var(--border);
       transition: background 0.25s var(--ease);
       position: relative;
+      overflow: hidden;
+      /* No borders — clean seamless card */
     }
-    .stat-card:nth-child(2n) { border-right: none; }
-    .stat-card:nth-child(3), .stat-card:nth-child(4) { border-bottom: none; }
     .stat-card:hover { background: var(--hover-surface); }
-    .stat-number { font-family: 'Cormorant Garamond', serif; font-size: 2.1rem; font-weight: 600; color: var(--ink); line-height: 1; letter-spacing: -0.5px; transition: 0.22s var(--ease); }
+    .stat-number { font-family: 'Cormorant Garamond', serif; font-size: 2.1rem; font-weight: 600; color: var(--ink); line-height: 1; letter-spacing: -0.5px; transition: 0.22s var(--ease); position: relative; z-index: 1; }
     .stat-card:hover .stat-number { color: var(--rose); }
-    .stat-label { font-size: 0.66rem; color: var(--muted); margin-top: 0.6rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1.4px; }
+    .stat-label { font-size: 0.66rem; color: var(--muted); margin-top: 0.6rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1.4px; position: relative; z-index: 1; }
+
+    /* Corner thumbnail decorations on the four stat cards */
+    .stat-card::after {
+      content: '';
+      position: absolute;
+      top: 0.75rem;
+      right: 0.75rem;
+      width: 34px;
+      height: 34px;
+      border-radius: 9px;
+      background-size: cover;
+      background-position: center;
+      opacity: 0.16;
+      pointer-events: none;
+      transition: opacity 0.35s var(--ease), transform 0.35s var(--ease);
+      filter: saturate(0.85) contrast(1.02);
+      z-index: 0;
+    }
+    body.light .stat-card::after { opacity: 0.22; }
+    .stat-card:hover::after { opacity: 0.42; transform: scale(1.06); }
+    body.light .stat-card:hover::after { opacity: 0.46; }
+    .stat-card:nth-child(1)::after { background-image: url('Icons/nails2.jpg'); }
+    .stat-card:nth-child(2)::after { background-image: url('Icons/lashes-brows.png'); }
+    .stat-card:nth-child(3)::after { background-image: url('Icons/hot-stones.png'); }
+    .stat-card:nth-child(4)::after { background-image: url('Icons/spa-ambience.png'); }
 
     .insights-grid { display: flex; flex-direction: column; margin-bottom: 1.6rem; background: var(--card-bg); border: 1px solid var(--border); border-radius: var(--radius-xl); overflow: hidden; }
     .insight-card { background: transparent; border: none; border-radius: 0; padding: 1.15rem 1.3rem; transition: 0.2s; display: flex; align-items: center; gap: 1rem; border-bottom: 1px solid var(--border); }
@@ -710,6 +806,32 @@
     .home-footer-social:hover { color: var(--rose); transform: translateY(-2px); }
     .home-footer-copy { font-size: 0.8rem; color: var(--muted-soft); letter-spacing: 0.3px; font-weight: 500; text-align: center; margin-top: 0.5rem; }
     .home-footer-copy .brand-tag { background: var(--gradient); -webkit-background-clip: text; background-clip: text; color: transparent; font-weight: 700; font-family: 'Cormorant Garamond', serif; font-size: 1rem; letter-spacing: 0.5px; }
+
+    /* ---------- Bottom copyright bar ---------- */
+    .copyright-bar {
+      margin-top: 1.4rem;
+      padding: 1.1rem 0 0.4rem;
+      border-top: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 1rem;
+      font-size: 0.74rem;
+      color: var(--muted);
+      letter-spacing: 0.2px;
+      flex-wrap: wrap;
+    }
+    .copyright-bar-copy { color: var(--muted); }
+    .copyright-bar-meta {
+      font-size: 0.62rem;
+      text-transform: uppercase;
+      letter-spacing: 2.6px;
+      font-weight: 700;
+      color: var(--muted-soft);
+    }
+    @media (max-width: 420px) {
+      .copyright-bar { flex-direction: column; text-align: center; gap: 0.35rem; }
+    }
 
     /* ==================== BOOKING WIZARD ==================== */
     .booking-header { margin-bottom: 1.6rem; }
@@ -824,15 +946,44 @@
     .appointments-sub { font-size: 0.94rem; color: var(--muted); margin-top: 0.5rem; line-height: 1.6; font-weight: 400; }
     .appointments-hint { font-size: 0.84rem; color: var(--muted-soft); font-weight: 500; margin-top: 0.65rem; letter-spacing: 0.2px; display: inline-flex; align-items: center; gap: 0.45rem; }
     .appointments-hint i { color: var(--rose); font-size: 0.82rem; }
-    .filter-tabs { display: flex; flex-wrap: nowrap; gap: 0.35rem; margin-bottom: 0.7rem; overflow-x: auto; -webkit-overflow-scrolling: touch; scrollbar-width: none; padding-bottom: 2px; }
+
+    /* Minimalistic segmented filter control */
+    .filter-tabs {
+      display: inline-flex;
+      gap: 0.2rem;
+      margin-bottom: 1rem;
+      padding: 0.28rem;
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-pill);
+      overflow-x: auto;
+      scrollbar-width: none;
+      -webkit-overflow-scrolling: touch;
+      max-width: 100%;
+    }
     .filter-tabs::-webkit-scrollbar { display: none; }
-    .filter-btn { flex: 0 0 auto; padding: 0.42rem 0.85rem; border: 1px solid var(--border); background: transparent; color: var(--muted); border-radius: var(--radius-pill); font-size: 0.82rem; font-weight: 600; cursor: pointer; transition: 0.18s var(--ease); font-family: inherit; letter-spacing: 0.2px; white-space: nowrap; }
-    .filter-btn:hover { color: var(--ink); border-color: var(--rose-mid); background: var(--hover-surface); }
-    .filter-btn.active { background: var(--gradient); color: #FFFFFF; font-weight: 700; border-color: transparent; box-shadow: var(--shadow-rose); }
+    .filter-btn {
+      flex: 0 0 auto;
+      padding: 0.48rem 1rem;
+      border: none;
+      background: transparent;
+      color: var(--muted);
+      border-radius: var(--radius-pill);
+      font-size: 0.82rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: 0.18s var(--ease);
+      font-family: inherit;
+      letter-spacing: 0.2px;
+      white-space: nowrap;
+    }
+    .filter-btn:hover { color: var(--ink); background: var(--hover-surface); }
+    .filter-btn.active { background: var(--gradient); color: #FFFFFF; font-weight: 700; box-shadow: 0 4px 12px rgba(212, 63, 107, 0.25); }
+
     .date-filter-row { display: flex; align-items: center; gap: 0.5rem; margin-bottom: 1rem; padding: 0; background: none; border: none; flex-wrap: wrap; }
     .date-filter-label { display: inline-flex; align-items: center; gap: 0.35rem; font-size: 0.78rem; color: var(--muted); font-weight: 600; letter-spacing: 0.2px; flex-shrink: 0; }
     .date-filter-label i { color: var(--rose); font-size: 0.82rem; }
-    .date-filter-input { padding: 0.35rem 0.6rem; border: 1px solid var(--border-strong); border-radius: 6px; background: transparent; color: var(--ink); font-family: inherit; font-size: 0.82rem; font-weight: 500; outline: none; transition: 0.2s; max-width: 165px; }
+    .date-filter-input { padding: 0.4rem 0.7rem; border: 1px solid var(--border); border-radius: 6px; background: var(--card-bg); color: var(--ink); font-family: inherit; font-size: 0.82rem; font-weight: 500; outline: none; transition: 0.2s; max-width: 165px; }
     .date-filter-input:focus { border-color: var(--rose); background: var(--input-bg); }
     .date-filter-clear { background: none; border: none; color: var(--rose); font-family: inherit; font-size: 0.78rem; font-weight: 600; cursor: pointer; padding: 0.25rem 0.4rem; border-radius: 4px; transition: 0.15s; display: inline-flex; align-items: center; gap: 0.3rem; }
     .date-filter-clear:hover { background: var(--rose-pale); color: var(--rose-deep); }
@@ -1027,9 +1178,6 @@
     /* ==================== TABLET ==================== */
     @media (min-width: 700px) and (max-width: 959px) {
       .stats-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); }
-      .stat-card { border-bottom: none; }
-      .stat-card:nth-child(2n) { border-right: 1px solid var(--border); }
-      .stat-card:nth-child(4n) { border-right: none; }
       .service-grid { grid-template-columns: repeat(2, 1fr); }
       .time-slots-grid { grid-template-columns: repeat(3, 1fr); }
       .pillars { display: grid; grid-template-columns: repeat(3, 1fr); max-width: 100%; gap: 0; }
@@ -1049,7 +1197,7 @@
       .home-hero-title { font-size: 3.4rem; letter-spacing: -0.6px; }
       .home-hero-sub { font-size: 1.05rem; max-width: 460px; }
       .home-hero-cta { padding: 1.1rem 2.1rem; font-size: 0.82rem; letter-spacing: 2.6px; }
-      .personal-welcome { padding: 1.6rem 1.9rem; margin-bottom: 2.4rem; }
+      .personal-welcome { padding: 1.6rem 1.9rem; margin-bottom: 2rem; }
       .personal-welcome-text { font-size: 1.45rem; }
       .editorial-section, .home-intro { padding: 3.6rem 2rem; }
       .editorial-title, .home-intro-title { font-size: 2.7rem; }
@@ -1072,6 +1220,7 @@
       .stat-card { padding: 1.9rem 1rem; }
       .stat-number { font-size: 2.6rem; }
       .stat-label { font-size: 0.7rem; }
+      .stat-card::after { width: 44px; height: 44px; top: 1rem; right: 1rem; border-radius: 12px; }
       .insight-card { padding: 1.4rem 1.6rem; }
       .insight-value { font-size: 1.55rem; }
       .section-title { font-size: 1.5rem; }
@@ -1149,6 +1298,8 @@
     </button>
 
     <div class="sidebar-footer">
+      <strong>Visit Us</strong>
+      <p>1 Jun Smuts Ave<br>JHB Braamfontein, Wits</p>
       <strong>Hours</strong>
       <p>Mon–Fri · 9am – 6pm</p>
       <p>Sat · 9am – 2pm</p>
@@ -1171,6 +1322,7 @@
         <div class="header-brand" id="headerBrand">
           <span class="header-brand-name">PinkMeUp</span>
           <span class="header-brand-slogan">Book · Relax · Glow</span>
+          <span class="header-brand-location"><i class="fas fa-map-marker-alt"></i> 1 Jun Smuts Ave, Braamfontein, Wits</span>
         </div>
         <button class="icon-btn" id="notifBtn" aria-label="Notifications">
           <i class="fas fa-bell"></i>
@@ -1222,6 +1374,38 @@
           </div>
         </div>
 
+        <!-- BUSINESS INFO BAND — visible address & contact -->
+        <div class="business-info-band">
+          <div class="business-info-item">
+            <i class="fas fa-map-marker-alt"></i>
+            <div class="business-info-body">
+              <div class="business-info-label">Visit Us</div>
+              <div class="business-info-value">1 Jun Smuts Ave, JHB Braamfontein, Wits</div>
+            </div>
+          </div>
+          <div class="business-info-item">
+            <i class="fas fa-clock"></i>
+            <div class="business-info-body">
+              <div class="business-info-label">Hours</div>
+              <div class="business-info-value">Mon–Fri 9am – 6pm · Sat 9am – 2pm</div>
+            </div>
+          </div>
+          <div class="business-info-item">
+            <i class="fas fa-phone"></i>
+            <div class="business-info-body">
+              <div class="business-info-label">Call Us</div>
+              <div class="business-info-value">076 769 0102</div>
+            </div>
+          </div>
+          <div class="business-info-item">
+            <i class="fas fa-envelope"></i>
+            <div class="business-info-body">
+              <div class="business-info-label">Email</div>
+              <div class="business-info-value">pinkmeup01@gmail.com</div>
+            </div>
+          </div>
+        </div>
+
         <!-- CATALOGUE — scrollable & interactive -->
         <div class="catalogue-section">
           <div class="catalogue-heading">
@@ -1235,14 +1419,12 @@
             <div class="catalogue-track" id="catalogueTrack">
               <figure class="catalogue-item"><img src="Icons/lashes-brows.png" alt="Lashes and Brows" loading="lazy"><figcaption>Lashes &amp; Brows</figcaption></figure>
               <figure class="catalogue-item"><img src="Icons/facial.jpg" alt="Massage therapy" loading="lazy"><figcaption>Massage Therapy</figcaption></figure>
-              <figure class="catalogue-item"><img src="Icons/makeup.png" alt="Makeup artistry" loading="lazy"><figcaption>Makeup Artistry</figcaption></figure>
               <figure class="catalogue-item"><img src="Icons/hero-spa.jpg" alt="Nail artistry" loading="lazy"><figcaption>Nail Artistry</figcaption></figure>
               <figure class="catalogue-item"><img src="Icons/hot-stones.png" alt="Body massage" loading="lazy"><figcaption>Body Massage</figcaption></figure>
               <figure class="catalogue-item"><img src="Icons/spa-ambience.png" alt="Spa ambience" loading="lazy"><figcaption>The Ambience</figcaption></figure>
               <figure class="catalogue-item"><img src="Icons/nails2.jpg" alt="Nail couture" loading="lazy"><figcaption>Nail Couture</figcaption></figure>
               <figure class="catalogue-item"><img src="Icons/lashes-brows.png" alt="" loading="lazy"><figcaption>Lashes &amp; Brows</figcaption></figure>
               <figure class="catalogue-item"><img src="Icons/facial.jpg" alt="" loading="lazy"><figcaption>Massage Therapy</figcaption></figure>
-              <figure class="catalogue-item"><img src="Icons/makeup.png" alt="" loading="lazy"><figcaption>Makeup Artistry</figcaption></figure>
               <figure class="catalogue-item"><img src="Icons/hero-spa.jpg" alt="" loading="lazy"><figcaption>Nail Artistry</figcaption></figure>
               <figure class="catalogue-item"><img src="Icons/hot-stones.png" alt="" loading="lazy"><figcaption>Body Massage</figcaption></figure>
               <figure class="catalogue-item"><img src="Icons/spa-ambience.png" alt="" loading="lazy"><figcaption>The Ambience</figcaption></figure>
@@ -1328,7 +1510,7 @@
 
         <div id="nextApptHero"></div>
 
-        <!-- STATS -->
+        <!-- STATS — unified card, no dividers, corner thumbnails -->
         <div class="stats-grid">
           <div class="stat-card"><div class="stat-number" id="statTotal">0</div><div class="stat-label">Total Appointments</div></div>
           <div class="stat-card"><div class="stat-number" id="statUpcoming">0</div><div class="stat-label">Upcoming</div></div>
@@ -1369,6 +1551,12 @@
             © <span id="footerYear"></span> <span class="brand-tag">PinkMeUp</span> · All rights reserved
           </div>
         </footer>
+
+        <!-- BOTTOM COPYRIGHT BAR -->
+        <div class="copyright-bar">
+          <span class="copyright-bar-copy">© PinkMeUp · All rights reserved.</span>
+          <span class="copyright-bar-meta">Book · Relax · Glow</span>
+        </div>
       </section>
 
       <section id="book-view" class="view">
@@ -1461,7 +1649,7 @@
           <div class="appointments-header" id="appointmentsHeader">
             <div class="appointments-title">Your Appointments</div>
             <div class="appointments-sub">Everything in one place — see what's coming up, and look back on past visits whenever you like.</div>
-            <div class="appointments-hint"><i class="fas fa-hand-pointer"></i> Tap any appointment below to view full details. Use the search bar above to find appointments quickly.</div>
+            <div class="appointments-hint"><i class="fas fa-hand-pointer"></i> Tap any appointment below to view full details.</div>
           </div>
           <div class="filter-tabs" id="filterTabs">
             <button class="filter-btn active" data-filter="all">All</button>
