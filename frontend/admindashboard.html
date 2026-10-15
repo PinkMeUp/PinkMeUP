@@ -481,7 +481,6 @@
       background-position: center, center, center 30%;
       background-repeat: no-repeat;
     }
-
     body.light .home-hero {
       background-image:
         linear-gradient(160deg,
@@ -497,7 +496,6 @@
       background-size: cover, cover, cover;
       background-position: center, center, center 30%;
     }
-
     .home-hero::before {
       content: '';
       position: absolute;
@@ -513,7 +511,6 @@
         linear-gradient(180deg, rgba(40, 8, 22, 0.04) 0%, rgba(40, 8, 22, 0.2) 55%, rgba(40, 8, 22, 0.72) 100%),
         linear-gradient(90deg, rgba(82, 20, 50, 0.28) 0%, rgba(122, 34, 72, 0.02) 55%, rgba(82, 20, 50, 0.32) 100%);
     }
-
     .home-hero::after {
       content: '';
       position: absolute;
@@ -529,7 +526,6 @@
         radial-gradient(circle at 12% 22%, rgba(212, 63, 107, 0.22), transparent 52%),
         radial-gradient(circle at 88% 82%, rgba(167, 139, 250, 0.13), transparent 55%);
     }
-
     .home-hero .hero-accent {
       position: absolute;
       bottom: -1px;
@@ -541,7 +537,6 @@
       z-index: 3;
       box-shadow: 0 0 18px rgba(232, 201, 160, 0.45);
     }
-
     .home-hero-inner {
       position: relative;
       z-index: 2;
@@ -553,7 +548,6 @@
       width: 100%;
     }
     .home-hero-left { flex: 1; min-width: 260px; }
-
     .home-eyebrow {
       display: inline-flex; align-items: center; gap: 0.5rem;
       font-size: 0.68rem; font-weight: 700; letter-spacing: 3px;
@@ -565,7 +559,6 @@
     .home-eyebrow i { font-size: 0.72rem; color: #FFD0D9; }
     body.light .home-eyebrow { color: #FFE0E8; text-shadow: 0 2px 14px rgba(40, 8, 22, 0.75); }
     body.light .home-eyebrow i { color: #FFE0E8; }
-
     .home-greeting {
       font-family: 'Cormorant Garamond', serif;
       font-size: 2.5rem; font-weight: 600;
@@ -578,14 +571,12 @@
       color: #FFFFFF;
       text-shadow: 0 4px 34px rgba(40, 8, 22, 0.85), 0 1px 3px rgba(40, 8, 22, 0.5);
     }
-
     .home-greeting .accent {
       background: linear-gradient(135deg, #FFE0E8 0%, #FF7A9C 45%, #D43F6B 100%);
       -webkit-background-clip: text; background-clip: text;
       color: transparent; font-style: italic;
       filter: drop-shadow(0 4px 32px rgba(212, 63, 107, 0.75));
     }
-
     .home-sub {
       font-size: 0.94rem;
       color: rgba(255, 224, 231, 0.9);
@@ -600,12 +591,226 @@
     }
 
     /* ============================================================
-       OVERVIEW — CONTENT BELOW HERO (editorial treatment)
+       OVERVIEW — CONTENT BELOW HERO
        ============================================================ */
     .home-content {
       padding: 0 2.2rem 2rem;
     }
 
+    /* ---------- PERSONAL WELCOME BAND ---------- */
+    .personal-welcome {
+      position: relative;
+      display: grid;
+      grid-template-columns: auto 1fr auto;
+      align-items: center;
+      gap: 1.5rem;
+      padding: 1.5rem 1.75rem;
+      margin-bottom: 2.2rem;
+      background:
+        linear-gradient(135deg, rgba(212, 63, 107, 0.06) 0%, rgba(232, 201, 160, 0.04) 100%),
+        var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      transition: border-color 0.25s var(--ease);
+    }
+    .personal-welcome:hover { border-color: var(--border-strong); }
+    .personal-welcome::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 1.75rem;
+      width: 48px;
+      height: 2px;
+      background: var(--gradient-gold);
+      border-radius: 0 0 2px 2px;
+      box-shadow: 0 0 12px rgba(232, 201, 160, 0.4);
+    }
+    body.light .personal-welcome {
+      background:
+        linear-gradient(135deg, rgba(212, 63, 107, 0.04) 0%, rgba(184, 136, 90, 0.03) 100%),
+        var(--card-bg);
+    }
+    .personal-welcome-icon {
+      width: 52px;
+      height: 52px;
+      border-radius: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--gradient);
+      color: #FFFFFF;
+      font-size: 1.15rem;
+      box-shadow:
+        0 6px 18px rgba(212, 63, 107, 0.32),
+        inset 0 1px 0 rgba(255, 255, 255, 0.22);
+      position: relative;
+      flex-shrink: 0;
+    }
+    .personal-welcome-icon::before {
+      content: '';
+      position: absolute;
+      inset: 1px;
+      border-radius: inherit;
+      background: radial-gradient(circle at 30% 25%, rgba(255, 255, 255, 0.28), transparent 62%);
+      pointer-events: none;
+    }
+    .personal-welcome-body { min-width: 0; }
+    .personal-welcome-eyebrow {
+      font-size: 0.66rem;
+      font-weight: 700;
+      letter-spacing: 2.4px;
+      text-transform: uppercase;
+      color: var(--rose-hot);
+      margin-bottom: 0.35rem;
+    }
+    .personal-welcome-text {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.35rem;
+      font-weight: 500;
+      color: var(--ink);
+      line-height: 1.35;
+      letter-spacing: 0.1px;
+    }
+    .personal-welcome-text em {
+      font-style: italic;
+      background: var(--gradient);
+      -webkit-background-clip: text; background-clip: text;
+      color: transparent;
+    }
+    .personal-welcome-meta {
+      font-size: 0.72rem;
+      color: var(--muted);
+      font-weight: 500;
+      letter-spacing: 1.1px;
+      text-transform: uppercase;
+      white-space: nowrap;
+      padding-left: 1.5rem;
+      border-left: 1px solid var(--border);
+      display: flex;
+      flex-direction: column;
+      gap: 0.25rem;
+      text-align: right;
+    }
+    .personal-welcome-meta strong {
+      color: var(--ink);
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1rem;
+      font-weight: 600;
+      letter-spacing: 0.3px;
+      text-transform: none;
+    }
+    @media (max-width: 768px) {
+      .personal-welcome {
+        grid-template-columns: auto 1fr;
+        padding: 1.2rem 1.25rem;
+        gap: 1rem;
+      }
+      .personal-welcome-meta {
+        grid-column: 1 / -1;
+        border-left: none;
+        border-top: 1px solid var(--border);
+        padding-left: 0;
+        padding-top: 0.85rem;
+        text-align: left;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+      }
+      .personal-welcome-text { font-size: 1.15rem; }
+    }
+
+    /* ---------- ATMOSPHERE BAND ---------- */
+    .atmosphere-band {
+      position: relative;
+      margin: 0 0 2.6rem;
+      border-radius: var(--radius-xl);
+      overflow: hidden;
+      min-height: 260px;
+      display: flex;
+      align-items: flex-end;
+      padding: 2.2rem 2.4rem 2rem;
+      isolation: isolate;
+      background-image: url('Icons/spa-ambience.png');
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      box-shadow:
+        0 12px 40px rgba(0, 0, 0, 0.35),
+        inset 0 0 0 1px rgba(255, 255, 255, 0.05);
+    }
+    body.light .atmosphere-band {
+      box-shadow:
+        0 12px 40px rgba(160, 40, 80, 0.12),
+        inset 0 0 0 1px rgba(255, 255, 255, 0.3);
+    }
+    .atmosphere-band::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      z-index: 1;
+      background:
+        linear-gradient(180deg, rgba(14, 2, 8, 0.15) 0%, rgba(14, 2, 8, 0.55) 55%, rgba(14, 2, 8, 0.92) 100%),
+        linear-gradient(90deg, rgba(48, 11, 28, 0.55) 0%, rgba(20, 4, 12, 0.1) 55%, rgba(48, 11, 28, 0.55) 100%);
+    }
+    .atmosphere-band::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      z-index: 1;
+      background: radial-gradient(circle at 78% 25%, rgba(232, 201, 160, 0.18), transparent 55%);
+      pointer-events: none;
+    }
+    .atmosphere-content {
+      position: relative;
+      z-index: 2;
+      max-width: 620px;
+      color: #FFFFFF;
+    }
+    .atmosphere-eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.55rem;
+      font-size: 0.66rem;
+      font-weight: 700;
+      letter-spacing: 3.2px;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 0.95rem;
+      text-shadow: 0 2px 12px rgba(0, 0, 0, 0.7);
+    }
+    .atmosphere-eyebrow i { font-size: 0.72rem; color: var(--gold); }
+    .atmosphere-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 2rem;
+      font-weight: 500;
+      line-height: 1.15;
+      letter-spacing: 0.2px;
+      margin-bottom: 0.7rem;
+      text-shadow: 0 4px 30px rgba(0, 0, 0, 0.75);
+    }
+    .atmosphere-title em {
+      font-style: italic;
+      background: linear-gradient(135deg, #F5E6D3 0%, #FFD0D9 45%, #E8C9A0 100%);
+      -webkit-background-clip: text; background-clip: text;
+      color: transparent;
+      padding-right: 0.05em;
+    }
+    .atmosphere-text {
+      font-size: 0.94rem;
+      color: rgba(255, 235, 240, 0.85);
+      line-height: 1.65;
+      font-weight: 400;
+      max-width: 540px;
+      text-shadow: 0 1px 12px rgba(0, 0, 0, 0.6);
+    }
+    @media (max-width: 768px) {
+      .atmosphere-band { min-height: 220px; padding: 1.6rem 1.3rem 1.5rem; }
+      .atmosphere-title { font-size: 1.5rem; }
+      .atmosphere-text { font-size: 0.86rem; }
+    }
+
+    /* ---------- OVERVIEW CARDS ---------- */
     .overview-card {
       background: transparent;
       border: none;
@@ -637,7 +842,6 @@
       border-radius: 2px;
       box-shadow: 0 0 12px rgba(232, 201, 160, 0.35);
     }
-
     .overview-card-title {
       display: inline-flex; align-items: center; gap: 0.7rem;
       font-family: 'Cormorant Garamond', serif;
@@ -650,7 +854,6 @@
       color: var(--rose-hot);
       font-size: 1rem;
     }
-
     .overview-card-sub {
       font-size: 0.68rem;
       color: var(--muted);
@@ -684,7 +887,7 @@
       display: flex;
       flex-direction: column;
       gap: 0.65rem;
-      padding: 1.6rem 1.35rem 1.7rem;
+      padding: 1.8rem 1.35rem 1.9rem;
       background: transparent;
       border: none;
       border-right: 1px solid var(--border);
@@ -693,6 +896,9 @@
       transition: background 0.22s var(--ease);
       cursor: default;
       min-width: 0;
+      overflow: hidden;
+      min-height: 168px;
+      justify-content: space-between;
     }
     .today-item:nth-child(4n),
     .admin-stat:nth-child(4n) { border-right: none; }
@@ -706,15 +912,52 @@
       width: 0;
       height: 2px;
       background: var(--gradient-gold);
-      border-radius: 2px;
+      border-radius: 0 0 2px 2px;
       transition: width 0.4s var(--ease);
       box-shadow: 0 0 0 rgba(232, 201, 160, 0);
+      z-index: 2;
     }
     .today-item:hover::before,
     .admin-stat:hover::before {
       width: 32px;
       box-shadow: 0 0 12px rgba(232, 201, 160, 0.4);
     }
+
+    /* Decorative corner thumbnail */
+    .today-item::after,
+    .admin-stat::after {
+      content: '';
+      position: absolute;
+      top: 1.15rem;
+      right: 1.15rem;
+      width: 42px;
+      height: 42px;
+      border-radius: 10px;
+      background-size: cover;
+      background-position: center;
+      opacity: 0.22;
+      pointer-events: none;
+      transition: opacity 0.3s var(--ease), transform 0.35s var(--ease);
+      z-index: 1;
+      filter: saturate(0.85) contrast(1.02);
+    }
+    .today-item:hover::after,
+    .admin-stat:hover::after { opacity: 0.42; transform: scale(1.06); }
+
+    .today-item:nth-child(1)::after { background-image: url('Icons/nails2.jpg'); }
+    .today-item:nth-child(2)::after { background-image: url('Icons/lashes-brows.png'); }
+    .today-item:nth-child(3)::after { background-image: url('Icons/hot-stones.png'); }
+    .today-item:nth-child(4)::after { background-image: url('Icons/spa-ambience.png'); }
+
+    .admin-stat:nth-child(1)::after { background-image: url('Icons/spa-ambience.png'); }
+    .admin-stat:nth-child(2)::after { background-image: url('Icons/makeup.png'); }
+    .admin-stat:nth-child(3)::after { background-image: url('Icons/nails2.jpg'); }
+    .admin-stat:nth-child(4)::after { background-image: url('Icons/facial.jpg'); }
+
+    body.light .today-item::after,
+    body.light .admin-stat::after { opacity: 0.28; }
+    body.light .today-item:hover::after,
+    body.light .admin-stat:hover::after { opacity: 0.48; }
 
     .today-item:hover,
     .admin-stat:hover { background: rgba(212, 63, 107, 0.03); }
@@ -733,6 +976,9 @@
       color: var(--muted);
       margin: 0;
       transition: color 0.22s var(--ease);
+      max-width: 75%;
+      position: relative;
+      z-index: 2;
     }
     .today-item .today-label i,
     .admin-stat .admin-stat-label i {
@@ -760,8 +1006,10 @@
       text-overflow: ellipsis;
       transition: color 0.22s var(--ease);
       margin: 0;
+      position: relative;
+      z-index: 2;
     }
-    .admin-stat .admin-stat-number { font-size: 2.15rem; }
+    .admin-stat .admin-stat-number { font-size: 2.35rem; letter-spacing: -0.7px; }
 
     .admin-stat .admin-stat-meta {
       font-size: 0.74rem;
@@ -772,6 +1020,8 @@
       overflow: hidden;
       text-overflow: ellipsis;
       margin: 0;
+      position: relative;
+      z-index: 2;
     }
     .admin-stat .admin-stat-meta i {
       color: var(--rose-hot);
@@ -784,9 +1034,57 @@
     .today-item:hover .today-label,
     .admin-stat:hover .admin-stat-label { color: var(--ink-soft); }
 
+    /* ---------- Animated "slideshow" pulse for Salon Overview stats ---------- */
+    @keyframes statSpotlight {
+      0%, 88%, 100% { background-color: transparent; }
+      3%, 22% { background-color: rgba(232, 201, 160, 0.05); }
+    }
+    @keyframes statUnderline {
+      0%, 88%, 100% { width: 0; box-shadow: 0 0 0 rgba(232, 201, 160, 0); }
+      6%, 22% { width: 32px; box-shadow: 0 0 12px rgba(232, 201, 160, 0.4); }
+    }
+    @keyframes statThumbPulse {
+      0%, 88%, 100% { opacity: 0.22; transform: scale(1); }
+      6%, 22% { opacity: 0.5; transform: scale(1.08); }
+    }
+    .admin-stats-grid .admin-stat {
+      animation: statSpotlight 12s ease-in-out infinite;
+    }
+    .admin-stats-grid .admin-stat::before {
+      animation: statUnderline 12s ease-in-out infinite;
+    }
+    .admin-stats-grid .admin-stat::after {
+      animation: statThumbPulse 12s ease-in-out infinite;
+    }
+    .admin-stats-grid .admin-stat:nth-child(1) { animation-delay: 0s; }
+    .admin-stats-grid .admin-stat:nth-child(1)::before { animation-delay: 0s; }
+    .admin-stats-grid .admin-stat:nth-child(1)::after { animation-delay: 0s; }
+    .admin-stats-grid .admin-stat:nth-child(2) { animation-delay: 3s; }
+    .admin-stats-grid .admin-stat:nth-child(2)::before { animation-delay: 3s; }
+    .admin-stats-grid .admin-stat:nth-child(2)::after { animation-delay: 3s; }
+    .admin-stats-grid .admin-stat:nth-child(3) { animation-delay: 6s; }
+    .admin-stats-grid .admin-stat:nth-child(3)::before { animation-delay: 6s; }
+    .admin-stats-grid .admin-stat:nth-child(3)::after { animation-delay: 6s; }
+    .admin-stats-grid .admin-stat:nth-child(4) { animation-delay: 9s; }
+    .admin-stats-grid .admin-stat:nth-child(4)::before { animation-delay: 9s; }
+    .admin-stats-grid .admin-stat:nth-child(4)::after { animation-delay: 9s; }
+
+    /* Pause the slideshow on hover, so a stat holds the spotlight */
+    .admin-stats-grid:hover .admin-stat,
+    .admin-stats-grid:hover .admin-stat::before,
+    .admin-stats-grid:hover .admin-stat::after {
+      animation-play-state: paused;
+    }
+
     .dashboard-grid {
       display: grid; grid-template-columns: 1.5fr 1fr;
       gap: 1.4rem; margin-bottom: 1rem; align-items: start;
+    }
+    .dashboard-stack {
+      display: flex;
+      flex-direction: column;
+      gap: 1.4rem;
+      min-width: 0;
     }
     @media (max-width: 1100px) { .dashboard-grid { grid-template-columns: 1fr; } }
 
@@ -892,8 +1190,60 @@
     }
     .quick-card h4 { font-size: 0.88rem; font-weight: 600; color: var(--ink); margin: 0; letter-spacing: -0.05px; }
 
+    /* ---------- Signature Treatments panel ---------- */
+    .signature-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.6rem;
+      padding: 0.35rem;
+    }
+    .signature-item {
+      position: relative;
+      border-radius: var(--radius-md);
+      overflow: hidden;
+      aspect-ratio: 1.15 / 1;
+      cursor: pointer;
+      transition: transform 0.35s var(--ease-out), box-shadow 0.35s var(--ease);
+      box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.04);
+      isolation: isolate;
+    }
+    .signature-item:hover {
+      transform: translateY(-2px);
+      box-shadow:
+        0 10px 26px rgba(0, 0, 0, 0.42),
+        0 0 0 1px rgba(232, 201, 160, 0.28);
+    }
+    .signature-item img {
+      width: 100%; height: 100%;
+      object-fit: cover;
+      display: block;
+      transition: transform 0.9s var(--ease-out), filter 0.4s var(--ease);
+      filter: saturate(1.02) contrast(1.02);
+    }
+    .signature-item:hover img { transform: scale(1.08); filter: saturate(1.1) brightness(1.03); }
+    .signature-item::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(180deg, transparent 42%, rgba(14, 2, 8, 0.35) 70%, rgba(14, 2, 8, 0.88) 100%);
+      pointer-events: none;
+    }
+    .signature-item figcaption {
+      position: absolute;
+      left: 0; right: 0; bottom: 0;
+      z-index: 2;
+      padding: 0.65rem 0.8rem 0.7rem;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 0.95rem;
+      font-weight: 500;
+      letter-spacing: 0.4px;
+      color: #FFFFFF;
+      text-shadow: 0 2px 12px rgba(0, 0, 0, 0.8);
+      font-style: italic;
+    }
+
     /* ============================================================
-       EDITORIAL SECTIONS (mirrors customer dashboard)
+       EDITORIAL SECTIONS
        ============================================================ */
     .editorial-section {
       padding: 2.4rem 0.5rem 2rem;
@@ -963,40 +1313,78 @@
       margin: 0 auto;
     }
 
+    /* ---------- Daily Rhythm with image thumbnails ---------- */
     .ritual-list {
       display: flex;
       flex-direction: column;
       gap: 0;
-      max-width: 620px;
+      max-width: 660px;
       margin: 2.2rem auto 0;
       text-align: left;
     }
     .ritual-item {
       display: flex;
-      gap: 1.1rem;
+      gap: 1.35rem;
       align-items: flex-start;
-      padding: 1.35rem 0.25rem;
+      padding: 1.5rem 0.25rem;
       border-bottom: 1px solid var(--border);
     }
     .ritual-item:first-child { border-top: 1px solid var(--border); }
+
     .ritual-num {
+      position: relative;
+      z-index: 1;
+      width: 64px;
+      height: 64px;
+      flex-shrink: 0;
+      border-radius: 14px;
+      background-size: cover;
+      background-position: center;
+      display: flex;
+      align-items: center;
+      justify-content: center;
       font-family: 'Cormorant Garamond', serif;
-      font-size: 1.55rem;
+      font-size: 1.4rem;
       font-weight: 600;
       font-style: italic;
-      color: var(--rose-hot);
-      line-height: 1;
-      min-width: 34px;
+      color: #FFFFFF;
       letter-spacing: 0.5px;
-      padding-top: 0.05rem;
+      min-width: 64px;
+      text-shadow: 0 2px 10px rgba(0, 0, 0, 0.9);
+      border: 1px solid rgba(232, 201, 160, 0.22);
+      box-shadow:
+        0 6px 20px rgba(0, 0, 0, 0.38),
+        inset 0 1px 0 rgba(255, 255, 255, 0.08);
+      overflow: hidden;
+      transition: transform 0.35s var(--ease-out), box-shadow 0.35s var(--ease);
     }
-    .ritual-content { flex: 1; min-width: 0; }
+    .ritual-item:hover .ritual-num {
+      transform: translateY(-2px);
+      box-shadow:
+        0 10px 26px rgba(0, 0, 0, 0.45),
+        0 0 0 1px rgba(232, 201, 160, 0.35),
+        inset 0 1px 0 rgba(255, 255, 255, 0.1);
+    }
+    .ritual-num::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, rgba(48, 11, 28, 0.72) 0%, rgba(20, 4, 12, 0.9) 100%);
+      z-index: -1;
+      border-radius: inherit;
+    }
+    .ritual-item:nth-child(1) .ritual-num { background-image: url('Icons/nails2.jpg'); }
+    .ritual-item:nth-child(2) .ritual-num { background-image: url('Icons/facial.jpg'); }
+    .ritual-item:nth-child(3) .ritual-num { background-image: url('Icons/lashes-brows.png'); }
+    .ritual-item:nth-child(4) .ritual-num { background-image: url('Icons/spa-ambience.png'); }
+
+    .ritual-content { flex: 1; min-width: 0; padding-top: 0.15rem; }
     .ritual-title {
       font-family: 'Cormorant Garamond', serif;
-      font-size: 1.2rem;
+      font-size: 1.22rem;
       font-weight: 600;
       color: var(--ink);
-      margin-bottom: 0.35rem;
+      margin-bottom: 0.4rem;
       letter-spacing: 0.2px;
     }
     .ritual-text {
@@ -1090,9 +1478,6 @@
     .table-wrapper.table-bare .admin-table th { background: var(--table-header-bg); padding: 0.85rem 1rem; border-radius: 0; }
     .table-wrapper.table-bare .admin-table td { padding: 1.05rem 1rem; }
 
-    /* ============================================================
-       BOOKINGS TOOLBAR — refined filter pills
-       ============================================================ */
     .bookings-toolbar {
       background: var(--card-bg); border: 1px solid var(--border);
       border-radius: var(--radius-lg); padding: 1.15rem 1.4rem;
@@ -1162,9 +1547,6 @@
     .badge-cancelled { background: var(--danger-bg); color: var(--danger); }
     .badge-no_show { background: var(--violet-bg); color: var(--violet); }
 
-    /* ============================================================
-       SERVICES — clear category vs service distinction
-       ============================================================ */
     .category-group {
       background: var(--card-bg);
       border: 1px solid var(--border);
@@ -1721,21 +2103,22 @@
     .empty-search p { font-size: 0.84rem; color: var(--muted); font-weight: 400; }
 
     /* ============================================================
-       APP FOOTER — bottom copyright bar
+       APP FOOTER — bottom copyright bar (Overview only)
        ============================================================ */
     .app-footer {
       flex-shrink: 0;
       border-top: 1px solid var(--border);
       background: var(--bg-elevated);
       padding: 0.85rem 2rem;
-      display: flex;
       justify-content: space-between;
       align-items: center;
       gap: 1rem;
       font-size: 0.76rem;
       color: var(--muted);
       letter-spacing: 0.2px;
+      display: none;
     }
+    body.overview-active-view .app-footer { display: flex; }
     .app-footer-copy { color: var(--muted); }
     .app-footer-meta {
       font-size: 0.64rem;
@@ -1798,11 +2181,15 @@
       .home-sub { font-size: 0.86rem; }
       .home-hero .hero-accent { left: 1.1rem; width: 60px; }
       .today-item,
-      .admin-stat { padding: 1.1rem 1rem 1.2rem; }
+      .admin-stat { padding: 1.3rem 1.15rem 1.4rem; min-height: 140px; }
       .today-item .today-value,
       .admin-stat .admin-stat-number { font-size: 1.75rem; }
-      .admin-stat .admin-stat-number { font-size: 1.85rem; }
+      .admin-stat .admin-stat-number { font-size: 1.9rem; }
+      .today-item::after,
+      .admin-stat::after { width: 36px; height: 36px; top: 0.95rem; right: 0.95rem; }
       .overview-card-title { font-size: 1.25rem; }
+      .ritual-num { width: 56px; height: 56px; min-width: 56px; font-size: 1.2rem; border-radius: 12px; }
+      .ritual-item { gap: 1rem; padding: 1.25rem 0.15rem; }
       .stylist-grid { grid-template-columns: 1fr; }
       .admin-table th, .admin-table td { padding: 0.7rem 0.6rem; font-size: 0.78rem; }
       .view-header { flex-direction: column; align-items: stretch; }
@@ -1833,7 +2220,8 @@
       .admin-stat {
         border-right: none;
         border-top: 1px solid var(--border);
-        padding: 1.1rem 1rem 1.2rem;
+        padding: 1.15rem 1rem 1.25rem;
+        min-height: 130px;
       }
       .today-item:first-child,
       .admin-stat:first-child { border-top: none; }
@@ -1841,7 +2229,7 @@
     }
   </style>
 </head>
-<body class="light">
+<body class="light overview-active-view">
 
 <div class="app">
   <div class="sidebar-overlay" id="sidebarOverlay"></div>
@@ -1924,7 +2312,7 @@
             <div class="home-hero-left">
               <div class="home-eyebrow"><i class="fas fa-sparkles"></i> Administrator Console</div>
               <h1 class="home-greeting">Welcome back to <span class="accent">PinkMeUp</span></h1>
-              <p class="home-sub">Here's what's happening across your salon today — bookings, stylists, and everything in between.</p>
+              <p class="home-sub">A quiet command centre for the salon you love — every booking, stylist, and quiet hour of care, laid out beautifully so you can lead the day with calm and intention.</p>
             </div>
           </div>
           <div class="hero-accent"></div>
@@ -1932,14 +2320,36 @@
 
         <div class="home-content">
 
-          <!-- EDITORIAL — What This Console Is For -->
+          <!-- PERSONAL WELCOME BAND -->
+          <div class="personal-welcome">
+            <div class="personal-welcome-icon"><i class="fas fa-feather-alt"></i></div>
+            <div class="personal-welcome-body">
+              <div class="personal-welcome-eyebrow">From the PinkMeUp team</div>
+              <p class="personal-welcome-text">You hold the day together — every booking, every smile, every quiet hour of <em>care</em>. Here it is, laid out gently for you.</p>
+            </div>
+            <div class="personal-welcome-meta">
+              <span>Your console</span>
+              <strong>PinkMeUp Salon</strong>
+            </div>
+          </div>
+
+          <!-- EDITORIAL — The Admin Standard -->
           <div class="home-intro">
             <div class="home-intro-eyebrow">The Admin Standard</div>
             <div class="home-intro-title">Every detail,<br>considered with <em>care</em></div>
-            <p class="home-intro-body">This console is your quiet command centre — a single place to keep bookings flowing, stylists supported, and clients looked after. Everything here is built to make the running of PinkMeUp as smooth and considered as the experience you deliver.</p>
+            <p class="home-intro-body">This console is your quiet command centre — a single, considered place to keep bookings flowing, stylists supported, and clients looked after from the first hello to the final touch. Everything here is built to make the running of PinkMeUp feel as unhurried and intentional as the experience you deliver, so the salon keeps its rhythm even on the busiest of days.</p>
           </div>
 
-          <!-- TODAY + SALON OVERVIEW -->
+          <!-- ATMOSPHERE BAND -->
+          <div class="atmosphere-band">
+            <div class="atmosphere-content">
+              <div class="atmosphere-eyebrow"><i class="fas fa-spa"></i> The Ambience</div>
+              <h3 class="atmosphere-title">A salon that <em>breathes</em></h3>
+              <p class="atmosphere-text">Soft light, clean lines, and a rhythm that respects both your team and your guests. Every part of this console is designed to protect that feeling — quietly, consistently, day after day.</p>
+            </div>
+          </div>
+
+          <!-- TODAY'S SNAPSHOT -->
           <div class="overview-card">
             <div class="overview-card-header">
               <div class="overview-card-title"><i class="fas fa-sun"></i> Today's Snapshot</div>
@@ -1965,10 +2375,11 @@
             </div>
           </div>
 
+          <!-- SALON OVERVIEW (animated slideshow) -->
           <div class="overview-card">
             <div class="overview-card-header">
               <div class="overview-card-title"><i class="fas fa-chart-pie"></i> Salon Overview</div>
-              <div class="overview-card-sub">All-time metrics</div>
+              <div class="overview-card-sub">All-time metrics · Live slide</div>
             </div>
             <div class="admin-stats-grid">
               <div class="admin-stat">
@@ -2003,34 +2414,34 @@
                 <div class="ritual-num">01</div>
                 <div class="ritual-content">
                   <div class="ritual-title">Morning check-in</div>
-                  <p class="ritual-text">Review today's bookings, confirm any pending appointments, and make sure your stylists have everything they need to welcome the day.</p>
+                  <p class="ritual-text">Review today's bookings, confirm any pending appointments, and make sure your stylists have everything they need to welcome the day. A calm morning sets the tone for everything that follows.</p>
                 </div>
               </div>
               <div class="ritual-item">
                 <div class="ritual-num">02</div>
                 <div class="ritual-content">
                   <div class="ritual-title">Midday pulse</div>
-                  <p class="ritual-text">Keep an eye on stylist availability, walk-in requests, and any last-minute changes. A well-run afternoon starts with a calm morning.</p>
+                  <p class="ritual-text">Keep an eye on stylist availability, walk-in requests, and any last-minute changes. Small adjustments now keep the afternoon flowing smoothly and the team unhurried.</p>
                 </div>
               </div>
               <div class="ritual-item">
                 <div class="ritual-num">03</div>
                 <div class="ritual-content">
                   <div class="ritual-title">Afternoon follow-through</div>
-                  <p class="ritual-text">Mark completed visits, follow up on client feedback, and make sure tomorrow's schedule is ready before you close the books.</p>
+                  <p class="ritual-text">Mark completed visits, follow up on client feedback, and make sure tomorrow's schedule is ready before you close the books. Consistency is what our guests remember.</p>
                 </div>
               </div>
               <div class="ritual-item">
                 <div class="ritual-num">04</div>
                 <div class="ritual-content">
                   <div class="ritual-title">Evening close</div>
-                  <p class="ritual-text">Take a breath. Review the day's numbers, tidy the calendar, and set tomorrow up so your team walks into a smooth morning.</p>
+                  <p class="ritual-text">Take a breath. Review the day's numbers, tidy the calendar, and set tomorrow up so your team walks into a smooth, welcoming morning — just as our clients deserve.</p>
                 </div>
               </div>
             </div>
           </div>
 
-          <!-- ACTIVITY + QUICK ACCESS -->
+          <!-- ACTIVITY + QUICK ACCESS + SIGNATURE TREATMENTS -->
           <div class="dashboard-grid">
             <div class="dashboard-panel">
               <div class="dashboard-panel-header">
@@ -2043,28 +2454,57 @@
                 </div>
               </div>
             </div>
-            <div class="dashboard-panel">
-              <div class="dashboard-panel-header">
-                <h3>Quick Access</h3>
+
+            <div class="dashboard-stack">
+              <div class="dashboard-panel">
+                <div class="dashboard-panel-header">
+                  <h3>Quick Access</h3>
+                </div>
+                <div class="dashboard-panel-body">
+                  <div class="quick-access-grid">
+                    <button class="quick-card nav-item" data-view="services">
+                      <div class="quick-icon"><i class="fas fa-concierge-bell"></i></div>
+                      <h4>Services</h4>
+                    </button>
+                    <button class="quick-card nav-item" data-view="stylists">
+                      <div class="quick-icon"><i class="fas fa-users"></i></div>
+                      <h4>Stylists</h4>
+                    </button>
+                    <button class="quick-card nav-item" data-view="bookings">
+                      <div class="quick-icon"><i class="fas fa-calendar-check"></i></div>
+                      <h4>Bookings</h4>
+                    </button>
+                    <button class="quick-card nav-item" data-view="reports">
+                      <div class="quick-icon"><i class="fas fa-chart-line"></i></div>
+                      <h4>Analytics</h4>
+                    </button>
+                  </div>
+                </div>
               </div>
-              <div class="dashboard-panel-body">
-                <div class="quick-access-grid">
-                  <button class="quick-card nav-item" data-view="services">
-                    <div class="quick-icon"><i class="fas fa-concierge-bell"></i></div>
-                    <h4>Services</h4>
-                  </button>
-                  <button class="quick-card nav-item" data-view="stylists">
-                    <div class="quick-icon"><i class="fas fa-users"></i></div>
-                    <h4>Stylists</h4>
-                  </button>
-                  <button class="quick-card nav-item" data-view="bookings">
-                    <div class="quick-icon"><i class="fas fa-calendar-check"></i></div>
-                    <h4>Bookings</h4>
-                  </button>
-                  <button class="quick-card nav-item" data-view="reports">
-                    <div class="quick-icon"><i class="fas fa-chart-line"></i></div>
-                    <h4>Analytics</h4>
-                  </button>
+
+              <div class="dashboard-panel">
+                <div class="dashboard-panel-header">
+                  <h3>Signature Treatments</h3>
+                </div>
+                <div class="dashboard-panel-body" style="padding-bottom: 0.7rem;">
+                  <div class="signature-grid">
+                    <figure class="signature-item">
+                      <img src="Icons/nails2.jpg" alt="Nail artistry" loading="lazy">
+                      <figcaption>Nail Artistry</figcaption>
+                    </figure>
+                    <figure class="signature-item">
+                      <img src="Icons/lashes-brows.png" alt="Lashes & Brows" loading="lazy">
+                      <figcaption>Lashes &amp; Brows</figcaption>
+                    </figure>
+                    <figure class="signature-item">
+                      <img src="Icons/facial.jpg" alt="Facial rituals" loading="lazy">
+                      <figcaption>Facial Rituals</figcaption>
+                    </figure>
+                    <figure class="signature-item">
+                      <img src="Icons/hot-stones.png" alt="Body massage" loading="lazy">
+                      <figcaption>Body Massage</figcaption>
+                    </figure>
+                  </div>
                 </div>
               </div>
             </div>
@@ -2078,17 +2518,17 @@
               <div class="pillar">
                 <i class="fas fa-heart"></i>
                 <div class="pillar-title">Client Care</div>
-                <p class="pillar-text">Every booking is a promise — a quiet hour, a small transformation, a reason to feel good. We protect that experience end to end.</p>
+                <p class="pillar-text">Every booking is a promise — a quiet hour, a small transformation, a reason to feel good. We protect that experience end to end, from the first booking to the last goodbye.</p>
               </div>
               <div class="pillar">
                 <i class="fas fa-hand-holding-heart"></i>
                 <div class="pillar-title">Team Support</div>
-                <p class="pillar-text">Great service starts with a team that feels looked after. We keep workloads balanced, feedback clear, and the workspace calm.</p>
+                <p class="pillar-text">Great service starts with a team that feels looked after. We keep workloads balanced, feedback clear, and the workspace calm so your stylists can do their best work.</p>
               </div>
               <div class="pillar">
                 <i class="fas fa-gem"></i>
                 <div class="pillar-title">Quality Standards</div>
-                <p class="pillar-text">From clean, considered products to accurate schedules — the details are what make PinkMeUp feel a step above the rest.</p>
+                <p class="pillar-text">From clean, considered products to accurate schedules — the details are what make PinkMeUp feel a step above the rest. Every small choice compounds into something beautiful.</p>
               </div>
             </div>
           </div>
@@ -2590,6 +3030,56 @@
   <div class="spinner"></div>
   <div id="loadingOverlayText">Loading...</div>
 </div>
+
+<script>
+  /* ---- Overview footer visibility + animated stat counters (UI-only, no logic touched) ---- */
+  (function () {
+    // Show the copyright bar only when the Overview tab is active.
+    const homeView = document.getElementById('home-view');
+    function syncFooterVisibility() {
+      if (!homeView) return;
+      document.body.classList.toggle('overview-active-view', homeView.classList.contains('active'));
+    }
+    if (homeView) {
+      const obs = new MutationObserver(syncFooterVisibility);
+      obs.observe(homeView, { attributes: true, attributeFilter: ['class'] });
+      syncFooterVisibility();
+    }
+
+    // Animated count-up for the four Salon Overview numbers.
+    function animateNumber(el, from, to, duration) {
+      if (!el || from === to) return;
+      const start = performance.now();
+      const range = to - from;
+      function tick(now) {
+        const p = Math.min((now - start) / duration, 1);
+        const eased = 1 - Math.pow(1 - p, 3);
+        const value = Math.round(from + range * eased);
+        el.textContent = value.toLocaleString();
+        if (p < 1) requestAnimationFrame(tick);
+        else el.textContent = to.toLocaleString();
+      }
+      requestAnimationFrame(tick);
+    }
+
+    ['homeStatServices', 'homeStatStylists', 'homeStatBookings', 'homeStatThisMonth'].forEach(id => {
+      const el = document.getElementById(id);
+      if (!el) return;
+      let last = parseInt((el.textContent || '0').replace(/,/g, ''), 10) || 0;
+      const obs = new MutationObserver(() => {
+        const raw = (el.textContent || '0').replace(/,/g, '');
+        const next = parseInt(raw, 10);
+        if (isNaN(next)) return;
+        if (next !== last) {
+          const startValue = last;
+          last = next;
+          animateNumber(el, startValue, next, 900);
+        }
+      });
+      obs.observe(el, { childList: true, characterData: true, subtree: true });
+    });
+  })();
+</script>
 
 <script>
   function applyAdminTheme(theme) {
