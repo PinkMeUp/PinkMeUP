@@ -40,7 +40,6 @@
       --violet-bg: rgba(167, 139, 250, 0.1);
       --gold: #E8C9A0;
       --gold-soft: rgba(232, 201, 160, 0.28);
-      --gold-glow: rgba(232, 201, 160, 0.16);
       --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.5);
       --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.6);
       --shadow-lg: 0 12px 40px rgba(0, 0, 0, 0.7);
@@ -93,7 +92,6 @@
       --violet-bg: rgba(124, 58, 237, 0.08);
       --gold: #B8885A;
       --gold-soft: rgba(184, 136, 90, 0.35);
-      --gold-glow: rgba(184, 136, 90, 0.18);
       --gradient: linear-gradient(135deg, #FFD0D9 0%, #FF7A9C 45%, #D43F6B 100%);
       --gradient-hot: linear-gradient(135deg, #FFD0D9 0%, #FF7A9C 45%, #D43F6B 100%);
       --gradient-gold: linear-gradient(90deg, #B8885A 0%, #D43F6B 100%);
@@ -134,7 +132,7 @@
       display: none; position: fixed; inset: 0;
       background: rgba(0, 0, 0, 0.75); backdrop-filter: blur(6px); z-index: 998;
     }
-    .sidebar-overlay.active { display: block; animation: fadeIn 0.2s var(--ease); }
+    .sidebar-overlay.active { display: block; }
     .sidebar {
       width: 260px; background: var(--bg-elevated); border-right: 1px solid var(--border);
       display: flex; flex-direction: column; flex-shrink: 0;
@@ -167,8 +165,6 @@
       margin-bottom: 1.6rem;
       padding: 0 0.85rem 1.1rem;
       border-bottom: 1px solid var(--border);
-      background: none;
-      border-radius: 0;
     }
     .greeting-name { font-size: 1.04rem; font-weight: 600; color: var(--ink); letter-spacing: 0.1px; }
     .greeting-sub {
@@ -394,7 +390,7 @@
       flex-shrink: 0; width: 34px; height: 34px; border-radius: 10px;
       background: var(--rose-pale); color: var(--rose);
       display: flex; align-items: center; justify-content: center;
-      font-size: 0.82rem; transition: transform 0.2s var(--ease-out);
+      font-size: 0.82rem;
     }
     .notif-icon.success { background: var(--success-bg); color: var(--success); }
     .notif-icon.warning { background: var(--warning-bg); color: var(--warning); }
@@ -429,14 +425,9 @@
     .notif-empty i { display: block; font-size: 1.7rem; color: var(--rose-mid); margin-bottom: 0.55rem; }
 
     .main { flex: 1; overflow-y: auto; padding: 0; }
-    .view { display: none; animation: viewFade 0.3s var(--ease); }
+    .view { display: none; }
     .view.active { display: block; }
     .view:not(#home-view) { padding: 2rem 2.2rem; }
-    @keyframes viewFade {
-      from { opacity: 0; transform: translateY(8px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
     .view-header {
       display: flex; justify-content: space-between; align-items: flex-start;
@@ -453,7 +444,7 @@
     }
 
     /* ============================================================
-       LUXURY HERO HEADER — Overview
+       LUXURY HERO HEADER
        ============================================================ */
     .home-hero {
       position: relative;
@@ -556,9 +547,7 @@
       margin-bottom: 1rem;
       text-shadow: 0 2px 12px rgba(0, 0, 0, 0.7);
     }
-    .home-eyebrow i { font-size: 0.72rem; color: #FFD0D9; }
     body.light .home-eyebrow { color: #FFE0E8; text-shadow: 0 2px 14px rgba(40, 8, 22, 0.75); }
-    body.light .home-eyebrow i { color: #FFE0E8; }
     .home-greeting {
       font-family: 'Cormorant Garamond', serif;
       font-size: 2.5rem; font-weight: 600;
@@ -591,13 +580,12 @@
     }
 
     /* ============================================================
-       OVERVIEW — CONTENT BELOW HERO
+       OVERVIEW CONTENT
        ============================================================ */
     .home-content {
-      padding: 0 2.2rem 2rem;
+      padding: 0 2.2rem 0;
     }
 
-    /* ---------- PERSONAL WELCOME BAND ---------- */
     .personal-welcome {
       position: relative;
       display: grid;
@@ -700,27 +688,7 @@
       letter-spacing: 0.3px;
       text-transform: none;
     }
-    @media (max-width: 768px) {
-      .personal-welcome {
-        grid-template-columns: auto 1fr;
-        padding: 1.2rem 1.25rem;
-        gap: 1rem;
-      }
-      .personal-welcome-meta {
-        grid-column: 1 / -1;
-        border-left: none;
-        border-top: 1px solid var(--border);
-        padding-left: 0;
-        padding-top: 0.85rem;
-        text-align: left;
-        flex-direction: row;
-        justify-content: space-between;
-        align-items: center;
-      }
-      .personal-welcome-text { font-size: 1.15rem; }
-    }
 
-    /* ---------- ATMOSPHERE BAND ---------- */
     .atmosphere-band {
       position: relative;
       margin: 0 0 2.6rem;
@@ -779,7 +747,6 @@
       margin-bottom: 0.95rem;
       text-shadow: 0 2px 12px rgba(0, 0, 0, 0.7);
     }
-    .atmosphere-eyebrow i { font-size: 0.72rem; color: var(--gold); }
     .atmosphere-title {
       font-family: 'Cormorant Garamond', serif;
       font-size: 2rem;
@@ -804,13 +771,7 @@
       max-width: 540px;
       text-shadow: 0 1px 12px rgba(0, 0, 0, 0.6);
     }
-    @media (max-width: 768px) {
-      .atmosphere-band { min-height: 220px; padding: 1.6rem 1.3rem 1.5rem; }
-      .atmosphere-title { font-size: 1.5rem; }
-      .atmosphere-text { font-size: 0.86rem; }
-    }
 
-    /* ---------- OVERVIEW CARDS ---------- */
     .overview-card {
       background: transparent;
       border: none;
@@ -819,7 +780,6 @@
       margin-bottom: 2.6rem;
       padding: 0;
       position: relative;
-      transition: none;
     }
     .overview-card:last-of-type { margin-bottom: 1.4rem; }
 
@@ -829,7 +789,7 @@
       padding: 0 0.25rem 1.15rem 0.25rem;
       border-bottom: 1px solid var(--border);
       position: relative;
-      margin-bottom: 0;
+      margin-bottom: 1.4rem;
     }
     .overview-card-header::after {
       content: '';
@@ -850,10 +810,6 @@
       line-height: 1.15;
       letter-spacing: 0.3px;
     }
-    .overview-card-title i {
-      color: var(--rose-hot);
-      font-size: 1rem;
-    }
     .overview-card-sub {
       font-size: 0.68rem;
       color: var(--muted);
@@ -869,106 +825,42 @@
     .overview-card-sub .dot-live {
       display: inline-block; width: 6px; height: 6px; border-radius: 50%;
       background: var(--success); box-shadow: 0 0 6px var(--success);
-      animation: pulse 1.5s infinite;
     }
 
-    /* ---------- Today's Snapshot / Salon Overview grids ---------- */
+    /* ---------- SQUARE STAT CARDS ---------- */
     .today-bar,
     .admin-stats-grid {
       display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 0;
-      padding: 0.4rem 0 0 0;
-      border-bottom: 1px solid var(--border);
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 1rem;
+      padding: 0;
     }
 
     .today-item,
     .admin-stat {
       display: flex;
       flex-direction: column;
-      gap: 0.65rem;
-      padding: 1.8rem 1.35rem 1.9rem;
-      background: transparent;
-      border: none;
-      border-right: 1px solid var(--border);
-      border-radius: 0;
-      position: relative;
-      transition: background 0.22s var(--ease);
-      cursor: default;
-      min-width: 0;
-      overflow: hidden;
-      min-height: 168px;
       justify-content: space-between;
+      aspect-ratio: 1 / 1;
+      padding: 1.35rem 1.35rem 1.3rem;
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      position: relative;
+      overflow: hidden;
+      min-width: 0;
+      transition: border-color 0.25s var(--ease), background 0.25s var(--ease), transform 0.25s var(--ease);
     }
-    .today-item:nth-child(4n),
-    .admin-stat:nth-child(4n) { border-right: none; }
-
-    .today-item::before,
-    .admin-stat::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 1.35rem;
-      width: 0;
-      height: 2px;
-      background: var(--gradient-gold);
-      border-radius: 0 0 2px 2px;
-      transition: width 0.4s var(--ease);
-      box-shadow: 0 0 0 rgba(232, 201, 160, 0);
-      z-index: 2;
-    }
-    .today-item:hover::before,
-    .admin-stat:hover::before {
-      width: 32px;
-      box-shadow: 0 0 12px rgba(232, 201, 160, 0.4);
-    }
-
-    /* Decorative corner thumbnail */
-    .today-item::after,
-    .admin-stat::after {
-      content: '';
-      position: absolute;
-      top: 1.15rem;
-      right: 1.15rem;
-      width: 42px;
-      height: 42px;
-      border-radius: 10px;
-      background-size: cover;
-      background-position: center;
-      opacity: 0.22;
-      pointer-events: none;
-      transition: opacity 0.3s var(--ease), transform 0.35s var(--ease);
-      z-index: 1;
-      filter: saturate(0.85) contrast(1.02);
-    }
-    .today-item:hover::after,
-    .admin-stat:hover::after { opacity: 0.42; transform: scale(1.06); }
-
-    .today-item:nth-child(1)::after { background-image: url('Icons/nails2.jpg'); }
-    .today-item:nth-child(2)::after { background-image: url('Icons/lashes-brows.png'); }
-    .today-item:nth-child(3)::after { background-image: url('Icons/hot-stones.png'); }
-    .today-item:nth-child(4)::after { background-image: url('Icons/spa-ambience.png'); }
-
-    .admin-stat:nth-child(1)::after { background-image: url('Icons/spa-ambience.png'); }
-    .admin-stat:nth-child(2)::after { background-image: url('Icons/makeup.png'); }
-    .admin-stat:nth-child(3)::after { background-image: url('Icons/nails2.jpg'); }
-    .admin-stat:nth-child(4)::after { background-image: url('Icons/facial.jpg'); }
-
-    body.light .today-item::after,
-    body.light .admin-stat::after { opacity: 0.28; }
-    body.light .today-item:hover::after,
-    body.light .admin-stat:hover::after { opacity: 0.48; }
-
     .today-item:hover,
-    .admin-stat:hover { background: rgba(212, 63, 107, 0.03); }
-    body.light .today-item:hover,
-    body.light .admin-stat:hover { background: rgba(212, 63, 107, 0.045); }
+    .admin-stat:hover {
+      border-color: rgba(212, 63, 107, 0.28);
+      background: var(--card-bg-hover);
+      transform: translateY(-2px);
+    }
 
     .today-item .today-label,
     .admin-stat .admin-stat-label {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.5rem;
+      display: block;
       font-size: 0.68rem;
       font-weight: 700;
       letter-spacing: 1.3px;
@@ -976,43 +868,36 @@
       color: var(--muted);
       margin: 0;
       transition: color 0.22s var(--ease);
-      max-width: 75%;
-      position: relative;
-      z-index: 2;
-    }
-    .today-item .today-label i,
-    .admin-stat .admin-stat-label i {
-      color: var(--rose-hot);
-      font-size: 0.72rem;
-      background: transparent;
-      width: auto;
-      height: auto;
-      border-radius: 0;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
+      line-height: 1.4;
+      word-break: break-word;
     }
 
     .today-item .today-value,
     .admin-stat .admin-stat-number {
       font-family: 'Cormorant Garamond', serif;
-      font-size: 2rem;
+      font-size: 1.55rem;
       font-weight: 600;
       color: var(--ink);
       line-height: 1.05;
-      letter-spacing: -0.5px;
-      white-space: nowrap;
+      letter-spacing: -0.4px;
+      margin: 0;
+      min-width: 0;
       overflow: hidden;
       text-overflow: ellipsis;
+      word-break: break-word;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
       transition: color 0.22s var(--ease);
-      margin: 0;
-      position: relative;
-      z-index: 2;
     }
-    .admin-stat .admin-stat-number { font-size: 2.35rem; letter-spacing: -0.7px; }
+    .admin-stat .admin-stat-number {
+      font-size: 2.3rem;
+      letter-spacing: -0.7px;
+      -webkit-line-clamp: 1;
+    }
 
     .admin-stat .admin-stat-meta {
-      font-size: 0.74rem;
+      font-size: 0.72rem;
       color: var(--muted);
       font-weight: 500;
       letter-spacing: 0.2px;
@@ -1020,61 +905,12 @@
       overflow: hidden;
       text-overflow: ellipsis;
       margin: 0;
-      position: relative;
-      z-index: 2;
-    }
-    .admin-stat .admin-stat-meta i {
-      color: var(--rose-hot);
-      font-size: 0.62rem;
-      margin-right: 0.35rem;
     }
 
     .today-item:hover .today-value,
     .admin-stat:hover .admin-stat-number { color: var(--rose-hot); }
     .today-item:hover .today-label,
     .admin-stat:hover .admin-stat-label { color: var(--ink-soft); }
-
-    /* ---------- Animated "slideshow" pulse for Salon Overview stats ---------- */
-    @keyframes statSpotlight {
-      0%, 88%, 100% { background-color: transparent; }
-      3%, 22% { background-color: rgba(232, 201, 160, 0.05); }
-    }
-    @keyframes statUnderline {
-      0%, 88%, 100% { width: 0; box-shadow: 0 0 0 rgba(232, 201, 160, 0); }
-      6%, 22% { width: 32px; box-shadow: 0 0 12px rgba(232, 201, 160, 0.4); }
-    }
-    @keyframes statThumbPulse {
-      0%, 88%, 100% { opacity: 0.22; transform: scale(1); }
-      6%, 22% { opacity: 0.5; transform: scale(1.08); }
-    }
-    .admin-stats-grid .admin-stat {
-      animation: statSpotlight 12s ease-in-out infinite;
-    }
-    .admin-stats-grid .admin-stat::before {
-      animation: statUnderline 12s ease-in-out infinite;
-    }
-    .admin-stats-grid .admin-stat::after {
-      animation: statThumbPulse 12s ease-in-out infinite;
-    }
-    .admin-stats-grid .admin-stat:nth-child(1) { animation-delay: 0s; }
-    .admin-stats-grid .admin-stat:nth-child(1)::before { animation-delay: 0s; }
-    .admin-stats-grid .admin-stat:nth-child(1)::after { animation-delay: 0s; }
-    .admin-stats-grid .admin-stat:nth-child(2) { animation-delay: 3s; }
-    .admin-stats-grid .admin-stat:nth-child(2)::before { animation-delay: 3s; }
-    .admin-stats-grid .admin-stat:nth-child(2)::after { animation-delay: 3s; }
-    .admin-stats-grid .admin-stat:nth-child(3) { animation-delay: 6s; }
-    .admin-stats-grid .admin-stat:nth-child(3)::before { animation-delay: 6s; }
-    .admin-stats-grid .admin-stat:nth-child(3)::after { animation-delay: 6s; }
-    .admin-stats-grid .admin-stat:nth-child(4) { animation-delay: 9s; }
-    .admin-stats-grid .admin-stat:nth-child(4)::before { animation-delay: 9s; }
-    .admin-stats-grid .admin-stat:nth-child(4)::after { animation-delay: 9s; }
-
-    /* Pause the slideshow on hover, so a stat holds the spotlight */
-    .admin-stats-grid:hover .admin-stat,
-    .admin-stats-grid:hover .admin-stat::before,
-    .admin-stats-grid:hover .admin-stat::after {
-      animation-play-state: paused;
-    }
 
     .dashboard-grid {
       display: grid; grid-template-columns: 1.5fr 1fr;
@@ -1086,7 +922,6 @@
       gap: 1.4rem;
       min-width: 0;
     }
-    @media (max-width: 1100px) { .dashboard-grid { grid-template-columns: 1fr; } }
 
     .dashboard-panel {
       background: var(--card-bg); border: 1px solid var(--border);
@@ -1113,7 +948,6 @@
     .dashboard-panel-header .live-indicator::before {
       content: ''; width: 6px; height: 6px; border-radius: 50%;
       background: var(--success); box-shadow: 0 0 6px var(--success);
-      animation: pulse 1.5s infinite;
     }
     .dashboard-panel-body { padding: 0.55rem 0.55rem 0.85rem; flex: 1; min-height: 0; }
 
@@ -1142,9 +976,7 @@
       font-size: 0.76rem;
       background: rgba(212, 63, 107, 0.1); color: var(--rose-hot);
       border: 1px solid rgba(212, 63, 107, 0.16);
-      transition: transform 0.2s var(--ease-out);
     }
-    .activity-item:hover .activity-dot { transform: scale(1.06); }
     .activity-dot.success { background: var(--success-bg); color: var(--success); border-color: rgba(74, 222, 128, 0.2); }
     .activity-dot.info { background: var(--info-bg); color: var(--info); border-color: rgba(96, 165, 250, 0.2); }
     .activity-content { flex: 1; min-width: 0; }
@@ -1165,7 +997,7 @@
     .activity-empty { padding: 2.4rem 1rem; text-align: center; color: var(--muted); font-size: 0.82rem; }
     .activity-empty i { display: block; font-size: 1.5rem; color: var(--rose-mid); margin-bottom: 0.5rem; }
 
-    .quick-access-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.7rem; padding: 0.35rem; margin-top: 0; }
+    .quick-access-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.7rem; padding: 0.35rem; }
     .quick-card {
       position: relative; background: var(--input-bg);
       border: 1px solid var(--border); border-radius: var(--radius-md);
@@ -1190,7 +1022,6 @@
     }
     .quick-card h4 { font-size: 0.88rem; font-weight: 600; color: var(--ink); margin: 0; letter-spacing: -0.05px; }
 
-    /* ---------- Signature Treatments panel ---------- */
     .signature-grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
@@ -1206,6 +1037,7 @@
       transition: transform 0.35s var(--ease-out), box-shadow 0.35s var(--ease);
       box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.04);
       isolation: isolate;
+      margin: 0;
     }
     .signature-item:hover {
       transform: translateY(-2px);
@@ -1217,10 +1049,10 @@
       width: 100%; height: 100%;
       object-fit: cover;
       display: block;
-      transition: transform 0.9s var(--ease-out), filter 0.4s var(--ease);
+      transition: transform 0.9s var(--ease-out);
       filter: saturate(1.02) contrast(1.02);
     }
-    .signature-item:hover img { transform: scale(1.08); filter: saturate(1.1) brightness(1.03); }
+    .signature-item:hover img { transform: scale(1.08); }
     .signature-item::after {
       content: '';
       position: absolute;
@@ -1242,9 +1074,7 @@
       font-style: italic;
     }
 
-    /* ============================================================
-       EDITORIAL SECTIONS
-       ============================================================ */
+    /* ---------- EDITORIAL SECTIONS ---------- */
     .editorial-section {
       padding: 2.4rem 0.5rem 2rem;
       text-align: center;
@@ -1313,7 +1143,6 @@
       margin: 0 auto;
     }
 
-    /* ---------- Daily Rhythm with image thumbnails ---------- */
     .ritual-list {
       display: flex;
       flex-direction: column;
@@ -1356,14 +1185,6 @@
         0 6px 20px rgba(0, 0, 0, 0.38),
         inset 0 1px 0 rgba(255, 255, 255, 0.08);
       overflow: hidden;
-      transition: transform 0.35s var(--ease-out), box-shadow 0.35s var(--ease);
-    }
-    .ritual-item:hover .ritual-num {
-      transform: translateY(-2px);
-      box-shadow:
-        0 10px 26px rgba(0, 0, 0, 0.45),
-        0 0 0 1px rgba(232, 201, 160, 0.35),
-        inset 0 1px 0 rgba(255, 255, 255, 0.1);
     }
     .ritual-num::before {
       content: '';
@@ -1451,6 +1272,29 @@
       color: var(--muted);
       text-transform: uppercase;
       letter-spacing: 2.5px;
+    }
+
+    /* ---------- COPYRIGHT BAR (inside Overview only) ---------- */
+    .app-footer {
+      margin: 1rem -2.2rem 0;
+      padding: 1.6rem 2.2rem 1.8rem;
+      border-top: 1px solid var(--border);
+      background: var(--bg-elevated);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 1rem;
+      font-size: 0.76rem;
+      color: var(--muted);
+      letter-spacing: 0.2px;
+    }
+    .app-footer-copy { color: var(--muted); }
+    .app-footer-meta {
+      font-size: 0.64rem;
+      text-transform: uppercase;
+      letter-spacing: 2.6px;
+      font-weight: 700;
+      color: var(--muted-soft);
     }
 
     .table-wrapper {
@@ -1557,14 +1401,12 @@
       transition: border-color 0.25s var(--ease);
     }
     .category-group:hover { border-color: var(--border-strong); }
-    .category-group:first-child { padding-top: 0; }
     .category-header {
       font-family: 'Cormorant Garamond', serif;
       font-size: 1.2rem; font-weight: 600; color: var(--ink);
       padding: 1.05rem 1.5rem 1rem;
       background: var(--hover-surface);
       border-bottom: 1px solid var(--border);
-      margin-bottom: 0;
       display: flex; justify-content: space-between; align-items: center;
       position: relative;
       letter-spacing: -0.1px;
@@ -1757,7 +1599,7 @@
     }
     .peak-hour-tag::before { content: ''; width: 6px; height: 6px; border-radius: 50%; background: var(--rose-hot); box-shadow: 0 0 8px rgba(212, 63, 107, 0.7); }
 
-    .detail-inline { display: flex; flex-direction: column; gap: 1.4rem; padding-bottom: 2rem; animation: viewFade 0.25s var(--ease); }
+    .detail-inline { display: flex; flex-direction: column; gap: 1.4rem; padding-bottom: 2rem; }
     .back-link {
       background: none; border: none; color: var(--rose-hot);
       font-family: inherit; font-size: 0.86rem; font-weight: 600;
@@ -2001,19 +1843,14 @@
       display: none; position: fixed; inset: 0;
       background: rgba(0, 0, 0, 0.85); backdrop-filter: blur(8px);
       align-items: center; justify-content: center;
-      z-index: 2000; padding: 1rem; animation: fadeIn 0.2s var(--ease);
+      z-index: 2000; padding: 1rem;
     }
     .modal.active { display: flex; }
     .modal-content {
       background: var(--card-bg); border: 1px solid var(--border-strong);
       border-radius: var(--radius-xl); width: 100%; max-width: 480px;
       padding: 1.85rem; max-height: 90vh; overflow-y: auto;
-      animation: modalSlide 0.25s var(--ease-out);
       box-shadow: var(--shadow-xl); position: relative;
-    }
-    @keyframes modalSlide {
-      from { opacity: 0; transform: translateY(12px) scale(0.98); }
-      to { opacity: 1; transform: translateY(0) scale(1); }
     }
     .modal-content h3 {
       font-family: 'Cormorant Garamond', serif;
@@ -2070,7 +1907,8 @@
       background: var(--card-bg); border: 1px solid var(--border-strong);
       color: var(--ink); padding: 0.75rem 1.25rem;
       border-radius: var(--radius-pill); font-size: 0.84rem; font-weight: 500;
-      opacity: 0; transition: 0.3s var(--ease); pointer-events: none;
+      opacity: 0; transition: opacity 0.25s ease, transform 0.25s ease;
+      pointer-events: none;
       z-index: 3000; box-shadow: var(--shadow-lg);
       display: inline-flex; align-items: center; gap: 0.55rem; max-width: 90vw;
     }
@@ -2081,60 +1919,27 @@
     #toast.error::before { content: '\f00d'; color: var(--danger); }
     #toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
 
+    /* ---------- FAST LOADING OVERLAY (no fade animation) ---------- */
     #loadingOverlay {
       display: none; position: fixed; inset: 0;
       background: rgba(0, 0, 0, 0.88); backdrop-filter: blur(8px);
       z-index: 9999; align-items: center; justify-content: center;
       flex-direction: column; gap: 1rem;
     }
-    #loadingOverlay.show { display: flex; animation: fadeIn 0.2s var(--ease); }
+    #loadingOverlay.show { display: flex; }
     .spinner {
       width: 40px; height: 40px; border: 3px solid rgba(212, 63, 107, 0.15);
       border-top-color: var(--rose-hot); border-radius: 50%;
-      animation: spin 0.8s linear infinite;
+      animation: spin 0.7s linear infinite;
     }
     @keyframes spin { to { transform: rotate(360deg); } }
     #loadingOverlayText { font-size: 0.84rem; color: var(--rose-hot); font-weight: 500; letter-spacing: 0.3px; }
 
     .empty-search { display: none; text-align: center; padding: 2.8rem 1rem; color: var(--muted); }
-    .empty-search.show { display: block; animation: viewFade 0.3s var(--ease); }
+    .empty-search.show { display: block; }
     .empty-search i { font-size: 2rem; color: var(--rose-mid); margin-bottom: 0.85rem; display: block; }
     .empty-search h4 { font-size: 1.1rem; color: var(--ink); margin-bottom: 0.32rem; font-weight: 600; }
     .empty-search p { font-size: 0.84rem; color: var(--muted); font-weight: 400; }
-
-    /* ============================================================
-       APP FOOTER — bottom copyright bar (Overview only)
-       ============================================================ */
-    .app-footer {
-      flex-shrink: 0;
-      border-top: 1px solid var(--border);
-      background: var(--bg-elevated);
-      padding: 0.85rem 2rem;
-      justify-content: space-between;
-      align-items: center;
-      gap: 1rem;
-      font-size: 0.76rem;
-      color: var(--muted);
-      letter-spacing: 0.2px;
-      display: none;
-    }
-    body.overview-active-view .app-footer { display: flex; }
-    .app-footer-copy { color: var(--muted); }
-    .app-footer-meta {
-      font-size: 0.64rem;
-      text-transform: uppercase;
-      letter-spacing: 2.6px;
-      font-weight: 700;
-      color: var(--muted-soft);
-    }
-    @media (max-width: 768px) {
-      .app-footer {
-        padding: 0.75rem 1rem;
-        flex-direction: column;
-        text-align: center;
-        gap: 0.35rem;
-      }
-    }
 
     @media print {
       .sidebar, .sidebar-overlay, .header, .view-header-actions,
@@ -2149,16 +1954,6 @@
       .badge { background: #f0f0f0 !important; color: #333 !important; }
     }
 
-    @media (max-width: 1200px) {
-      .today-bar,
-      .admin-stats-grid { grid-template-columns: repeat(2, 1fr); }
-      .today-item:nth-child(4n),
-      .admin-stat:nth-child(4n) { border-right: 1px solid var(--border); }
-      .today-item:nth-child(2n),
-      .admin-stat:nth-child(2n) { border-right: none; }
-      .today-item:nth-child(n+3),
-      .admin-stat:nth-child(n+3) { border-top: 1px solid var(--border); }
-    }
     @media (max-width: 1100px) {
       .home-greeting { font-size: 2.2rem; }
       .dashboard-grid { grid-template-columns: 1fr; }
@@ -2176,17 +1971,16 @@
       .view:not(#home-view) { padding: 1.1rem; }
       .home-hero { padding: 2.2rem 1.1rem 1.8rem; min-height: 260px; }
       .home-hero-inner { flex-direction: column; align-items: flex-start; gap: 1rem; }
-      .home-content { padding: 0 1.1rem 1.5rem; }
+      .home-content { padding: 0 1.1rem 0; }
       .home-greeting { font-size: 1.9rem; }
       .home-sub { font-size: 0.86rem; }
       .home-hero .hero-accent { left: 1.1rem; width: 60px; }
+      .today-bar,
+      .admin-stats-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0.75rem; }
       .today-item,
-      .admin-stat { padding: 1.3rem 1.15rem 1.4rem; min-height: 140px; }
-      .today-item .today-value,
-      .admin-stat .admin-stat-number { font-size: 1.75rem; }
+      .admin-stat { padding: 1.1rem 1.1rem 1.05rem; }
+      .today-item .today-value { font-size: 1.3rem; }
       .admin-stat .admin-stat-number { font-size: 1.9rem; }
-      .today-item::after,
-      .admin-stat::after { width: 36px; height: 36px; top: 0.95rem; right: 0.95rem; }
       .overview-card-title { font-size: 1.25rem; }
       .ritual-num { width: 56px; height: 56px; min-width: 56px; font-size: 1.2rem; border-radius: 12px; }
       .ritual-item { gap: 1rem; padding: 1.25rem 0.15rem; }
@@ -2212,24 +2006,29 @@
       .editorial-title, .home-intro-title { font-size: 1.55rem; }
       .ritual-list, .pillars { max-width: 100%; }
       .closing-line { font-size: 1.1rem; }
+      .app-footer {
+        margin: 1rem -1.1rem 0;
+        padding: 1.2rem 1.1rem 1.4rem;
+        flex-direction: column;
+        text-align: center;
+        gap: 0.35rem;
+      }
     }
     @media (max-width: 480px) {
       .today-bar,
-      .admin-stats-grid { grid-template-columns: 1fr; }
+      .admin-stats-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0.6rem; }
       .today-item,
-      .admin-stat {
-        border-right: none;
-        border-top: 1px solid var(--border);
-        padding: 1.15rem 1rem 1.25rem;
-        min-height: 130px;
-      }
-      .today-item:first-child,
-      .admin-stat:first-child { border-top: none; }
+      .admin-stat { padding: 0.95rem 0.9rem 0.9rem; }
+      .today-item .today-label,
+      .admin-stat .admin-stat-label { font-size: 0.62rem; letter-spacing: 1px; }
+      .today-item .today-value { font-size: 1.1rem; }
+      .admin-stat .admin-stat-number { font-size: 1.6rem; }
+      .admin-stat .admin-stat-meta { font-size: 0.66rem; }
       .home-greeting { font-size: 1.6rem; }
     }
   </style>
 </head>
-<body class="light overview-active-view">
+<body class="light">
 
 <div class="app">
   <div class="sidebar-overlay" id="sidebarOverlay"></div>
@@ -2306,11 +2105,11 @@
 
     <main class="main">
       <section id="home-view" class="view active">
-        <!-- LUXURY HERO HEADER -->
+        <!-- LUXURY HERO -->
         <div class="home-hero">
           <div class="home-hero-inner">
             <div class="home-hero-left">
-              <div class="home-eyebrow"><i class="fas fa-sparkles"></i> Administrator Console</div>
+              <div class="home-eyebrow">Administrator Console</div>
               <h1 class="home-greeting">Welcome back to <span class="accent">PinkMeUp</span></h1>
               <p class="home-sub">A quiet command centre for the salon you love — every booking, stylist, and quiet hour of care, laid out beautifully so you can lead the day with calm and intention.</p>
             </div>
@@ -2333,7 +2132,7 @@
             </div>
           </div>
 
-          <!-- EDITORIAL — The Admin Standard -->
+          <!-- EDITORIAL INTRO -->
           <div class="home-intro">
             <div class="home-intro-eyebrow">The Admin Standard</div>
             <div class="home-intro-title">Every detail,<br>considered with <em>care</em></div>
@@ -2343,7 +2142,7 @@
           <!-- ATMOSPHERE BAND -->
           <div class="atmosphere-band">
             <div class="atmosphere-content">
-              <div class="atmosphere-eyebrow"><i class="fas fa-spa"></i> The Ambience</div>
+              <div class="atmosphere-eyebrow">The Ambience</div>
               <h3 class="atmosphere-title">A salon that <em>breathes</em></h3>
               <p class="atmosphere-text">Soft light, clean lines, and a rhythm that respects both your team and your guests. Every part of this console is designed to protect that feeling — quietly, consistently, day after day.</p>
             </div>
@@ -2352,55 +2151,55 @@
           <!-- TODAY'S SNAPSHOT -->
           <div class="overview-card">
             <div class="overview-card-header">
-              <div class="overview-card-title"><i class="fas fa-sun"></i> Today's Snapshot</div>
+              <div class="overview-card-title">Today's Snapshot</div>
               <div class="overview-card-sub"><span class="dot-live"></span> Live · <span id="todayDateLabel">—</span></div>
             </div>
             <div class="today-bar">
               <div class="today-item">
-                <div class="today-label"><i class="fas fa-calendar-day"></i> Today</div>
+                <div class="today-label">Today</div>
                 <div class="today-value" id="todayBookings">0 bookings</div>
               </div>
               <div class="today-item">
-                <div class="today-label"><i class="fas fa-clock"></i> Next Appointment</div>
+                <div class="today-label">Next Appointment</div>
                 <div class="today-value" id="todayNext">—</div>
               </div>
               <div class="today-item">
-                <div class="today-label"><i class="fas fa-coins"></i> Est. Revenue</div>
+                <div class="today-label">Est. Revenue</div>
                 <div class="today-value" id="todayRevenue">R0</div>
               </div>
               <div class="today-item">
-                <div class="today-label"><i class="fas fa-user-check"></i> Active Stylists</div>
+                <div class="today-label">Active Stylists</div>
                 <div class="today-value" id="todayStylists">0</div>
               </div>
             </div>
           </div>
 
-          <!-- SALON OVERVIEW (animated slideshow) -->
+          <!-- SALON OVERVIEW -->
           <div class="overview-card">
             <div class="overview-card-header">
-              <div class="overview-card-title"><i class="fas fa-chart-pie"></i> Salon Overview</div>
-              <div class="overview-card-sub">All-time metrics · Live slide</div>
+              <div class="overview-card-title">Salon Overview</div>
+              <div class="overview-card-sub">All-time metrics</div>
             </div>
             <div class="admin-stats-grid">
               <div class="admin-stat">
-                <div class="admin-stat-label"><i class="fas fa-concierge-bell"></i> Services</div>
+                <div class="admin-stat-label">Services</div>
                 <div class="admin-stat-number" id="homeStatServices">0</div>
-                <div class="admin-stat-meta"><i class="fas fa-check-circle"></i> All active</div>
+                <div class="admin-stat-meta">All active</div>
               </div>
               <div class="admin-stat">
-                <div class="admin-stat-label"><i class="fas fa-user-friends"></i> Stylists</div>
+                <div class="admin-stat-label">Stylists</div>
                 <div class="admin-stat-number" id="homeStatStylists">0</div>
-                <div class="admin-stat-meta"><i class="fas fa-users"></i> On roster</div>
+                <div class="admin-stat-meta">On roster</div>
               </div>
               <div class="admin-stat">
-                <div class="admin-stat-label"><i class="fas fa-calendar-check"></i> Total Bookings</div>
+                <div class="admin-stat-label">Total Bookings</div>
                 <div class="admin-stat-number" id="homeStatBookings">0</div>
-                <div class="admin-stat-meta"><i class="fas fa-chart-line"></i> All time</div>
+                <div class="admin-stat-meta">All time</div>
               </div>
               <div class="admin-stat">
-                <div class="admin-stat-label"><i class="fas fa-calendar-alt"></i> This Month</div>
+                <div class="admin-stat-label">This Month</div>
                 <div class="admin-stat-number" id="homeStatThisMonth">0</div>
-                <div class="admin-stat-meta"><i class="fas fa-clock"></i> Current month</div>
+                <div class="admin-stat-meta">Current month</div>
               </div>
             </div>
           </div>
@@ -2493,7 +2292,7 @@
                       <figcaption>Nail Artistry</figcaption>
                     </figure>
                     <figure class="signature-item">
-                      <img src="Icons/lashes-brows.png" alt="Lashes & Brows" loading="lazy">
+                      <img src="Icons/lashes-brows.png" alt="Lashes and brows" loading="lazy">
                       <figcaption>Lashes &amp; Brows</figcaption>
                     </figure>
                     <figure class="signature-item">
@@ -2538,6 +2337,12 @@
             <p class="closing-line">"The salon runs on small, consistent acts of care — from the first booking of the day to the last."</p>
             <div class="closing-attr">— The PinkMeUp Team</div>
           </div>
+
+          <!-- COPYRIGHT BAR (inside Overview only) -->
+          <footer class="app-footer">
+            <span class="app-footer-copy">© PinkMeUp · All rights reserved.</span>
+            <span class="app-footer-meta">Book · Relax · Glow</span>
+          </footer>
 
         </div>
       </section>
@@ -2900,11 +2705,6 @@
         </div>
       </section>
     </main>
-
-    <footer class="app-footer">
-      <span class="app-footer-copy">© PinkMeUp · All rights reserved.</span>
-      <span class="app-footer-meta">Book · Relax · Glow</span>
-    </footer>
   </div>
 </div>
 
@@ -3032,56 +2832,6 @@
 </div>
 
 <script>
-  /* ---- Overview footer visibility + animated stat counters (UI-only, no logic touched) ---- */
-  (function () {
-    // Show the copyright bar only when the Overview tab is active.
-    const homeView = document.getElementById('home-view');
-    function syncFooterVisibility() {
-      if (!homeView) return;
-      document.body.classList.toggle('overview-active-view', homeView.classList.contains('active'));
-    }
-    if (homeView) {
-      const obs = new MutationObserver(syncFooterVisibility);
-      obs.observe(homeView, { attributes: true, attributeFilter: ['class'] });
-      syncFooterVisibility();
-    }
-
-    // Animated count-up for the four Salon Overview numbers.
-    function animateNumber(el, from, to, duration) {
-      if (!el || from === to) return;
-      const start = performance.now();
-      const range = to - from;
-      function tick(now) {
-        const p = Math.min((now - start) / duration, 1);
-        const eased = 1 - Math.pow(1 - p, 3);
-        const value = Math.round(from + range * eased);
-        el.textContent = value.toLocaleString();
-        if (p < 1) requestAnimationFrame(tick);
-        else el.textContent = to.toLocaleString();
-      }
-      requestAnimationFrame(tick);
-    }
-
-    ['homeStatServices', 'homeStatStylists', 'homeStatBookings', 'homeStatThisMonth'].forEach(id => {
-      const el = document.getElementById(id);
-      if (!el) return;
-      let last = parseInt((el.textContent || '0').replace(/,/g, ''), 10) || 0;
-      const obs = new MutationObserver(() => {
-        const raw = (el.textContent || '0').replace(/,/g, '');
-        const next = parseInt(raw, 10);
-        if (isNaN(next)) return;
-        if (next !== last) {
-          const startValue = last;
-          last = next;
-          animateNumber(el, startValue, next, 900);
-        }
-      });
-      obs.observe(el, { childList: true, characterData: true, subtree: true });
-    });
-  })();
-</script>
-
-<script>
   function applyAdminTheme(theme) {
     const icon = document.getElementById('themeIcon');
     const label = document.getElementById('themeLabel');
@@ -3182,18 +2932,6 @@
   function setPageTitle(title) {
     const el = document.getElementById('pageTitle');
     if (el) el.textContent = title;
-  }
-
-  function pushNavState(state, hash) {
-    if (suppressHistoryPush) return;
-    try {
-      history.pushState(state, '', hash || ('#' + (state.view || 'home')));
-    } catch (e) {}
-  }
-  function replaceNavState(state, hash) {
-    try {
-      history.replaceState(state, '', hash || ('#' + (state.view || 'home')));
-    } catch (e) {}
   }
 
   let confirmCallback = null;
@@ -3363,13 +3101,6 @@
   }
   function saveDismissedIds(ids) {
     try { localStorage.setItem(NOTIF_DISMISSED_KEY, JSON.stringify(ids.slice(-100))); } catch (e) {}
-  }
-  function pushNotification(type, title, text, action = null) {
-    const id = `n_${Date.now()}_${Math.random().toString(36).slice(2, 7)}`;
-    const readIds = getReadIds();
-    notifications.unshift({ id, type, title, text, time: new Date(), read: readIds.includes(id), action });
-    if (notifications.length > 30) notifications = notifications.slice(0, 30);
-    renderNotifications();
   }
   function renderNotifications() {
     const list = document.getElementById('notifList');
