@@ -827,47 +827,44 @@
       background: var(--success); box-shadow: 0 0 6px var(--success);
     }
 
-    /* ---------- SQUARE STAT CARDS ---------- */
+    /* ---------- MINIMAL SINGLE-CARD STATS ---------- */
     .today-bar,
     .admin-stats-grid {
       display: grid;
       grid-template-columns: repeat(4, minmax(0, 1fr));
-      gap: 1rem;
-      padding: 0;
+      gap: 0;
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
     }
 
     .today-item,
     .admin-stat {
       display: flex;
       flex-direction: column;
-      justify-content: space-between;
-      aspect-ratio: 1 / 1;
-      padding: 1.35rem 1.35rem 1.3rem;
-      background: var(--card-bg);
-      border: 1px solid var(--border);
-      border-radius: var(--radius-lg);
+      gap: 0.55rem;
+      padding: 1.5rem 1.4rem;
+      background: transparent;
+      border: none;
+      border-right: 1px solid var(--border);
+      border-radius: 0;
       position: relative;
-      overflow: hidden;
       min-width: 0;
-      transition: border-color 0.25s var(--ease), background 0.25s var(--ease), transform 0.25s var(--ease);
+      transition: background 0.2s var(--ease);
     }
-    .today-item:hover,
-    .admin-stat:hover {
-      border-color: rgba(212, 63, 107, 0.28);
-      background: var(--card-bg-hover);
-      transform: translateY(-2px);
-    }
+    .today-item:last-child,
+    .admin-stat:last-child { border-right: none; }
 
     .today-item .today-label,
     .admin-stat .admin-stat-label {
       display: block;
-      font-size: 0.68rem;
+      font-size: 0.66rem;
       font-weight: 700;
       letter-spacing: 1.3px;
       text-transform: uppercase;
       color: var(--muted);
       margin: 0;
-      transition: color 0.22s var(--ease);
       line-height: 1.4;
       word-break: break-word;
     }
@@ -885,15 +882,11 @@
       overflow: hidden;
       text-overflow: ellipsis;
       word-break: break-word;
-      display: -webkit-box;
-      -webkit-line-clamp: 2;
-      -webkit-box-orient: vertical;
       transition: color 0.22s var(--ease);
     }
     .admin-stat .admin-stat-number {
-      font-size: 2.3rem;
+      font-size: 2.2rem;
       letter-spacing: -0.7px;
-      -webkit-line-clamp: 1;
     }
 
     .admin-stat .admin-stat-meta {
@@ -1074,7 +1067,6 @@
       font-style: italic;
     }
 
-    /* ---------- EDITORIAL SECTIONS ---------- */
     .editorial-section {
       padding: 2.4rem 0.5rem 2rem;
       text-align: center;
@@ -1274,7 +1266,6 @@
       letter-spacing: 2.5px;
     }
 
-    /* ---------- COPYRIGHT BAR (inside Overview only) ---------- */
     .app-footer {
       margin: 1rem -2.2rem 0;
       padding: 1.6rem 2.2rem 1.8rem;
@@ -1919,7 +1910,6 @@
     #toast.error::before { content: '\f00d'; color: var(--danger); }
     #toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
 
-    /* ---------- FAST LOADING OVERLAY (no fade animation) ---------- */
     #loadingOverlay {
       display: none; position: fixed; inset: 0;
       background: rgba(0, 0, 0, 0.88); backdrop-filter: blur(8px);
@@ -1976,9 +1966,13 @@
       .home-sub { font-size: 0.86rem; }
       .home-hero .hero-accent { left: 1.1rem; width: 60px; }
       .today-bar,
-      .admin-stats-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0.75rem; }
+      .admin-stats-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
       .today-item,
-      .admin-stat { padding: 1.1rem 1.1rem 1.05rem; }
+      .admin-stat { padding: 1.15rem 1.1rem; }
+      .today-item:nth-child(2n),
+      .admin-stat:nth-child(2n) { border-right: none; }
+      .today-item:nth-child(-n+2),
+      .admin-stat:nth-child(-n+2) { border-bottom: 1px solid var(--border); }
       .today-item .today-value { font-size: 1.3rem; }
       .admin-stat .admin-stat-number { font-size: 1.9rem; }
       .overview-card-title { font-size: 1.25rem; }
@@ -2016,14 +2010,15 @@
     }
     @media (max-width: 480px) {
       .today-bar,
-      .admin-stats-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0.6rem; }
+      .admin-stats-grid { grid-template-columns: 1fr; }
       .today-item,
-      .admin-stat { padding: 0.95rem 0.9rem 0.9rem; }
-      .today-item .today-label,
-      .admin-stat .admin-stat-label { font-size: 0.62rem; letter-spacing: 1px; }
-      .today-item .today-value { font-size: 1.1rem; }
-      .admin-stat .admin-stat-number { font-size: 1.6rem; }
-      .admin-stat .admin-stat-meta { font-size: 0.66rem; }
+      .admin-stat {
+        border-right: none;
+        border-bottom: 1px solid var(--border);
+        padding: 1.05rem 1rem;
+      }
+      .today-item:last-child,
+      .admin-stat:last-child { border-bottom: none; }
       .home-greeting { font-size: 1.6rem; }
     }
   </style>
@@ -2148,7 +2143,7 @@
             </div>
           </div>
 
-          <!-- TODAY'S SNAPSHOT -->
+          <!-- TODAY'S SNAPSHOT — single card, 4 clean columns -->
           <div class="overview-card">
             <div class="overview-card-header">
               <div class="overview-card-title">Today's Snapshot</div>
@@ -2174,7 +2169,7 @@
             </div>
           </div>
 
-          <!-- SALON OVERVIEW -->
+          <!-- SALON OVERVIEW — single card, 4 clean columns -->
           <div class="overview-card">
             <div class="overview-card-header">
               <div class="overview-card-title">Salon Overview</div>
