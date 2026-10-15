@@ -214,6 +214,37 @@
       flex-shrink: 0;
     }
 
+    /* ============================================================
+       MOBILE BRAND — shown only on phone, replaces page title
+       ============================================================ */
+    .header-brand-mobile {
+      display: none;
+      flex-direction: column;
+      align-items: flex-start;
+      line-height: 1;
+      min-width: 0;
+      padding-left: 0.1rem;
+    }
+    .header-brand-mobile .brand-name-mobile {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.55rem;
+      font-weight: 700;
+      background: var(--gradient);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      line-height: 1;
+      letter-spacing: 0.3px;
+    }
+    .header-brand-mobile .brand-slogan-mobile {
+      font-size: 0.6rem;
+      font-weight: 600;
+      letter-spacing: 1.6px;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-top: 0.22rem;
+    }
+
     /* Admin-style pill search bar */
     .search-bar {
       display: flex;
@@ -276,7 +307,7 @@
     .icon-btn .dot.show { display: flex; animation: pulse 1.5s infinite; }
     @keyframes pulse { 0%, 100% { transform: scale(1); opacity: 1; } 50% { transform: scale(1.1); opacity: 0.85; } }
 
-    /* Header primary CTA (admin-style) */
+    /* Header primary CTA (admin-style) — kept for reference, not used in markup */
     .header-cta-btn {
       background: var(--gradient);
       color: #FFFFFF;
@@ -1366,13 +1397,43 @@
       .pillar:first-child { border-top: none; }
     }
 
-    /* ==================== MOBILE HEADER ==================== */
+    /* ============================================================
+       MOBILE (≤768px)
+       — Brand wordmark visible at top
+       — Search + bell on a single row beneath the heading
+       — Book now removed
+       ============================================================ */
     @media (max-width: 768px) {
-      .header { padding: 0.85rem 1rem; flex-wrap: wrap; gap: 0.5rem; }
-      .header-right { width: 100%; flex-wrap: wrap; gap: 0.5rem; order: 3; }
-      .search-bar { width: 100%; order: 3; margin-top: 0.5rem; }
-      .page-title { font-size: 1.15rem; }
-      .header-cta-btn { font-size: 0.78rem; padding: 0.52rem 1rem; }
+      .header {
+        padding: 0.85rem 1rem;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 0.55rem;
+      }
+      .header-left {
+        width: 100%;
+        align-items: center;
+        gap: 0.6rem;
+      }
+      /* Hide desktop page title block, show mobile brand instead */
+      .header-title-block { display: none; }
+      .header-brand-mobile { display: flex; }
+
+      /* Right side: search bar + bell share one row */
+      .header-right {
+        width: 100%;
+        flex-wrap: nowrap;
+        gap: 0.5rem;
+        align-items: center;
+      }
+      .search-bar {
+        flex: 1 1 auto;
+        width: auto;
+        min-width: 0;
+        padding: 0.55rem 0.6rem 0.55rem 0.95rem;
+      }
+      .search-bar input { font-size: 0.88rem; }
+      .icon-btn { flex-shrink: 0; }
     }
 
     /* ==================== DESKTOP ==================== */
@@ -1513,9 +1574,17 @@
     <header class="header">
       <div class="header-left">
         <button class="menu-btn" id="menuToggle" aria-label="Open menu"><i class="fas fa-bars"></i></button>
+
+        <!-- Desktop page title (hidden on mobile) -->
         <div class="header-title-block">
           <h1 class="page-title" id="pageTitle">Home</h1>
           <div class="page-subtitle"><i class="fas fa-map-marker-alt"></i> 1 Jun Smuts Ave, Braamfontein, Wits</div>
+        </div>
+
+        <!-- Mobile-only brand wordmark -->
+        <div class="header-brand-mobile">
+          <span class="brand-name-mobile">PinkMeUp</span>
+          <span class="brand-slogan-mobile">Book · Relax · Glow</span>
         </div>
       </div>
       <div class="header-right">
@@ -1529,9 +1598,6 @@
         <button class="icon-btn" id="notifBtn" aria-label="Notifications">
           <i class="fas fa-bell"></i>
           <span class="dot" id="notifDot"></span>
-        </button>
-        <button class="header-cta-btn" onclick="switchView('book')">
-          <i class="fas fa-plus"></i> Book now
         </button>
       </div>
     </header>
